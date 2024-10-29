@@ -29,7 +29,8 @@ function Button({ variant = 'primary', size = 'md', title, disabled, ...props }:
         className={`
           font-medium
           ${size === 'sm' ? 'text-sm' : size === 'md' ? 'text-base' : 'text-lg'}
-          ${variant === 'outline' ? 'text-primary' : 'text-white'}
+          ${variant === 'outline' ? 'text-primary' : 'text-#1A2138'}
+ 
         `}>
         {title}
       </Text>

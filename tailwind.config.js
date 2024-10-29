@@ -85,10 +85,24 @@ module.exports = {
         '3xl': ['30px', '36px']
       },
       fontFamily: {
-        'poppins': ['Poppins-Regular'],
-        'poppins-medium': ['Poppins-Medium'],
-        'poppins-semibold': ['Poppins-SemiBold'],
-        'poppins-bold': ['Poppins-Bold']
+        'thin': ['Poppins_100Thin'],
+        'extralight': ['Poppins_200ExtraLight'],
+        'light': ['Poppins_300Light'],
+        'regular': ['Poppins_400Regular'],
+        'medium': ['Poppins_500Medium'],
+        'semibold': ['Poppins_600SemiBold'],
+        'bold': ['Poppins_700Bold'],
+        'extrabold': ['Poppins_800ExtraBold'],
+        'black': ['Poppins_900Black'],
+        'thin-italic': ['Poppins_100Thin_Italic'],
+        'extralight-italic': ['Poppins_200ExtraLight_Italic'],
+        'light-italic': ['Poppins_300Light_Italic'],
+        'regular-italic': ['Poppins_400Regular_Italic'],
+        'medium-italic': ['Poppins_500Medium_Italic'],
+        'semibold-italic': ['Poppins_600SemiBold_Italic'],
+        'bold-italic': ['Poppins_700Bold_Italic'],
+        'extrabold-italic': ['Poppins_800ExtraBold_Italic'],
+        'black-italic': ['Poppins_900Black_Italic'],
       },
       // Responsive breakpoints
       screens: {
