@@ -17,6 +17,7 @@ interface ButtonProps extends TouchableOpacityProps {
   variant?: 'primary' | 'secondary' | 'outline';
   size?: 'sm' | 'md' | 'lg';
   title?: string;
+  isLoading?: boolean;
 }
 
 function Button({
@@ -25,6 +26,7 @@ function Button({
   title,
   disabled,
   style,
+  isLoading,
   ...props
 }: ButtonProps) {
   const { isDarkMode } = useDarkMode();
@@ -58,7 +60,7 @@ function Button({
 
   return (
     <AnimatedTouchable
-      disabled={disabled}
+      disabled={disabled || isLoading}
       onPressIn={handlePressIn}
       onPressOut={handlePressOut}
       style={[

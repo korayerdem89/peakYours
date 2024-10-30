@@ -2,7 +2,7 @@ import { ExpoConfig } from '@expo/config';
 
 const config: ExpoConfig = {
   name: 'peakYours',
-  slug: 'peakYours',
+  slug: 'peakyours',
   version: '1.0.0',
   scheme: 'com.peakyours.app',
   orientation: 'portrait',
@@ -30,6 +30,7 @@ const config: ExpoConfig = {
   plugins: [
     '@react-native-firebase/app',
     '@react-native-firebase/auth',
+    '@react-native-google-signin/google-signin',
     [
       'expo-build-properties',
       {
@@ -39,6 +40,12 @@ const config: ExpoConfig = {
       },
     ],
   ],
+  extra: {
+    eas: {
+      projectId: '825e19a8-f734-4813-b726-e5c2b215b0af',
+    },
+  },
+  owner: 'korayerdem',
 };
 
 export default config;

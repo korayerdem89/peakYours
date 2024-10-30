@@ -1,4 +1,4 @@
-import { View, Text, Pressable } from 'react-native';
+import { View, Text, Dimensions, Image, StyleSheet } from 'react-native';
 import { router } from 'expo-router';
 import Button from '@/components/Button';
 import { Feather } from '@expo/vector-icons';
@@ -10,63 +10,203 @@ import Animated, {
   withSequence,
   withTiming,
   useSharedValue,
+  interpolate,
+  useAnimatedScrollHandler,
+  Extrapolate,
+  withRepeat,
 } from 'react-native-reanimated';
+import { useCallback, useEffect, useRef } from 'react';
 
-const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
+const AnimatedImage = Animated.createAnimatedComponent(Image);
+const { width: SCREEN_WIDTH } = Dimensions.get('window');
+
+const ONBOARDING_DATA = [
+  {
+    id: '1',
+    title: 'Track Your Progress',
+    description: 'Monitor your fitness journey with detailed analytics',
+    image: 'https://picsum.photos/id/237/800/1200',
+  },
+  {
+    id: '2',
+    title: 'Join Challenges',
+    description: 'Compete with friends and achieve your goals together',
+    image: 'https://picsum.photos/id/239/800/1200',
+  },
+  {
+    id: '3',
+    title: 'Expert Guidance',
+    description: 'Get personalized workout plans from professionals',
+    image: 'https://picsum.photos/id/240/800/1200',
+  },
+];
+
+const AUTO_SCROLL_INTERVAL = 5000;
 
 export default function OnboardingScreen() {
   const { isDarkMode, toggleDarkMode } = useDarkMode();
   const rotation = useSharedValue(0);
+  const scrollX = useSharedValue(0);
+  const scrollViewRef = useRef<Animated.ScrollView>(null);
+  const currentIndex = useRef(0);
 
-  const animatedStyle = useAnimatedStyle(() => {
-    return {
-      transform: [{ rotate: `${rotation.value}deg` }],
-    };
+  const scrollHandler = useAnimatedScrollHandler({
+    onScroll: (event) => {
+      scrollX.value = event.contentOffset.x;
+    },
   });
 
+  const autoScroll = useCallback(() => {
+    if (currentIndex.current < ONBOARDING_DATA.length - 1) {
+      currentIndex.current += 1;
+    } else {
+      currentIndex.current = 0;
+    }
+
+    scrollViewRef.current?.scrollTo({
+      x: currentIndex.current * SCREEN_WIDTH,
+      animated: true,
+    });
+  }, []);
+
+  useEffect(() => {
+    const interval = setInterval(autoScroll, AUTO_SCROLL_INTERVAL);
+    return () => clearInterval(interval);
+  }, [autoScroll]);
+
   const handleThemeToggle = () => {
-    rotation.value = withSequence(withSpring(rotation.value + 180), withTiming(0));
+    rotation.value = withSequence(
+      withSpring(rotation.value + 180),
+      withTiming(0, { duration: theme.animation.normal })
+    );
     toggleDarkMode();
   };
 
   return (
-    <View
-      className="
-      flex-1 
-      items-center 
-      justify-center 
-      bg-background-light
-      p-4
-      dark:bg-background-dark
-    ">
-      <AnimatedPressable
-        onPress={handleThemeToggle}
-        style={[animatedStyle]}
-        className="absolute right-6 top-12 p-2">
+    <View className="flex-1 bg-background-light dark:bg-background-dark">
+      <Animated.View
+        style={[
+          styles.themeButton,
+          useAnimatedStyle(() => ({
+            transform: [{ rotate: `${rotation.value}deg` }],
+          })),
+        ]}>
         <Feather
           name={isDarkMode ? 'sun' : 'moon'}
           size={24}
           color={isDarkMode ? theme.colors.text.dark : theme.colors.text.light}
         />
-      </AnimatedPressable>
+      </Animated.View>
 
-      <Text
-        className={`
-        font-poppins-semibold 
-        mb-8 
-        text-2xl 
-        ${isDarkMode ? 'text-text-dark' : 'text-text-light'}
-      `}>
-        Onboarding Screen
-      </Text>
+      <Animated.ScrollView
+        ref={scrollViewRef}
+        horizontal
+        pagingEnabled
+        showsHorizontalScrollIndicator={false}
+        onScroll={scrollHandler}
+        scrollEventThrottle={16}
+        style={styles.scrollView}>
+        {ONBOARDING_DATA.map((item, index) => {
+          const inputRange = [
+            (index - 1) * SCREEN_WIDTH,
+            index * SCREEN_WIDTH,
+            (index + 1) * SCREEN_WIDTH,
+          ];
 
-      <Button
-        onPress={() => router.push('/(auth)/sign-in')}
-        className="w-full"
-        title="Go to Sign In"
-        variant="primary"
-        size="sm"
-      />
+          const imageAnimatedStyle = useAnimatedStyle(() => ({
+            transform: [
+              {
+                scale: interpolate(scrollX.value, inputRange, [0.8, 1, 0.8], Extrapolate.CLAMP),
+              },
+            ],
+            opacity: interpolate(scrollX.value, inputRange, [0.5, 1, 0.5], Extrapolate.CLAMP),
+          }));
+
+          return (
+            <View key={item.id} style={styles.slide}>
+              <AnimatedImage
+                source={{ uri: item.image }}
+                style={[styles.image, imageAnimatedStyle]}
+              />
+              <Text className="font-poppins-semibold mt-8 text-center text-2xl text-text-light dark:text-text-dark">
+                {item.title}
+              </Text>
+              <Text className="font-poppins-regular mt-4 text-center text-base text-text-light dark:text-text-dark">
+                {item.description}
+              </Text>
+            </View>
+          );
+        })}
+      </Animated.ScrollView>
+
+      <View style={styles.footer}>
+        <View style={styles.pagination}>
+          {ONBOARDING_DATA.map((_, index) => {
+            const dotAnimatedStyle = useAnimatedStyle(() => {
+              const inputRange = [
+                (index - 1) * SCREEN_WIDTH,
+                index * SCREEN_WIDTH,
+                (index + 1) * SCREEN_WIDTH,
+              ];
+
+              return {
+                width: interpolate(scrollX.value, inputRange, [8, 20, 8], Extrapolate.CLAMP),
+                opacity: interpolate(scrollX.value, inputRange, [0.5, 1, 0.5], Extrapolate.CLAMP),
+              };
+            });
+
+            return <Animated.View key={index} style={[styles.dot, dotAnimatedStyle]} />;
+          })}
+        </View>
+        <Button
+          onPress={() => router.push('/(auth)/sign-up')}
+          variant="primary"
+          size="lg"
+          title="Get Started"
+          className="w-full"
+        />
+      </View>
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  themeButton: {
+    position: 'absolute',
+    top: theme.spacing.xl,
+    right: theme.spacing.lg,
+    zIndex: 10,
+    padding: theme.spacing.sm,
+  },
+  scrollView: {
+    flex: 1,
+  },
+  slide: {
+    width: SCREEN_WIDTH,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: theme.spacing.md,
+  },
+  image: {
+    width: SCREEN_WIDTH * 0.8,
+    height: SCREEN_WIDTH * 1.2,
+    borderRadius: theme.borderRadius.lg,
+    resizeMode: 'cover',
+    ...theme.shadows.md,
+  },
+  footer: {
+    padding: theme.spacing.md,
+  },
+  pagination: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: theme.spacing.md,
+    gap: theme.spacing.xs,
+  },
+  dot: {
+    height: 8,
+    backgroundColor: theme.colors.primary,
+    borderRadius: theme.borderRadius.full,
+  },
+});

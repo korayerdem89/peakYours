@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "262209119081-nrdlbe79ath26d3568s6cr8oi7brt3fr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.peakyours.app",
+            "certificate_hash": "35fda8b0a3d37abcf56e0e41834ea41cf6c4fb37"
+          }
+        },
+        {
           "client_id": "262209119081-5kl21a7353t3s88bp82jgrcce2iiiq33.apps.googleusercontent.com",
           "client_type": 3
         }
