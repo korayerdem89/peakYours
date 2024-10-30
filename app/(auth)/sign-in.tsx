@@ -1,12 +1,16 @@
-import { View, Text, Alert, TouchableOpacity } from 'react-native';
+import { View, Text, Alert, Image, Dimensions } from 'react-native';
 import { router } from 'expo-router';
 import Button from '@/components/Button';
 import { GoogleSignin, statusCodes } from '@react-native-google-signin/google-signin';
 import auth from '@react-native-firebase/auth';
 import { useAuth } from '@/store/useAuth';
-import { useState, useCallback } from 'react';
+import { useState } from 'react';
 import { UserService } from '@/services/user';
 import { i18n } from '@/providers/LanguageProvider';
+import { SafeAreaView } from 'react-native-safe-area-context';
+
+const { width, height } = Dimensions.get('window');
+const BANNER_HEIGHT = height / 3;
 
 // Google Sign-In konfigürasyonu
 GoogleSignin.configure({
@@ -22,12 +26,6 @@ function isErrorWithCode(error: any): error is { code: string } {
 export default function SignInScreen() {
   const { setUser } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
-  const [currentLanguage, setCurrentLanguage] = useState(i18n.locale);
-
-  const changeLanguage = useCallback((lang: string) => {
-    i18n.locale = lang;
-    setCurrentLanguage(lang);
-  }, []);
 
   const signIn = async () => {
     try {
@@ -66,93 +64,31 @@ export default function SignInScreen() {
   };
 
   return (
-    <View className="flex-1 items-center justify-center gap-4 bg-background-light p-4 dark:bg-background-dark">
-      {/* Dil Seçim Butonları */}
-      <View className="absolute right-4 top-12 flex-row gap-2">
-        <TouchableOpacity
-          onPress={() => changeLanguage('tr')}
-          className={`rounded-lg px-3 py-2 ${
-            currentLanguage === 'tr' ? 'bg-primary' : 'bg-gray-200 dark:bg-gray-700'
-          }`}>
-          <Text
-            className={`${
-              currentLanguage === 'tr' ? 'text-white' : 'text-text-light dark:text-text-dark'
-            }`}>
-            TR
-          </Text>
-        </TouchableOpacity>
+    <SafeAreaView className="flex-1 ">
+      {/* Banner Image */}
 
-        <TouchableOpacity
-          onPress={() => changeLanguage('en')}
-          className={`rounded-lg px-3 py-2 ${
-            currentLanguage === 'en' ? 'bg-primary' : 'bg-gray-200 dark:bg-gray-700'
-          }`}>
-          <Text
-            className={`${
-              currentLanguage === 'en' ? 'text-white' : 'text-text-light dark:text-text-dark'
-            }`}>
-            EN
-          </Text>
-        </TouchableOpacity>
+      {/* Content Container */}
+      <View className="flex-1 items-center justify-center gap-10 p-6">
+        <Image
+          source={{
+            uri: `https://picsum.photos/${Math.floor(width)}/${Math.floor(BANNER_HEIGHT)}?random=${Date.now()}`,
+          }}
+          className="w-full rounded-xl"
+          style={{ height: BANNER_HEIGHT }}
+          resizeMode="cover"
+        />
+        <Text className="font-poppins-semibold mb-8 text-center text-3xl text-text-light dark:text-text-dark">
+          {i18n.t('auth.signIn.welcomeTitle')}
+        </Text>
 
-        <TouchableOpacity
-          onPress={() => changeLanguage('es')}
-          className={`rounded-lg px-3 py-2 ${
-            currentLanguage === 'es' ? 'bg-primary' : 'bg-gray-200 dark:bg-gray-700'
-          }`}>
-          <Text
-            className={`${
-              currentLanguage === 'es' ? 'text-white' : 'text-text-light dark:text-text-dark'
-            }`}>
-            ES
-          </Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          onPress={() => changeLanguage('zh')}
-          className={`rounded-lg px-3 py-2 ${
-            currentLanguage === 'zh' ? 'bg-primary' : 'bg-gray-200 dark:bg-gray-700'
-          }`}>
-          <Text
-            className={`${
-              currentLanguage === 'zh' ? 'text-white' : 'text-text-light dark:text-text-dark'
-            }`}>
-            中文
-          </Text>
-        </TouchableOpacity>
+        <Button
+          onPress={signIn}
+          variant="primary"
+          className="w-full"
+          title={i18n.t('auth.signIn.googleButton')}
+          isLoading={isLoading}
+        />
       </View>
-
-      <Text className="font-poppins-semibold mb-4 text-2xl text-text-light dark:text-text-dark">
-        {i18n.t('auth.signIn.title')}
-      </Text>
-
-      <Button
-        onPress={signIn}
-        variant="primary"
-        className="w-full"
-        title={i18n.t('auth.signIn.googleButton')}
-        isLoading={isLoading}
-      />
-
-      <Button
-        onPress={() => router.push('/(auth)/sign-up')}
-        variant="secondary"
-        className="w-full"
-        title={i18n.t('auth.signIn.goToSignUp')}
-        disabled={isLoading}
-      />
-
-      <Button
-        onPress={() => router.push('/(main)/home')}
-        className="w-full"
-        title={i18n.t('auth.signIn.goToHome')}
-        disabled={isLoading}
-      />
-
-      {/* Debug bilgisi */}
-      <Text className="mt-4 text-text-light dark:text-text-dark">
-        Current locale: {currentLanguage}
-      </Text>
-    </View>
+    </SafeAreaView>
   );
 }

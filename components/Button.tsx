@@ -103,15 +103,15 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   primaryButton: {
-    backgroundColor: theme.colors.primary,
+    backgroundColor: theme.colors.primary.default,
   },
   secondaryButton: {
-    backgroundColor: theme.colors.secondary,
+    backgroundColor: theme.colors.secondary.default,
   },
   outlineButton: {
     backgroundColor: 'transparent',
     borderWidth: 1,
-    borderColor: theme.colors.primary,
+    borderColor: theme.colors.primary.default,
   },
   disabledButton: {
     opacity: 0.5,
@@ -122,7 +122,7 @@ const styles = StyleSheet.create({
     fontWeight: '500',
   },
   outlineText: {
-    color: theme.colors.primary,
+    color: theme.colors.primary.default,
   },
   smallButton: {
     padding: theme.spacing.sm,

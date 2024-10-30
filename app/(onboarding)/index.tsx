@@ -206,7 +206,7 @@ const styles = StyleSheet.create({
   },
   dot: {
     height: 8,
-    backgroundColor: theme.colors.primary,
+    backgroundColor: theme.colors.primary.default,
     borderRadius: theme.borderRadius.full,
   },
 });

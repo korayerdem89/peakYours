@@ -15,6 +15,7 @@ export default {
       googleButton: 'Sign in with Google',
       goToSignUp: 'Create Account',
       goToHome: 'Go to Home',
+      welcomeTitle: "Let's get you signed in",
     },
     errors: {
       inProgress: 'Sign in is already in progress',
