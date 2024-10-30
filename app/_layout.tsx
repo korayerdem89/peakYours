@@ -3,8 +3,10 @@ import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { View, ActivityIndicator, StyleSheet } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
-import { useColorScheme } from 'nativewind';
 import { useEffect } from 'react';
+import { useDarkMode } from '@/store/useDarkMode';
+import { useColorScheme } from 'react-native';
+import { ThemeProvider } from '@/providers/ThemeProvider';
 
 import {
   useFonts,
@@ -43,7 +45,12 @@ const LoadingOverlay = () => (
 );
 
 export default function RootLayout() {
-  const { colorScheme } = useColorScheme();
+  const systemColorScheme = useColorScheme();
+  const { setDarkMode } = useDarkMode();
+
+  useEffect(() => {
+    setDarkMode(systemColorScheme === 'dark');
+  }, [systemColorScheme]);
 
   let [fontsLoaded, fontError] = useFonts({
     Poppins_100Thin,
@@ -86,20 +93,17 @@ export default function RootLayout() {
   }
 
   return (
-    <>
+    <ThemeProvider>
       <Stack
         screenOptions={{
           headerShown: false,
-          contentStyle: {
-            backgroundColor: colorScheme === 'dark' ? '#131A2A' : '#FFFFFF',
-          },
         }}>
         <Stack.Screen name="(onboarding)" options={{ headerShown: false }} />
         <Stack.Screen name="(auth)" options={{ headerShown: false }} />
         <Stack.Screen name="(main)" options={{ headerShown: false }} />
       </Stack>
-      <StatusBar style={colorScheme === 'dark' ? 'light' : 'dark'} />
-    </>
+      <StatusBar style="auto" />
+    </ThemeProvider>
   );
 }
 
