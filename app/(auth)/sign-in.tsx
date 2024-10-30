@@ -2,9 +2,10 @@ import { View, Text, Alert } from 'react-native';
 import { router } from 'expo-router';
 import Button from '@/components/Button';
 import { GoogleSignin, statusCodes } from '@react-native-google-signin/google-signin';
+import auth from '@react-native-firebase/auth';
 import { useAuth } from '@/store/useAuth';
 import { useState } from 'react';
-import { fbAuth } from '@/config/firebase';
+import { UserService } from '@/services/user';
 
 // Google Sign-In konfigürasyonu
 GoogleSignin.configure({
@@ -13,12 +14,6 @@ GoogleSignin.configure({
   forceCodeForRefreshToken: true,
 });
 
-// Response type guard
-function isSuccessResponse(response: any): response is { data: any } {
-  return response && response.data;
-}
-
-// Error type guard
 function isErrorWithCode(error: any): error is { code: string } {
   return error && typeof error.code === 'string';
 }
@@ -30,42 +25,41 @@ export default function SignInScreen() {
   const signIn = async () => {
     try {
       setIsLoading(true);
-      console.log('hasplay');
-      await GoogleSignin.hasPlayServices({
-        showPlayServicesUpdateDialog: true,
-      });
-      console.log('signOut');
-      await GoogleSignin.signOut();
-      console.log('signIn');
-      const response = await GoogleSignin.signIn();
+      await GoogleSignin.hasPlayServices();
 
-      if (isSuccessResponse(response)) {
-        console.log('response', response);
-        // User bilgisini global state'e kaydet
-        setUser(response.data);
+      // Google Sign-In
+      const { data } = await GoogleSignin.signIn();
+
+      if (data) {
+        // Firebase credential oluştur
+        const credential = auth.GoogleAuthProvider.credential(data.idToken);
+
+        // Firebase ile giriş yap
+        const { user } = await auth().signInWithCredential(credential);
+
+        // Firestore'a kaydet
+        await UserService.saveUserToFirestore(user);
+
+        // User'ı store'a kaydet
+        setUser(user);
+
         // Ana sayfaya yönlendir
         router.replace('/(main)/home');
-      } else {
-        // Kullanıcı giriş işlemini iptal etti
-        Alert.alert('Bilgi', 'Giriş işlemi iptal edildi');
       }
     } catch (error) {
       if (isErrorWithCode(error)) {
-        if (isErrorWithCode(error)) {
-          switch (error.code) {
-            case statusCodes.IN_PROGRESS:
-              Alert.alert('Hata', 'Giriş işlemi zaten devam ediyor');
-              break;
-            case statusCodes.PLAY_SERVICES_NOT_AVAILABLE:
-              Alert.alert('Hata', 'Google Play Services kullanılamıyor');
-              break;
-            default:
-              Alert.alert('Hata', 'Giriş yapılırken bir hata oluştu');
-              console.error('Google Sign-In Error:', error);
-          }
+        switch (error.code) {
+          case statusCodes.IN_PROGRESS:
+            Alert.alert('Hata', 'Giriş işlemi zaten devam ediyor');
+            break;
+          case statusCodes.PLAY_SERVICES_NOT_AVAILABLE:
+            Alert.alert('Hata', 'Google Play Services kullanılamıyor');
+            break;
+          default:
+            Alert.alert('Hata', 'Giriş yapılırken bir hata oluştu');
+            console.error('Google Sign-In Error:', error);
         }
       } else {
-        // Google Sign-In ile ilgili olmayan bir hata oluştu
         Alert.alert('Hata', 'Beklenmeyen bir hata oluştu');
         console.error(error);
       }

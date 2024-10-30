@@ -73,7 +73,7 @@ function Button({
         size === 'lg' && styles.largeButton,
         disabled && styles.disabledButton,
         isDarkMode && styles.darkModeButton,
-        !isDarkMode && { ...theme.shadows.md },
+        !isDarkMode && variant !== 'outline' && { ...theme.shadows.md },
         animatedStyle,
         style,
       ]}
