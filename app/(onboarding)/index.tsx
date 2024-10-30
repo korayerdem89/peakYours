@@ -31,13 +31,14 @@ export default function OnboardingScreen() {
 
   return (
     <View
-      className={`
+      className="
       flex-1 
       items-center 
       justify-center 
+      bg-background-light
       p-4
-      ${isDarkMode ? 'bg-background-dark' : 'bg-background-light'}
-    `}>
+      dark:bg-background-dark
+    ">
       <AnimatedPressable
         onPress={handleThemeToggle}
         style={[animatedStyle]}

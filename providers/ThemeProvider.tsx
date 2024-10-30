@@ -1,7 +1,7 @@
 import React from 'react';
 import { useDarkMode } from '@/store/useDarkMode';
 import { View } from 'react-native';
-import { theme } from '@/constants/theme';
+import { useColorScheme } from 'nativewind';
 
 interface ThemeProviderProps {
   children: React.ReactNode;
@@ -9,14 +9,11 @@ interface ThemeProviderProps {
 
 export function ThemeProvider({ children }: ThemeProviderProps) {
   const { isDarkMode } = useDarkMode();
+  const { setColorScheme } = useColorScheme();
 
-  return (
-    <View
-      style={{
-        flex: 1,
-        backgroundColor: isDarkMode ? theme.colors.background.dark : theme.colors.background.light,
-      }}>
-      {children}
-    </View>
-  );
+  React.useEffect(() => {
+    setColorScheme(isDarkMode ? 'dark' : 'light');
+  }, [isDarkMode]);
+
+  return <View className="flex-1">{children}</View>;
 }

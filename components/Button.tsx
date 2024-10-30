@@ -71,6 +71,7 @@ function Button({
         size === 'lg' && styles.largeButton,
         disabled && styles.disabledButton,
         isDarkMode && styles.darkModeButton,
+        !isDarkMode && { ...theme.shadows.md },
         animatedStyle,
         style,
       ]}
@@ -96,7 +97,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     borderRadius: theme.borderRadius.md,
     backgroundColor: theme.colors.background.light,
-    ...theme.shadows.md,
+
     overflow: 'hidden',
   },
   primaryButton: {
@@ -140,7 +141,6 @@ const styles = StyleSheet.create({
     fontSize: theme.fontSize.lg,
   },
   darkModeButton: {
-    backgroundColor: theme.colors.background.dark,
     borderColor: theme.colors.text.dark,
   },
   darkModeText: {
