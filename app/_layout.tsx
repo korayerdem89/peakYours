@@ -1,5 +1,5 @@
 import '@/global.css';
-import { Stack } from 'expo-router';
+import { Stack, useRouter, useSegments } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { View, ActivityIndicator, StyleSheet } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
@@ -9,6 +9,7 @@ import { useColorScheme } from 'react-native';
 import { ThemeProvider } from '@/providers/ThemeProvider';
 import { AuthProvider } from '@/providers/AuthProvider';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { useAuth } from '@/store/useAuth';
 
 import {
   useFonts,
@@ -45,6 +46,34 @@ const LoadingOverlay = () => (
     <ActivityIndicator size="large" color="#7C4DFF" />
   </View>
 );
+
+// Protected Route kontrolü için yeni component
+function InitialLayout() {
+  const segments = useSegments();
+  const router = useRouter();
+  const { user, isLoading } = useAuth();
+
+  useEffect(() => {
+    if (isLoading) return;
+
+    const inAuthGroup = segments[0] === '(auth)';
+    const inOnboardingGroup = segments[0] === '(onboarding)';
+
+    if (!user) {
+      // Kullanıcı giriş yapmamışsa onboarding'e yönlendir
+      if (!inOnboardingGroup) {
+        router.replace('/(onboarding)');
+      }
+    } else {
+      // Kullanıcı giriş yapmışsa main'e yönlendir
+      if (!segments[0] || inAuthGroup || inOnboardingGroup) {
+        router.replace('/(main)/home');
+      }
+    }
+  }, [user, segments, isLoading]);
+
+  return <Stack screenOptions={{ headerShown: false }} />;
+}
 
 export default function RootLayout() {
   const systemColorScheme = useColorScheme();
@@ -99,7 +128,7 @@ export default function RootLayout() {
       <ThemeProvider>
         <View className="flex-1 bg-background-light dark:bg-background-dark">
           <AuthProvider>
-            <Stack screenOptions={{ headerShown: false }} />
+            <InitialLayout />
           </AuthProvider>
         </View>
       </ThemeProvider>
