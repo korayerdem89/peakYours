@@ -58,15 +58,16 @@ function InitialLayout() {
 
     const inAuthGroup = segments[0] === '(auth)';
     const inOnboardingGroup = segments[0] === '(onboarding)';
+    const inMainGroup = segments[0] === '(main)';
 
     if (!user) {
-      // Kullanıcı giriş yapmamışsa onboarding'e yönlendir
-      if (!inOnboardingGroup) {
+      // Kullanıcı giriş yapmamışsa ve main grubuna erişmeye çalışıyorsa
+      if (inMainGroup) {
         router.replace('/(onboarding)');
       }
     } else {
-      // Kullanıcı giriş yapmışsa main'e yönlendir
-      if (!segments[0] || inAuthGroup || inOnboardingGroup) {
+      // Kullanıcı giriş yapmışsa ve auth veya onboarding grubundaysa
+      if (inAuthGroup || inOnboardingGroup) {
         router.replace('/(main)/home');
       }
     }
