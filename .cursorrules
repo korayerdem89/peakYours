@@ -101,8 +101,7 @@ Extras
 
 - Use react native skia, react native reanimated for performant animations.
 - use shopify flashlist for list rendering. library's doc: https://github.com/Shopify/flash-list
-- use react-native-mmkv for secure, fast, and easy storage. library's doc: https://github.com/mrousavy/react-native-mmkv
-library's doc: https://github.com/zoontek/react-native-bootsplash
+- use @react-native-async-store/async-storage for secure, fast, and easy storage. library's doc: https://github.com/zoontek/react-native-bootsplash
 - use react-native-svg for vector graphics. library's doc: https://github.com/react-native-svg/react-native-svg
 - create global scaling utilities for images, fonts, and other assets.
 - use expo-font for custom fonts. library's doc: https://docs.expo.dev/fonts/
