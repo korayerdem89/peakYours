@@ -19,7 +19,7 @@ const BadsidesRoute = React.memo(() => (
   </View>
 ));
 
-export default function HomeScreen() {
+export default function Chart() {
   const layout = useWindowDimensions();
   const { colorScheme } = useColorScheme();
   const [index, setIndex] = useState(0);

@@ -17,7 +17,7 @@ export default function MainLayout() {
         tabBarInactiveTintColor: colorScheme === 'dark' ? '#C5CEE0' : '#8F9BB3',
       }}>
       <Tabs.Screen
-        name="home"
+        name="chart"
         options={{
           title: 'Chart',
           tabBarIcon: ({ color }) => <Radar size={24} color={color} />,

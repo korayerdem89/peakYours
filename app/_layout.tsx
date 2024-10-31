@@ -68,7 +68,7 @@ function InitialLayout() {
     } else {
       // Kullanıcı giriş yapmışsa ve auth veya onboarding grubundaysa
       if (inAuthGroup || inOnboardingGroup) {
-        router.replace('/(main)/home');
+        router.replace('/(main)/chart');
       }
     }
   }, [user, segments, isLoading]);
