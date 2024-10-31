@@ -18,6 +18,7 @@ export const theme = {
     background: {
       light: '#FAFAFA',
       dark: '#131A2A',
+      tab: '#fbefc2',
     },
     text: {
       light: '#2E3A59',

@@ -1,13 +1,17 @@
-import { View, Text, Alert, Image, Dimensions } from 'react-native';
+import { View, Text, Alert, Image, Dimensions, StyleSheet } from 'react-native';
 import { router } from 'expo-router';
-import Button from '@/components/Button';
-import { GoogleSignin, statusCodes } from '@react-native-google-signin/google-signin';
+import {
+  GoogleSignin,
+  statusCodes,
+  GoogleSigninButton,
+} from '@react-native-google-signin/google-signin';
 import auth from '@react-native-firebase/auth';
 import { useAuth } from '@/store/useAuth';
 import { useState } from 'react';
 import { UserService } from '@/services/user';
 import { i18n } from '@/providers/LanguageProvider';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useColorScheme } from 'nativewind';
 
 const { width, height } = Dimensions.get('window');
 const BANNER_HEIGHT = height / 3;
@@ -26,6 +30,7 @@ function isErrorWithCode(error: any): error is { code: string } {
 export default function SignInScreen() {
   const { setUser } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
+  const { colorScheme } = useColorScheme();
 
   const signIn = async () => {
     try {
@@ -64,10 +69,7 @@ export default function SignInScreen() {
   };
 
   return (
-    <SafeAreaView className="flex-1 ">
-      {/* Banner Image */}
-
-      {/* Content Container */}
+    <SafeAreaView className="flex-1 bg-accent-light dark:bg-accent-dark">
       <View className="flex-1 items-center justify-center gap-10 p-6">
         <Image
           source={{
@@ -77,18 +79,26 @@ export default function SignInScreen() {
           style={{ height: BANNER_HEIGHT }}
           resizeMode="cover"
         />
+
         <Text className="font-poppins-semibold mb-8 text-center text-3xl text-text-light dark:text-text-dark">
           {i18n.t('auth.signIn.welcomeTitle')}
         </Text>
 
-        <Button
+        <GoogleSigninButton
+          size={GoogleSigninButton.Size.Wide}
+          color="light"
           onPress={signIn}
-          variant="primary"
-          className="w-full"
-          title={i18n.t('auth.signIn.googleButton')}
-          isLoading={isLoading}
+          disabled={isLoading}
+          style={styles.googleButton}
         />
       </View>
     </SafeAreaView>
   );
 }
+
+const styles = StyleSheet.create({
+  googleButton: {
+    width: '100%',
+    padding: 30,
+  },
+});

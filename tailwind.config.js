@@ -26,6 +26,7 @@ module.exports = {
         background: {
           light: '#FFFFFF',
           dark: '#131A2A',
+          tab: '#eaf0fd',
         },
         // Metin renkleri
         text: {

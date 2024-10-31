@@ -60,11 +60,11 @@ export default function SettingsScreen() {
   };
 
   return (
-    <SafeAreaView className="flex-1 bg-background-light dark:bg-background-dark">
+    <SafeAreaView className="bg-background-tab flex-1 dark:bg-background-dark">
       {/* Loading Modal */}
       <Modal transparent visible={isTogglingTheme} animationType="fade" statusBarTranslucent>
         <View className="flex-1 items-center justify-center bg-black/50">
-          <View className="mx-8 rounded-2xl bg-surface-light p-6 dark:bg-surface-dark">
+          <View className="mx-8 rounded-2xl bg-background-light p-6 dark:bg-surface-dark">
             <ActivityIndicator size="large" color="#7C4DFF" />
             <Text className="mt-4 text-center font-medium text-base text-text-light dark:text-text-dark">
               {i18n.t('settings.theme.changing')}
@@ -83,7 +83,7 @@ export default function SettingsScreen() {
               className={`rounded-full px-4 py-2 ${
                 selectedLang === lang.code
                   ? 'bg-primary-light dark:bg-primary-dark'
-                  : 'bg-surface-light dark:bg-surface-dark'
+                  : 'bg-background-light dark:bg-surface-dark'
               }`}>
               <Text
                 className={`font-medium ${
@@ -109,7 +109,7 @@ export default function SettingsScreen() {
           </Text>
 
           {/* Credit Score */}
-          <View className="mt-4 w-full rounded-lg bg-surface-light p-4 dark:bg-surface-dark">
+          <View className="mt-4 w-full rounded-lg bg-background-light p-4 dark:bg-surface-dark">
             <Text className="text-center text-text-light dark:text-text-dark">
               {i18n.t('settings.creditScore')}
             </Text>
@@ -120,7 +120,7 @@ export default function SettingsScreen() {
         </Animated.View>
 
         {/* Theme Toggle */}
-        <Animated.View className="mt-8 flex-row items-center justify-between rounded-lg bg-surface-light p-4 dark:bg-surface-dark">
+        <Animated.View className="mt-8 flex-row items-center justify-between rounded-lg bg-background-light p-4 dark:bg-surface-dark">
           <Text className="text-text-light dark:text-text-dark">
             {i18n.t('settings.theme.title')}
           </Text>
@@ -134,7 +134,9 @@ export default function SettingsScreen() {
         {/* Account Settings Accordion */}
         <View className="mt-4">
           <Accordion title={i18n.t('settings.accountSettings')}>
-            <Text className="text-text-light dark:text-text-dark">accordion collapsed</Text>
+            <Text className="border-t-2 border-gray-100 p-4 text-text-light dark:text-text-dark">
+              accordion collapsed
+            </Text>
           </Accordion>
         </View>
 

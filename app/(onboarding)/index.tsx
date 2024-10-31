@@ -1,21 +1,15 @@
 import { View, Text, Dimensions, Image, StyleSheet } from 'react-native';
 import { router } from 'expo-router';
 import Button from '@/components/Button';
-import { Feather } from '@expo/vector-icons';
-import { useDarkMode } from '@/store/useDarkMode';
 import { theme } from '@/constants/theme';
 import Animated, {
   useAnimatedStyle,
-  withSpring,
-  withSequence,
-  withTiming,
   useSharedValue,
   interpolate,
   useAnimatedScrollHandler,
   Extrapolate,
-  withRepeat,
 } from 'react-native-reanimated';
-import { useCallback, useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 const AnimatedImage = Animated.createAnimatedComponent(Image);
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
@@ -41,14 +35,15 @@ const ONBOARDING_DATA = [
   },
 ];
 
-const AUTO_SCROLL_INTERVAL = 5000;
+const AUTO_SCROLL_INTERVAL = 4000;
+const COUNTDOWN_DURATION = 8;
 
 export default function OnboardingScreen() {
-  const { isDarkMode, toggleDarkMode } = useDarkMode();
-  const rotation = useSharedValue(0);
   const scrollX = useSharedValue(0);
   const scrollViewRef = useRef<Animated.ScrollView>(null);
   const currentIndex = useRef(0);
+  const [countdown, setCountdown] = useState(COUNTDOWN_DURATION);
+  const [isButtonEnabled, setIsButtonEnabled] = useState(false);
 
   const scrollHandler = useAnimatedScrollHandler({
     onScroll: (event) => {
@@ -74,30 +69,20 @@ export default function OnboardingScreen() {
     return () => clearInterval(interval);
   }, [autoScroll]);
 
-  const handleThemeToggle = () => {
-    rotation.value = withSequence(
-      withSpring(rotation.value + 180),
-      withTiming(0, { duration: theme.animation.normal })
-    );
-    toggleDarkMode();
-  };
+  useEffect(() => {
+    if (countdown > 0) {
+      const timer = setInterval(() => {
+        setCountdown((prev) => prev - 1);
+      }, 1000);
+
+      return () => clearInterval(timer);
+    } else {
+      setIsButtonEnabled(true);
+    }
+  }, [countdown]);
 
   return (
-    <View className="flex-1 bg-background-light dark:bg-background-dark">
-      <Animated.View
-        style={[
-          styles.themeButton,
-          useAnimatedStyle(() => ({
-            transform: [{ rotate: `${rotation.value}deg` }],
-          })),
-        ]}>
-        <Feather
-          name={isDarkMode ? 'sun' : 'moon'}
-          size={24}
-          color={isDarkMode ? theme.colors.text.dark : theme.colors.text.light}
-        />
-      </Animated.View>
-
+    <View className="flex-1 bg-accent-light dark:bg-accent-dark">
       <Animated.ScrollView
         ref={scrollViewRef}
         horizontal
@@ -159,11 +144,12 @@ export default function OnboardingScreen() {
           })}
         </View>
         <Button
-          onPress={() => router.push('/(auth)/sign-up')}
+          onPress={() => router.push('/(auth)/sign-in')}
           variant="primary"
           size="lg"
-          title="Get Started"
-          className="w-full"
+          title={isButtonEnabled ? 'Get Started' : `Wait ${countdown}s`}
+          className={`w-full ${!isButtonEnabled && 'opacity-50'}`}
+          disabled={!isButtonEnabled}
         />
       </View>
     </View>

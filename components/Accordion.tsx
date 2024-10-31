@@ -1,11 +1,6 @@
-import { View, Text, TouchableOpacity } from 'react-native';
-import { useState } from 'react';
-import Animated, {
-  useAnimatedStyle,
-  withTiming,
-  withSpring,
-  interpolate,
-} from 'react-native-reanimated';
+import { View, Text, TouchableOpacity, LayoutChangeEvent } from 'react-native';
+import { useState, useCallback } from 'react';
+import Animated, { useAnimatedStyle, withTiming, Easing } from 'react-native-reanimated';
 import Entypo from '@expo/vector-icons/Entypo';
 
 interface AccordionProps {
@@ -15,34 +10,43 @@ interface AccordionProps {
 
 export function Accordion({ title, children }: AccordionProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const [contentHeight, setContentHeight] = useState(0);
 
-  const animatedStyle = useAnimatedStyle(() => {
-    return {
-      height: withSpring(isOpen ? 100 : 0, {
-        damping: 15,
-        mass: 1,
-        stiffness: 100,
+  const onLayout = useCallback((event: LayoutChangeEvent) => {
+    const { height: layoutHeight } = event.nativeEvent.layout;
+    setContentHeight(layoutHeight);
+  }, []);
+
+  const animatedStyle = useAnimatedStyle(
+    () => ({
+      height: withTiming(isOpen ? contentHeight : 0, {
+        duration: 300,
+        easing: Easing.inOut(Easing.ease),
       }),
-      opacity: withSpring(isOpen ? 1 : 0),
-    };
-  }, [isOpen]);
+      opacity: withTiming(isOpen ? 1 : 0, {
+        duration: 300,
+        easing: Easing.inOut(Easing.ease),
+      }),
+    }),
+    [isOpen, contentHeight]
+  );
 
-  const iconStyle = useAnimatedStyle(() => {
-    return {
+  const iconStyle = useAnimatedStyle(
+    () => ({
       transform: [
         {
-          rotate: withSpring(`${isOpen ? 180 : 0}deg`, {
-            damping: 15,
-            mass: 1,
-            stiffness: 100,
+          rotate: withTiming(isOpen ? '180deg' : '0deg', {
+            duration: 300,
+            easing: Easing.inOut(Easing.ease),
           }),
         },
       ],
-    };
-  }, [isOpen]);
+    }),
+    [isOpen]
+  );
 
   return (
-    <View className="overflow-hidden rounded-lg bg-surface-light dark:bg-surface-dark">
+    <View className="overflow-hidden rounded-lg bg-background-light dark:bg-surface-dark">
       <TouchableOpacity
         onPress={() => setIsOpen(!isOpen)}
         className="flex-row items-center justify-between p-4">
@@ -52,8 +56,10 @@ export function Accordion({ title, children }: AccordionProps) {
         </Animated.View>
       </TouchableOpacity>
 
-      <Animated.View style={animatedStyle} className="px-4">
-        {children}
+      <Animated.View style={[animatedStyle]} className="overflow-hidden">
+        <View onLayout={onLayout} className="absolute left-0 right-0">
+          {children}
+        </View>
       </Animated.View>
     </View>
   );
