@@ -44,4 +44,8 @@ export default {
       changing: '正在切换主题...',
     },
   },
+  tabs: {
+    goodsides: '优点',
+    badsides: '缺点',
+  },
 };

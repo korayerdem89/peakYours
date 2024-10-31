@@ -45,4 +45,8 @@ export default {
       changing: 'Changing theme...',
     },
   },
+  tabs: {
+    goodsides: 'Good Sides',
+    badsides: 'Bad Sides',
+  },
 };

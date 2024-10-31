@@ -33,4 +33,8 @@ export default {
       changing: 'Tema değiştiriliyor...',
     },
   },
+  tabs: {
+    goodsides: 'İyi Yanlar',
+    badsides: 'Kötü Yanlar',
+  },
 };

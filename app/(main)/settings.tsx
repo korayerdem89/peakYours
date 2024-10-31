@@ -19,6 +19,7 @@ import { useState, useCallback } from 'react';
 import { Switch } from 'react-native-gesture-handler';
 import Animated, { FadeIn } from 'react-native-reanimated';
 import { i18n } from '@/providers/LanguageProvider';
+import { theme } from '@/constants/theme';
 
 const LANGUAGES = [
   { code: 'en', label: 'EN' },
@@ -113,14 +114,14 @@ export default function SettingsScreen() {
             <Text className="text-center text-text-light dark:text-text-dark">
               {i18n.t('settings.creditScore')}
             </Text>
-            <Text className="mt-2 text-center font-bold text-2xl text-primary-light dark:text-primary-dark">
+            <Text className="mt-2 text-center font-bold text-2xl text-secondary-dark dark:text-accent-light">
               1000
             </Text>
           </View>
         </Animated.View>
 
         {/* Theme Toggle */}
-        <Animated.View className="mt-8 flex-row items-center justify-between rounded-lg bg-background-light p-4 dark:bg-surface-dark">
+        <Animated.View className="bg-gray- mt-8 flex-row items-center justify-between rounded-lg bg-background-light p-4 dark:bg-surface-dark">
           <Text className="text-text-light dark:text-text-dark">
             {i18n.t('settings.theme.title')}
           </Text>
@@ -128,6 +129,11 @@ export default function SettingsScreen() {
             value={colorScheme === 'dark'}
             onValueChange={toggleColorScheme}
             disabled={isTogglingTheme}
+            trackColor={{
+              true: colorScheme === 'dark' ? '#d1d5db' : theme.colors.primary.light,
+              false: '#767577',
+            }}
+            thumbColor={colorScheme === 'dark' ? theme.colors.primary.light : '#d1d5db'}
           />
         </Animated.View>
 
@@ -141,7 +147,9 @@ export default function SettingsScreen() {
         </View>
 
         {/* Sign Out Button */}
-        <TouchableOpacity onPress={handleSignOut} className="mb-8 mt-8 rounded-lg bg-error p-4">
+        <TouchableOpacity
+          onPress={handleSignOut}
+          className="mb-8 mt-8 rounded-lg bg-error-light p-4 dark:bg-error-dark">
           <Text className="text-center font-medium text-white">{i18n.t('settings.signOut')}</Text>
         </TouchableOpacity>
       </ScrollView>

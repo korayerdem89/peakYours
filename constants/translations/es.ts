@@ -44,4 +44,8 @@ export default {
       changing: 'Cambiando el tema...',
     },
   },
+  tabs: {
+    goodsides: 'Aspectos positivos',
+    badsides: 'Aspectos negativos',
+  },
 };

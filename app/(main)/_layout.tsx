@@ -1,7 +1,7 @@
 import { Tabs } from 'expo-router';
-import { Home, User, Settings } from 'lucide-react-native';
+import { Settings, Radar, MessageCircle, ClipboardList } from 'lucide-react-native';
 import { useColorScheme } from 'nativewind';
-
+import { theme } from '@/constants/theme';
 export default function MainLayout() {
   const { colorScheme } = useColorScheme();
 
@@ -12,21 +12,29 @@ export default function MainLayout() {
         tabBarStyle: {
           backgroundColor: colorScheme === 'dark' ? '#131A2A' : '#FAFAFA',
         },
-        tabBarActiveTintColor: '#7C4DFF',
+        tabBarActiveTintColor:
+          colorScheme === 'dark' ? theme.colors.accent.light : theme.colors.primary.dark,
         tabBarInactiveTintColor: colorScheme === 'dark' ? '#C5CEE0' : '#8F9BB3',
       }}>
       <Tabs.Screen
         name="home"
         options={{
-          title: 'Home',
-          tabBarIcon: ({ color }) => <Home size={24} color={color} />,
+          title: 'Chart',
+          tabBarIcon: ({ color }) => <Radar size={24} color={color} />,
         }}
       />
       <Tabs.Screen
-        name="profile"
+        name="analysis"
         options={{
-          title: 'Profile',
-          tabBarIcon: ({ color }) => <User size={24} color={color} />,
+          title: 'Analysis',
+          tabBarIcon: ({ color }) => <MessageCircle size={24} color={color} />,
+        }}
+      />
+      <Tabs.Screen
+        name="tasks"
+        options={{
+          title: 'Tasks',
+          tabBarIcon: ({ color }) => <ClipboardList size={24} color={color} />,
         }}
       />
       <Tabs.Screen
