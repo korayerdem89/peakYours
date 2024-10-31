@@ -25,6 +25,10 @@ export default {
   },
   settings: {
     title: 'Ajustes',
+    anonymous: 'Usuario Anónimo',
+    creditScore: 'Puntuación de Crédito',
+    accountSettings: 'Configuración de la Cuenta',
+    signOut: 'Cerrar Sesión',
     language: {
       title: 'Idioma',
       turkish: 'Turco',
@@ -33,10 +37,11 @@ export default {
       chinese: 'Chino',
     },
     theme: {
-      title: 'Tema',
+      title: 'Modo Nocturno',
       light: 'Claro',
       dark: 'Oscuro',
       system: 'Sistema',
+      changing: 'Cambiando el tema...',
     },
   },
 };

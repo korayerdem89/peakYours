@@ -26,6 +26,10 @@ export default {
   },
   settings: {
     title: 'Settings',
+    anonymous: 'Anonymous User',
+    creditScore: 'Credit Score',
+    accountSettings: 'Account Settings',
+    signOut: 'Sign Out',
     language: {
       title: 'Language',
       turkish: 'Turkish',
@@ -34,10 +38,11 @@ export default {
       chinese: 'Chinese',
     },
     theme: {
-      title: 'Theme',
+      title: 'Night Mode',
       light: 'Light',
       dark: 'Dark',
       system: 'System',
+      changing: 'Changing theme...',
     },
   },
 };

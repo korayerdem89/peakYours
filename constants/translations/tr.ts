@@ -14,10 +14,23 @@ export default {
   },
   settings: {
     title: 'Ayarlar',
+    anonymous: 'Anonim Kullanıcı',
+    creditScore: 'Kredi Puanı',
+    accountSettings: 'Hesap Ayarları',
+    signOut: 'Çıkış Yap',
     language: {
       title: 'Dil',
       turkish: 'Türkçe',
       english: 'İngilizce',
+      spanish: 'İspanyolca',
+      chinese: 'Çince',
+    },
+    theme: {
+      title: 'Gece Modu',
+      light: 'Açık',
+      dark: 'Koyu',
+      system: 'Sistem',
+      changing: 'Tema değiştiriliyor...',
     },
   },
 };
