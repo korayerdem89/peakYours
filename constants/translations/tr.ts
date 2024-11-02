@@ -3,6 +3,8 @@ export default {
     loading: 'Yükleniyor...',
     error: 'Bir hata oluştu',
     success: 'Başarılı',
+    submit: 'Gönder',
+    saving: 'Kaydediliyor...',
   },
   auth: {
     signIn: {
@@ -32,12 +34,23 @@ export default {
       system: 'Sistem',
       changing: 'Tema değiştiriliyor...',
     },
+    zodiacCard: {
+      title: 'Burcunuz',
+      description: 'Burcunuzu değiştirmek için dokunun',
+      updateError: 'Burç güncellenirken bir hata oluştu. Lütfen tekrar deneyin.',
+    },
   },
   tabs: {
     goodsides: 'İyi Yanlar',
     badsides: 'Kötü Yanlar',
   },
   personality: {
+    friendly: 'Arkadaş Canlısı',
+    adventurous: 'Maceracı',
+    thinker: 'Düşünür',
+    protective: 'Koruyucu',
+    cheerful: 'Neşeli',
+    leader: 'Lider',
     traits: {
       extraversion: 'Dışadönüklük',
       agreeableness: 'Uyumluluk',
@@ -47,8 +60,6 @@ export default {
       empathy: 'Empati',
       creativity: 'Yaratıcılık',
     },
-    level: 'Seviye',
-    positiveTraits: 'Pozitif Kişilik Özellikleri',
     chart: {
       title: 'Kişilik Analizi',
       subtitle: 'Topluluk değerlendirmelerine göre',
@@ -64,6 +75,29 @@ export default {
       submit: 'Değerlendirmeyi Gönder',
       cancel: 'İptal',
       success: 'Değerlendirme başarıyla gönderildi',
+    },
+    level: 'Seviye',
+    positiveTraits: 'Olumlu Kişilik Özellikleri',
+  },
+  zodiac: {
+    modalTitle: 'Burcunuzu Seçin',
+    modalDescription: 'Kapsamlı kişilik analiziniz için lütfen burcunuzu seçin.',
+    select: 'Burç seçin',
+    aries: 'Koç',
+    taurus: 'Boğa',
+    gemini: 'İkizler',
+    cancer: 'Yengeç',
+    leo: 'Aslan',
+    virgo: 'Başak',
+    libra: 'Terazi',
+    scorpio: 'Akrep',
+    sagittarius: 'Yay',
+    capricorn: 'Oğlak',
+    aquarius: 'Kova',
+    pisces: 'Balık',
+    toast: {
+      title: 'Burç Seçildi',
+      message: 'Artık kapsamlı kişilik analizinizi görüntüleyebilirsiniz',
     },
   },
 };

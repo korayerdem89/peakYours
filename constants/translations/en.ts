@@ -8,6 +8,8 @@ export default {
     cancel: 'Cancel',
     delete: 'Delete',
     edit: 'Edit',
+    submit: 'Submit',
+    saving: 'Saving...',
   },
   auth: {
     signIn: {
@@ -43,6 +45,11 @@ export default {
       dark: 'Dark',
       system: 'System',
       changing: 'Changing theme...',
+    },
+    zodiacCard: {
+      title: 'Your Zodiac Sign',
+      description: 'Tap to change your zodiac sign',
+      updateError: 'Failed to update zodiac sign. Please try again.',
     },
   },
   tabs: {
@@ -83,5 +90,26 @@ export default {
     },
     level: 'Level',
     positiveTraits: 'Positive Personality Traits',
+  },
+  zodiac: {
+    modalTitle: 'Select Your Zodiac Sign',
+    modalDescription: 'Please select your zodiac sign for a comprehensive personality analysis.',
+    select: 'Select zodiac sign',
+    aries: 'Aries',
+    taurus: 'Taurus',
+    gemini: 'Gemini',
+    cancer: 'Cancer',
+    leo: 'Leo',
+    virgo: 'Virgo',
+    libra: 'Libra',
+    scorpio: 'Scorpio',
+    sagittarius: 'Sagittarius',
+    capricorn: 'Capricorn',
+    aquarius: 'Aquarius',
+    pisces: 'Pisces',
+    toast: {
+      title: 'Zodiac Sign Selected',
+      message: 'You can now view your comprehensive personality analysis',
+    },
   },
 };

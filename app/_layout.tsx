@@ -11,6 +11,7 @@ import { AuthProvider } from '@/providers/AuthProvider';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { useAuth } from '@/store/useAuth';
 import { LanguageProvider } from '@/providers/LanguageProvider';
+import Toast from 'react-native-toast-message';
 
 import {
   useFonts,
@@ -133,6 +134,7 @@ export default function RootLayout() {
             <AuthProvider>
               <InitialLayout />
             </AuthProvider>
+            <Toast />
           </View>
         </ThemeProvider>
       </LanguageProvider>

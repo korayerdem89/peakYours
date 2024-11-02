@@ -10,6 +10,8 @@ interface UserData {
   photoURL: string | null;
   lastLoginAt: FirebaseFirestoreTypes.FieldValue | null;
   createdAt: FirebaseFirestoreTypes.FieldValue | null;
+  zodiacSign?: string | null;
+  updatedAt?: FirebaseFirestoreTypes.FieldValue;
 }
 
 export class UserService {
@@ -39,6 +41,14 @@ export class UserService {
   }
 
   static async updateUser(uid: string, data: Partial<UserData>): Promise<void> {
-    await FirestoreService.updateDoc<UserData>('users', uid, data);
+    try {
+      await FirestoreService.updateDoc('users', uid, {
+        ...data,
+        updatedAt: firestore.FieldValue.serverTimestamp(),
+      });
+    } catch (error) {
+      console.error('Update user error:', error);
+      throw error;
+    }
   }
 }

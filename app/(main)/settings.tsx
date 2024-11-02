@@ -15,11 +15,14 @@ import { Accordion } from '@/components/Accordion';
 import { useAuth } from '@/store/useAuth';
 import auth from '@react-native-firebase/auth';
 import * as Localization from 'expo-localization';
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { Switch } from 'react-native-gesture-handler';
 import Animated, { FadeIn } from 'react-native-reanimated';
 import { useTranslation } from '@/providers/LanguageProvider';
 import { theme } from '@/constants/theme';
+import { ZodiacModal } from '@/components/ZodiacModal';
+import firestore from '@react-native-firebase/firestore';
+import { UserService } from '@/services/user';
 
 const LANGUAGES = [
   { code: 'en', label: 'EN' },
@@ -30,11 +33,51 @@ const LANGUAGES = [
 
 const DEFAULT_AVATAR = 'https://ui-avatars.com/api/?background=random';
 
+const ZODIAC_SIGNS = [
+  { id: 'aries', name: 'zodiac.aries', date: 'March 21 - April 19', icon: '♈' },
+  { id: 'taurus', name: 'zodiac.taurus', date: 'April 20 - May 20', icon: '♉' },
+  { id: 'gemini', name: 'zodiac.gemini', date: 'May 21 - June 20', icon: '♊' },
+  { id: 'cancer', name: 'zodiac.cancer', date: 'June 21 - July 22', icon: '♋' },
+  { id: 'leo', name: 'zodiac.leo', date: 'July 23 - August 22', icon: '♌' },
+  { id: 'virgo', name: 'zodiac.virgo', date: 'August 23 - September 22', icon: '♍' },
+  { id: 'libra', name: 'zodiac.libra', date: 'September 23 - October 22', icon: '♎' },
+  { id: 'scorpio', name: 'zodiac.scorpio', date: 'October 23 - November 21', icon: '♏' },
+  { id: 'sagittarius', name: 'zodiac.sagittarius', date: 'November 22 - December 21', icon: '♐' },
+  { id: 'capricorn', name: 'zodiac.capricorn', date: 'December 22 - January 19', icon: '♑' },
+  { id: 'aquarius', name: 'zodiac.aquarius', date: 'January 20 - February 18', icon: '♒' },
+  { id: 'pisces', name: 'zodiac.pisces', date: 'February 19 - March 20', icon: '♓' },
+];
+
 export default function SettingsScreen() {
   const { colorScheme, toggleColorScheme: originalToggle } = useColorScheme();
   const { user } = useAuth();
   const { locale, setAppLocale, t } = useTranslation();
   const [isTogglingTheme, setIsTogglingTheme] = useState(false);
+  const [isZodiacModalVisible, setIsZodiacModalVisible] = useState(false);
+  const [userZodiac, setUserZodiac] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchUserData() {
+      if (!user?.uid) {
+        setIsLoading(false);
+        return;
+      }
+
+      try {
+        const userData = await UserService.getUser(user.uid);
+        if (userData?.zodiacSign) {
+          setUserZodiac(userData.zodiacSign);
+        }
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+
+    fetchUserData();
+  }, [user?.uid]);
 
   const toggleColorScheme = useCallback(() => {
     if (isTogglingTheme) return;
@@ -59,6 +102,30 @@ export default function SettingsScreen() {
       console.error('Sign out error:', error);
     }
   };
+
+  const handleZodiacSubmit = async (zodiacId: string) => {
+    if (!user?.uid) return;
+
+    try {
+      await UserService.updateUser(user.uid, {
+        zodiacSign: zodiacId,
+        updatedAt: firestore.FieldValue.serverTimestamp(),
+      });
+
+      setUserZodiac(zodiacId);
+      setIsZodiacModalVisible(false);
+    } catch (error) {
+      console.error('Error updating zodiac sign:', error);
+      Alert.alert(t('common.error'), t('settings.zodiacCard.updateError'));
+    }
+  };
+
+  const getZodiacInfo = (zodiacId: string | null) => {
+    if (!zodiacId) return null;
+    return ZODIAC_SIGNS.find((sign) => sign.id === zodiacId);
+  };
+
+  const zodiacInfo = getZodiacInfo(userZodiac);
 
   return (
     <SafeAreaView className="flex-1 bg-background-tab dark:bg-background-dark">
@@ -109,7 +176,35 @@ export default function SettingsScreen() {
             {user?.email}
           </Text>
 
-          {/* Credit Score */}
+          {/* Zodiac Sign Card */}
+          <TouchableOpacity
+            onPress={() => setIsZodiacModalVisible(true)}
+            className="mt-4 w-full rounded-lg bg-background-light p-4 dark:bg-surface-dark">
+            <Text className="text-center text-sm text-text-light-secondary dark:text-text-dark-secondary">
+              {t('settings.zodiacCard.title')}
+            </Text>
+            {isLoading ? (
+              <ActivityIndicator className="py-2" />
+            ) : zodiacInfo ? (
+              <>
+                <View className="flex-row items-center justify-center space-x-2">
+                  <Text className="text-3xl">{zodiacInfo.icon}</Text>
+                  <Text className="font-medium text-lg text-text-light dark:text-text-dark">
+                    {t(zodiacInfo.name)}
+                  </Text>
+                </View>
+                <Text className="mt-1 text-center text-sm text-text-light-secondary dark:text-text-dark-secondary">
+                  {zodiacInfo.date}
+                </Text>
+              </>
+            ) : (
+              <Text className="text-center text-text-light dark:text-text-dark">
+                {t('settings.zodiacCard.description')}
+              </Text>
+            )}
+          </TouchableOpacity>
+
+          {/* Credit Score Card */}
           <View className="mt-4 w-full rounded-lg bg-background-light p-4 dark:bg-surface-dark">
             <Text className="text-center text-text-light dark:text-text-dark">
               {t('settings.creditScore')}
@@ -151,6 +246,13 @@ export default function SettingsScreen() {
           <Text className="text-center font-medium text-white">{t('settings.signOut')}</Text>
         </TouchableOpacity>
       </ScrollView>
+
+      {/* Zodiac Modal */}
+      <ZodiacModal
+        visible={isZodiacModalVisible}
+        onClose={() => setIsZodiacModalVisible(false)}
+        onSubmit={handleZodiacSubmit}
+      />
     </SafeAreaView>
   );
 }
