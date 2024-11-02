@@ -10,6 +10,7 @@ import { ThemeProvider } from '@/providers/ThemeProvider';
 import { AuthProvider } from '@/providers/AuthProvider';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { useAuth } from '@/store/useAuth';
+import { LanguageProvider } from '@/providers/LanguageProvider';
 
 import {
   useFonts,
@@ -126,13 +127,15 @@ export default function RootLayout() {
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
-      <ThemeProvider>
-        <View className="flex-1 bg-background-light dark:bg-background-dark">
-          <AuthProvider>
-            <InitialLayout />
-          </AuthProvider>
-        </View>
-      </ThemeProvider>
+      <LanguageProvider>
+        <ThemeProvider>
+          <View className="flex-1 bg-background-light dark:bg-background-dark">
+            <AuthProvider>
+              <InitialLayout />
+            </AuthProvider>
+          </View>
+        </ThemeProvider>
+      </LanguageProvider>
     </GestureHandlerRootView>
   );
 }

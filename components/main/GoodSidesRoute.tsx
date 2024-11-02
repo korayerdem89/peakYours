@@ -8,17 +8,18 @@ import Animated, {
 } from 'react-native-reanimated';
 import { useEffect } from 'react';
 import { Text } from 'react-native';
-import { i18n } from '@/providers/LanguageProvider';
+import { useTranslation } from '@/providers/LanguageProvider';
 import { theme } from '@/constants/theme';
 
 interface TraitBarProps {
-  trait: keyof typeof i18n.translations.en.personality.traits;
+  trait: string;
   value: number;
   color: string;
   delay: number;
 }
 
 function TraitBar({ trait, value, color, delay }: TraitBarProps) {
+  const { t } = useTranslation();
   const width = useSharedValue(0);
 
   const animatedStyle = useAnimatedStyle(() => ({
@@ -41,13 +42,11 @@ function TraitBar({ trait, value, color, delay }: TraitBarProps) {
     <View className="mb-6 flex-row items-center">
       <View className="w-36">
         <Text style={{ color }} className="font-medium text-base">
-          {i18n.t(`personality.traits.${String(trait)}`)}
+          {t(`personality.traits.${trait}`)}
         </Text>
         <Text className="text-md mt-1 font-semibold text-gray-900">
           {value}%{' '}
-          <Text className="mt-1 font-regular text-xs text-gray-900">
-            {i18n.t('personality.level')}
-          </Text>
+          <Text className="mt-1 font-regular text-xs text-gray-900">{t('personality.level')}</Text>
         </Text>
       </View>
       <View className="h-4 flex-1 overflow-hidden rounded-lg bg-gray-100">
@@ -58,39 +57,41 @@ function TraitBar({ trait, value, color, delay }: TraitBarProps) {
 }
 
 export default function GoodSidesRoute() {
+  const { t } = useTranslation();
+
   const traits = [
     {
-      trait: 'extraversion' as const,
+      trait: 'extraversion',
       color: theme.colors.personality.extraversion,
       value: Math.floor(Math.random() * 100),
     },
     {
-      trait: 'agreeableness' as const,
+      trait: 'agreeableness',
       color: theme.colors.personality.agreeableness,
       value: Math.floor(Math.random() * 100),
     },
     {
-      trait: 'conscientiousness' as const,
+      trait: 'conscientiousness',
       color: theme.colors.personality.conscientiousness,
       value: Math.floor(Math.random() * 100),
     },
     {
-      trait: 'emotional' as const,
+      trait: 'emotional',
       color: theme.colors.personality.emotional,
       value: Math.floor(Math.random() * 100),
     },
     {
-      trait: 'openness' as const,
+      trait: 'openness',
       color: theme.colors.personality.openness,
       value: Math.floor(Math.random() * 100),
     },
     {
-      trait: 'empathy' as const,
+      trait: 'empathy',
       color: theme.colors.personality.empathy,
       value: Math.floor(Math.random() * 100),
     },
     {
-      trait: 'creativity' as const,
+      trait: 'creativity',
       color: theme.colors.personality.creativity,
       value: Math.floor(Math.random() * 100),
     },
@@ -99,7 +100,7 @@ export default function GoodSidesRoute() {
   return (
     <View className="rounded-2xl bg-white p-6">
       <Text className="mb-6 font-semibold text-xl text-gray-800">
-        {i18n.t('personality.positiveTraits')}
+        {t('personality.positiveTraits')}
       </Text>
       {traits.map((trait, index) => (
         <TraitBar

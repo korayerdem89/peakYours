@@ -1,12 +1,12 @@
 import React from 'react';
-import { View, useWindowDimensions } from 'react-native';
+import { View, useWindowDimensions, Text } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
-import { useState } from 'react';
-import { i18n } from '@/providers/LanguageProvider';
+import { useState, useMemo } from 'react';
 import { useColorScheme } from 'nativewind';
 import { theme } from '@/constants/theme';
 import GoodSidesRoute from '../../components/main/GoodSidesRoute';
+import { useTranslation } from '@/providers/LanguageProvider';
 
 // Bad sides için geçici komponent
 const BadsidesRoute = React.memo(() => (
@@ -15,21 +15,24 @@ const BadsidesRoute = React.memo(() => (
   </View>
 ));
 
-export default function Chart() {
+export default function ChartScreen() {
+  const { t, locale } = useTranslation();
   const layout = useWindowDimensions();
   const { colorScheme } = useColorScheme();
   const [index, setIndex] = useState(0);
-  const [routes] = useState([
-    { key: 'goodsides', title: i18n.t('tabs.goodsides') },
-    { key: 'badsides', title: i18n.t('tabs.badsides') },
-  ]);
 
-  // initialLayout'u performans için ekleyelim
+  const routes = useMemo(
+    () => [
+      { key: 'goodsides', title: t('tabs.goodsides') },
+      { key: 'badsides', title: t('tabs.badsides') },
+    ],
+    [locale, t]
+  );
+
   const initialLayout = {
     width: layout.width,
   };
 
-  // SceneMap'i optimize edelim
   const renderScene = SceneMap({
     goodsides: GoodSidesRoute,
     badsides: BadsidesRoute,
@@ -70,7 +73,7 @@ export default function Chart() {
         onIndexChange={setIndex}
         initialLayout={initialLayout}
         renderTabBar={renderTabBar}
-        lazy={false} // Performans için lazy loading'i kapatıyoruz
+        lazy={false}
       />
     </SafeAreaView>
   );
