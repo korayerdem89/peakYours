@@ -24,6 +24,15 @@ export const theme = {
       light: '#2E3A59',
       dark: '#EDF1F7',
     },
+    personality: {
+      extraversion: '#6366F1',
+      agreeableness: '#14B8A6',
+      conscientiousness: '#F59E0B',
+      emotional: '#8B5CF6',
+      openness: '#EC4899',
+      empathy: '#06B6D4',
+      creativity: '#F43F5E',
+    },
   },
 
   spacing: {

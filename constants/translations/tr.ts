@@ -37,4 +37,33 @@ export default {
     goodsides: 'İyi Yanlar',
     badsides: 'Kötü Yanlar',
   },
+  personality: {
+    traits: {
+      extraversion: 'Dışadönüklük',
+      agreeableness: 'Uyumluluk',
+      conscientiousness: 'Sorumluluk',
+      emotional: 'Duygusal Denge',
+      openness: 'Deneyime Açıklık',
+      empathy: 'Empati',
+      creativity: 'Yaratıcılık',
+    },
+    level: 'Seviye',
+    positiveTraits: 'Pozitif Kişilik Özellikleri',
+    chart: {
+      title: 'Kişilik Analizi',
+      subtitle: 'Topluluk değerlendirmelerine göre',
+      rateButton: 'Birini Değerlendir',
+      viewDetails: 'Detayları Gör',
+      averageScore: 'Ortalama Puan',
+      totalRatings: 'Toplam Değerlendirme',
+      lastUpdate: 'Son Güncelleme',
+      noRatings: 'Henüz değerlendirme yok',
+    },
+    rating: {
+      title: 'Kişilik Özelliklerini Değerlendir',
+      submit: 'Değerlendirmeyi Gönder',
+      cancel: 'İptal',
+      success: 'Değerlendirme başarıyla gönderildi',
+    },
+  },
 };

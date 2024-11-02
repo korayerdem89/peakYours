@@ -1,0 +1,115 @@
+import { View } from 'react-native';
+import Animated, {
+  withTiming,
+  useAnimatedStyle,
+  useSharedValue,
+  withSequence,
+  withDelay,
+} from 'react-native-reanimated';
+import { useEffect } from 'react';
+import { Text } from 'react-native';
+import { i18n } from '@/providers/LanguageProvider';
+import { theme } from '@/constants/theme';
+
+interface TraitBarProps {
+  trait: keyof typeof i18n.translations.en.personality.traits;
+  value: number;
+  color: string;
+  delay: number;
+}
+
+function TraitBar({ trait, value, color, delay }: TraitBarProps) {
+  const width = useSharedValue(0);
+
+  const animatedStyle = useAnimatedStyle(() => ({
+    width: `${width.value}%`,
+    backgroundColor: color,
+  }));
+
+  useEffect(() => {
+    width.value = withDelay(
+      delay,
+      withSequence(
+        withTiming(value, {
+          duration: 1200,
+        })
+      )
+    );
+  }, []);
+
+  return (
+    <View className="mb-6 flex-row items-center">
+      <View className="w-36">
+        <Text style={{ color }} className="font-medium text-base">
+          {i18n.t(`personality.traits.${String(trait)}`)}
+        </Text>
+        <Text className="text-md mt-1 font-semibold text-gray-900">
+          {value}%{' '}
+          <Text className="mt-1 font-regular text-xs text-gray-900">
+            {i18n.t('personality.level')}
+          </Text>
+        </Text>
+      </View>
+      <View className="h-4 flex-1 overflow-hidden rounded-lg bg-gray-100">
+        <Animated.View style={[animatedStyle]} className="h-full rounded-lg" />
+      </View>
+    </View>
+  );
+}
+
+export default function GoodSidesRoute() {
+  const traits = [
+    {
+      trait: 'extraversion' as const,
+      color: theme.colors.personality.extraversion,
+      value: Math.floor(Math.random() * 100),
+    },
+    {
+      trait: 'agreeableness' as const,
+      color: theme.colors.personality.agreeableness,
+      value: Math.floor(Math.random() * 100),
+    },
+    {
+      trait: 'conscientiousness' as const,
+      color: theme.colors.personality.conscientiousness,
+      value: Math.floor(Math.random() * 100),
+    },
+    {
+      trait: 'emotional' as const,
+      color: theme.colors.personality.emotional,
+      value: Math.floor(Math.random() * 100),
+    },
+    {
+      trait: 'openness' as const,
+      color: theme.colors.personality.openness,
+      value: Math.floor(Math.random() * 100),
+    },
+    {
+      trait: 'empathy' as const,
+      color: theme.colors.personality.empathy,
+      value: Math.floor(Math.random() * 100),
+    },
+    {
+      trait: 'creativity' as const,
+      color: theme.colors.personality.creativity,
+      value: Math.floor(Math.random() * 100),
+    },
+  ];
+
+  return (
+    <View className="rounded-2xl bg-white p-6">
+      <Text className="mb-6 font-semibold text-xl text-gray-800">
+        {i18n.t('personality.positiveTraits')}
+      </Text>
+      {traits.map((trait, index) => (
+        <TraitBar
+          key={trait.trait}
+          trait={trait.trait}
+          value={trait.value}
+          color={trait.color}
+          delay={index * 150}
+        />
+      ))}
+    </View>
+  );
+}

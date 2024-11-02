@@ -59,6 +59,15 @@ module.exports = {
           light: '#FF668F',
           dark: '#BF2D55',
         },
+        personality: {
+          extraversion: '#6366F1', // Indigo - Dışadönüklük
+          agreeableness: '#14B8A6', // Teal - Uyumluluk
+          conscientiousness: '#F59E0B', // Amber - Sorumluluk
+          emotional: '#8B5CF6', // Violet - Duygusal Denge
+          openness: '#EC4899', // Pink - Deneyime Açıklık
+          empathy: '#06B6D4', // Cyan - Empati
+          creativity: '#F43F5E', // Rose - Yaratıcılık
+        },
       },
       spacing: {
         xs: '4px',

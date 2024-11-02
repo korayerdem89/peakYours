@@ -48,4 +48,17 @@ export default {
     goodsides: '优点',
     badsides: '缺点',
   },
+  personality: {
+    traits: {
+      extraversion: '外向性',
+      agreeableness: '亲和性',
+      conscientiousness: '尽责性',
+      emotional: '情绪稳定性',
+      openness: '开放性',
+      empathy: '同理心',
+      creativity: '创造力',
+    },
+    level: '水平',
+    positiveTraits: '积极人格特征',
+  },
 };

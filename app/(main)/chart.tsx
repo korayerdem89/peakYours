@@ -6,15 +6,11 @@ import { useState } from 'react';
 import { i18n } from '@/providers/LanguageProvider';
 import { useColorScheme } from 'nativewind';
 import { theme } from '@/constants/theme';
-// Tab içerikleri için ayrı komponentler
-const GoodsidesRoute = React.memo(() => (
-  <View className="bg-background-tab flex-1 p-4 dark:bg-background-dark">
-    {/* Good sides içeriği */}
-  </View>
-));
+import GoodSidesRoute from '../../components/main/GoodSidesRoute';
 
+// Bad sides için geçici komponent
 const BadsidesRoute = React.memo(() => (
-  <View className="bg-background-tab flex-1 p-4 dark:bg-background-dark">
+  <View className="flex-1 bg-background-tab p-4 dark:bg-background-dark">
     {/* Bad sides içeriği */}
   </View>
 ));
@@ -28,8 +24,14 @@ export default function Chart() {
     { key: 'badsides', title: i18n.t('tabs.badsides') },
   ]);
 
+  // initialLayout'u performans için ekleyelim
+  const initialLayout = {
+    width: layout.width,
+  };
+
+  // SceneMap'i optimize edelim
   const renderScene = SceneMap({
-    goodsides: GoodsidesRoute,
+    goodsides: GoodSidesRoute,
     badsides: BadsidesRoute,
   });
 
@@ -41,7 +43,7 @@ export default function Chart() {
           colorScheme === 'dark' ? theme.colors.accent.light : theme.colors.secondary.dark,
       }}
       style={{
-        backgroundColor: colorScheme === 'dark' ? '#131A2A' : '#FDF9EA',
+        backgroundColor: colorScheme === 'dark' ? '#131A2A' : '#FAFAFA',
       }}
       tabStyle={{
         width: layout.width / 2,
@@ -61,13 +63,14 @@ export default function Chart() {
   );
 
   return (
-    <SafeAreaView className="bg-background-tab flex-1 dark:bg-background-dark">
+    <SafeAreaView className="flex-1 bg-background-tab dark:bg-background-dark">
       <TabView
         navigationState={{ index, routes }}
         renderScene={renderScene}
         onIndexChange={setIndex}
-        initialLayout={{ width: layout.width }}
+        initialLayout={initialLayout}
         renderTabBar={renderTabBar}
+        lazy={false} // Performans için lazy loading'i kapatıyoruz
       />
     </SafeAreaView>
   );

@@ -48,4 +48,17 @@ export default {
     goodsides: 'Aspectos positivos',
     badsides: 'Aspectos negativos',
   },
+  personality: {
+    traits: {
+      extraversion: 'Extroversión',
+      agreeableness: 'Amabilidad',
+      conscientiousness: 'Responsabilidad',
+      emotional: 'Estabilidad Emocional',
+      openness: 'Apertura',
+      empathy: 'Empatía',
+      creativity: 'Creatividad',
+    },
+    level: 'Nivel',
+    positiveTraits: 'Rasgos Positivos de Personalidad',
+  },
 };
