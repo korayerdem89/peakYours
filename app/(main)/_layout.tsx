@@ -1,47 +1,47 @@
 import { Tabs } from 'expo-router';
-import { Settings, Radar, MessageCircle, ClipboardList } from 'lucide-react-native';
-import { useColorScheme } from 'nativewind';
-import { theme } from '@/constants/theme';
-export default function MainLayout() {
-  const { colorScheme } = useColorScheme();
+import { CustomTabBar } from '@/components/CustomTabBar';
+import { Platform } from 'react-native';
 
+export default function MainLayout() {
   return (
     <Tabs
       screenOptions={{
         headerShown: false,
+        tabBarShowLabel: true,
         tabBarStyle: {
-          backgroundColor: colorScheme === 'dark' ? '#131A2A' : '#FAFAFA',
+          position: 'absolute',
+          bottom: 0,
+          left: 0,
+          right: 0,
+          height: Platform.OS === 'ios' ? 85 : 70,
+          backgroundColor: 'transparent',
+          borderTopWidth: 0,
+          elevation: 0,
         },
-        tabBarActiveTintColor:
-          colorScheme === 'dark' ? theme.colors.accent.light : theme.colors.primary.dark,
-        tabBarInactiveTintColor: colorScheme === 'dark' ? '#C5CEE0' : '#8F9BB3',
-      }}>
+      }}
+      tabBar={(props) => <CustomTabBar {...props} />}>
       <Tabs.Screen
         name="chart"
         options={{
           title: 'Chart',
-          tabBarIcon: ({ color }) => <Radar size={24} color={color} />,
         }}
       />
       <Tabs.Screen
         name="analysis"
         options={{
           title: 'Analysis',
-          tabBarIcon: ({ color }) => <MessageCircle size={24} color={color} />,
         }}
       />
       <Tabs.Screen
         name="tasks"
         options={{
           title: 'Tasks',
-          tabBarIcon: ({ color }) => <ClipboardList size={24} color={color} />,
         }}
       />
       <Tabs.Screen
         name="settings"
         options={{
           title: 'Settings',
-          tabBarIcon: ({ color }) => <Settings size={24} color={color} />,
         }}
       />
     </Tabs>

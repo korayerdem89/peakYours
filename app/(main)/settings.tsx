@@ -138,7 +138,7 @@ export default function SettingsScreen() {
                   : 'bg-background-light dark:bg-surface-dark'
               }`}>
               <Text
-                className={`font-medium ${
+                className={`font-medium text-[15px] ${
                   locale === lang.code ? 'text-white' : 'text-text-light dark:text-text-dark'
                 }`}>
                 {lang.label}
@@ -153,10 +153,10 @@ export default function SettingsScreen() {
             source={{ uri: user?.photoURL || DEFAULT_AVATAR }}
             className="h-24 w-24 rounded-full"
           />
-          <Text className="mt-4 font-semibold text-xl text-text-light dark:text-text-dark">
+          <Text className="mt-4 font-bold text-xl tracking-tight text-text-light dark:text-text-dark">
             {user?.displayName || t('settings.anonymous')}
           </Text>
-          <Text className="mt-1 text-text-light-secondary dark:text-text-dark-secondary">
+          <Text className="mt-1 text-[15px] text-text-light-secondary dark:text-text-dark-secondary">
             {user?.email}
           </Text>
 
@@ -164,7 +164,7 @@ export default function SettingsScreen() {
           <TouchableOpacity
             onPress={() => setIsZodiacModalVisible(true)}
             className="mt-4 w-full rounded-lg bg-background-light p-4 dark:bg-surface-dark">
-            <Text className="text-center text-sm text-text-light-secondary dark:text-text-dark-secondary">
+            <Text className="pb-2 text-center font-medium text-[15px] text-text-light-secondary dark:text-text-dark-secondary">
               {t('settings.zodiacCard.title')}
             </Text>
             {isLoading ? (
@@ -173,11 +173,11 @@ export default function SettingsScreen() {
               <>
                 <View className="flex-row items-center justify-center space-x-2">
                   <Text className="text-3xl">{zodiacInfo.icon}</Text>
-                  <Text className="font-medium text-lg text-text-light dark:text-text-dark">
+                  <Text className="font-semibold text-lg tracking-tight text-text-light dark:text-text-dark">
                     {t(zodiacInfo.name)}
                   </Text>
                 </View>
-                <Text className="mt-1 text-center text-sm text-text-light-secondary dark:text-text-dark-secondary">
+                <Text className="mt-1 text-center text-[14px] text-text-light-secondary dark:text-text-dark-secondary">
                   {zodiacInfo.date}
                 </Text>
               </>
@@ -190,10 +190,10 @@ export default function SettingsScreen() {
 
           {/* Credit Score Card */}
           <View className="mt-4 w-full rounded-lg bg-background-light p-4 dark:bg-surface-dark">
-            <Text className="text-center text-text-light dark:text-text-dark">
+            <Text className="text-center font-medium text-[15px] text-text-light dark:text-text-dark">
               {t('settings.creditScore')}
             </Text>
-            <Text className="mt-2 text-center font-bold text-2xl text-secondary-dark dark:text-accent-light">
+            <Text className="mt-2 text-center font-bold text-3xl tracking-tight text-secondary-dark dark:text-accent-light">
               1000
             </Text>
           </View>
@@ -201,7 +201,9 @@ export default function SettingsScreen() {
 
         {/* Theme Toggle */}
         <Animated.View className="bg-gray- mt-8 flex-row items-center justify-between rounded-lg bg-background-light p-4 dark:bg-surface-dark">
-          <Text className="text-text-light dark:text-text-dark">{t('settings.theme.title')}</Text>
+          <Text className="font-medium text-[15px] text-text-light dark:text-text-dark">
+            {t('settings.theme.title')}
+          </Text>
           <Switch
             value={colorScheme === 'dark'}
             onValueChange={toggleColorScheme}
@@ -227,7 +229,9 @@ export default function SettingsScreen() {
         <TouchableOpacity
           onPress={handleSignOut}
           className="mb-8 mt-8 rounded-lg bg-error-light p-4 dark:bg-error-dark">
-          <Text className="text-center font-medium text-white">{t('settings.signOut')}</Text>
+          <Text className="text-center font-semibold text-[16px] text-white">
+            {t('settings.signOut')}
+          </Text>
         </TouchableOpacity>
       </ScrollView>
 
