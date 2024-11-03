@@ -21,15 +21,15 @@ export default function MainLayout() {
       }}
       tabBar={(props) => <CustomTabBar {...props} />}>
       <Tabs.Screen
-        name="chart"
+        name="you"
         options={{
-          title: 'Chart',
+          title: 'You',
         }}
       />
       <Tabs.Screen
-        name="analysis"
+        name="ideas"
         options={{
-          title: 'Analysis',
+          title: 'Ideas',
         }}
       />
       <Tabs.Screen

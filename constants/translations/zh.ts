@@ -17,6 +17,7 @@ export default {
       googleButton: '使用谷歌登录',
       goToSignUp: '创建账户',
       goToHome: '返回首页',
+      welcomeTitle: '让我们登录',
     },
     errors: {
       inProgress: '登录正在进行中',
@@ -62,7 +63,7 @@ export default {
     protective: '保护的',
     cheerful: '开朗的',
     leader: '领导者',
-    chart: {
+    you: {
       title: '性格分析',
       subtitle: '基于社区评分',
       rateButton: '评价他人',
@@ -80,6 +81,15 @@ export default {
     },
     level: '等级',
     positiveTraits: '积极的性格特征',
+    traits: {
+      extraversion: '外向性',
+      agreeableness: '亲和性',
+      conscientiousness: '尽责性',
+      emotional: '情绪稳定性',
+      openness: '开放性',
+      empathy: '同理心',
+      creativity: '创造力',
+    },
   },
   zodiac: {
     modalTitle: '选择您的星座',

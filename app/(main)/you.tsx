@@ -16,7 +16,7 @@ const BadsidesRoute = React.memo(() => (
   </View>
 ));
 
-export default function ChartScreen() {
+export default function YouScreen() {
   const { t, locale } = useTranslation();
   const layout = useWindowDimensions();
   const { colorScheme } = useColorScheme();

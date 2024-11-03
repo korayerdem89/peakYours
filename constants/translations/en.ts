@@ -72,7 +72,7 @@ export default {
       empathy: 'Empathy',
       creativity: 'Creativity',
     },
-    chart: {
+    you: {
       title: 'Personality Analysis',
       subtitle: 'Based on community ratings',
       rateButton: 'Rate Someone',

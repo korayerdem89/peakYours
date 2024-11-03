@@ -12,6 +12,8 @@ import { UserService } from '@/services/user';
 import { useTranslation } from '@/providers/LanguageProvider';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useColorScheme } from 'nativewind';
+import { AuthUser } from '@/types/user';
+import { useUserData } from '@/hooks/useUserQueries';
 
 const { width, height } = Dimensions.get('window');
 const BANNER_HEIGHT = height / 3;
@@ -42,10 +44,27 @@ export default function SignInScreen() {
 
       if (data) {
         const credential = auth.GoogleAuthProvider.credential(data.idToken);
-        const { user } = await auth().signInWithCredential(credential);
-        await UserService.saveUserToFirestore(user);
-        setUser(user);
-        router.replace('/(main)/home');
+        const { user: firebaseUser } = await auth().signInWithCredential(credential);
+
+        // Önce kullanıcıyı Firestore'a kaydet
+        await UserService.saveUserToFirestore(firebaseUser);
+
+        // Firestore'dan güncel kullanıcı verilerini al
+        const userData = await UserService.getUser(firebaseUser.uid);
+
+        if (userData) {
+          // AuthUser tipine uygun şekilde veriyi hazırla
+          const authUser: AuthUser = {
+            uid: userData.uid,
+            email: userData.email,
+            displayName: userData.displayName,
+            photoURL: userData.photoURL,
+            zodiacSign: userData.zodiacSign || null,
+          };
+
+          setUser(authUser);
+          router.replace('/(main)/you');
+        }
       }
     } catch (error) {
       if (isErrorWithCode(error)) {

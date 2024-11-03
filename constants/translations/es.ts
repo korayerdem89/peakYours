@@ -17,6 +17,7 @@ export default {
       googleButton: 'Iniciar sesión con Google',
       goToSignUp: 'Crear Cuenta',
       goToHome: 'Ir a Inicio',
+      welcomeTitle: 'Vamos a iniciar sesión',
     },
     errors: {
       inProgress: 'El inicio de sesión ya está en progreso',
@@ -62,7 +63,7 @@ export default {
     protective: 'Protector',
     cheerful: 'Alegre',
     leader: 'Líder',
-    chart: {
+    you: {
       title: 'Análisis de Personalidad',
       subtitle: 'Basado en calificaciones de la comunidad',
       rateButton: 'Calificar a Alguien',
@@ -80,6 +81,15 @@ export default {
     },
     level: 'Nivel',
     positiveTraits: 'Rasgos Positivos de Personalidad',
+    traits: {
+      extraversion: 'Extraversión',
+      agreeableness: 'Amabilidad',
+      conscientiousness: 'Responsabilidad',
+      emotional: 'Estabilidad Emocional',
+      openness: 'Apertura a la Experiencia',
+      empathy: 'Empatía',
+      creativity: 'Creatividad',
+    },
   },
   zodiac: {
     modalTitle: 'Selecciona tu Signo Zodiacal',

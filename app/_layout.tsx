@@ -74,7 +74,7 @@ function InitialLayout() {
     } else {
       // Kullanıcı giriş yapmışsa ve auth veya onboarding grubundaysa
       if (inAuthGroup || inOnboardingGroup) {
-        router.replace('/(main)/chart');
+        router.replace('/(main)/you');
       }
     }
   }, [user, segments, isLoading]);

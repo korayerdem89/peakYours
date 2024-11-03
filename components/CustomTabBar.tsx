@@ -6,13 +6,13 @@ import Animated, { BounceIn, FadeOut } from 'react-native-reanimated';
 import { Ionicons } from '@expo/vector-icons';
 
 const TAB_ICONS = {
-  chart: {
-    active: 'pie-chart',
-    inactive: 'pie-chart-outline',
+  you: {
+    active: 'finger-print',
+    inactive: 'finger-print-outline',
   },
-  analysis: {
-    active: 'analytics',
-    inactive: 'analytics-outline',
+  ideas: {
+    active: 'balloon-sharp',
+    inactive: 'balloon-outline',
   },
   tasks: {
     active: 'checkmark-circle',

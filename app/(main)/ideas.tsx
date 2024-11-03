@@ -6,7 +6,7 @@ import { ZodiacModal } from '@/components/ZodiacModal';
 import { useTranslation } from '@/providers/LanguageProvider';
 import { Alert } from 'react-native';
 
-export default function Analysis() {
+export default function Ideas() {
   const { user, updateUserData } = useAuth();
   const { t } = useTranslation();
   const [showZodiacModal, setShowZodiacModal] = useState(false);

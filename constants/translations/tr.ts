@@ -3,15 +3,27 @@ export default {
     loading: 'Yükleniyor...',
     error: 'Bir hata oluştu',
     success: 'Başarılı',
+    settings: 'Ayarlar',
+    save: 'Kaydet',
+    cancel: 'İptal',
+    delete: 'Sil',
+    edit: 'Düzenle',
     submit: 'Gönder',
     saving: 'Kaydediliyor...',
   },
   auth: {
     signIn: {
-      title: 'Giriş Ekranı',
+      title: 'Giriş Yap',
       googleButton: 'Google ile Giriş Yap',
-      goToSignUp: 'Kayıt Ol',
+      goToSignUp: 'Hesap Oluştur',
       goToHome: 'Ana Sayfaya Git',
+      welcomeTitle: 'Hadi giriş yapalım',
+    },
+    errors: {
+      inProgress: 'Giriş işlemi zaten devam ediyor',
+      playServices: 'Google Play Servisleri kullanılamıyor',
+      default: 'Giriş sırasında bir hata oluştu',
+      unexpected: 'Beklenmeyen bir hata oluştu',
     },
   },
   settings: {
@@ -60,7 +72,7 @@ export default {
       empathy: 'Empati',
       creativity: 'Yaratıcılık',
     },
-    chart: {
+    you: {
       title: 'Kişilik Analizi',
       subtitle: 'Topluluk değerlendirmelerine göre',
       rateButton: 'Birini Değerlendir',
