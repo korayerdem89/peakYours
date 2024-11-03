@@ -6,14 +6,14 @@ import {
   GoogleSigninButton,
 } from '@react-native-google-signin/google-signin';
 import auth from '@react-native-firebase/auth';
-import { useAuth } from '@/store/useAuth';
 import { useState } from 'react';
 import { UserService } from '@/services/user';
 import { useTranslation } from '@/providers/LanguageProvider';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useColorScheme } from 'nativewind';
-import { AuthUser } from '@/types/user';
-import { useUserData } from '@/hooks/useUserQueries';
+import { useAuth } from '@/store/useAuth';
+import firestore from '@react-native-firebase/firestore';
+import { AuthUser } from '@/types';
 
 const { width, height } = Dimensions.get('window');
 const BANNER_HEIGHT = height / 3;
@@ -46,25 +46,11 @@ export default function SignInScreen() {
         const credential = auth.GoogleAuthProvider.credential(data.idToken);
         const { user: firebaseUser } = await auth().signInWithCredential(credential);
 
-        // Önce kullanıcıyı Firestore'a kaydet
+        // Firestore'a kaydet
         await UserService.saveUserToFirestore(firebaseUser);
 
-        // Firestore'dan güncel kullanıcı verilerini al
-        const userData = await UserService.getUser(firebaseUser.uid);
-
-        if (userData) {
-          // AuthUser tipine uygun şekilde veriyi hazırla
-          const authUser: AuthUser = {
-            uid: userData.uid,
-            email: userData.email,
-            displayName: userData.displayName,
-            photoURL: userData.photoURL,
-            zodiacSign: userData.zodiacSign || null,
-          };
-
-          setUser(authUser);
-          router.replace('/(main)/yo');
-        }
+        // User verilerini set et
+        await setUser(firebaseUser.uid);
       }
     } catch (error) {
       if (isErrorWithCode(error)) {
@@ -106,7 +92,9 @@ export default function SignInScreen() {
 
         <GoogleSigninButton
           size={GoogleSigninButton.Size.Wide}
-          color="light"
+          color={
+            colorScheme === 'dark' ? GoogleSigninButton.Color.Light : GoogleSigninButton.Color.Dark
+          }
           onPress={signIn}
           disabled={isLoading}
           style={styles.googleButton}

@@ -10,7 +10,8 @@ import { useTranslation } from '@/providers/LanguageProvider';
 import { TabRoute, TabViewProps } from '@/types';
 import { useAuth } from '@/store/useAuth';
 import { useFocusEffect } from '@react-navigation/native';
-import { useUserData } from '@/hooks/useUserQueries';
+import { useUpdateUser, useUserData } from '@/hooks/useUserQueries';
+
 // Bad sides için geçici komponent
 const BadsidesRoute = React.memo(() => (
   <View className="flex-1 bg-background-tab p-4 dark:bg-background-dark">
@@ -23,8 +24,9 @@ export default function YouScreen() {
   const layout = useWindowDimensions();
   const { colorScheme } = useColorScheme();
   const [index, setIndex] = useState(0);
-  const { user, updateUserData } = useAuth();
+  const { user } = useAuth();
   const { data: userData } = useUserData(user?.uid);
+  const updateUser = useUpdateUser();
   const routes = useMemo(
     () => [
       { key: 'goodsides', title: t('tabs.goodsides') },
@@ -71,8 +73,11 @@ export default function YouScreen() {
 
   useFocusEffect(
     useCallback(() => {
-      if (userData?.zodiacSign) {
-        updateUserData({ zodiacSign: userData.zodiacSign });
+      if (userData?.zodiacSign && user?.uid) {
+        updateUser.mutateAsync({
+          userId: user.uid,
+          data: { zodiacSign: userData.zodiacSign },
+        });
       }
     }, [userData?.zodiacSign])
   );

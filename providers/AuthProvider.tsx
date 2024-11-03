@@ -1,34 +1,31 @@
 import { ReactNode, useEffect } from 'react';
 import auth from '@react-native-firebase/auth';
 import { useAuth } from '@/store/useAuth';
-import { UserService } from '@/services/user';
+import { useQueryClient } from '@tanstack/react-query';
 
 interface AuthProviderProps {
   children: ReactNode;
 }
 
 export function AuthProvider({ children }: AuthProviderProps) {
-  const { setUser, updateUserData, setLoading } = useAuth();
+  const { setUser, setLoading, setQueryClient } = useAuth();
+  const queryClient = useQueryClient();
+
+  useEffect(() => {
+    setQueryClient(queryClient);
+  }, [queryClient]);
 
   useEffect(() => {
     const unsubscribe = auth().onAuthStateChanged(async (firebaseUser) => {
-      if (firebaseUser) {
-        // Önce Firebase auth verilerini set et
-        setUser(firebaseUser);
-
-        // Sonra Firestore'dan user verilerini al
-        try {
-          const userData = await UserService.getUser(firebaseUser.uid);
-          if (userData?.zodiacSign) {
-            updateUserData({ zodiacSign: userData.zodiacSign });
-          }
-        } catch (error) {
-          console.error('Error fetching user data:', error);
+      try {
+        if (firebaseUser) {
+          await setUser(firebaseUser.uid);
+        } else {
+          await setUser(null);
         }
-      } else {
-        setUser(null);
+      } finally {
+        setLoading(false);
       }
-      setLoading(false);
     });
 
     return unsubscribe;

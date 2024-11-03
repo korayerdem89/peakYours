@@ -14,16 +14,13 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Accordion } from '@/components/Accordion';
 import { useAuth } from '@/store/useAuth';
 import auth from '@react-native-firebase/auth';
-import * as Localization from 'expo-localization';
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback } from 'react';
 import { Switch } from 'react-native-gesture-handler';
 import Animated, { FadeIn } from 'react-native-reanimated';
 import { useTranslation } from '@/providers/LanguageProvider';
 import { theme } from '@/constants/theme';
 import { ZodiacModal } from '@/components/ZodiacModal';
-import firestore from '@react-native-firebase/firestore';
-import { UserService } from '@/services/user';
-import { useUserData, useUpdateUser } from '@/hooks/useUserQueries';
+import { useUpdateUser } from '@/hooks/useUserQueries';
 
 const LANGUAGES = [
   { code: 'en', label: 'EN' },
@@ -56,8 +53,6 @@ export default function SettingsScreen() {
   const [isTogglingTheme, setIsTogglingTheme] = useState(false);
   const [isZodiacModalVisible, setIsZodiacModalVisible] = useState(false);
 
-  // TanStack Query hooks
-  const { data: userData, isLoading } = useUserData(user?.uid);
   const updateUser = useUpdateUser();
 
   const toggleColorScheme = useCallback(() => {
@@ -94,9 +89,7 @@ export default function SettingsScreen() {
           zodiacSign: zodiacId,
         },
       });
-
       updateUserData({ zodiacSign: zodiacId });
-
       setIsZodiacModalVisible(false);
     } catch (error) {
       console.error('Error updating zodiac sign:', error);
@@ -109,7 +102,7 @@ export default function SettingsScreen() {
     return ZODIAC_SIGNS.find((sign) => sign.id === zodiacId);
   };
 
-  const zodiacInfo = getZodiacInfo(userData?.zodiacSign);
+  const zodiacInfo = getZodiacInfo(user?.zodiacSign);
 
   return (
     <SafeAreaView className="flex-1 bg-background-tab dark:bg-background-dark">
@@ -167,7 +160,7 @@ export default function SettingsScreen() {
             <Text className="pb-2 text-center font-medium text-[15px] text-text-light-secondary dark:text-text-dark-secondary">
               {t('settings.zodiacCard.title')}
             </Text>
-            {isLoading ? (
+            {updateUser.isPending ? (
               <ActivityIndicator className="py-2" />
             ) : zodiacInfo ? (
               <>

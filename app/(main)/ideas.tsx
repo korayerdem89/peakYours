@@ -1,29 +1,29 @@
 import { View, ActivityIndicator } from 'react-native';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useAuth } from '@/store/useAuth';
-import { UserService } from '@/services/user';
 import { ZodiacModal } from '@/components/ZodiacModal';
 import { useTranslation } from '@/providers/LanguageProvider';
 import { Alert } from 'react-native';
-import { useUserData } from '@/hooks/useUserQueries';
+import { useUpdateUser } from '@/hooks/useUserQueries';
 
 export default function Ideas() {
   const { user, updateUserData } = useAuth();
   const { t } = useTranslation();
-  const [showZodiacModal, setShowZodiacModal] = useState(false);
+  const [showZodiacModal, setShowZodiacModal] = useState(!user?.zodiacSign);
 
-  const { data: userData, isLoading } = useUserData(user?.uid);
+  const updateUser = useUpdateUser();
 
   const handleZodiacSubmit = async (zodiacId: string) => {
     if (!user?.uid) return;
 
     try {
-      await UserService.updateUser(user.uid, {
-        zodiacSign: zodiacId,
+      await updateUser.mutateAsync({
+        userId: user.uid,
+        data: {
+          zodiacSign: zodiacId,
+        },
       });
-
       updateUserData({ zodiacSign: zodiacId });
-
       setShowZodiacModal(false);
     } catch (error) {
       console.error('Error updating zodiac sign:', error);
@@ -31,18 +31,10 @@ export default function Ideas() {
     }
   };
 
-  if (isLoading) {
+  if (!user?.zodiacSign) {
     return (
       <View className="flex-1 bg-background-light dark:bg-background-dark">
-        <ActivityIndicator size="large" />
-      </View>
-    );
-  }
-
-  if (!userData?.zodiacSign) {
-    return (
-      <View className="flex-1 bg-background-light dark:bg-background-dark">
-        <ZodiacModal visible={true} onClose={() => {}} onSubmit={handleZodiacSubmit} />
+        <ZodiacModal visible={showZodiacModal} onClose={() => {}} onSubmit={handleZodiacSubmit} />
       </View>
     );
   }
