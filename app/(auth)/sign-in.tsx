@@ -63,7 +63,7 @@ export default function SignInScreen() {
           };
 
           setUser(authUser);
-          router.replace('/(main)/you');
+          router.replace('/(main)/yo');
         }
       }
     } catch (error) {

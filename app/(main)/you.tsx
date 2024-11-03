@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { View, useWindowDimensions, Text } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
@@ -8,7 +8,9 @@ import { theme } from '@/constants/theme';
 import GoodSidesRoute from '../../components/main/GoodSidesRoute';
 import { useTranslation } from '@/providers/LanguageProvider';
 import { TabRoute, TabViewProps } from '@/types';
-
+import { useAuth } from '@/store/useAuth';
+import { useFocusEffect } from '@react-navigation/native';
+import { useUserData } from '@/hooks/useUserQueries';
 // Bad sides için geçici komponent
 const BadsidesRoute = React.memo(() => (
   <View className="flex-1 bg-background-tab p-4 dark:bg-background-dark">
@@ -21,7 +23,8 @@ export default function YouScreen() {
   const layout = useWindowDimensions();
   const { colorScheme } = useColorScheme();
   const [index, setIndex] = useState(0);
-
+  const { user, updateUserData } = useAuth();
+  const { data: userData } = useUserData(user?.uid);
   const routes = useMemo(
     () => [
       { key: 'goodsides', title: t('tabs.goodsides') },
@@ -64,6 +67,14 @@ export default function YouScreen() {
       pressColor="transparent"
       scrollEnabled={false}
     />
+  );
+
+  useFocusEffect(
+    useCallback(() => {
+      if (userData?.zodiacSign) {
+        updateUserData({ zodiacSign: userData.zodiacSign });
+      }
+    }, [userData?.zodiacSign])
   );
 
   return (
