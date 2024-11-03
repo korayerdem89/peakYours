@@ -50,7 +50,9 @@ export function Accordion({ title, children }: AccordionProps) {
       <TouchableOpacity
         onPress={() => setIsOpen(!isOpen)}
         className="flex-row items-center justify-between p-4">
-        <Text className="text-md text-text-light dark:text-text-dark">{title}</Text>
+        <Text className="pb-1 text-center font-medium text-[15px] text-text-light-secondary dark:text-text-dark-secondary">
+          {title}
+        </Text>
         <Animated.View style={iconStyle}>
           <Entypo name="chevron-down" className="text-text-light dark:text-text-dark" size={14} />
         </Animated.View>

@@ -190,10 +190,10 @@ export default function SettingsScreen() {
 
           {/* Credit Score Card */}
           <View className="mt-4 w-full rounded-lg bg-background-light p-4 dark:bg-surface-dark">
-            <Text className="text-center font-medium text-[15px] text-text-light dark:text-text-dark">
+            <Text className="pb-1 text-center font-medium text-[15px] text-text-light-secondary dark:text-text-dark-secondary">
               {t('settings.creditScore')}
             </Text>
-            <Text className="mt-2 text-center font-bold text-3xl tracking-tight text-secondary-dark dark:text-accent-light">
+            <Text className="text-center font-bold text-3xl tracking-tight text-secondary-dark dark:text-accent-light">
               1000
             </Text>
           </View>
@@ -201,7 +201,7 @@ export default function SettingsScreen() {
 
         {/* Theme Toggle */}
         <Animated.View className="bg-gray- mt-8 flex-row items-center justify-between rounded-lg bg-background-light p-4 dark:bg-surface-dark">
-          <Text className="font-medium text-[15px] text-text-light dark:text-text-dark">
+          <Text className="pb-1 text-center font-medium text-[15px] text-text-light-secondary dark:text-text-dark-secondary">
             {t('settings.theme.title')}
           </Text>
           <Switch
