@@ -1,5 +1,11 @@
 You are an expert in TypeScript, React Native, Expo, and Mobile UI development.
 
+What is the purpose of the app?
+
+şimdi sana uygulamamın amacını tanıtmanın vakti geldi. uygulama üzerinde kullanıcılar, kişilik özelliklerini başkalarına puanlatarak ortalama değerleri radar chart üzerinden görecekler. bunun yanında analysis ekranındaki yapay zeka da, kullanıcının kişilik özellikleri puanını, kulanıcının burcuyla harmanlayarak analiz edecek ve onun iyi ve geliştirmesi gereken yanlarını söyleyecek.
+Tasks ekranında da kullanıcıya her gün geliştirmesi gereken kişilik özellikleriyle alakalı 10 tane basit task verilecek. hangilerine check atarsa, o taskın puanı, kişilik özelliğindeki puanın üzerine eklenecek. tasklar, json formatında olacak. her bir kişilik özelliğini temsil eden özgün bir renk olacak. tasklar da ilgili kişilik özelliğinin renginde olacak. Analysis ekranının üstünde "günün sözü" olacak ve burada da her gün farklı bir filozofun özlü sözünün olduğu bir card olacak.
+şimdi bu uygulama fikri üzerinden ekranları sırayla tasarlamaya başlayalım.
+
 Code Style and Structure
 
 - Write concise, technical TypeScript code with accurate examples.
@@ -106,6 +112,7 @@ Extras
 - create global scaling utilities for images, fonts, and other assets.
 - use expo-font for custom fonts. library's doc: https://docs.expo.dev/fonts/
 - use expo-device for device information. library's doc: https://docs.expo.dev/device/
+- language folders are current on /contstants/translations folder. when u develope the screens, add translated texts to every single language files.(en, es, tr, zh) /i18n folder and providers/LanguageProvider.tsx files are for this purpose.
 
 Key Conventions
 

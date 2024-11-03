@@ -12,6 +12,10 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { useAuth } from '@/store/useAuth';
 import { LanguageProvider } from '@/providers/LanguageProvider';
 import Toast from 'react-native-toast-message';
+import { QueryClient, QueryClientProvider, focusManager } from '@tanstack/react-query';
+import { AppStateStatus, AppState } from 'react-native';
+import { useOnlineManager } from '@/hooks/useOnlineManager';
+import { useAppState } from '@/hooks/useAppState';
 
 import {
   useFonts,
@@ -78,9 +82,37 @@ function InitialLayout() {
   return <Stack screenOptions={{ headerShown: false }} />;
 }
 
+// Query Client yapılandırması
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      gcTime: 1000 * 60 * 60 * 24, // 24 saat
+      staleTime: 1000 * 60 * 5, // 5 dakika
+      retry: 2,
+      retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000),
+      refetchOnWindowFocus: Platform.OS === 'web',
+      refetchOnReconnect: true,
+      refetchOnMount: true,
+    },
+    mutations: {
+      retry: 2,
+      retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000),
+    },
+  },
+});
+
+// App State ve Focus yönetimi için hook'lar
+function useQueryConfig() {
+  useOnlineManager();
+  useAppState();
+}
+
 export default function RootLayout() {
   const systemColorScheme = useColorScheme();
   const { setDarkMode } = useDarkMode();
+
+  // Query yapılandırmasını uygula
+  useQueryConfig();
 
   useEffect(() => {
     setDarkMode(systemColorScheme === 'dark');
@@ -127,18 +159,20 @@ export default function RootLayout() {
   }
 
   return (
-    <GestureHandlerRootView style={{ flex: 1 }}>
-      <LanguageProvider>
-        <ThemeProvider>
-          <View className="flex-1 bg-background-light dark:bg-background-dark">
-            <AuthProvider>
-              <InitialLayout />
-            </AuthProvider>
-            <Toast />
-          </View>
-        </ThemeProvider>
-      </LanguageProvider>
-    </GestureHandlerRootView>
+    <QueryClientProvider client={queryClient}>
+      <GestureHandlerRootView style={{ flex: 1 }}>
+        <LanguageProvider>
+          <ThemeProvider>
+            <View className="flex-1 bg-background-light dark:bg-background-dark">
+              <AuthProvider>
+                <InitialLayout />
+              </AuthProvider>
+              <Toast />
+            </View>
+          </ThemeProvider>
+        </LanguageProvider>
+      </GestureHandlerRootView>
+    </QueryClientProvider>
   );
 }
 

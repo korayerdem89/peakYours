@@ -23,6 +23,7 @@ import { theme } from '@/constants/theme';
 import { ZodiacModal } from '@/components/ZodiacModal';
 import firestore from '@react-native-firebase/firestore';
 import { UserService } from '@/services/user';
+import { useUserData, useUpdateUser } from '@/hooks/useUserQueries';
 
 const LANGUAGES = [
   { code: 'en', label: 'EN' },
@@ -50,34 +51,14 @@ const ZODIAC_SIGNS = [
 
 export default function SettingsScreen() {
   const { colorScheme, toggleColorScheme: originalToggle } = useColorScheme();
-  const { user } = useAuth();
+  const { user, updateUserData } = useAuth();
   const { locale, setAppLocale, t } = useTranslation();
   const [isTogglingTheme, setIsTogglingTheme] = useState(false);
   const [isZodiacModalVisible, setIsZodiacModalVisible] = useState(false);
-  const [userZodiac, setUserZodiac] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    async function fetchUserData() {
-      if (!user?.uid) {
-        setIsLoading(false);
-        return;
-      }
-
-      try {
-        const userData = await UserService.getUser(user.uid);
-        if (userData?.zodiacSign) {
-          setUserZodiac(userData.zodiacSign);
-        }
-      } catch (error) {
-        console.error('Error fetching user data:', error);
-      } finally {
-        setIsLoading(false);
-      }
-    }
-
-    fetchUserData();
-  }, [user?.uid]);
+  // TanStack Query hooks
+  const { data: userData, isLoading } = useUserData(user?.uid);
+  const updateUser = useUpdateUser();
 
   const toggleColorScheme = useCallback(() => {
     if (isTogglingTheme) return;
@@ -107,12 +88,15 @@ export default function SettingsScreen() {
     if (!user?.uid) return;
 
     try {
-      await UserService.updateUser(user.uid, {
-        zodiacSign: zodiacId,
-        updatedAt: firestore.FieldValue.serverTimestamp(),
+      await updateUser.mutateAsync({
+        userId: user.uid,
+        data: {
+          zodiacSign: zodiacId,
+        },
       });
 
-      setUserZodiac(zodiacId);
+      updateUserData({ zodiacSign: zodiacId });
+
       setIsZodiacModalVisible(false);
     } catch (error) {
       console.error('Error updating zodiac sign:', error);
@@ -120,12 +104,12 @@ export default function SettingsScreen() {
     }
   };
 
-  const getZodiacInfo = (zodiacId: string | null) => {
+  const getZodiacInfo = (zodiacId: string | null | undefined) => {
     if (!zodiacId) return null;
     return ZODIAC_SIGNS.find((sign) => sign.id === zodiacId);
   };
 
-  const zodiacInfo = getZodiacInfo(userZodiac);
+  const zodiacInfo = getZodiacInfo(userData?.zodiacSign);
 
   return (
     <SafeAreaView className="flex-1 bg-background-tab dark:bg-background-dark">

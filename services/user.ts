@@ -2,8 +2,7 @@ import firestore, { FirebaseFirestoreTypes } from '@react-native-firebase/firest
 import { FirebaseAuthTypes } from '@react-native-firebase/auth';
 import { FirestoreService } from './firestore';
 
-// User veri tipi tanımı
-interface UserData {
+export interface UserData {
   uid: string;
   email: string | null;
   displayName: string | null;

@@ -4,34 +4,12 @@ import { useAuth } from '@/store/useAuth';
 import { UserService } from '@/services/user';
 import { ZodiacModal } from '@/components/ZodiacModal';
 import { useTranslation } from '@/providers/LanguageProvider';
+import { Alert } from 'react-native';
 
 export default function Analysis() {
-  const { user } = useAuth();
+  const { user, updateUserData } = useAuth();
   const { t } = useTranslation();
   const [showZodiacModal, setShowZodiacModal] = useState(false);
-  const [userData, setUserData] = useState<any>(null);
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    async function checkUserZodiac() {
-      if (!user?.uid) return;
-
-      try {
-        const userDoc = await UserService.getUser(user.uid);
-        setUserData(userDoc);
-
-        if (!userDoc?.zodiacSign) {
-          setShowZodiacModal(true);
-        }
-      } catch (error) {
-        console.error('Error fetching user data:', error);
-      } finally {
-        setIsLoading(false);
-      }
-    }
-
-    checkUserZodiac();
-  }, [user]);
 
   const handleZodiacSubmit = async (zodiacId: string) => {
     if (!user?.uid) return;
@@ -41,26 +19,16 @@ export default function Analysis() {
         zodiacSign: zodiacId,
       });
 
-      setUserData((prev: any) => ({
-        ...prev,
-        zodiacSign: zodiacId,
-      }));
+      updateUserData({ zodiacSign: zodiacId });
 
       setShowZodiacModal(false);
     } catch (error) {
       console.error('Error updating zodiac sign:', error);
+      Alert.alert(t('common.error'), t('settings.zodiacCard.updateError'));
     }
   };
 
-  if (isLoading) {
-    return (
-      <View className="flex-1 bg-background-light dark:bg-background-dark">
-        {/* Loading indicator will go here */}
-      </View>
-    );
-  }
-
-  if (!userData?.zodiacSign) {
+  if (!user?.zodiacSign) {
     return (
       <View className="flex-1 bg-background-light dark:bg-background-dark">
         <ZodiacModal visible={true} onClose={() => {}} onSubmit={handleZodiacSubmit} />
