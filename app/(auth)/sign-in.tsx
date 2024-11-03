@@ -9,7 +9,7 @@ import auth from '@react-native-firebase/auth';
 import { useAuth } from '@/store/useAuth';
 import { useState } from 'react';
 import { UserService } from '@/services/user';
-import { i18n } from '@/providers/LanguageProvider';
+import { useTranslation } from '@/providers/LanguageProvider';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useColorScheme } from 'nativewind';
 
@@ -31,6 +31,7 @@ export default function SignInScreen() {
   const { setUser } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
   const { colorScheme } = useColorScheme();
+  const { t } = useTranslation();
 
   const signIn = async () => {
     try {
@@ -50,17 +51,17 @@ export default function SignInScreen() {
       if (isErrorWithCode(error)) {
         switch (error.code) {
           case statusCodes.IN_PROGRESS:
-            Alert.alert(i18n.t('common.error'), i18n.t('auth.errors.inProgress'));
+            Alert.alert(t('common.error'), t('auth.errors.inProgress'));
             break;
           case statusCodes.PLAY_SERVICES_NOT_AVAILABLE:
-            Alert.alert(i18n.t('common.error'), i18n.t('auth.errors.playServices'));
+            Alert.alert(t('common.error'), t('auth.errors.playServices'));
             break;
           default:
-            Alert.alert(i18n.t('common.error'), i18n.t('auth.errors.default'));
+            Alert.alert(t('common.error'), t('auth.errors.default'));
             console.error('Google Sign-In Error:', error);
         }
       } else {
-        Alert.alert(i18n.t('common.error'), i18n.t('auth.errors.unexpected'));
+        Alert.alert(t('common.error'), t('auth.errors.unexpected'));
         console.error(error);
       }
     } finally {
@@ -81,7 +82,7 @@ export default function SignInScreen() {
         />
 
         <Text className="font-poppins-semibold mb-8 text-center text-3xl text-text-light dark:text-text-dark">
-          {i18n.t('auth.signIn.welcomeTitle')}
+          {t('auth.signIn.welcomeTitle')}
         </Text>
 
         <GoogleSigninButton

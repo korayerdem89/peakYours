@@ -7,6 +7,7 @@ import { useColorScheme } from 'nativewind';
 import { theme } from '@/constants/theme';
 import GoodSidesRoute from '../../components/main/GoodSidesRoute';
 import { useTranslation } from '@/providers/LanguageProvider';
+import { TabRoute, TabViewProps } from '@/types';
 
 // Bad sides için geçici komponent
 const BadsidesRoute = React.memo(() => (
@@ -38,7 +39,7 @@ export default function ChartScreen() {
     badsides: BadsidesRoute,
   });
 
-  const renderTabBar = (props: any) => (
+  const renderTabBar = (props: TabViewProps) => (
     <TabBar
       {...props}
       indicatorStyle={{

@@ -1,12 +1,11 @@
 import { create } from 'zustand';
-import { UserData } from '@/services/user';
-import { FirebaseAuthTypes } from '@react-native-firebase/auth';
+import { AuthUser, BasicUserInfo, ZodiacUpdateData } from '@/types';
 
 interface AuthState {
-  user: Pick<UserData, 'uid' | 'email' | 'displayName' | 'photoURL' | 'zodiacSign'> | null;
+  user: AuthUser | null;
   isLoading: boolean;
-  setUser: (user: FirebaseAuthTypes.User | null) => void;
-  updateUserData: (data: Partial<Pick<UserData, 'zodiacSign'>>) => void;
+  setUser: (user: BasicUserInfo | null) => void;
+  updateUserData: (data: ZodiacUpdateData) => void;
   setLoading: (loading: boolean) => void;
 }
 
