@@ -75,7 +75,7 @@ export default function SignInScreen() {
   };
 
   return (
-    <SafeAreaView className="flex-1 bg-accent-light dark:bg-accent-dark">
+    <SafeAreaView className="flex-1 bg-accent-light dark:bg-background-dark">
       <View className="flex-1 items-center justify-center gap-10 p-6">
         <Image
           source={{

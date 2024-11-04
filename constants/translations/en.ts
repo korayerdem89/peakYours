@@ -30,7 +30,7 @@ export default {
   settings: {
     title: 'Settings',
     anonymous: 'Anonymous User',
-    creditScore: 'Credit Score',
+    creditScore: 'Your Credit',
     accountSettings: 'Account Settings',
     signOut: 'Sign Out',
     language: {

@@ -71,16 +71,16 @@ export function CustomTabBar({ state, descriptors, navigation }: BottomTabBarPro
                 <Ionicons
                   name={iconName}
                   size={24}
-                  className={
+                  color={
                     isFocused
-                      ? 'text-primary-light dark:text-primary-dark'
-                      : 'text-text-light-secondary dark:text-text-dark-secondary'
+                      ? '#B47CFF' // primary renk
+                      : '#64748B' // secondary renk
                   }
                 />
                 <Text
                   className={`mt-1 font-medium text-xs ${
                     isFocused
-                      ? 'text-primary-light dark:text-primary-dark'
+                      ? 'text-primary-light'
                       : 'text-text-light-secondary dark:text-text-dark-secondary'
                   }`}>
                   {options.title || route.name}

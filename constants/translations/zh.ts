@@ -30,7 +30,7 @@ export default {
   settings: {
     title: '设置',
     anonymous: '匿名用户',
-    creditScore: '信用评分',
+    creditScore: '您的信用',
     accountSettings: '账户设置',
     signOut: '退出登录',
     language: {

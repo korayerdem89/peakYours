@@ -82,7 +82,7 @@ export default function OnboardingScreen() {
   }, [countdown]);
 
   return (
-    <View className="flex-1 bg-accent-light dark:bg-accent-dark">
+    <View className="flex-1 bg-accent-light dark:bg-background-dark">
       <Animated.ScrollView
         ref={scrollViewRef}
         horizontal

@@ -30,7 +30,7 @@ export default {
   settings: {
     title: 'Ayarlar',
     anonymous: 'Anonim Kullanıcı',
-    creditScore: 'Kredi Puanı',
+    creditScore: 'Krediniz',
     accountSettings: 'Hesap Ayarları',
     signOut: 'Çıkış Yap',
     language: {

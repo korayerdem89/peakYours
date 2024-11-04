@@ -30,7 +30,7 @@ export default {
   settings: {
     title: 'Ajustes',
     anonymous: 'Usuario Anónimo',
-    creditScore: 'Puntuación de Crédito',
+    creditScore: 'Tu Crédito',
     accountSettings: 'Configuración de la Cuenta',
     signOut: 'Cerrar Sesión',
     language: {
