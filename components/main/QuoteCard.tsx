@@ -6,7 +6,7 @@ import { Feather } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 
 export default function QuoteCard() {
-  const { locale } = useTranslation();
+  const { locale, t } = useTranslation();
 
   const todaysQuote = useMemo(() => {
     const today = new Date();
@@ -34,7 +34,7 @@ export default function QuoteCard() {
           <Text
             className="text-xs text-primary-dark/60 dark:text-gray-400"
             style={{ fontFamily: 'Philosopher_400Regular' }}>
-            Quote of the Day
+            {t('common.quoteOfDay')}
           </Text>
         </View>
 

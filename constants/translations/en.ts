@@ -10,6 +10,7 @@ export default {
     edit: 'Edit',
     submit: 'Submit',
     saving: 'Saving...',
+    quoteOfDay: 'Quote of the Day',
   },
   auth: {
     signIn: {

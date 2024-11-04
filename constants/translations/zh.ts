@@ -10,6 +10,7 @@ export default {
     edit: '编辑',
     submit: '提交',
     saving: '保存中...',
+    quoteOfDay: '每日一句',
   },
   auth: {
     signIn: {

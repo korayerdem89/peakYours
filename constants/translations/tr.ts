@@ -10,6 +10,7 @@ export default {
     edit: 'Düzenle',
     submit: 'Gönder',
     saving: 'Kaydediliyor...',
+    quoteOfDay: 'Günün Sözü',
   },
   auth: {
     signIn: {

@@ -10,6 +10,7 @@ export default {
     edit: 'Editar',
     submit: 'Enviar',
     saving: 'Guardando...',
+    quoteOfDay: 'Frase del Día',
   },
   auth: {
     signIn: {
