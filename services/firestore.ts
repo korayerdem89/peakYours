@@ -18,7 +18,6 @@ export const FirestoreService = {
   getDoc: async <T>(collection: string, docId: string): Promise<T | null> => {
     try {
       const doc = await firestore().collection(collection).doc(docId).get();
-
       return doc.exists ? (doc.data() as T) : null;
     } catch (error) {
       console.error('Firestore getDoc error:', error);

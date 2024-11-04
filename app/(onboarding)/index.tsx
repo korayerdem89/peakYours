@@ -36,7 +36,7 @@ const ONBOARDING_DATA = [
 ];
 
 const AUTO_SCROLL_INTERVAL = 4000;
-const COUNTDOWN_DURATION = 6;
+const COUNTDOWN_DURATION = 1;
 
 export default function OnboardingScreen() {
   const scrollX = useSharedValue(0);

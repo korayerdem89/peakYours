@@ -12,8 +12,6 @@ import { useTranslation } from '@/providers/LanguageProvider';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useColorScheme } from 'nativewind';
 import { useAuth } from '@/store/useAuth';
-import firestore from '@react-native-firebase/firestore';
-import { AuthUser } from '@/types';
 
 const { width, height } = Dimensions.get('window');
 const BANNER_HEIGHT = height / 3;
