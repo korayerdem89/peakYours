@@ -62,6 +62,7 @@ export default {
     thinker: 'Pensador',
     protective: 'Protector',
     cheerful: 'Alegre',
+    creativity: 'Creativo',
     leader: 'Líder',
     you: {
       title: 'Análisis de Personalidad',

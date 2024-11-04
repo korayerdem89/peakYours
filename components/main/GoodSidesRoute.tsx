@@ -39,8 +39,8 @@ function TraitBar({ trait, value, color, delay }: TraitBarProps) {
   }, []);
 
   return (
-    <View className="mb-6 flex-row items-center">
-      <View className="w-36">
+    <View className="mb-2 flex-row items-center ">
+      <View className="flex-1">
         <Text style={{ color }} className="font-medium text-base">
           {t(`personality.traits.${trait}`)}
         </Text>
@@ -61,33 +61,28 @@ export default function GoodSidesRoute() {
 
   const traits = [
     {
-      trait: 'extraversion',
-      color: theme.colors.personality.extraversion,
+      trait: 'friendly',
+      color: theme.colors.personality.friendly,
       value: Math.floor(Math.random() * 100),
     },
     {
-      trait: 'agreeableness',
-      color: theme.colors.personality.agreeableness,
+      trait: 'adventurous',
+      color: theme.colors.personality.adventurous,
       value: Math.floor(Math.random() * 100),
     },
     {
-      trait: 'conscientiousness',
-      color: theme.colors.personality.conscientiousness,
+      trait: 'thinker',
+      color: theme.colors.personality.thinker,
       value: Math.floor(Math.random() * 100),
     },
     {
-      trait: 'emotional',
-      color: theme.colors.personality.emotional,
+      trait: 'protective',
+      color: theme.colors.personality.protective,
       value: Math.floor(Math.random() * 100),
     },
     {
-      trait: 'openness',
-      color: theme.colors.personality.openness,
-      value: Math.floor(Math.random() * 100),
-    },
-    {
-      trait: 'empathy',
-      color: theme.colors.personality.empathy,
+      trait: 'cheerful',
+      color: theme.colors.personality.cheerful,
       value: Math.floor(Math.random() * 100),
     },
     {
@@ -95,12 +90,17 @@ export default function GoodSidesRoute() {
       color: theme.colors.personality.creativity,
       value: Math.floor(Math.random() * 100),
     },
+    {
+      trait: 'leader',
+      color: theme.colors.personality.leader,
+      value: Math.floor(Math.random() * 100),
+    },
   ];
 
   return (
-    <View className="rounded-2xl bg-white p-6">
+    <View className="m-2 rounded-2xl bg-white p-6">
       <Text className="mb-6 font-semibold text-xl text-gray-800">
-        {t('personality.positiveTraits')}
+        {t('personality.positiveTraits')} ✨
       </Text>
       {traits.map((trait, index) => (
         <TraitBar

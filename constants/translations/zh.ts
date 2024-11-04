@@ -57,12 +57,6 @@ export default {
     badsides: '缺点',
   },
   personality: {
-    friendly: '友好的',
-    adventurous: '冒险的',
-    thinker: '思考者',
-    protective: '保护的',
-    cheerful: '开朗的',
-    leader: '领导者',
     you: {
       title: '性格分析',
       subtitle: '基于社区评分',
@@ -82,13 +76,13 @@ export default {
     level: '等级',
     positiveTraits: '积极的性格特征',
     traits: {
-      extraversion: '外向性',
-      agreeableness: '亲和性',
-      conscientiousness: '尽责性',
-      emotional: '情绪稳定性',
-      openness: '开放性',
-      empathy: '同理心',
-      creativity: '创造力',
+      friendly: '友好的',
+      adventurous: '冒险的',
+      thinker: '思考者',
+      protective: '保护的',
+      cheerful: '开朗的',
+      creativity: '创造性的',
+      leader: '领导者',
     },
   },
   zodiac: {

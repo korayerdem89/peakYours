@@ -11,6 +11,7 @@ import { TabRoute, TabViewProps } from '@/types';
 import { useAuth } from '@/store/useAuth';
 import { useFocusEffect } from '@react-navigation/native';
 import { useUpdateUser, useUserData } from '@/hooks/useUserQueries';
+import QuoteCard from '@/components/main/QuoteCard';
 
 // Bad sides için geçici komponent
 const BadsidesRoute = React.memo(() => (
@@ -84,6 +85,9 @@ export default function YouScreen() {
 
   return (
     <SafeAreaView className="flex-1 bg-background-tab dark:bg-background-dark">
+      <View className="px-4 pt-4">
+        <QuoteCard />
+      </View>
       <TabView
         navigationState={{ index, routes }}
         renderScene={renderScene}

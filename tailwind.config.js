@@ -60,13 +60,13 @@ module.exports = {
           dark: '#BF2D55',
         },
         personality: {
-          extraversion: '#6366F1', // Indigo - Dışadönüklük
-          agreeableness: '#14B8A6', // Teal - Uyumluluk
-          conscientiousness: '#F59E0B', // Amber - Sorumluluk
-          emotional: '#8B5CF6', // Violet - Duygusal Denge
-          openness: '#EC4899', // Pink - Deneyime Açıklık
-          empathy: '#06B6D4', // Cyan - Empati
-          creativity: '#F43F5E', // Rose - Yaratıcılık
+          friendly: '#FF5252', // Canlı kırmızı - Arkadaş canlısı için sıcak ve davetkar
+          adventurous: '#00BCD4', // Parlak turkuaz - Macera ve heyecan hissi
+          thinker: '#3F51B5', // Koyu mavi - Derinlik ve düşünce
+          protective: '#4CAF50', // Belirgin yeşil - Güven ve koruma
+          cheerful: '#FFC107', // Canlı sarı - Neşe ve pozitiflik
+          leader: '#9C27B0', // Belirgin mor - Liderlik ve güç
+          creativity: '#E91E63',
         },
       },
       spacing: {
