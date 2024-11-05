@@ -82,6 +82,8 @@ export default {
       submit: 'Submit Rating',
       cancel: 'Cancel',
       success: 'Rating submitted successfully',
+      rateButton: 'Rate Someone!',
+      rateFriends: 'Rate Your Friends',
     },
     level: 'Level',
     positiveTraits: 'Your Strengths',

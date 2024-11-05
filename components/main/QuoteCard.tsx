@@ -20,10 +20,10 @@ export default function QuoteCard() {
   return (
     <LinearGradient
       colors={['#7C4DFF20', '#7C4DFF10']}
-      className="mb-1 overflow-hidden rounded-xl p-0.5">
-      <View className="rounded-xl bg-surface-light p-4 dark:bg-surface-dark">
-        <View className="mb-2 flex-row items-center">
-          <View className="mr-2 rounded-full bg-primary-light/20 p-1.5 dark:bg-primary-dark/20">
+      className="mb-1 overflow-hidden rounded-md p-0.5">
+      <View className="rounded-md bg-surface-light px-4 py-2 dark:bg-surface-dark">
+        <View className="mb-1 flex-row items-center">
+          <View className="mr-1 rounded-full bg-primary-light/20 p-1.5 dark:bg-primary-dark/20">
             <Feather
               name="book-open"
               size={14}
@@ -38,7 +38,7 @@ export default function QuoteCard() {
           </Text>
         </View>
 
-        <View className="mb-2">
+        <View className="mb-1">
           <Text
             className="text-sm leading-5 text-primary-dark dark:text-gray-200"
             style={{ fontFamily: 'Philosopher_400Regular' }}>

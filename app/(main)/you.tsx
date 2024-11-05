@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import { View, useWindowDimensions, Text } from 'react-native';
+import { View, useWindowDimensions, Text, Pressable } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 import { useState, useMemo } from 'react';
@@ -12,6 +12,8 @@ import { useAuth } from '@/store/useAuth';
 import { useFocusEffect } from '@react-navigation/native';
 import { useUpdateUser, useUserData } from '@/hooks/useUserQueries';
 import QuoteCard from '@/components/main/QuoteCard';
+import Button from '@/components/Button';
+import { router } from 'expo-router';
 
 // Bad sides için geçici komponent
 const BadsidesRoute = React.memo(() => (

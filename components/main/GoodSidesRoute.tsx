@@ -1,16 +1,20 @@
-import { View } from 'react-native';
+import { Pressable, View } from 'react-native';
 import Animated, {
   withTiming,
   useAnimatedStyle,
   useSharedValue,
   withSequence,
   withDelay,
+  withRepeat,
+  withSpring,
 } from 'react-native-reanimated';
 import { useEffect } from 'react';
 import { Text } from 'react-native';
 import { useTranslation } from '@/providers/LanguageProvider';
 import { theme } from '@/constants/theme';
 import ReferralShare from './ReferralShare';
+import { router } from 'expo-router';
+import { AntDesign, MaterialIcons } from '@expo/vector-icons';
 
 interface TraitBarProps {
   trait: string;
@@ -33,7 +37,7 @@ function TraitBar({ trait, value, color, delay }: TraitBarProps) {
       delay,
       withSequence(
         withTiming(value, {
-          duration: 1200,
+          duration: 600,
         })
       )
     );
@@ -58,6 +62,35 @@ function TraitBar({ trait, value, color, delay }: TraitBarProps) {
 
 export default function GoodSidesRoute() {
   const { t } = useTranslation();
+  const shakeAnimation = useSharedValue(0);
+
+  const animatedStyle = useAnimatedStyle(() => {
+    return {
+      transform: [
+        {
+          translateX: withSpring(shakeAnimation.value * 4, {
+            damping: 1,
+            stiffness: 200,
+          }),
+        },
+      ],
+    };
+  });
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      shakeAnimation.value = withRepeat(
+        withSequence(
+          withTiming(1, { duration: 100 }),
+          withTiming(-1, { duration: 100 }),
+          withTiming(0, { duration: 100 })
+        ),
+        3
+      );
+    }, 15000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   const traits = [
     {
@@ -97,6 +130,10 @@ export default function GoodSidesRoute() {
     },
   ];
 
+  const handleRatePress = () => {
+    router.push('/modal/rate');
+  };
+
   return (
     <View className="m-2 rounded-2xl bg-white p-6 dark:bg-gray-300">
       <Text className="font-semibold text-xl text-gray-800">
@@ -113,6 +150,23 @@ export default function GoodSidesRoute() {
       ))}
 
       <ReferralShare />
+      <Animated.View style={animatedStyle}>
+        <Pressable
+          onPress={handleRatePress}
+          className="mt-1 flex-row items-center justify-center rounded-2xl border border-primary-dark bg-surface-light p-4 dark:bg-surface-dark">
+          <View className="flex-row items-center justify-center gap-2 space-x-3">
+            <AntDesign
+              name="star"
+              size={24}
+              color={theme.colors.primary.default}
+              style={{ transform: [{ rotate: '-15deg' }] }}
+            />
+            <Text className="top-[1px] font-medium text-primary-dark">
+              {t('personality.rating.rateFriends')}
+            </Text>
+          </View>
+        </Pressable>
+      </Animated.View>
     </View>
   );
 }

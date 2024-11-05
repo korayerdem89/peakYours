@@ -73,6 +73,8 @@ export default {
       submit: '提交评分',
       cancel: '取消',
       success: '评分提交成功',
+      rateButton: '为他人评分！',
+      rateFriends: '为好友评分',
     },
     level: '等级',
     positiveTraits: '积极的性格特征',

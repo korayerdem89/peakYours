@@ -80,6 +80,8 @@ export default {
       submit: 'Enviar Calificación',
       cancel: 'Cancelar',
       success: 'Calificación enviada con éxito',
+      rateButton: '¡Califica a Alguien!',
+      rateFriends: 'Califica a tus Amigos',
     },
     level: 'Nivel',
     positiveTraits: 'Rasgos Positivos de Personalidad',

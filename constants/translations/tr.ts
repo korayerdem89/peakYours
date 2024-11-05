@@ -82,6 +82,8 @@ export default {
       submit: 'Değerlendirmeyi Gönder',
       cancel: 'İptal',
       success: 'Değerlendirme başarıyla gönderildi',
+      rateButton: 'Sen de Arkadaşını Puanla!',
+      rateFriends: 'Arkadaşlarını Değerlendir',
     },
     level: 'Seviye',
     positiveTraits: 'Güçlü Yönleriniz',
