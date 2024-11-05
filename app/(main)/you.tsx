@@ -14,6 +14,7 @@ import { useUpdateUser, useUserData } from '@/hooks/useUserQueries';
 import QuoteCard from '@/components/main/QuoteCard';
 import Button from '@/components/Button';
 import { router } from 'expo-router';
+import BadSidesRoute from '@/components/main/BadSidesRoute';
 
 // Bad sides için geçici komponent
 const BadsidesRoute = React.memo(() => (
@@ -44,7 +45,7 @@ export default function YouScreen() {
 
   const renderScene = SceneMap({
     goodsides: GoodSidesRoute,
-    badsides: BadsidesRoute,
+    badsides: BadSidesRoute,
   });
 
   const renderTabBar = (props: TabViewProps) => (

@@ -14,7 +14,7 @@ import { useTranslation } from '@/providers/LanguageProvider';
 import { theme } from '@/constants/theme';
 import ReferralShare from './ReferralShare';
 import { router } from 'expo-router';
-import { AntDesign } from '@expo/vector-icons';
+import { AntDesign, MaterialIcons } from '@expo/vector-icons';
 
 interface TraitBarProps {
   trait: string;
@@ -41,13 +41,13 @@ function TraitBar({ trait, value, color, delay }: TraitBarProps) {
         })
       )
     );
-  }, []);
+  }, [delay, value]);
 
   return (
     <View className="mb-3 flex-row items-center">
       <View className="flex-1">
         <Text style={{ color }} className="font-medium text-base">
-          {t(`personality.traits.${trait}`)}
+          {t(`personality.negativeTraits.${trait}`)}
         </Text>
         <View className="mt-1 flex-row items-center">
           <Animated.View className="h-2 rounded-full" style={animatedStyle} />
@@ -60,17 +60,47 @@ function TraitBar({ trait, value, color, delay }: TraitBarProps) {
   );
 }
 
-export default function GoodSidesRoute() {
+export default function BadSidesRoute() {
   const { t } = useTranslation();
   const shakeAnimation = useSharedValue(0);
+
+  // Renk paleti (koyudan açığa)
+  const colorPalette = [
+    '#FF6B6B', // En koyu kırmızı
+    '#FF8E72',
+    '#FFA07A',
+    '#FFB88C',
+    '#FFC1A1',
+    '#FFCBB5',
+    '#FFD5C9', // En açık kırmızı
+  ];
+
+  // Rastgele değerlerle traits oluştur
+  const unsortedTraits = [
+    { trait: 'stubborn', value: Math.floor(Math.random() * 100) },
+    { trait: 'impatient', value: Math.floor(Math.random() * 100) },
+    { trait: 'moody', value: Math.floor(Math.random() * 100) },
+    { trait: 'arrogant', value: Math.floor(Math.random() * 100) },
+    { trait: 'jealous', value: Math.floor(Math.random() * 100) },
+    { trait: 'lazy', value: Math.floor(Math.random() * 100) },
+    { trait: 'careless', value: Math.floor(Math.random() * 100) },
+  ];
+
+  // Value değerine göre sırala ve renkleri ata
+  const traits = unsortedTraits
+    .sort((a, b) => b.value - a.value) // Büyükten küçüğe sırala
+    .map((trait, index) => ({
+      ...trait,
+      color: colorPalette[index], // Sıralamaya göre renk ata
+    }));
 
   const animatedStyle = useAnimatedStyle(() => {
     return {
       transform: [
         {
           translateX: withSpring(shakeAnimation.value * 4, {
-            damping: 1,
-            stiffness: 200,
+            damping: 2,
+            stiffness: 400,
           }),
         },
       ],
@@ -87,48 +117,10 @@ export default function GoodSidesRoute() {
         ),
         3
       );
-    }, 15000);
+    }, 10000);
 
     return () => clearInterval(interval);
   }, []);
-
-  const traits = [
-    {
-      trait: 'friendly',
-      color: theme.colors.personality.friendly,
-      value: Math.floor(Math.random() * 100),
-    },
-    {
-      trait: 'adventurous',
-      color: theme.colors.personality.adventurous,
-      value: Math.floor(Math.random() * 100),
-    },
-    {
-      trait: 'thinker',
-      color: theme.colors.personality.thinker,
-      value: Math.floor(Math.random() * 100),
-    },
-    {
-      trait: 'protective',
-      color: theme.colors.personality.protective,
-      value: Math.floor(Math.random() * 100),
-    },
-    {
-      trait: 'cheerful',
-      color: theme.colors.personality.cheerful,
-      value: Math.floor(Math.random() * 100),
-    },
-    {
-      trait: 'creativity',
-      color: theme.colors.personality.creativity,
-      value: Math.floor(Math.random() * 100),
-    },
-    {
-      trait: 'leader',
-      color: theme.colors.personality.leader,
-      value: Math.floor(Math.random() * 100),
-    },
-  ];
 
   const handleRatePress = () => {
     router.push('/modal/rate');
@@ -137,7 +129,7 @@ export default function GoodSidesRoute() {
   return (
     <View className="m-2 rounded-2xl bg-white p-6 pb-12 dark:bg-gray-300">
       <Text className="font-semibold text-xl text-gray-800">
-        {t('personality.positiveTraits')} ✨
+        {t('personality.negativeTraitsTitle')} 🎯
       </Text>
       {traits.map((trait, index) => (
         <TraitBar
@@ -148,7 +140,6 @@ export default function GoodSidesRoute() {
           delay={index * 150}
         />
       ))}
-
       <Text className="mt-4 text-center font-medium text-base text-gray-600 dark:text-gray-500">
         {t('personality.referral.inviteText')}
       </Text>
@@ -159,17 +150,31 @@ export default function GoodSidesRoute() {
       <Animated.View style={animatedStyle}>
         <Pressable
           onPress={handleRatePress}
-          className="mt-1 flex-row items-center justify-center rounded-2xl border border-primary-dark bg-[#f7f1ff] p-4 dark:bg-surface-dark">
-          <View className="flex-row items-center justify-center gap-2 space-x-3">
+          className="mt-2 flex-row items-center justify-center rounded-2xl border border-primary-dark
+bg-[#f7f1ff] p-4  "
+          style={({ pressed }) => ({
+            transform: [{ scale: pressed ? 0.98 : 1 }],
+            shadowColor: theme.colors.primary.default,
+            shadowOffset: { width: 0, height: 2 },
+            shadowOpacity: 0.1,
+            shadowRadius: 4,
+            elevation: 3,
+          })}>
+          <View className="flex-row items-center justify-center space-x-3">
             <AntDesign
               name="star"
               size={24}
               color={theme.colors.primary.default}
-              style={{ transform: [{ rotate: '-15deg' }] }}
+              style={{ transform: [{ rotate: '-5deg' }] }}
             />
-            <Text className="top-[1px] font-medium text-primary-dark">
+            <Text className="text-primary-default font-poppins-semibold text-base  text-primary-dark">
               {t('personality.rating.rateFriends')}
             </Text>
+            <MaterialIcons
+              name="arrow-forward-ios"
+              size={20}
+              color={theme.colors.primary.default}
+            />
           </View>
         </Pressable>
       </Animated.View>

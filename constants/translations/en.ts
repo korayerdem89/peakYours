@@ -11,6 +11,7 @@ export default {
     submit: 'Submit',
     saving: 'Saving...',
     quoteOfDay: 'Quote of the Day',
+    or: 'or',
   },
   auth: {
     signIn: {
@@ -67,6 +68,15 @@ export default {
       creativity: 'Creative',
       leader: 'Leader',
     },
+    negativeTraits: {
+      stubborn: 'Stubborn',
+      impatient: 'Impatient',
+      moody: 'Moody',
+      arrogant: 'Arrogant',
+      jealous: 'Jealous',
+      lazy: 'Lazy',
+      careless: 'Careless',
+    },
     you: {
       title: 'Personality Analysis',
       subtitle: 'Based on community ratings',
@@ -93,7 +103,9 @@ export default {
       shareTitle: 'Share Reference Code %{code}',
       shareMessage: 'Rate my personality using my reference code: %{code}',
       description: 'Let your friends rate your personality traits and get honest feedback',
+      inviteText: 'Let your friends evaluate your personality!',
     },
+    negativeTraitsTitle: 'Areas to Improve',
   },
   zodiac: {
     modalTitle: 'Select Your Zodiac Sign',

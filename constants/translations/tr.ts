@@ -11,6 +11,7 @@ export default {
     submit: 'Gönder',
     saving: 'Kaydediliyor...',
     quoteOfDay: 'Günün Sözü',
+    or: 'veya',
   },
   auth: {
     signIn: {
@@ -67,6 +68,15 @@ export default {
       creativity: 'Yaratıcı',
       leader: 'Lider',
     },
+    negativeTraits: {
+      stubborn: 'İnatçı',
+      impatient: 'Sabırsız',
+      moody: 'Huysuz',
+      arrogant: 'Kibirli',
+      jealous: 'Kıskanç',
+      lazy: 'Tembel',
+      careless: 'Dikkatsiz',
+    },
     you: {
       title: 'Kişilik Analizi',
       subtitle: 'Topluluk değerlendirmelerine göre',
@@ -94,7 +104,9 @@ export default {
       shareMessage: 'Referans kodumu kullanarak kişiliğimi değerlendir: %{code}',
       description:
         'Arkadaşlarının kişilik özelliklerini değerlendirmesine izin ver ve dürüst geri bildirimler al',
+      inviteText: 'Dostlarınız sizi değerlendirsin!',
     },
+    negativeTraitsTitle: 'Geliştirmen Gereken Yönler',
   },
   zodiac: {
     modalTitle: 'Burcunuzu Seçin',

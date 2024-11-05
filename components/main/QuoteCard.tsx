@@ -38,19 +38,19 @@ export default function QuoteCard() {
           </Text>
         </View>
 
-        <View className="mb-1">
+        <View className="my-1">
           <Text
             className="text-sm leading-5 text-primary-dark dark:text-gray-200"
             style={{ fontFamily: 'Philosopher_400Regular' }}>
             {todaysQuote.quote[locale as keyof typeof todaysQuote.quote]}
+            {'  '}
+            <Text
+              className="text-xs italic text-primary-dark/70 dark:text-gray-400"
+              style={{ fontFamily: 'Philosopher_400Regular_Italic' }}>
+              — {todaysQuote.author}
+            </Text>
           </Text>
         </View>
-
-        <Text
-          className="text-xs italic text-primary-dark/70 dark:text-gray-400"
-          style={{ fontFamily: 'Philosopher_400Regular_Italic' }}>
-          — {todaysQuote.author}
-        </Text>
       </View>
     </LinearGradient>
   );

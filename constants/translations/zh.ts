@@ -11,6 +11,7 @@ export default {
     submit: '提交',
     saving: '保存中...',
     quoteOfDay: '每日一句',
+    or: '或',
   },
   auth: {
     signIn: {
@@ -87,13 +88,24 @@ export default {
       creativity: '创造性的',
       leader: '领导者',
     },
+    negativeTraits: {
+      stubborn: '固执',
+      impatient: '急躁',
+      moody: '喜怒无常',
+      arrogant: '傲慢',
+      jealous: '嫉妒',
+      lazy: '懒惰',
+      careless: '粗心',
+    },
     referral: {
       title: '分享您的个人资料',
       shareButton: '分享参考代码',
       shareTitle: '分享参考代码',
       shareMessage: '使用我的参考代码评价我的性格：%{code}',
       description: '让您的朋友评价您的性格特征，获得真实反馈',
+      inviteText: '让你的朋友评价你的性格！',
     },
+    negativeTraitsTitle: '需要改进的方面',
   },
   zodiac: {
     modalTitle: '选择您的星座',

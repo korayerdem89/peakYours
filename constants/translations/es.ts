@@ -11,6 +11,7 @@ export default {
     submit: 'Enviar',
     saving: 'Guardando...',
     quoteOfDay: 'Frase del Día',
+    or: 'o',
   },
   auth: {
     signIn: {
@@ -94,6 +95,15 @@ export default {
       empathy: 'Empatía',
       creativity: 'Creatividad',
     },
+    negativeTraits: {
+      stubborn: 'Terco',
+      impatient: 'Impaciente',
+      moody: 'Malhumorado',
+      arrogant: 'Arrogante',
+      jealous: 'Celoso',
+      lazy: 'Perezoso',
+      careless: 'Descuidado',
+    },
     referral: {
       title: 'Comparte tu Perfil',
       shareButton: 'Compartir Código de Referencia',
@@ -101,7 +111,9 @@ export default {
       shareMessage: 'Califica mi personalidad usando mi código de referencia: %{code}',
       description:
         'Permite que tus amigos califiquen tus rasgos de personalidad y obtén comentarios honestos',
+      inviteText: '¡Deja que tus amigos evalúen tu personalidad!',
     },
+    negativeTraitsTitle: 'Áreas para Mejorar',
   },
   zodiac: {
     modalTitle: 'Selecciona tu Signo Zodiacal',
