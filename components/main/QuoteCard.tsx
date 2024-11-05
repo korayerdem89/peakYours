@@ -20,7 +20,7 @@ export default function QuoteCard() {
   return (
     <LinearGradient
       colors={['#7C4DFF20', '#7C4DFF10']}
-      className="mb-3 overflow-hidden rounded-xl p-0.5">
+      className="mb-1 overflow-hidden rounded-xl p-0.5">
       <View className="rounded-xl bg-surface-light p-4 dark:bg-surface-dark">
         <View className="mb-2 flex-row items-center">
           <View className="mr-2 rounded-full bg-primary-light/20 p-1.5 dark:bg-primary-dark/20">

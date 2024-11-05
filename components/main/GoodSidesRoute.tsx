@@ -40,19 +40,18 @@ function TraitBar({ trait, value, color, delay }: TraitBarProps) {
   }, []);
 
   return (
-    <View className="flex-row items-center ">
+    <View className="mb-3 flex-row items-center">
       <View className="flex-1">
         <Text style={{ color }} className="font-medium text-base">
           {t(`personality.traits.${trait}`)}
         </Text>
-        <Text className="text-md mt-1 font-semibold text-gray-900">
-          {value}%{' '}
-          <Text className="mt-1 font-regular text-xs text-gray-900">{t('personality.level')}</Text>
-        </Text>
+        <View className="mt-1 flex-row items-center">
+          <Animated.View className="h-2 rounded-full" style={animatedStyle} />
+        </View>
       </View>
-      <View className="h-4 flex-1 overflow-hidden rounded-lg bg-gray-100">
-        <Animated.View style={[animatedStyle]} className="h-full rounded-lg" />
-      </View>
+      <Text className="ml-2 text-sm text-gray-600 dark:text-gray-400">
+        {value}% {t('personality.level')}
+      </Text>
     </View>
   );
 }

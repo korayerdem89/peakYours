@@ -23,7 +23,7 @@ export default function ReferralShare() {
   };
 
   return (
-    <View className="mt-6 rounded-xl bg-background-light p-4 dark:bg-surface-dark">
+    <View className="mt-2 rounded-xl bg-background-light p-4 dark:bg-surface-dark">
       <Text className="text-center font-medium text-base text-text-light-secondary dark:text-text-dark-secondary">
         {t('personality.referral.title')}
       </Text>
