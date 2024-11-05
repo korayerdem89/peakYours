@@ -21,10 +21,14 @@ i18n.enableFallback = true;
 i18n.defaultLocale = 'en';
 
 // Create context
+interface TranslationParams {
+  [key: string]: string | number;
+}
+
 interface LanguageContextType {
   locale: string;
   setAppLocale: (lang: string) => Promise<void>;
-  t: (key: string) => string;
+  t: (key: string, params?: TranslationParams) => string;
 }
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
@@ -84,8 +88,8 @@ export function LanguageProvider({ children }: LanguageProviderProps) {
     }
   };
 
-  const t = (key: string) => {
-    return i18n.t(key);
+  const t = (key: string, params?: TranslationParams) => {
+    return i18n.t(key, params);
   };
 
   return (

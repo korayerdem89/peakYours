@@ -85,6 +85,14 @@ export default {
     },
     level: 'Seviye',
     positiveTraits: 'Güçlü Yönleriniz',
+    referral: {
+      title: 'Profilini Paylaş',
+      shareButton: 'Referans Kodunu Paylaş',
+      shareTitle: 'Referans Kodu Paylaş',
+      shareMessage: 'Referans kodumu kullanarak kişiliğimi değerlendir: %{code}',
+      description:
+        'Arkadaşlarının kişilik özelliklerini değerlendirmesine izin ver ve dürüst geri bildirimler al',
+    },
   },
   zodiac: {
     modalTitle: 'Burcunuzu Seçin',

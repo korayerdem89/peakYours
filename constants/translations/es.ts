@@ -92,6 +92,14 @@ export default {
       empathy: 'Empatía',
       creativity: 'Creatividad',
     },
+    referral: {
+      title: 'Comparte tu Perfil',
+      shareButton: 'Compartir Código de Referencia',
+      shareTitle: 'Compartir Código de Referencia',
+      shareMessage: 'Califica mi personalidad usando mi código de referencia: %{code}',
+      description:
+        'Permite que tus amigos califiquen tus rasgos de personalidad y obtén comentarios honestos',
+    },
   },
   zodiac: {
     modalTitle: 'Selecciona tu Signo Zodiacal',

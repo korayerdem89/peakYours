@@ -10,6 +10,7 @@ import { useEffect } from 'react';
 import { Text } from 'react-native';
 import { useTranslation } from '@/providers/LanguageProvider';
 import { theme } from '@/constants/theme';
+import ReferralShare from './ReferralShare';
 
 interface TraitBarProps {
   trait: string;
@@ -39,7 +40,7 @@ function TraitBar({ trait, value, color, delay }: TraitBarProps) {
   }, []);
 
   return (
-    <View className="mb-2 flex-row items-center ">
+    <View className="flex-row items-center ">
       <View className="flex-1">
         <Text style={{ color }} className="font-medium text-base">
           {t(`personality.traits.${trait}`)}
@@ -98,8 +99,8 @@ export default function GoodSidesRoute() {
   ];
 
   return (
-    <View className="m-2 rounded-2xl bg-white p-6">
-      <Text className="mb-6 font-semibold text-xl text-gray-800">
+    <View className="m-2 rounded-2xl bg-white p-6 dark:bg-gray-300">
+      <Text className="font-semibold text-xl text-gray-800">
         {t('personality.positiveTraits')} ✨
       </Text>
       {traits.map((trait, index) => (
@@ -111,6 +112,8 @@ export default function GoodSidesRoute() {
           delay={index * 150}
         />
       ))}
+
+      <ReferralShare />
     </View>
   );
 }

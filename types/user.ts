@@ -9,9 +9,16 @@ export interface UserData {
   createdAt: FirebaseFirestoreTypes.FieldValue | null;
   zodiacSign?: string | null;
   updatedAt?: FirebaseFirestoreTypes.FieldValue;
+  refCodes?: {
+    en: string;
+    zh: string;
+  };
 }
 
-export type AuthUser = Pick<UserData, 'uid' | 'email' | 'displayName' | 'photoURL' | 'zodiacSign'>;
+export type AuthUser = Pick<
+  UserData,
+  'uid' | 'email' | 'displayName' | 'photoURL' | 'zodiacSign' | 'refCodes'
+>;
 
 export type BasicUserInfo = Pick<UserData, 'uid' | 'email' | 'displayName' | 'photoURL'>;
 

@@ -29,7 +29,7 @@ export const theme = {
       adventurous: '#00BCD4',
       thinker: '#3F51B5',
       protective: '#4CAF50',
-      cheerful: '#FFC107',
+      cheerful: '#FF8C00',
       leader: '#9C27B0',
       creativity: '#E91E63',
     },

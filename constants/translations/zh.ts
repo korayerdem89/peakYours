@@ -85,6 +85,13 @@ export default {
       creativity: '创造性的',
       leader: '领导者',
     },
+    referral: {
+      title: '分享您的个人资料',
+      shareButton: '分享参考代码',
+      shareTitle: '分享参考代码',
+      shareMessage: '使用我的参考代码评价我的性格：%{code}',
+      description: '让您的朋友评价您的性格特征，获得真实反馈',
+    },
   },
   zodiac: {
     modalTitle: '选择您的星座',

@@ -85,6 +85,13 @@ export default {
     },
     level: 'Level',
     positiveTraits: 'Your Strengths',
+    referral: {
+      title: 'Share Your Profile',
+      shareButton: 'Share Reference Code',
+      shareTitle: 'Share Reference Code %{code}',
+      shareMessage: 'Rate my personality using my reference code: %{code}',
+      description: 'Let your friends rate your personality traits and get honest feedback',
+    },
   },
   zodiac: {
     modalTitle: 'Select Your Zodiac Sign',
