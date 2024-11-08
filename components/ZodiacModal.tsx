@@ -71,7 +71,7 @@ export function ZodiacModal({ visible, onClose, onSubmit }: ZodiacModalProps) {
           <Text className="text-center font-semibold text-lg text-text-light dark:text-text-dark">
             {t('zodiac.modalTitle')}
           </Text>
-          <Text className="mt-1 text-center text-sm text-text-light-secondary dark:text-text-dark-secondary">
+          <Text className="mt-1 text-center font-regular text-sm text-text-light-secondary dark:text-text-dark-secondary">
             {t('zodiac.modalDescription')}
           </Text>
         </View>
@@ -85,11 +85,11 @@ export function ZodiacModal({ visible, onClose, onSubmit }: ZodiacModalProps) {
                 disabled={isSubmitting}
                 className="mb-3 w-[30%] rounded-lg bg-surface-light p-2 active:bg-gray-100 dark:bg-surface-dark dark:active:bg-gray-800">
                 <View className="items-center">
-                  <Text className="mb-1 text-2xl">{zodiac.icon}</Text>
+                  <Text className="mb-1 font-medium text-2xl">{zodiac.icon}</Text>
                   <Text className="text-center font-medium text-sm text-text-light dark:text-text-dark">
                     {t(zodiac.name)}
                   </Text>
-                  <Text className="text-center text-xs text-text-light-secondary dark:text-text-dark-secondary">
+                  <Text className="text-center font-regular text-xs text-text-light-secondary dark:text-text-dark-secondary">
                     {zodiac.date}
                   </Text>
                 </View>

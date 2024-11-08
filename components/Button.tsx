@@ -135,12 +135,15 @@ const styles = StyleSheet.create({
   },
   smallText: {
     fontSize: theme.fontSize.sm,
+    fontFamily: theme.fontFamily.regular,
   },
   mediumText: {
     fontSize: theme.fontSize.base,
+    fontFamily: theme.fontFamily.regular,
   },
   largeText: {
     fontSize: theme.fontSize.lg,
+    fontFamily: theme.fontFamily.regular,
   },
   darkModeButton: {
     borderColor: theme.colors.text.dark,

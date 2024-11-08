@@ -47,7 +47,7 @@ export function ZodiacPicker({ onSelect }: ZodiacPickerProps) {
         onPress={() => setIsOpen(!isOpen)}
         className="flex-row items-center justify-between rounded-lg bg-background-light p-4 dark:bg-surface-dark">
         <View className="flex-row items-center">
-          <Text className="text-lg text-text-light dark:text-text-dark">
+          <Text className="font-medium text-lg text-text-light dark:text-text-dark">
             {selected ? `${selected.icon} ${t(selected.name)}` : t('zodiac.select')}
           </Text>
         </View>
@@ -77,15 +77,15 @@ export function ZodiacPicker({ onSelect }: ZodiacPickerProps) {
                   activeOpacity={0.7}
                   className="flex-row items-center p-4 active:bg-gray-100 dark:active:bg-gray-800">
                   <View className="flex-1 flex-row items-center">
-                    <Text className="mr-2 text-2xl">{zodiac.icon}</Text>
+                    <Text className="mr-2 font-medium text-2xl">{zodiac.icon}</Text>
                     <View>
                       <Text
-                        className="text-base text-text-light dark:text-text-dark"
+                        className="font-medium text-base text-text-light dark:text-text-dark"
                         numberOfLines={1}>
                         {t(zodiac.name)}
                       </Text>
                       <Text
-                        className="text-sm text-text-light-secondary dark:text-text-dark-secondary"
+                        className="font-regular text-sm text-text-light-secondary dark:text-text-dark-secondary"
                         numberOfLines={1}>
                         {zodiac.date}
                       </Text>

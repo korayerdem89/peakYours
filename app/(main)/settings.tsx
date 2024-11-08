@@ -149,7 +149,7 @@ export default function SettingsScreen() {
           <Text className="mt-4 font-bold text-xl tracking-tight text-text-light dark:text-text-dark">
             {user?.displayName || t('settings.anonymous')}
           </Text>
-          <Text className="mt-1 text-[15px] text-text-light-secondary dark:text-text-dark-secondary">
+          <Text className="mt-1 font-regular text-[15px] text-text-light-secondary dark:text-text-dark-secondary">
             {user?.email}
           </Text>
 
@@ -170,12 +170,12 @@ export default function SettingsScreen() {
                     {t(zodiacInfo.name)}
                   </Text>
                 </View>
-                <Text className="mt-1 text-center text-[14px] text-text-light-secondary dark:text-text-dark-secondary">
+                <Text className="mt-1 text-center font-regular text-[14px] text-text-light-secondary dark:text-text-dark-secondary">
                   {zodiacInfo.date}
                 </Text>
               </>
             ) : (
-              <Text className="text-center text-text-light dark:text-text-dark">
+              <Text className="text-center font-regular text-base text-text-light dark:text-text-dark">
                 {t('settings.zodiacCard.description')}
               </Text>
             )}
@@ -212,7 +212,7 @@ export default function SettingsScreen() {
         {/* Account Settings Accordion */}
         <View className="mt-4">
           <Accordion title={t('settings.accountSettings')}>
-            <Text className="border-t-2 border-gray-100 p-4 text-text-light dark:text-text-dark">
+            <Text className="border-t-2 border-gray-100 p-4 font-regular text-base text-text-light dark:text-text-dark">
               accordion collapsed
             </Text>
           </Accordion>

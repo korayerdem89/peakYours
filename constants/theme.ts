@@ -24,6 +24,11 @@ export const theme = {
       light: '#2E3A59',
       dark: '#EDF1F7',
     },
+    error: {
+      default: '#FF3D71',
+      light: '#FF668F',
+      dark: '#BF2D55',
+    },
     personality: {
       friendly: '#FF5252',
       adventurous: '#00BCD4',
@@ -84,5 +89,17 @@ export const theme = {
     fast: 200,
     normal: 300,
     slow: 500,
+  },
+
+  fontFamily: {
+    thin: 'Poppins_100Thin',
+    extralight: 'Poppins_200ExtraLight',
+    light: 'Poppins_300Light',
+    regular: 'Poppins_400Regular',
+    medium: 'Poppins_500Medium',
+    semibold: 'Poppins_600SemiBold',
+    bold: 'Poppins_700Bold',
+    extrabold: 'Poppins_800ExtraBold',
+    black: 'Poppins_900Black',
   },
 };
