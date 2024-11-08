@@ -13,7 +13,7 @@ export default function RateModal() {
           title: t('personality.rating.title'),
           headerShown: true,
           presentation: 'modal', // modal stili
-          animation: 'slide_from_bottom', // alttan yukarı animasyon
+          animation: 'fade_from_bottom', // alttan yukarı animasyon
           headerShadowVisible: false,
           headerStyle: {
             backgroundColor: 'transparent',

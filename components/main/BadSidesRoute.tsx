@@ -66,13 +66,13 @@ export default function BadSidesRoute() {
 
   // Renk paleti (koyudan açığa)
   const colorPalette = [
-    '#FF6B6B', // En koyu kırmızı
-    '#FF8E72',
-    '#FFA07A',
-    '#FFB88C',
-    '#FFC1A1',
-    '#FFCBB5',
-    '#FFD5C9', // En açık kırmızı
+    '#D94141', // En koyu kırmızı
+    '#D96448',
+    '#D97650',
+    '#D98E62',
+    '#D99777',
+    '#D9A18B',
+    '#D9AB9F', // En açık kırmızı
   ];
 
   // Rastgele değerlerle traits oluştur

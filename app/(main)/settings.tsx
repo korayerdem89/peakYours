@@ -164,7 +164,7 @@ export default function SettingsScreen() {
               <ActivityIndicator className="py-2" />
             ) : zodiacInfo ? (
               <>
-                <View className="flex-row items-center justify-center space-x-2">
+                <View className="flex-row items-center justify-center gap-1 space-x-2">
                   <Text className="text-3xl">{zodiacInfo.icon}</Text>
                   <Text className="font-semibold text-lg tracking-tight text-text-light dark:text-text-dark">
                     {t(zodiacInfo.name)}
