@@ -1,7 +1,8 @@
-import { View, Text, Pressable } from 'react-native';
+import { View, Text, Pressable, useWindowDimensions, ViewStyle } from 'react-native';
 import { memo } from 'react';
 import { MaterialIcons } from '@expo/vector-icons';
-import Animated, { useAnimatedStyle, withTiming, Easing } from 'react-native-reanimated';
+import Animated, { useAnimatedStyle, withTiming } from 'react-native-reanimated';
+import { theme } from '@/constants/theme';
 
 interface TraitBarProps {
   name: string;
@@ -27,93 +28,57 @@ export const TraitBar = memo(
     remainingPoints,
     label,
   }: TraitBarProps) => {
-    // Artı butonu için opacity animasyonu
-    const increaseButtonStyle = useAnimatedStyle(
-      () => ({
-        opacity: withTiming(points === maxPoints || remainingPoints === 0 ? 0.4 : 1, {
-          duration: 200,
-          easing: Easing.bezier(0.25, 0.1, 0.25, 1),
-        }),
-      }),
-      [points, remainingPoints]
-    );
+    const layout = useWindowDimensions();
 
-    // Eksi butonu için opacity animasyonu
-    const decreaseButtonStyle = useAnimatedStyle(
-      () => ({
-        opacity: withTiming(points === 0 ? 0.4 : 1, {
-          duration: 200,
-          easing: Easing.bezier(0.25, 0.1, 0.25, 1),
-        }),
-      }),
-      [points]
-    );
-
-    // Modern segment render
-    const renderSegments = () => {
-      return Array.from({ length: maxPoints }, (_, index) => (
-        <View key={index} className="flex-1 px-[1.5px]">
-          <View
-            className="h-2 rounded-full"
-            style={{
-              backgroundColor: points > index ? color : 'rgb(229, 231, 235)',
-              opacity: points > index ? 1 : 0.5,
-              transform: [{ scale: points > index ? 1 : 0.85 }],
-            }}
-          />
-        </View>
-      ));
-    };
+    const animatedStyle = useAnimatedStyle(() => {
+      return {
+        width: `${(points / maxPoints) * 100}%`,
+        backgroundColor: color,
+      } as ViewStyle;
+    });
 
     return (
-      <View className="mb-3">
-        <View className="mb-0.5 flex-row items-center justify-between">
-          <View className="flex-row items-center gap-1">
-            <Text className="text-2xs font-medium" style={{ color }} numberOfLines={1}>
-              {label}
-            </Text>
-            <Text className="text-[8px] text-gray-500">
-              {points}/{maxPoints}
-            </Text>
-          </View>
-
-          <View className="flex-row items-center gap-1.5 rounded-full bg-gray-50 px-1 py-0.5">
-            <AnimatedPressable
-              onPress={onDecrease}
-              disabled={points === 0}
-              hitSlop={8}
-              style={[
-                {
-                  padding: 3,
-                  borderRadius: 10,
-                },
-                decreaseButtonStyle,
-              ]}>
-              <MaterialIcons name="remove-circle-outline" size={16} color={color} />
-            </AnimatedPressable>
-
-            <Text className="w-5 text-center font-bold text-xs" style={{ color }}>
-              {points}
-            </Text>
-
-            <AnimatedPressable
-              onPress={onIncrease}
-              disabled={points === maxPoints || remainingPoints === 0}
-              hitSlop={12}
-              style={[
-                {
-                  padding: 4,
-                  borderRadius: 12,
-                },
-                increaseButtonStyle,
-              ]}>
-              <MaterialIcons name="add-circle-outline" size={18} color={color} />
-            </AnimatedPressable>
+      <View className="xs:mb-2 flex-row items-center justify-between sm:mb-2.5 md:mb-3">
+        <View className="flex-1">
+          <Text className="xs:text-xs font-medium text-text-light dark:text-text-dark sm:text-sm md:text-base">
+            {label}
+          </Text>
+          <View className="xs:mt-1 flex-row items-center sm:mt-1.5 md:mt-2">
+            <Animated.View
+              style={animatedStyle}
+              className="xs:h-1.5 rounded-full sm:h-2 md:h-2.5"
+            />
           </View>
         </View>
 
-        <View className="h-1 w-full overflow-hidden rounded-full bg-gray-100">
-          <View className="flex-row">{renderSegments()}</View>
+        <View className="xs:ml-2 flex-row items-center sm:ml-2.5 md:ml-3">
+          <Pressable
+            onPress={onDecrease}
+            disabled={points === 0}
+            className="xs:p-1 rounded-full sm:p-1.5 md:p-2">
+            <MaterialIcons
+              name="remove-circle-outline"
+              size={layout.width < 380 ? 20 : layout.width < 420 ? 22 : 24}
+              color={points === 0 ? theme.colors.text.light : color}
+            />
+          </Pressable>
+
+          <Text className="xs:w-6 xs:text-xs text-center font-medium sm:w-7 sm:text-sm md:w-8 md:text-base">
+            {points}
+          </Text>
+
+          <Pressable
+            onPress={onIncrease}
+            disabled={points === maxPoints || remainingPoints === 0}
+            className="xs:p-1 rounded-full sm:p-1.5 md:p-2">
+            <MaterialIcons
+              name="add-circle-outline"
+              size={layout.width < 380 ? 20 : layout.width < 420 ? 22 : 24}
+              color={
+                points === maxPoints || remainingPoints === 0 ? theme.colors.text.light : color
+              }
+            />
+          </Pressable>
         </View>
       </View>
     );

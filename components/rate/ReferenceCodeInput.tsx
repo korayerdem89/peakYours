@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, TextInput, Pressable } from 'react-native';
+import { View, TextInput, Pressable, useWindowDimensions } from 'react-native';
 import Animated, {
   useAnimatedStyle,
   withSpring,
@@ -27,7 +27,7 @@ export function ReferenceCodeInput({
   isLoading,
 }: ReferenceCodeInputProps) {
   const { t } = useTranslation();
-
+  const layout = useWindowDimensions();
   const containerStyle = useAnimatedStyle(() => ({
     transform: [
       {
@@ -39,16 +39,24 @@ export function ReferenceCodeInput({
   return (
     <Animated.View
       style={[containerStyle]}
-      className="mx-3 flex-row items-center rounded-xl bg-surface-light p-3 dark:bg-surface-dark">
+      className="xs:mx-2 xs:p-2 sm:mx-2.5 sm:p-2.5 md:mx-3 md:p-3 flex-row items-center rounded-xl bg-surface-light dark:bg-surface-dark">
       {value.length > 0 ? (
         <Animated.View entering={FadeIn.duration(200)} exiting={FadeOut.duration(200)}>
           <Pressable onPress={onClear}>
-            <MaterialIcons name="cancel" size={24} color={theme.colors.secondary.default} />
+            <MaterialIcons 
+              name="cancel" 
+              size={layout.width < 380 ? 20 : layout.width < 420 ? 22 : 24} 
+              color={theme.colors.secondary.default} 
+            />
           </Pressable>
         </Animated.View>
       ) : (
         <Animated.View entering={FadeIn.duration(200)} exiting={FadeOut.duration(200)}>
-          <MaterialIcons name="search" size={20} color={theme.colors.secondary.default} />
+          <MaterialIcons 
+            name="search" 
+            size={layout.width < 380 ? 16 : layout.width < 420 ? 18 : 20} 
+            color={theme.colors.secondary.default} 
+          />
         </Animated.View>
       )}
 
@@ -59,7 +67,7 @@ export function ReferenceCodeInput({
         maxLength={6}
         autoFocus={true}
         editable={!isLoading}
-        className="flex-1 pl-3 font-regular text-sm text-text-light dark:text-text-dark"
+        className="flex-1 xs:pl-2 sm:pl-2.5 md:pl-3 xs:text-xs sm:text-sm md:text-base font-regular text-text-light dark:text-text-dark"
         placeholderTextColor={theme.colors.text.light}
         autoCapitalize="characters"
       />

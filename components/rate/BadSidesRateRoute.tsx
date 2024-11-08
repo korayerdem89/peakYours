@@ -42,12 +42,16 @@ export function BadSidesRateRoute() {
   }, []);
 
   return (
-    <Animated.View entering={FadeInDown.duration(300).springify()} className="flex-1 p-4">
-      <View className="mb-6 flex-row items-center justify-between rounded-xl bg-surface-light p-3 dark:bg-surface-dark">
-        <Text className="font-medium text-base text-text-light dark:text-text-dark">
+    <Animated.View
+      entering={FadeInDown.duration(300).springify()}
+      className="xs:p-2 flex-1 sm:p-3 md:p-4">
+      <View className="xs:mb-4 xs:p-2 flex-row items-center justify-between rounded-xl bg-surface-light dark:bg-surface-dark sm:mb-5 sm:p-2.5 md:mb-6 md:p-3">
+        <Text className="xs:text-sm font-medium text-text-light dark:text-text-dark sm:text-base md:text-lg">
           {t('personality.rating.remainingPoints')}
         </Text>
-        <Text className="font-semibold text-lg text-secondary-dark">{remainingPoints}</Text>
+        <Text className="xs:text-base font-semibold text-secondary-dark sm:text-lg md:text-xl">
+          {remainingPoints}
+        </Text>
       </View>
 
       {traits.map((trait, index) => (
@@ -69,8 +73,8 @@ export function BadSidesRateRoute() {
           /* Handle save */
         }}
         disabled={remainingPoints !== 0}
-        className="bg-primary-default mt-4 rounded-xl p-4 opacity-90 disabled:opacity-50">
-        <Text className="text-center font-semibold text-white">
+        className="xs:mt-3 xs:p-2.5 bg-primary-default rounded-xl opacity-90 disabled:opacity-50 sm:mt-3.5 sm:p-3 md:mt-4 md:p-4">
+        <Text className="xs:text-sm text-center font-semibold text-white sm:text-base md:text-lg">
           {t('personality.rating.submit')}
         </Text>
       </Pressable>
