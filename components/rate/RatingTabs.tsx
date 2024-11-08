@@ -26,7 +26,7 @@ export function RatingTabs({ activeTab, onTabChange, disabled }: RatingTabsProps
   }));
 
   return (
-    <View className="mx-4 mt-6 overflow-hidden rounded-xl bg-surface-light dark:bg-surface-dark">
+    <View className="mx-3 mt-4 overflow-hidden rounded-lg bg-surface-light dark:bg-surface-dark">
       <View className="flex-row">
         <Pressable
           onPress={() => {
@@ -35,9 +35,9 @@ export function RatingTabs({ activeTab, onTabChange, disabled }: RatingTabsProps
               indicatorPosition.value = 0;
             }
           }}
-          className="flex-1 items-center py-4"
+          className="flex-1 items-center py-3"
           style={{ opacity: disabled ? 0.5 : 1 }}>
-          <Text className="font-poppins-medium text-base text-text-light dark:text-text-dark">
+          <Text className="font-poppins-medium text-sm text-text-light dark:text-text-dark">
             Good Sides
           </Text>
         </Pressable>
@@ -49,9 +49,9 @@ export function RatingTabs({ activeTab, onTabChange, disabled }: RatingTabsProps
               indicatorPosition.value = 1;
             }
           }}
-          className="flex-1 items-center py-4"
+          className="flex-1 items-center py-3"
           style={{ opacity: disabled ? 0.5 : 1 }}>
-          <Text className="font-poppins-medium text-base text-text-light dark:text-text-dark">
+          <Text className="font-poppins-medium text-sm text-text-light dark:text-text-dark">
             Bad Sides
           </Text>
         </Pressable>

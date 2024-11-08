@@ -39,7 +39,7 @@ export function ReferenceCodeInput({
   return (
     <Animated.View
       style={[containerStyle]}
-      className="mx-4 flex-row items-center rounded-2xl bg-surface-light p-4 dark:bg-surface-dark">
+      className="mx-3 flex-row items-center rounded-xl bg-surface-light p-3 dark:bg-surface-dark">
       {value.length > 0 ? (
         <Animated.View entering={FadeIn.duration(200)} exiting={FadeOut.duration(200)}>
           <Pressable onPress={onClear}>
@@ -48,18 +48,20 @@ export function ReferenceCodeInput({
         </Animated.View>
       ) : (
         <Animated.View entering={FadeIn.duration(200)} exiting={FadeOut.duration(200)}>
-          <MaterialIcons name="search" size={24} color={theme.colors.secondary.default} />
+          <MaterialIcons name="search" size={20} color={theme.colors.secondary.default} />
         </Animated.View>
       )}
 
       <AnimatedTextInput
-        value={value}
-        onChangeText={(text) => onChangeText(text.slice(0, 6))}
+        value={value.toUpperCase()}
+        onChangeText={(text) => onChangeText(text.toUpperCase().slice(0, 6))}
         placeholder={t('personality.rating.enterRefCode')}
         maxLength={6}
+        autoFocus={true}
         editable={!isLoading}
-        className="flex-1 pl-4 font-regular text-base text-text-light dark:text-text-dark"
+        className="flex-1 pl-3 font-regular text-sm text-text-light dark:text-text-dark"
         placeholderTextColor={theme.colors.text.light}
+        autoCapitalize="characters"
       />
 
       {isLoading && (

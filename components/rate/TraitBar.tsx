@@ -66,56 +66,53 @@ export const TraitBar = memo(
     };
 
     return (
-      <View className="mb-4">
-        {/* Header Section */}
-        <View className="mb-2 flex-row items-center justify-between">
-          <View className="flex-row items-center gap-2">
-            <Text className="font-semibold text-sm" style={{ color }} numberOfLines={1}>
+      <View className="mb-3">
+        <View className="mb-0.5 flex-row items-center justify-between">
+          <View className="flex-row items-center gap-1">
+            <Text className="text-2xs font-medium" style={{ color }} numberOfLines={1}>
               {label}
             </Text>
-            <Text className="text-xs text-gray-500">
+            <Text className="text-[8px] text-gray-500">
               {points}/{maxPoints}
             </Text>
           </View>
 
-          {/* Controls Section */}
-          <View className="flex-row items-center gap-4 rounded-full bg-gray-50 px-2 py-1">
+          <View className="flex-row items-center gap-1.5 rounded-full bg-gray-50 px-1 py-0.5">
             <AnimatedPressable
               onPress={onDecrease}
               disabled={points === 0}
-              hitSlop={16}
+              hitSlop={8}
               style={[
                 {
-                  padding: 6,
-                  borderRadius: 16,
+                  padding: 3,
+                  borderRadius: 10,
                 },
                 decreaseButtonStyle,
               ]}>
-              <MaterialIcons name="remove-circle-outline" size={22} color={color} />
+              <MaterialIcons name="remove-circle-outline" size={16} color={color} />
             </AnimatedPressable>
 
-            <Text className="w-8 text-center font-bold text-base" style={{ color }}>
+            <Text className="w-5 text-center font-bold text-xs" style={{ color }}>
               {points}
             </Text>
 
             <AnimatedPressable
               onPress={onIncrease}
               disabled={points === maxPoints || remainingPoints === 0}
-              hitSlop={16}
+              hitSlop={12}
               style={[
                 {
-                  padding: 6,
-                  borderRadius: 16,
+                  padding: 4,
+                  borderRadius: 12,
                 },
                 increaseButtonStyle,
               ]}>
-              <MaterialIcons name="add-circle-outline" size={22} color={color} />
+              <MaterialIcons name="add-circle-outline" size={18} color={color} />
             </AnimatedPressable>
           </View>
         </View>
 
-        {/* Progress Bar */}
-        <View className="h-2 w-full overflow-hidden rounded-full bg-gray-100">
+        <View className="h-1 w-full overflow-hidden rounded-full bg-gray-100">
           <View className="flex-row">{renderSegments()}</View>
         </View>
       </View>

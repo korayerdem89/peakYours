@@ -41,12 +41,12 @@ export const GoodSidesRateRoute = memo(() => {
   }, []);
 
   return (
-    <View className="flex-1 p-4">
-      <View className="mb-6 flex-row items-center justify-between rounded-xl bg-surface-light p-3 dark:bg-surface-dark">
-        <Text className="font-medium text-base text-text-light dark:text-text-dark">
+    <View className="flex-1 px-3 py-2">
+      <View className="mb-3 flex-row items-center justify-between rounded-lg bg-surface-light p-2 dark:bg-surface-dark">
+        <Text className="font-medium text-sm text-text-light dark:text-text-dark">
           {t('personality.rating.remainingPoints')}
         </Text>
-        <Text className="font-semibold text-lg text-secondary-dark">{remainingPoints}</Text>
+        <Text className="font-semibold text-base text-secondary-dark">{remainingPoints}</Text>
       </View>
 
       {traits.map((trait, index) => (
@@ -68,8 +68,8 @@ export const GoodSidesRateRoute = memo(() => {
           /* Handle save */
         }}
         disabled={remainingPoints !== 0}
-        className="bg-primary-default mt-4 rounded-xl p-4 opacity-90 disabled:opacity-50">
-        <Text className="text-center font-semibold text-white">
+        className="bg-primary-default mt-3 rounded-lg p-3 opacity-90 disabled:opacity-50">
+        <Text className="text-center font-semibold text-sm text-white">
           {t('personality.rating.submit')}
         </Text>
       </Pressable>
