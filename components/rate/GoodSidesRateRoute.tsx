@@ -54,49 +54,46 @@ export const GoodSidesRateRoute = memo(({ referenceCode }: GoodSidesRateRoutePro
 
   const handleSubmit = async () => {
     if (!user?.uid || remainingPoints !== 0) return;
+
     try {
-      console.log('trying');
       setIsLoading(true);
       await RatingService.saveRating(referenceCode, user.uid, traits, 'goodsides');
+
       setIsSubmitted(true);
       setShowReset(true);
+
       Toast.show({
         type: 'success',
-        text1: t('personality.rating.saveSuccess'),
+        text1: t('personality.rating.success'),
+        text2: t('personality.rating.successMessage'),
+        position: 'bottom',
+        visibilityTime: 3000,
       });
     } catch (error) {
       Toast.show({
         type: 'error',
         text1: t('common.error'),
-        text2: t('personality.rating.saveError'),
+        text2: t('personality.rating.errorMessage'),
+        position: 'bottom',
+        visibilityTime: 4000,
       });
     } finally {
       setIsLoading(false);
     }
   };
 
-  const handleReset = async () => {
-    if (!user?.uid) return;
+  const handleReset = () => {
+    setTraits(traits.map((trait) => ({ ...trait, points: 0 })));
+    setIsSubmitted(false);
+    setShowReset(false);
 
-    try {
-      setIsLoading(true);
-      await RatingService.deleteRating(referenceCode, user.uid, 'goodsides');
-      setTraits(traits.map((trait) => ({ ...trait, points: 0 })));
-      setIsSubmitted(false);
-      setShowReset(false);
-      Toast.show({
-        type: 'success',
-        text1: t('personality.rating.ratingDeleted'),
-      });
-    } catch (error) {
-      Toast.show({
-        type: 'error',
-        text1: t('common.error'),
-        text2: t('personality.rating.deleteError'),
-      });
-    } finally {
-      setIsLoading(false);
-    }
+    Toast.show({
+      type: 'info',
+      text1: t('personality.rating.reset'),
+      text2: t('personality.rating.resetMessage'),
+      position: 'bottom',
+      visibilityTime: 2000,
+    });
   };
 
   return (
@@ -126,6 +123,11 @@ export const GoodSidesRateRoute = memo(({ referenceCode }: GoodSidesRateRoutePro
         title={t('personality.rating.complete')}
         onPress={handleSubmit}
         disabled={remainingPoints !== 0 || isSubmitted || isLoading}
+        className={`${
+          remainingPoints !== 0 || isSubmitted || isLoading
+            ? 'bg-gray-300 dark:bg-gray-600'
+            : 'bg-primary-default'
+        }`}
       />
 
       <Pressable
@@ -138,8 +140,8 @@ export const GoodSidesRateRoute = memo(({ referenceCode }: GoodSidesRateRoutePro
       </Pressable>
 
       {showReset && (
-        <Pressable onPress={handleReset} className="xs:mt-2 sm:mt-2.5 md:mt-3">
-          <Text className="xs:text-xs text-center font-medium text-secondary-dark sm:text-sm md:text-base">
+        <Pressable onPress={handleReset} className="mt-4 items-center">
+          <Text className="font-medium text-secondary-dark">
             {t('personality.rating.rateAgain')}
           </Text>
         </Pressable>
