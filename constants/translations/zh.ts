@@ -83,6 +83,7 @@ export default {
       enterRefCode: '输入6位参考代码',
       userNotFound: '未找到用户',
       close: '关闭',
+      remainingPoints: '剩余点数',
     },
     level: '等级',
     positiveTraits: '积极的性格特征',

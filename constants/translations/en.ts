@@ -101,6 +101,7 @@ export default {
       enterRefCode: 'Enter 6-digit reference code',
       userNotFound: 'User not found',
       close: 'Close',
+      remainingPoints: 'Remaining Points',
     },
     level: 'Level',
     positiveTraits: 'Your Strengths',

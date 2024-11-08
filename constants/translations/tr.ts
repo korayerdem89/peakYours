@@ -101,6 +101,7 @@ export default {
       enterRefCode: '6 haneli referans kodunu girin',
       userNotFound: 'Kullanıcı bulunamadı',
       close: 'Kapat',
+      remainingPoints: 'Kalan Puanlar',
     },
     level: 'Seviye',
     positiveTraits: 'Güçlü Yönleriniz',

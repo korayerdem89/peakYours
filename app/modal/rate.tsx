@@ -15,35 +15,10 @@ import { router } from 'expo-router';
 import { RefCode } from '@/types/refCode';
 import { UserData } from '@/types/user';
 import { Image as RNImage } from 'react-native';
+import { GoodSidesRateRoute } from '@/components/rate/GoodSidesRateRoute';
+import { BadSidesRateRoute } from '@/components/rate/BadSidesRateRoute';
 
 const DEFAULT_AVATAR = 'https://ui-avatars.com/api/?background=random';
-
-// Tab içerikleri için geçici komponentler
-const GoodSidesRateRoute = () => {
-  const { t } = useTranslation();
-  return (
-    <ScrollView className="flex-1">
-      <View className="m-2 rounded-2xl bg-white p-6 pb-12 dark:bg-gray-300">
-        <Text className="font-regular text-base text-text-light dark:text-text-dark">
-          {t('personality.rating.goodSidesContent')}
-        </Text>
-      </View>
-    </ScrollView>
-  );
-};
-
-const BadSidesRateRoute = () => {
-  const { t } = useTranslation();
-  return (
-    <ScrollView className="flex-1">
-      <View className="m-2 rounded-2xl bg-white p-6 pb-12 dark:bg-gray-300">
-        <Text className="font-regular text-base text-text-light dark:text-text-dark">
-          {t('personality.rating.badSidesContent')}
-        </Text>
-      </View>
-    </ScrollView>
-  );
-};
 
 export default function RateScreen() {
   const { t, locale } = useTranslation();
@@ -64,42 +39,51 @@ export default function RateScreen() {
     [locale, t]
   );
 
-  const renderScene = SceneMap({
-    goodsides: GoodSidesRateRoute,
-    badsides: BadSidesRateRoute,
-  });
+  const renderScene = useMemo(
+    () =>
+      SceneMap({
+        goodsides: GoodSidesRateRoute,
+        badsides: BadSidesRateRoute,
+      }),
+    []
+  );
 
-  const renderTabBar = (props: TabViewProps) => (
-    <TabBar
-      {...props}
-      indicatorStyle={{
-        backgroundColor:
-          colorScheme === 'dark' ? theme.colors.accent.light : theme.colors.secondary.dark,
-      }}
-      style={{
-        backgroundColor: colorScheme === 'dark' ? '#131A2A' : '#FAFAFA',
-        opacity: userNotFound || isLoading ? 0.5 : 1,
-      }}
-      tabStyle={{
-        width: layout.width / 2,
-        flex: 1,
-      }}
-      labelStyle={{
-        fontFamily: 'Poppins_600SemiBold',
-        textTransform: 'none',
-        width: '100%',
-        textAlign: 'center',
-      }}
-      activeColor={colorScheme === 'dark' ? theme.colors.accent.light : theme.colors.secondary.dark}
-      inactiveColor={colorScheme === 'dark' ? '#C5CEE0' : '#8F9BB3'}
-      pressColor="transparent"
-      scrollEnabled={false}
-      onTabPress={({ preventDefault }) => {
-        if (userNotFound || isLoading) {
-          preventDefault();
+  const renderTabBar = useMemo(
+    () => (props: TabViewProps) => (
+      <TabBar
+        {...props}
+        indicatorStyle={{
+          backgroundColor:
+            colorScheme === 'dark' ? theme.colors.accent.light : theme.colors.secondary.dark,
+        }}
+        style={{
+          backgroundColor: colorScheme === 'dark' ? '#131A2A' : '#FAFAFA',
+          opacity: userNotFound || isLoading ? 0.5 : 1,
+        }}
+        tabStyle={{
+          width: layout.width / 2,
+          flex: 1,
+        }}
+        labelStyle={{
+          fontFamily: 'Poppins_600SemiBold',
+          textTransform: 'none',
+          width: '100%',
+          textAlign: 'center',
+        }}
+        activeColor={
+          colorScheme === 'dark' ? theme.colors.accent.light : theme.colors.secondary.dark
         }
-      }}
-    />
+        inactiveColor={colorScheme === 'dark' ? '#C5CEE0' : '#8F9BB3'}
+        pressColor="transparent"
+        scrollEnabled={false}
+        onTabPress={({ preventDefault }) => {
+          if (userNotFound || isLoading) {
+            preventDefault();
+          }
+        }}
+      />
+    ),
+    [colorScheme, layout.width, userNotFound, isLoading]
   );
 
   const formatDisplayName = (displayName: string | null) => {
@@ -154,9 +138,13 @@ export default function RateScreen() {
     setUserData(null);
   };
 
-  const initialLayout = {
-    width: layout.width,
-  };
+  const initialLayout = useMemo(
+    () => ({
+      width: layout.width,
+      height: 0,
+    }),
+    [layout.width]
+  );
 
   const handleClose = () => {
     router.back();
@@ -165,10 +153,10 @@ export default function RateScreen() {
   return (
     <SafeAreaView className="flex-1 bg-background-light dark:bg-background-dark">
       <View className="flex-1 p-4">
-        <View>
+        <View className="">
           <Pressable
             onPress={handleClose}
-            className="mb-4 w-full items-end"
+            className="w-full items-end"
             hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}>
             <AntDesign
               name="closecircleo"
@@ -179,7 +167,7 @@ export default function RateScreen() {
           <Text className="text-center font-semibold text-lg text-primary-dark dark:text-primary-dark">
             {t('personality.rating.rateFriends')}
           </Text>
-          <Text className="mt-2 text-center font-regular text-sm text-text-light-secondary dark:text-text-dark-secondary">
+          <Text className="mb-2 text-center font-regular text-sm text-text-light-secondary dark:text-text-dark-secondary">
             {t('personality.rating.description')}
           </Text>
 
@@ -219,6 +207,8 @@ export default function RateScreen() {
               initialLayout={initialLayout}
               style={{ flex: 1 }}
               swipeEnabled={true}
+              lazy={false}
+              animationEnabled={true}
             />
           </View>
         )}

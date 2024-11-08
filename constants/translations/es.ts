@@ -90,6 +90,7 @@ export default {
       enterRefCode: 'Ingrese el código de referencia de 6 dígitos',
       userNotFound: 'Usuario no encontrado',
       close: 'Cerrar',
+      remainingPoints: 'Puntos Restantes',
     },
     level: 'Nivel',
     positiveTraits: 'Rasgos Positivos de Personalidad',
