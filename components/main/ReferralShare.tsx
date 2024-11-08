@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Pressable, Share } from 'react-native';
+import { View, Text, Pressable, Share, useWindowDimensions } from 'react-native';
 import { useTranslation } from '@/providers/LanguageProvider';
 import { useAuth } from '@/store/useAuth';
 import { MaterialIcons } from '@expo/vector-icons';
@@ -8,6 +8,7 @@ import { theme } from '@/constants/theme';
 export default function ReferralShare() {
   const { t, locale } = useTranslation();
   const { user } = useAuth();
+  const layout = useWindowDimensions();
 
   const handleShare = async () => {
     if (!user?.refCodes) return;
@@ -25,7 +26,7 @@ export default function ReferralShare() {
   return (
     <Pressable
       onPress={handleShare}
-      className="mt-2 flex-row items-center justify-center rounded-2xl border border-secondary-dark bg-[#eaf0fd] p-4 dark:bg-surface-dark"
+      className="xs:mt-1 xs:p-2 flex-row items-center justify-center rounded-xl border border-secondary-dark bg-[#eaf0fd] dark:bg-surface-dark sm:mt-1.5 sm:p-2.5 md:mt-2 md:p-3"
       style={({ pressed }) => ({
         transform: [{ scale: pressed ? 0.98 : 1 }],
         shadowColor: theme.colors.secondary.default,
@@ -34,17 +35,21 @@ export default function ReferralShare() {
         shadowRadius: 4,
         elevation: 3,
       })}>
-      <View className="flex-row items-center justify-center gap-2">
+      <View className="xs:gap-1 flex-row items-center justify-center sm:gap-1.5 md:gap-2">
         <MaterialIcons
           name="share"
-          size={24}
+          size={layout.width < 380 ? 16 : layout.width < 420 ? 18 : 20}
           color={theme.colors.secondary.default}
           style={{ transform: [{ rotate: '-5deg' }] }}
         />
-        <Text className="text-secondary-default font-poppins-semibold text-base text-secondary-dark">
+        <Text className="xs:text-xs font-medium text-secondary-dark sm:text-sm md:text-base">
           {t('personality.referral.shareButton')}
         </Text>
-        <MaterialIcons name="arrow-forward-ios" size={20} color={theme.colors.secondary.default} />
+        <MaterialIcons
+          name="arrow-forward-ios"
+          size={layout.width < 380 ? 14 : layout.width < 420 ? 16 : 18}
+          color={theme.colors.secondary.default}
+        />
       </View>
     </Pressable>
   );

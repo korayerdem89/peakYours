@@ -131,7 +131,7 @@ export default function BadSidesRoute() {
   };
 
   return (
-    <View className="xs:m-1 rounded-xl bg-white dark:bg-gray-300 sm:m-1.5 md:m-2">
+    <View className="xs:m-1 rounded-sm bg-white dark:bg-gray-300 sm:m-2 md:m-3">
       <View className="xs:p-2 xs:pb-4 sm:p-3 sm:pb-6 md:p-4 md:pb-8">
         <Text className="xs:text-base xs:mb-1.5 font-semibold text-gray-800 sm:mb-2 sm:text-lg md:mb-3 md:text-xl">
           {t('personality.negativeTraitsTitle')} 🎯

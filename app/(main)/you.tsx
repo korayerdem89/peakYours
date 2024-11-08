@@ -59,13 +59,12 @@ export default function YouScreen() {
         backgroundColor: colorScheme === 'dark' ? '#131A2A' : '#FAFAFA',
       }}
       tabStyle={{
+        width: layout.width / 2,
         flex: 1,
-        paddingHorizontal: 0,
       }}
       labelStyle={{
         fontFamily: 'Poppins_600SemiBold',
         textTransform: 'none',
-        fontSize: layout.width < 380 ? 13 : layout.width < 420 ? 14 : 16,
         width: '100%',
         textAlign: 'center',
       }}
@@ -89,18 +88,17 @@ export default function YouScreen() {
 
   return (
     <SafeAreaView className="flex-1 bg-background-tab dark:bg-background-dark">
-      <View className="xs:px-2 flex-1 sm:px-3 md:px-4 lg:px-5">
+      <View className="p-2">
         <QuoteCard />
-        <TabView
-          navigationState={{ index, routes }}
-          renderScene={renderScene}
-          onIndexChange={setIndex}
-          initialLayout={initialLayout}
-          renderTabBar={renderTabBar}
-          lazy={false}
-          style={{ marginTop: layout.width < 380 ? 8 : layout.width < 420 ? 12 : 16 }}
-        />
       </View>
+      <TabView
+        navigationState={{ index, routes }}
+        renderScene={renderScene}
+        onIndexChange={setIndex}
+        initialLayout={initialLayout}
+        renderTabBar={renderTabBar}
+        lazy={false}
+      />
     </SafeAreaView>
   );
 }
