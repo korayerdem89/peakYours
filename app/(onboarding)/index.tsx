@@ -175,7 +175,7 @@ const styles = StyleSheet.create({
   },
   image: {
     width: SCREEN_WIDTH * 0.8,
-    height: SCREEN_WIDTH * 0.8,
+    height: SCREEN_WIDTH * 0.81,
     borderRadius: theme.borderRadius.lg,
     resizeMode: 'cover',
     ...theme.shadows.md,
