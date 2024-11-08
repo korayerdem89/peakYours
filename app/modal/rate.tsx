@@ -1,11 +1,11 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useCallback } from 'react';
 import { View, Text, ScrollView, useWindowDimensions, Pressable } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTranslation } from '@/providers/LanguageProvider';
 import { ReferenceCodeInput } from '@/components/rate/ReferenceCodeInput';
 import { UserNotFound } from '@/components/rate/UserNotFound';
 import Animated, { FadeIn } from 'react-native-reanimated';
-import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
+import { TabView, SceneMap, TabBar, Route } from 'react-native-tab-view';
 import { useColorScheme } from 'nativewind';
 import { theme } from '@/constants/theme';
 import { TabViewProps } from '@/types';
@@ -39,13 +39,18 @@ export default function RateScreen() {
     [locale, t]
   );
 
-  const renderScene = useMemo(
-    () =>
-      SceneMap({
-        goodsides: GoodSidesRateRoute,
-        badsides: BadSidesRateRoute,
-      }),
-    []
+  const renderScene = useCallback(
+    ({ route }: { route: Route }) => {
+      switch (route.key) {
+        case 'goodsides':
+          return <GoodSidesRateRoute referenceCode={referenceCode} />;
+        case 'badsides':
+          return <BadSidesRateRoute referenceCode={referenceCode} />;
+        default:
+          return null;
+      }
+    },
+    [referenceCode]
   );
 
   const renderTabBar = useMemo(
@@ -183,10 +188,10 @@ export default function RateScreen() {
           {userData && !isLoading && (
             <Animated.View
               entering={FadeIn.duration(200)}
-              className="mt-4 flex-row items-center rounded-2xl bg-surface-light p-4 dark:bg-surface-dark">
+              className="mt-2 flex-row items-center rounded-2xl bg-surface-light p-3 dark:bg-surface-dark">
               <RNImage
                 source={{ uri: userData.photoURL || DEFAULT_AVATAR }}
-                className="h-12 w-12 rounded-full bg-gray-200"
+                className="h-10 w-10 rounded-full bg-gray-200"
               />
               <Text className="font-poppins-medium ml-3 text-base text-text-light dark:text-text-dark">
                 {t('personality.rating.rateUser', {
