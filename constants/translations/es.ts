@@ -106,7 +106,7 @@ export default {
     },
     referral: {
       title: 'Comparte tu Perfil',
-      shareButton: 'Compartir Código de Referencia',
+      shareButton: 'Comparte Tu Código de Referencia',
       shareTitle: 'Compartir Código de Referencia',
       shareMessage: 'Califica mi personalidad usando mi código de referencia: %{code}',
       description:

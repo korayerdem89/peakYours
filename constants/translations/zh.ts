@@ -99,7 +99,7 @@ export default {
     },
     referral: {
       title: '分享您的个人资料',
-      shareButton: '分享参考代码',
+      shareButton: '分享您的参考代码',
       shareTitle: '分享参考代码',
       shareMessage: '使用我的参考代码评价我的性格：%{code}',
       description: '让您的朋友评价您的性格特征，获得真实反馈',

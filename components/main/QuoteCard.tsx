@@ -18,10 +18,8 @@ export default function QuoteCard() {
   }, []);
 
   return (
-    <LinearGradient
-      colors={['#7C4DFF20', '#7C4DFF10']}
-      className="mb-1 overflow-hidden rounded-md p-0.5">
-      <View className="rounded-md bg-surface-light px-4 py-2 dark:bg-surface-dark">
+    <LinearGradient colors={['#7C4DFF20', '#7C4DFF10']} className="  overflow-hidden rounded-sm">
+      <View className="rounded-sm bg-surface-light p-2 dark:bg-surface-dark">
         <View className="mb-1 flex-row items-center">
           <View className="mr-1 rounded-full bg-primary-light/20 p-1.5 dark:bg-primary-dark/20">
             <Feather
