@@ -126,6 +126,16 @@ export default {
       inviteText: 'Let your friends evaluate your personality!',
     },
     negativeTraitsTitle: 'Areas to Improve',
+    details: {
+      title: 'Rating Details',
+      description: '%{count} people rated you',
+      viewAll: 'View All Ratings',
+      noRatings: 'No ratings yet',
+      ratedBy: 'Rated By',
+      ratedAt: 'Date',
+      modalTitle: 'Rating History',
+      modalDescription: 'View all ratings given to you',
+    },
   },
   zodiac: {
     modalTitle: 'Select Your Zodiac Sign',

@@ -8,13 +8,17 @@ import Animated, {
   withRepeat,
   withSpring,
 } from 'react-native-reanimated';
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import { Text } from 'react-native';
 import { useTranslation } from '@/providers/LanguageProvider';
 import { theme } from '@/constants/theme';
-import ReferralShare from './ReferralShare';
 import { router } from 'expo-router';
-import { AntDesign, MaterialIcons } from '@expo/vector-icons';
+import { useTraitAverages } from '@/hooks/useTraitAverages';
+import { useAuth } from '@/store/useAuth';
+import { useUserData } from '@/hooks/useUserQueries';
+import { useTraitDetails } from '@/hooks/useTraitDetails';
+import { MaterialIcons } from '@expo/vector-icons';
+import ReferralShare from './ReferralShare';
 
 interface TraitBarProps {
   trait: string;
@@ -65,85 +69,97 @@ function TraitBar({ trait, value, color, delay }: TraitBarProps) {
 
 export default function BadSidesRoute() {
   const { t } = useTranslation();
+  const { user } = useAuth();
+  const { data: userData } = useUserData(user?.uid);
+  const { data: traitAverages } = useTraitAverages(userData?.refCodes?.en, 'badsides');
+  const { data: traitDetails } = useTraitDetails(userData?.refCodes?.en, 'badsides');
   const layout = useWindowDimensions();
   const shakeAnimation = useSharedValue(0);
 
-  // Renk paleti (koyudan açığa)
   const colorPalette = [
-    '#D94141', // En koyu kırmızı
+    '#D94141',
     '#D96448',
     '#D97650',
     '#D98E62',
     '#D99777',
     '#D9A18B',
-    '#D9AB9F', // En açık kırmızı
+    '#D9AB9F',
   ];
 
-  // Rastgele değerlerle traits oluştur
-  const unsortedTraits = [
-    { trait: 'stubborn', value: Math.floor(Math.random() * 100) },
-    { trait: 'impatient', value: Math.floor(Math.random() * 100) },
-    { trait: 'moody', value: Math.floor(Math.random() * 100) },
-    { trait: 'arrogant', value: Math.floor(Math.random() * 100) },
-    { trait: 'jealous', value: Math.floor(Math.random() * 100) },
-    { trait: 'lazy', value: Math.floor(Math.random() * 100) },
-    { trait: 'careless', value: Math.floor(Math.random() * 100) },
-  ];
-
-  // Value değerine göre sırala ve renkleri ata
-  const traits = unsortedTraits
-    .sort((a, b) => b.value - a.value) // Büyükten küçüğe sırala
-    .map((trait, index) => ({
-      ...trait,
-      color: colorPalette[index], // Sıralamaya göre renk ata
-    }));
-
-  const animatedStyle = useAnimatedStyle(() => {
-    return {
-      transform: [
-        {
-          translateX: withSpring(shakeAnimation.value * 4, {
-            damping: 2,
-            stiffness: 400,
-          }),
-        },
-      ],
-    };
-  });
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      shakeAnimation.value = withRepeat(
-        withSequence(
-          withTiming(1, { duration: 100 }),
-          withTiming(-1, { duration: 100 }),
-          withTiming(0, { duration: 100 })
-        ),
-        3
-      );
-    }, 10000);
-
-    return () => clearInterval(interval);
-  }, []);
-
-  const handleRatePress = () => {
-    router.push('/modal/rate');
-  };
+  const traits = useMemo(
+    () => [
+      {
+        trait: 'stubborn',
+        color: colorPalette[0],
+        value: traitAverages?.find((t) => t.trait === 'stubborn')?.averagePoints || 0,
+      },
+      {
+        trait: 'impatient',
+        color: colorPalette[1],
+        value: traitAverages?.find((t) => t.trait === 'impatient')?.averagePoints || 0,
+      },
+      {
+        trait: 'moody',
+        color: colorPalette[2],
+        value: traitAverages?.find((t) => t.trait === 'moody')?.averagePoints || 0,
+      },
+      {
+        trait: 'arrogant',
+        color: colorPalette[3],
+        value: traitAverages?.find((t) => t.trait === 'arrogant')?.averagePoints || 0,
+      },
+      {
+        trait: 'jealous',
+        color: colorPalette[4],
+        value: traitAverages?.find((t) => t.trait === 'jealous')?.averagePoints || 0,
+      },
+      {
+        trait: 'lazy',
+        color: colorPalette[5],
+        value: traitAverages?.find((t) => t.trait === 'lazy')?.averagePoints || 0,
+      },
+      {
+        trait: 'careless',
+        color: colorPalette[6],
+        value: traitAverages?.find((t) => t.trait === 'careless')?.averagePoints || 0,
+      },
+    ],
+    [traitAverages]
+  );
 
   return (
     <View className="xs:m-1 rounded-sm bg-white dark:bg-gray-300 sm:m-2 md:m-3">
       <View className="xs:p-2 xs:pb-4 sm:p-3 sm:pb-6 md:p-4 md:pb-8">
-        <Text className="xs:text-base xs:mb-1.5 font-semibold text-gray-800 sm:mb-2 sm:text-lg md:mb-3 md:text-xl">
+        <Text className="xs:text-sm font-semibold text-gray-800 dark:text-gray-900 sm:text-base md:text-lg">
           {t('personality.negativeTraitsTitle')} 🎯
         </Text>
+        <View className="flex-row items-center justify-between">
+          <Text className="mt-1 text-xs text-gray-600 dark:text-gray-700 sm:text-sm">
+            {t('personality.details.description', { count: traitDetails?.totalRaters || 0 })}
+          </Text>
 
-        {/* TraitBar listesi */}
-
+          {traitDetails?.totalRaters ? (
+            <Pressable
+              onPress={() => router.push('/modal/TraitDetails?type=badsides')}
+              className="mt-2 flex-row items-center">
+              <Text className="font-medium text-xs text-primary-dark sm:text-sm">
+                {t('personality.details.viewAll')}
+              </Text>
+              <MaterialIcons
+                name="chevron-right"
+                size={16}
+                color={theme.colors.primary.dark}
+                style={{ marginLeft: 4 }}
+              />
+            </Pressable>
+          ) : null}
+        </View>
+        <View className="my-2 h-[1px] bg-gray-300 dark:bg-border-light" />
         {traits.map((trait, index) => (
           <TraitBar
             key={trait.trait}
             trait={trait.trait}
-            value={trait.value}
+            value={trait.value * 10}
             color={trait.color}
             delay={index * 150}
           />
@@ -161,12 +177,12 @@ export default function BadSidesRoute() {
           </Text>
         </View>
 
-        <Animated.View style={animatedStyle}>
+        <Animated.View>
           <Pressable
-            onPress={handleRatePress}
+            onPress={() => router.push('/modal/rate')}
             className="xs:mt-1 xs:p-2 flex-row items-center justify-center rounded-xl border border-primary-dark bg-[#f7f1ff] dark:bg-surface-dark sm:mt-1.5 sm:p-2.5 md:mt-2 md:p-3">
             <View className="xs:gap-1 flex-row items-center justify-center sm:gap-1.5 md:gap-2">
-              <AntDesign
+              <MaterialIcons
                 name="star"
                 size={layout.width < 380 ? 16 : layout.width < 420 ? 18 : 20}
                 color={theme.colors.primary.default}

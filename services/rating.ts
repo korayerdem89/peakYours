@@ -1,5 +1,5 @@
 import firestore, { FirebaseFirestoreTypes } from '@react-native-firebase/firestore';
-import { TraitAverages, RatingData, TraitRating } from '@/types/traits';
+import { TraitAverages, RatingData, TraitRating, TraitDetails } from '@/types/traits';
 
 export const RatingService = {
   async saveRating(
@@ -102,6 +102,53 @@ export const RatingService = {
       }));
     } catch (error) {
       console.error('Error fetching trait averages:', error);
+      throw error;
+    }
+  },
+
+  async getTraitDetails(
+    referenceCode: string,
+    type: 'goodsides' | 'badsides'
+  ): Promise<TraitDetails> {
+    try {
+      const ratingsRef = firestore().collection('refCodes').doc(referenceCode).collection(type);
+
+      const snapshot = await ratingsRef.get();
+
+      if (snapshot.empty) {
+        return {
+          totalRaters: 0,
+          userRatings: [],
+        };
+      }
+
+      const userRatings = snapshot.docs.map((doc) => {
+        const data = doc.data();
+        let ratedAt = new Date().toISOString();
+
+        if (data.createdAt) {
+          if (data.createdAt.toDate) {
+            ratedAt = data.createdAt.toDate().toISOString();
+          } else if (data.createdAt._seconds) {
+            ratedAt = new Date(data.createdAt._seconds * 1000).toISOString();
+          }
+        }
+
+        return {
+          userId: doc.id,
+          traits: data.traits || [],
+          ratedAt,
+        };
+      });
+
+      return {
+        totalRaters: userRatings.length,
+        userRatings: userRatings.sort(
+          (a, b) => new Date(b.ratedAt).getTime() - new Date(a.ratedAt).getTime()
+        ),
+      };
+    } catch (error) {
+      console.error('Error fetching trait details:', error);
       throw error;
     }
   },

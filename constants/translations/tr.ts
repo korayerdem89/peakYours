@@ -127,6 +127,16 @@ export default {
       inviteText: 'Dostlarınız sizi değerlendirsin!',
     },
     negativeTraitsTitle: 'Geliştirmen Gereken Yönler',
+    details: {
+      title: 'Değerlendirme Detayları',
+      description: '%{count} kişi sizi değerlendirdi',
+      viewAll: 'Tüm Değerlendirmeleri Gör',
+      noRatings: 'Henüz değerlendirme yapılmamış',
+      ratedBy: 'Değerlendiren',
+      ratedAt: 'Tarih',
+      modalTitle: 'Değerlendirme Geçmişi',
+      modalDescription: 'Size verilen tüm değerlendirmeleri görüntüleyin',
+    },
   },
   zodiac: {
     modalTitle: 'Burcunuzu Seçin',

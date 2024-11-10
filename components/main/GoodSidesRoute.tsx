@@ -18,6 +18,8 @@ import { AntDesign } from '@expo/vector-icons';
 import { useTraitAverages } from '@/hooks/useTraitAverages';
 import { useAuth } from '@/store/useAuth';
 import { useUserData } from '@/hooks/useUserQueries';
+import { useTraitDetails } from '@/hooks/useTraitDetails';
+import { MaterialIcons } from '@expo/vector-icons';
 
 interface TraitBarProps {
   trait: string;
@@ -71,6 +73,7 @@ export default function GoodSidesRoute() {
   const { user } = useAuth();
   const { data: userData } = useUserData(user?.uid);
   const { data: traitAverages } = useTraitAverages(userData?.refCodes?.en, 'goodsides');
+  const { data: traitDetails } = useTraitDetails(userData?.refCodes?.en, 'goodsides');
   const layout = useWindowDimensions();
   const shakeAnimation = useSharedValue(0);
 
@@ -156,10 +159,30 @@ export default function GoodSidesRoute() {
   return (
     <View className="xs:m-1 rounded-sm bg-white dark:bg-gray-300 sm:m-2 md:m-3">
       <View className="xs:p-2 xs:pb-4 sm:p-3 sm:pb-6 md:p-4 md:pb-8">
-        <Text className="xs:text-base xs:mb-1.5 font-semibold text-gray-800 sm:mb-2 sm:text-lg md:mb-3 md:text-xl">
+        <Text className="xs:text-sm font-semibold text-gray-800 dark:text-gray-900 sm:text-base md:text-lg">
           {t('personality.positiveTraits')} ✨
         </Text>
-
+        <View className="flex-row items-center justify-between">
+          <Text className="mt-1 text-xs text-gray-600 dark:text-gray-700 sm:text-sm">
+            {t('personality.details.description', { count: traitDetails?.totalRaters || 0 })}
+          </Text>
+          {traitDetails?.totalRaters ? (
+            <Pressable
+              onPress={() => router.push('/modal/TraitDetails?type=goodsides')}
+              className="mt-2 flex-row items-center">
+              <Text className="font-medium text-xs text-primary-dark sm:text-sm">
+                {t('personality.details.viewAll')}
+              </Text>
+              <MaterialIcons
+                name="chevron-right"
+                size={16}
+                color={theme.colors.primary.dark}
+                style={{ marginLeft: 4 }}
+              />
+            </Pressable>
+          ) : null}
+        </View>
+        <View className="my-2 h-[1px] bg-gray-300 dark:bg-border-light" />
         {traits.map((trait, index) => (
           <TraitBar
             key={trait.trait}

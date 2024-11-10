@@ -20,3 +20,14 @@ export interface RatingData {
   createdAt: FirebaseFirestoreTypes.FieldValue;
   updatedAt: FirebaseFirestoreTypes.FieldValue;
 }
+
+export interface UserRating {
+  userId: string;
+  traits: TraitRating[];
+  ratedAt: string;
+}
+
+export interface TraitDetails {
+  totalRaters: number;
+  userRatings: UserRating[];
+}
