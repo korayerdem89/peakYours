@@ -71,11 +71,11 @@ function Button({
         size === 'sm' && styles.smallButton,
         size === 'md' && styles.mediumButton,
         size === 'lg' && styles.largeButton,
-        disabled && styles.disabledButton,
         isDarkMode && styles.darkModeButton,
         !isDarkMode && variant !== 'outline' && { ...theme.shadows.md },
         animatedStyle,
         style,
+        disabled && styles.disabledButton,
       ]}
       {...props}>
       <Text

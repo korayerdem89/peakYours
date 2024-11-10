@@ -12,6 +12,7 @@ interface TraitBarProps {
   onDecrease: () => void;
   remainingPoints: number;
   label: string;
+  disabled?: boolean;
 }
 
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
@@ -26,27 +27,28 @@ export const TraitBar = memo(
     onDecrease,
     remainingPoints,
     label,
+    disabled = false,
   }: TraitBarProps) => {
     // Artı butonu için opacity animasyonu
     const increaseButtonStyle = useAnimatedStyle(
       () => ({
-        opacity: withTiming(points === maxPoints || remainingPoints === 0 ? 0.4 : 1, {
+        opacity: withTiming(disabled || points === maxPoints || remainingPoints === 0 ? 0.4 : 1, {
           duration: 200,
           easing: Easing.bezier(0.25, 0.1, 0.25, 1),
         }),
       }),
-      [points, remainingPoints]
+      [points, remainingPoints, disabled]
     );
 
     // Eksi butonu için opacity animasyonu
     const decreaseButtonStyle = useAnimatedStyle(
       () => ({
-        opacity: withTiming(points === 0 ? 0.4 : 1, {
+        opacity: withTiming(disabled || points === 0 ? 0.4 : 1, {
           duration: 200,
           easing: Easing.bezier(0.25, 0.1, 0.25, 1),
         }),
       }),
-      [points]
+      [points, disabled]
     );
 
     // Modern segment render
@@ -80,7 +82,7 @@ export const TraitBar = memo(
           <View className="flex-row items-center gap-1.5 rounded-full bg-gray-50 px-1 py-0.5">
             <AnimatedPressable
               onPress={onDecrease}
-              disabled={points === 0}
+              disabled={disabled || points === 0}
               hitSlop={8}
               style={[
                 {
@@ -89,16 +91,22 @@ export const TraitBar = memo(
                 },
                 decreaseButtonStyle,
               ]}>
-              <MaterialIcons name="remove-circle-outline" size={16} color={color} />
+              <MaterialIcons
+                name="remove-circle-outline"
+                size={16}
+                color={disabled ? '#9CA3AF' : color}
+              />
             </AnimatedPressable>
 
-            <Text className="w-5 text-center font-bold text-xs" style={{ color }}>
+            <Text
+              className="w-5 text-center font-bold text-xs"
+              style={{ color: disabled ? '#9CA3AF' : color }}>
               {points}
             </Text>
 
             <AnimatedPressable
               onPress={onIncrease}
-              disabled={points === maxPoints || remainingPoints === 0}
+              disabled={disabled || points === maxPoints || remainingPoints === 0}
               hitSlop={12}
               style={[
                 {

@@ -157,7 +157,7 @@ export default function RateScreen() {
 
   return (
     <SafeAreaView className="flex-1 bg-background-light dark:bg-background-dark">
-      <View className="flex-1 p-4">
+      <View className="flex-1 p-3">
         <View className="">
           <Pressable
             onPress={handleClose}
@@ -188,7 +188,7 @@ export default function RateScreen() {
           {userData && !isLoading && (
             <Animated.View
               entering={FadeIn.duration(200)}
-              className="mt-2 flex-row items-center rounded-2xl bg-surface-light p-3 dark:bg-surface-dark">
+              className="mt-1 flex-row items-center rounded-2xl bg-surface-light p-3 dark:bg-surface-dark">
               <RNImage
                 source={{ uri: userData.photoURL || DEFAULT_AVATAR }}
                 className="h-10 w-10 rounded-full bg-gray-200"
@@ -203,7 +203,7 @@ export default function RateScreen() {
         </View>
 
         {foundUserId && !isLoading && (
-          <View className="mt-4 flex-1">
+          <View className="mt-2 flex-1">
             <TabView
               navigationState={{ index, routes }}
               renderScene={renderScene}

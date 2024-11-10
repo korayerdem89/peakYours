@@ -44,13 +44,37 @@ export const RatingService = {
   },
 
   async checkExistingRating(referenceCode: string, userId: string, type: 'goodsides' | 'badsides') {
-    const doc = await firestore()
-      .collection('refCodes')
-      .doc(referenceCode)
-      .collection(type)
-      .doc(userId)
-      .get();
+    try {
+      const doc = await firestore()
+        .collection('refCodes')
+        .doc(referenceCode)
+        .collection(type)
+        .doc(userId)
+        .get();
 
-    return doc.exists;
+      return doc.exists;
+    } catch (error) {
+      console.error('Error checking existing rating:', error);
+      throw error;
+    }
+  },
+
+  async getPreviousRating(referenceCode: string, userId: string, type: 'goodsides' | 'badsides') {
+    try {
+      const doc = await firestore()
+        .collection('refCodes')
+        .doc(referenceCode)
+        .collection(type)
+        .doc(userId)
+        .get();
+
+      if (doc.exists) {
+        return doc.data() as RatingData;
+      }
+      return null;
+    } catch (error) {
+      console.error('Error getting previous rating:', error);
+      throw error;
+    }
   },
 };

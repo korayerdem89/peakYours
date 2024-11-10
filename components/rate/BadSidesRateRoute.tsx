@@ -1,20 +1,31 @@
 import { View, Text, Pressable } from 'react-native';
-import { useState, useCallback, useMemo } from 'react';
+import { useState, useCallback, useMemo, memo, useEffect } from 'react';
 import { useTranslation } from '@/providers/LanguageProvider';
 import { TraitBar } from './TraitBar';
-import Animated, { FadeInDown } from 'react-native-reanimated';
+import Toast from 'react-native-toast-message';
+import { RatingService } from '@/services/rating';
+import { useAuth } from '@/store/useAuth';
+import Button from '../Button';
 
 const TOTAL_POINTS = 35;
 const MAX_TRAIT_POINTS = 10;
 const BAD_TRAIT_COLOR = '#D97650';
 
 interface Trait {
-  name: 'stubborn' | 'impatient' | 'moody' | 'arrogant' | 'jealous' | 'lazy' | 'careless';
+  name: string;
   points: number;
 }
 
-export function BadSidesRateRoute() {
+interface BadSidesRateRouteProps {
+  referenceCode: string;
+}
+
+export const BadSidesRateRoute = memo(({ referenceCode }: BadSidesRateRouteProps) => {
   const { t } = useTranslation();
+  const { user } = useAuth();
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [hasExistingRating, setHasExistingRating] = useState(false);
   const [traits, setTraits] = useState<Trait[]>([
     { name: 'stubborn', points: 0 },
     { name: 'impatient', points: 0 },
@@ -30,6 +41,43 @@ export function BadSidesRateRoute() {
     [traits]
   );
 
+  useEffect(() => {
+    const checkExistingRating = async () => {
+      if (!user?.uid) return;
+
+      try {
+        const exists = await RatingService.checkExistingRating(referenceCode, user.uid, 'badsides');
+        if (exists) {
+          const previousRating = await RatingService.getPreviousRating(
+            referenceCode,
+            user.uid,
+            'badsides'
+          );
+          if (previousRating) {
+            setTraits(
+              previousRating.traits.map((trait) => ({
+                name: trait.name,
+                points: trait.points,
+              }))
+            );
+          }
+          setIsSubmitted(true);
+          setHasExistingRating(true);
+          Toast.show({
+            type: 'info',
+            text1: t('personality.rating.alreadyRated'),
+            position: 'bottom',
+            visibilityTime: 3000,
+          });
+        }
+      } catch (error) {
+        console.error('Error checking existing rating:', error);
+      }
+    };
+
+    checkExistingRating();
+  }, [referenceCode, user?.uid, t]);
+
   const handlePointChange = useCallback((index: number, increase: boolean) => {
     setTraits((current) =>
       current.map((trait, idx) => {
@@ -41,17 +89,51 @@ export function BadSidesRateRoute() {
     );
   }, []);
 
+  const handleSubmit = async () => {
+    if (!user?.uid || remainingPoints !== 0) return;
+
+    try {
+      setIsLoading(true);
+      await RatingService.saveRating(referenceCode, user.uid, traits, 'badsides');
+
+      setIsSubmitted(true);
+      setHasExistingRating(true);
+
+      Toast.show({
+        type: 'success',
+        text1: t('personality.rating.success'),
+        text2: t('personality.rating.successMessage'),
+        position: 'bottom',
+        visibilityTime: 3000,
+      });
+    } catch (error) {
+      Toast.show({
+        type: 'error',
+        text1: t('common.error'),
+        text2: t('personality.rating.errorMessage'),
+        position: 'bottom',
+        visibilityTime: 4000,
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleReset = useCallback(() => {
+    setIsSubmitted(false);
+    setHasExistingRating(false);
+    setTraits(traits.map((trait) => ({ ...trait, points: 0 })));
+  }, []);
+
   return (
-    <Animated.View
-      entering={FadeInDown.duration(300).springify()}
-      className="xs:p-2 flex-1 sm:p-3 md:p-4">
-      <View className="xs:mb-4 xs:p-2 flex-row items-center justify-between rounded-xl bg-surface-light dark:bg-surface-dark sm:mb-5 sm:p-2.5 md:mb-6 md:p-3">
-        <Text className="xs:text-sm font-medium text-text-light dark:text-text-dark sm:text-base md:text-lg">
-          {t('personality.rating.remainingPoints')}
+    <View className="xs:p-2 flex-1 sm:p-3 md:p-4">
+      <View className="mb-3 flex-row items-center justify-between rounded-lg bg-surface-light p-2 dark:bg-surface-dark">
+        <Text className="font-medium text-sm text-text-light dark:text-text-dark">
+          {isSubmitted
+            ? t('personality.rating.yourRating')
+            : t('personality.rating.remainingPoints')}
         </Text>
-        <Text className="xs:text-base font-semibold text-secondary-dark sm:text-lg md:text-xl">
-          {remainingPoints}
-        </Text>
+        <Text className="font-semibold text-base text-secondary-dark">{remainingPoints}</Text>
       </View>
 
       {traits.map((trait, index) => (
@@ -65,18 +147,29 @@ export function BadSidesRateRoute() {
           onDecrease={() => handlePointChange(index, false)}
           remainingPoints={remainingPoints}
           label={t(`personality.negativeTraits.${trait.name}`)}
+          disabled={isSubmitted}
         />
       ))}
-      <Pressable
-        onPress={() => {
-          /* Handle save */
-        }}
-        disabled={remainingPoints !== 0}
-        className="xs:mt-3 xs:p-2.5 bg-primary-default rounded-xl opacity-90 disabled:opacity-50 sm:mt-3.5 sm:p-3 md:mt-4 md:p-4">
-        <Text className="xs:text-sm text-center font-semibold text-white sm:text-base md:text-lg">
-          {t('personality.rating.submit')}
-        </Text>
-      </Pressable>
-    </Animated.View>
+
+      <Button
+        size="sm"
+        title={isSubmitted ? t('personality.rating.saved') : t('personality.rating.complete')}
+        onPress={handleSubmit}
+        disabled={remainingPoints !== 0 || isSubmitted || isLoading}
+        className={`mt-4 ${
+          remainingPoints !== 0 || isSubmitted || isLoading
+            ? 'bg-gray-300 dark:bg-gray-600'
+            : 'bg-primary-default'
+        }`}
+      />
+
+      {hasExistingRating && (
+        <Pressable onPress={handleReset} className="mt-4 items-center">
+          <Text className="font-medium text-secondary-dark">
+            {t('personality.rating.rateAgain')}
+          </Text>
+        </Pressable>
+      )}
+    </View>
   );
-}
+});
