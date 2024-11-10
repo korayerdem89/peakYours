@@ -13,6 +13,7 @@ interface TraitBarProps {
   remainingPoints: number;
   label: string;
   disabled?: boolean;
+  style?: any;
 }
 
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
@@ -28,6 +29,7 @@ export const TraitBar = memo(
     remainingPoints,
     label,
     disabled = false,
+    style,
   }: TraitBarProps) => {
     // Artı butonu için opacity animasyonu
     const increaseButtonStyle = useAnimatedStyle(

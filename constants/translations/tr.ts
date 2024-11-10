@@ -137,6 +137,10 @@ export default {
       modalTitle: 'Değerlendirme Geçmişi',
       modalDescription: 'Size verilen tüm değerlendirmeleri görüntüleyin',
     },
+    warnings: {
+      minimumRaters: 'En az 5 kullanıcı tarafından değerlendirilmelisiniz',
+      lowOpacity: 'Değerlendirme sayısı yetersiz',
+    },
   },
   zodiac: {
     modalTitle: 'Burcunuzu Seçin',

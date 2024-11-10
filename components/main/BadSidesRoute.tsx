@@ -25,9 +25,10 @@ interface TraitBarProps {
   value: number;
   color: string;
   delay: number;
+  style?: any;
 }
 
-function TraitBar({ trait, value, color, delay }: TraitBarProps) {
+function TraitBar({ trait, value, color, delay, style }: TraitBarProps) {
   const { t } = useTranslation();
   const width = useSharedValue(0);
 
@@ -127,6 +128,8 @@ export default function BadSidesRoute() {
     [traitAverages]
   );
 
+  const hasMinimumRaters = (traitDetails?.totalRaters || 0) >= 5;
+
   return (
     <View className="xs:m-1 rounded-sm bg-white dark:bg-gray-300 sm:m-2 md:m-3">
       <View className="xs:p-2 xs:pb-4 sm:p-3 sm:pb-6 md:p-4 md:pb-8">
@@ -155,15 +158,32 @@ export default function BadSidesRoute() {
           ) : null}
         </View>
         <View className="my-2 h-[1px] bg-gray-300 dark:bg-border-light" />
-        {traits.map((trait, index) => (
-          <TraitBar
-            key={trait.trait}
-            trait={trait.trait}
-            value={trait.value * 10}
-            color={trait.color}
-            delay={index * 150}
-          />
-        ))}
+        {!hasMinimumRaters && (
+          <View className="my-4 rounded-lg bg-amber-50 p-4 dark:bg-amber-100">
+            <View className="flex-row items-center">
+              <MaterialIcons
+                name="warning"
+                size={20}
+                color={theme.colors.warning.default}
+                style={{ marginRight: 8 }}
+              />
+              <Text className="flex-1 font-medium text-sm text-amber-800">
+                {t('personality.warnings.minimumRaters')}
+              </Text>
+            </View>
+          </View>
+        )}
+        {hasMinimumRaters &&
+          traits.map((trait, index) => (
+            <TraitBar
+              key={trait.trait}
+              trait={trait.trait}
+              value={hasMinimumRaters ? trait.value * 10 : 0}
+              color={colorPalette[index]}
+              delay={index * 150}
+              style={{ opacity: hasMinimumRaters ? 1 : 0.5 }}
+            />
+          ))}
 
         <Text className="xs:mt-2 xs:text-xs text-center font-medium text-gray-600 dark:text-gray-500 sm:mt-3 sm:text-sm md:mt-4 md:text-base">
           {t('personality.referral.inviteText')}

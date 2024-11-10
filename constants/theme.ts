@@ -38,6 +38,11 @@ export const theme = {
       leader: '#9C27B0',
       creativity: '#E91E63',
     },
+    warning: {
+      default: '#FFAA00',
+      light: '#FFBB33',
+      dark: '#BF8000',
+    },
   },
 
   spacing: {

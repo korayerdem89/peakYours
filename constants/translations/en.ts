@@ -136,6 +136,10 @@ export default {
       modalTitle: 'Rating History',
       modalDescription: 'View all ratings given to you',
     },
+    warnings: {
+      minimumRaters: 'You need to be rated by at least 5 users',
+      lowOpacity: 'Insufficient number of ratings',
+    },
   },
   zodiac: {
     modalTitle: 'Select Your Zodiac Sign',

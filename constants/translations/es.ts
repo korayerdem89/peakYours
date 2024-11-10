@@ -125,6 +125,10 @@ export default {
       inviteText: '¡Deja que tus amigos evalúen tu personalidad!',
     },
     negativeTraitsTitle: 'Áreas para Mejorar',
+    warnings: {
+      minimumRaters: 'Necesitas ser calificado por al menos 5 usuarios',
+      lowOpacity: 'Número insuficiente de calificaciones',
+    },
   },
   zodiac: {
     modalTitle: 'Selecciona tu Signo Zodiacal',

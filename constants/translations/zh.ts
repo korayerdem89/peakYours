@@ -117,6 +117,10 @@ export default {
       inviteText: '让你的朋友评价你的性格！',
     },
     negativeTraitsTitle: '需要改进的方面',
+    warnings: {
+      minimumRaters: '您需要至少被5个用户评价',
+      lowOpacity: '评价数量不足',
+    },
   },
   zodiac: {
     modalTitle: '选择您的星座',
