@@ -164,7 +164,7 @@ export default function GoodSidesRoute() {
           <TraitBar
             key={trait.trait}
             trait={trait.trait}
-            value={trait.value}
+            value={trait.value * 10}
             color={trait.color}
             delay={index * 150}
           />
