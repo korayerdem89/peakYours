@@ -1,16 +1,5 @@
 import firestore, { FirebaseFirestoreTypes } from '@react-native-firebase/firestore';
-
-interface TraitRating {
-  name: string;
-  points: number;
-}
-
-interface RatingData {
-  traits: TraitRating[];
-  ratedBy: string;
-  createdAt: FirebaseFirestoreTypes.FieldValue;
-  updatedAt: FirebaseFirestoreTypes.FieldValue;
-}
+import { TraitAverages, RatingData, TraitRating } from '@/types/traits';
 
 export const RatingService = {
   async saveRating(
@@ -74,6 +63,45 @@ export const RatingService = {
       return null;
     } catch (error) {
       console.error('Error getting previous rating:', error);
+      throw error;
+    }
+  },
+
+  async getTraitAverages(
+    referenceCode: string,
+    type: 'goodsides' | 'badsides'
+  ): Promise<TraitAverages[]> {
+    try {
+      const ratingsRef = firestore().collection('refCodes').doc(referenceCode).collection(type);
+
+      const snapshot = await ratingsRef.get();
+
+      if (snapshot.empty) {
+        return [];
+      }
+
+      const traitTotals = new Map<string, { total: number; count: number }>();
+
+      snapshot.docs.forEach((doc) => {
+        const data = doc.data() as RatingData;
+        if (!data.traits) return;
+
+        data.traits.forEach((trait) => {
+          const current = traitTotals.get(trait.name) || { total: 0, count: 0 };
+          traitTotals.set(trait.name, {
+            total: current.total + trait.points,
+            count: current.count + 1,
+          });
+        });
+      });
+
+      return Array.from(traitTotals.entries()).map(([trait, { total, count }]) => ({
+        trait,
+        averagePoints: Number((total / count).toFixed(1)),
+        totalRatings: count,
+      }));
+    } catch (error) {
+      console.error('Error fetching trait averages:', error);
       throw error;
     }
   },

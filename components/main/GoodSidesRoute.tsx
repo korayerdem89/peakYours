@@ -8,13 +8,16 @@ import Animated, {
   withRepeat,
   withSpring,
 } from 'react-native-reanimated';
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import { Text } from 'react-native';
 import { useTranslation } from '@/providers/LanguageProvider';
 import { theme } from '@/constants/theme';
 import ReferralShare from './ReferralShare';
 import { router } from 'expo-router';
 import { AntDesign } from '@expo/vector-icons';
+import { useTraitAverages } from '@/hooks/useTraitAverages';
+import { useAuth } from '@/store/useAuth';
+import { useUserData } from '@/hooks/useUserQueries';
 
 interface TraitBarProps {
   trait: string;
@@ -25,7 +28,6 @@ interface TraitBarProps {
 
 function TraitBar({ trait, value, color, delay }: TraitBarProps) {
   const { t } = useTranslation();
-  const layout = useWindowDimensions();
   const width = useSharedValue(0);
 
   const animatedStyle = useAnimatedStyle(() => ({
@@ -66,6 +68,9 @@ function TraitBar({ trait, value, color, delay }: TraitBarProps) {
 
 export default function GoodSidesRoute() {
   const { t } = useTranslation();
+  const { user } = useAuth();
+  const { data: userData } = useUserData(user?.uid);
+  const { data: traitAverages } = useTraitAverages(userData?.refCodes?.en, 'goodsides');
   const layout = useWindowDimensions();
   const shakeAnimation = useSharedValue(0);
 
@@ -97,43 +102,52 @@ export default function GoodSidesRoute() {
     return () => clearInterval(interval);
   }, []);
 
-  const traits = [
-    {
-      trait: 'friendly',
-      color: theme.colors.personality.friendly,
-      value: Math.floor(Math.random() * 100),
-    },
-    {
-      trait: 'adventurous',
-      color: theme.colors.personality.adventurous,
-      value: Math.floor(Math.random() * 100),
-    },
-    {
-      trait: 'thinker',
-      color: theme.colors.personality.thinker,
-      value: Math.floor(Math.random() * 100),
-    },
-    {
-      trait: 'protective',
-      color: theme.colors.personality.protective,
-      value: Math.floor(Math.random() * 100),
-    },
-    {
-      trait: 'cheerful',
-      color: theme.colors.personality.cheerful,
-      value: Math.floor(Math.random() * 100),
-    },
-    {
-      trait: 'creativity',
-      color: theme.colors.personality.creativity,
-      value: Math.floor(Math.random() * 100),
-    },
-    {
-      trait: 'leader',
-      color: theme.colors.personality.leader,
-      value: Math.floor(Math.random() * 100),
-    },
-  ];
+  useEffect(() => {
+    if (traitAverages) {
+      console.log('Trait Averages:', traitAverages);
+    }
+  }, [traitAverages]);
+
+  const traits = useMemo(
+    () => [
+      {
+        trait: 'friendly',
+        color: theme.colors.personality.friendly,
+        value: traitAverages?.find((t) => t.trait === 'friendly')?.averagePoints || 0,
+      },
+      {
+        trait: 'adventurous',
+        color: theme.colors.personality.adventurous,
+        value: traitAverages?.find((t) => t.trait === 'adventurous')?.averagePoints || 0,
+      },
+      {
+        trait: 'thinker',
+        color: theme.colors.personality.thinker,
+        value: traitAverages?.find((t) => t.trait === 'thinker')?.averagePoints || 0,
+      },
+      {
+        trait: 'protective',
+        color: theme.colors.personality.protective,
+        value: traitAverages?.find((t) => t.trait === 'protective')?.averagePoints || 0,
+      },
+      {
+        trait: 'cheerful',
+        color: theme.colors.personality.cheerful,
+        value: traitAverages?.find((t) => t.trait === 'cheerful')?.averagePoints || 0,
+      },
+      {
+        trait: 'creativity',
+        color: theme.colors.personality.creativity,
+        value: traitAverages?.find((t) => t.trait === 'creativity')?.averagePoints || 0,
+      },
+      {
+        trait: 'leader',
+        color: theme.colors.personality.leader,
+        value: traitAverages?.find((t) => t.trait === 'leader')?.averagePoints || 0,
+      },
+    ],
+    [traitAverages]
+  );
 
   const handleRatePress = () => {
     router.push('/modal/rate');
