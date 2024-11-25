@@ -154,7 +154,7 @@ export const GoodSidesRateRoute = memo(({ referenceCode }: GoodSidesRateRoutePro
           onDecrease={() => handlePointChange(index, false)}
           remainingPoints={remainingPoints}
           label={t(`personality.traits.${trait.name}`)}
-          disabled={isSubmitted}
+          disabled={isSubmitted || hasExistingRating}
         />
       ))}
 

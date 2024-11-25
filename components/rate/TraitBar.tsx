@@ -45,7 +45,7 @@ export const TraitBar = memo(
     // Eksi butonu için opacity animasyonu
     const decreaseButtonStyle = useAnimatedStyle(
       () => ({
-        opacity: withTiming(disabled || points === 0 ? 0.4 : 1, {
+        opacity: withTiming(disabled || points === 0 || remainingPoints === 0 ? 0.4 : 1, {
           duration: 200,
           easing: Easing.bezier(0.25, 0.1, 0.25, 1),
         }),
@@ -84,7 +84,7 @@ export const TraitBar = memo(
           <View className="flex-row items-center gap-1.5 rounded-full bg-gray-50 px-1 py-0.5">
             <AnimatedPressable
               onPress={onDecrease}
-              disabled={disabled || points === 0}
+              disabled={disabled || points === 0 || remainingPoints === 0}
               hitSlop={8}
               style={[
                 {

@@ -129,7 +129,7 @@ export default {
     negativeTraitsTitle: 'Geliştirmen Gereken Yönler',
     details: {
       title: 'Değerlendirme Detayları',
-      description: '%{count} kişi sizi değerlendirdi',
+      description: '%{count} değerlendirme',
       viewAll: 'Tüm Değerlendirmeleri Gör',
       noRatings: 'Henüz değerlendirme yapılmamış',
       ratedBy: 'Değerlendiren',

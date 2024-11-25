@@ -19,7 +19,7 @@ export default function QuoteCard() {
 
   return (
     <LinearGradient colors={['#7C4DFF20', '#7C4DFF10']} className="  overflow-hidden rounded-sm">
-      <View className="rounded-sm bg-surface-light p-2 dark:bg-surface-dark">
+      <View className="rounded-sm bg-gray-100 p-2 dark:bg-surface-dark">
         <View className="mb-1 flex-row items-center">
           <View className="mr-1 rounded-full bg-primary-light/20 p-1.5 dark:bg-primary-dark/20">
             <Feather
@@ -38,12 +38,12 @@ export default function QuoteCard() {
 
         <View className="my-1">
           <Text
-            className="text-sm leading-5 text-primary-dark dark:text-gray-200"
+            className="text-sm leading-5 text-text-light dark:text-gray-200"
             style={{ fontFamily: 'Philosopher_400Regular' }}>
             {todaysQuote.quote[locale as keyof typeof todaysQuote.quote]}
             {'  '}
             <Text
-              className="text-xs italic text-primary-dark/70 dark:text-gray-400"
+              className="text-xs italic text-text-light-secondary dark:text-gray-400"
               style={{ fontFamily: 'Philosopher_400Regular_Italic' }}>
               — {todaysQuote.author}
             </Text>

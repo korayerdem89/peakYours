@@ -1,6 +1,5 @@
-// İngilizce ve Çince karakterler için iki ayrı set
+// İngilizce karakterler için set (zaten büyük harfli)
 const ENGLISH_CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-const CHINESE_CHARS = '的一是不了人我在有他这为之大来以个中上们';
 
 export function generateRefCodes(userId: string) {
   // İngilizce için 4 karakterli kod
@@ -9,13 +8,10 @@ export function generateRefCodes(userId: string) {
     englishCode += ENGLISH_CHARS.charAt(Math.floor(Math.random() * ENGLISH_CHARS.length));
   }
 
-  // Çince için 4 karakterli kod
-  let chineseCode = '';
-  for (let i = 0; i < 4; i++) {
-    chineseCode += CHINESE_CHARS.charAt(Math.floor(Math.random() * CHINESE_CHARS.length));
-  }
+  // userId'nin son 2 karakterini al ve büyük harfe çevir
+  const userIdSuffix = userId.slice(-2).toUpperCase();
 
   return {
-    en: `${englishCode}${userId.slice(-2)}`, // Son 2 karakteri userId'den al
+    en: `${englishCode}${userIdSuffix}`,
   };
 }
