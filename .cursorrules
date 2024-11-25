@@ -112,7 +112,7 @@ Extras
 - create global scaling utilities for images, fonts, and other assets.
 - use expo-font for custom fonts. library's doc: https://docs.expo.dev/fonts/
 - use expo-device for device information. library's doc: https://docs.expo.dev/device/
-- language folders are current on /contstants/translations folder. when u develope the screens, add translated texts to every single language files.(en, es, tr, zh) /i18n folder and providers/LanguageProvider.tsx files are for this purpose.
+- language folders are current on /contstants/translations folder. when u develope the screens, add translated texts to every single language files.(en, es, tr) /i18n folder and providers/LanguageProvider.tsx files are for this purpose.
 
 Key Conventions
 

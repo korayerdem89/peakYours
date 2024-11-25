@@ -14,7 +14,6 @@ export interface UserData {
   updatedAt?: FirebaseFirestoreTypes.FieldValue;
   refCodes?: {
     en: string;
-    zh: string;
   };
 }
 
@@ -61,17 +60,6 @@ export class UserService {
       };
       batch.set(enRefDoc, enData);
       console.log('Adding EN ref code:', enData);
-
-      // Çince ref code dökümanı
-      const zhRefDoc = firestore().collection('refCodes').doc(refCodes.zh);
-      const zhData = {
-        userId: user.uid,
-        code: refCodes.zh,
-        language: 'zh',
-        createdAt: firestore.FieldValue.serverTimestamp(),
-      };
-      batch.set(zhRefDoc, zhData);
-      console.log('Adding ZH ref code:', zhData);
 
       // User dökümanını oluştur
       const userData: UserData = {

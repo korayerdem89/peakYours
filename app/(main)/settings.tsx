@@ -26,7 +26,6 @@ const LANGUAGES = [
   { code: 'en', label: 'EN' },
   { code: 'tr', label: 'TR' },
   { code: 'es', label: 'ES' },
-  { code: 'zh', label: 'ZH' },
 ];
 
 const DEFAULT_AVATAR = 'https://ui-avatars.com/api/?background=random';
@@ -141,12 +140,12 @@ export default function SettingsScreen() {
         </View>
 
         {/* Profile Section */}
-        <Animated.View entering={FadeIn.duration(500)} className="mt-8 items-center">
+        <Animated.View entering={FadeIn.duration(500)} className="mt-4 items-center">
           <Image
             source={{ uri: user?.photoURL || DEFAULT_AVATAR }}
-            className="h-24 w-24 rounded-full"
+            className="h-20 w-20 rounded-full"
           />
-          <Text className="mt-4 font-bold text-xl tracking-tight text-text-light dark:text-text-dark">
+          <Text className="mt-2 font-bold text-xl tracking-tight text-text-light dark:text-text-dark">
             {user?.displayName || t('settings.anonymous')}
           </Text>
           <Text className="mt-1 font-regular text-[15px] text-text-light-secondary dark:text-text-dark-secondary">
@@ -156,7 +155,7 @@ export default function SettingsScreen() {
           {/* Zodiac Sign Card */}
           <TouchableOpacity
             onPress={() => setIsZodiacModalVisible(true)}
-            className="mt-4 w-full rounded-lg bg-background-light p-4 dark:bg-surface-dark">
+            className="mt-2 w-full rounded-lg bg-background-light p-4 dark:bg-surface-dark">
             <Text className="pb-2 text-center font-medium text-[15px] text-text-light-secondary dark:text-text-dark-secondary">
               {t('settings.zodiacCard.title')}
             </Text>
@@ -193,7 +192,7 @@ export default function SettingsScreen() {
         </Animated.View>
 
         {/* Theme Toggle */}
-        <Animated.View className="bg-gray- mt-8 flex-row items-center justify-between rounded-lg bg-background-light p-4 dark:bg-surface-dark">
+        <Animated.View className="bg-gray- mt-4 flex-row items-center justify-between rounded-lg bg-background-light p-4 dark:bg-surface-dark">
           <Text className="pb-1 text-center font-medium text-[15px] text-text-light-secondary dark:text-text-dark-secondary">
             {t('settings.theme.title')}
           </Text>
@@ -221,7 +220,7 @@ export default function SettingsScreen() {
         {/* Sign Out Button */}
         <TouchableOpacity
           onPress={handleSignOut}
-          className="mb-8 mt-8 rounded-lg bg-error-light p-4 dark:bg-error-dark">
+          className="mb-4 mt-4 rounded-lg bg-error-light p-4 dark:bg-error-dark">
           <Text className="text-center font-semibold text-[16px] text-white">
             {t('settings.signOut')}
           </Text>

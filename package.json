@@ -89,11 +89,11 @@
     },
     "android": {
       "googleServicesFile": "./google-services.json",
-      "package": "com.your.package"
+      "package": "com.peakYours.app"
     },
     "ios": {
       "googleServicesFile": "./GoogleService-Info.plist",
-      "bundleIdentifier": "com.your.package"
+      "bundleIdentifier": "com.peakYours.app"
     },
     "plugins": [
       "@react-native-firebase/app",

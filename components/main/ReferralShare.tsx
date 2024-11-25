@@ -13,7 +13,7 @@ export default function ReferralShare() {
   const handleShare = async () => {
     if (!user?.refCodes) return;
     try {
-      const refCode = locale === 'zh' ? user.refCodes.zh : user.refCodes.en;
+      const refCode = user.refCodes.en;
       await Share.share({
         message: t('personality.referral.shareMessage', { code: refCode }),
         title: t('personality.referral.shareTitle'),

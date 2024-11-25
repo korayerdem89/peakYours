@@ -3,13 +3,11 @@ import { getLocales } from 'expo-localization';
 import en from '@/constants/translations/en';
 import tr from '@/constants/translations/tr';
 import es from '@/constants/translations/es';
-import zh from '@/constants/translations/zh';
 
 const translations = {
   en,
   tr,
   es,
-  zh,
 };
 
 const i18n = new I18n(translations);

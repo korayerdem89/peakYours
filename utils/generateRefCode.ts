@@ -17,6 +17,5 @@ export function generateRefCodes(userId: string) {
 
   return {
     en: `${englishCode}${userId.slice(-2)}`, // Son 2 karakteri userId'den al
-    zh: `${chineseCode}${userId.slice(-2)}`,
   };
 }

@@ -3,14 +3,13 @@ import { getLocales } from 'expo-localization';
 import { I18n } from 'i18n-js';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { AppState } from 'react-native';
-import { en, tr, es, zh } from '@/constants/translations';
+import { en, tr, es } from '@/constants/translations';
 
 // Translations
 const translations = {
   en,
   tr,
   es,
-  zh,
 };
 
 // Create i18n instance

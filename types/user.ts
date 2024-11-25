@@ -11,7 +11,6 @@ export interface UserData {
   updatedAt?: FirebaseFirestoreTypes.FieldValue;
   refCodes?: {
     en: string;
-    zh: string;
   };
 }
 
