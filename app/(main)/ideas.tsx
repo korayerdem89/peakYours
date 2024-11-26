@@ -528,7 +528,7 @@ Format your response as JSON:
                 {/* Zıplayan hayvan ikonu */}
                 <Animated.View
                   style={bounceStyle}
-                  className="items-center justify-center rounded-full bg-primary-light/15 p-4 shadow-sm dark:bg-primary-dark/25">
+                  className="items-center justify-center rounded-full bg-amber-50 p-4 shadow-sm dark:bg-primary-dark/25">
                   <Image
                     source={personalityAnimal.image}
                     className="h-14 w-14" // Biraz daha büyük
@@ -538,13 +538,13 @@ Format your response as JSON:
 
                 {/* Text Content - Daha canlı renkler ve spacing */}
                 <View className="flex-1">
-                  <Text className="mb-2 font-medium text-sm text-primary-dark/70 dark:text-primary-light/70">
+                  <Text className="mb-2 font-medium text-sm text-amber-500 dark:text-primary-light/70">
                     ⭐ {t('ideas.spiritAnimal.title')}
                   </Text>
-                  <Text className="font-bold text-2xl text-primary-dark dark:text-primary-light">
+                  <Text className="font-bold text-2xl text-amber-600 dark:text-primary-light">
                     {t(`ideas.animals.${personalityAnimal.id}.name`)}
                   </Text>
-                  <Text className="mt-2 font-medium text-sm text-text-light-secondary/80 dark:text-text-dark-secondary/80">
+                  <Text className="mt-2 font-medium text-sm text-gray-400 dark:text-text-dark-secondary/80">
                     {t(`ideas.animals.${personalityAnimal.id}.trait`)}
                   </Text>
                 </View>
