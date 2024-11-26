@@ -395,7 +395,6 @@ Format your response as JSON:
   useEffect(() => {
     const loadAnalysis = async () => {
       if (!goodTraits || !badTraits || !user?.zodiacSign || !traitDetails) return;
-
       try {
         setIsLoading(true);
         const currentRaters = traitDetails.totalRaters || 0;

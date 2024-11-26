@@ -176,102 +176,114 @@ export default {
       message: 'Ahora puedes ver tu análisis de personalidad completo',
     },
   },
-  animals: {
-    cat: {
-      name: 'Espíritu Independiente',
-      trait: 'Valora la libertad y la autosuficiencia',
+  ideas: {
+    accuracyWarning: '¡Cuantas más personas te califiquen, más preciso será tu análisis!',
+    spiritAnimal: {
+      title: 'Tu Animal Espiritual',
     },
-    chameleon: {
-      name: 'Transformador Adaptable',
-      trait: 'Se adapta fácilmente a nuevas situaciones',
+    analysis: {
+      title: 'Tu Análisis de Personalidad',
     },
-    crab: {
-      name: 'Guardián Protector',
-      trait: 'Defiende a sus seres queridos con lealtad',
-    },
-    dragon: {
-      name: 'Fuerza Poderosa',
-      trait: 'Inspira respeto y autoridad',
-    },
-    flamingo: {
-      name: 'Presencia Graciosa',
-      trait: 'Aporta elegancia a cada situación',
-    },
-    fox: {
-      name: 'Mente Astuta',
-      trait: 'Resuelve problemas con ingenio y sabiduría',
-    },
-    goat: {
-      name: 'Escalador Determinado',
-      trait: 'Supera obstáculos con persistencia',
-    },
-    gorilla: {
-      name: 'Líder Fuerte',
-      trait: 'Guía a otros con fuerza y sabiduría',
-    },
-    hedgehog: {
-      name: 'Protector Cauteloso',
-      trait: 'Protege cuidadosamente sus límites',
-    },
-    horse: {
-      name: 'Corredor Ambicioso',
-      trait: 'Persigue objetivos con determinación',
-    },
-    kangaroo: {
-      name: 'Espíritu Energético',
-      trait: 'Aborda la vida con entusiasmo',
-    },
-    lion: {
-      name: 'Líder Natural',
-      trait: 'Natural para tomar el mando',
-    },
-    owl: {
-      name: 'Observador Sabio',
-      trait: 'Ve profundamente en las situaciones',
-    },
-    phoenix: {
-      name: 'Alma Resiliente',
-      trait: 'Se levanta más fuerte de los desafíos',
-    },
-    seahorse: {
-      name: 'Navegante Gentil',
-      trait: 'Se mueve por la vida con gracia',
-    },
-    seal: {
-      name: 'Amigo Juguetón',
-      trait: 'Aporta alegría a las relaciones',
-    },
-    snake: {
-      name: 'Planificador Estratégico',
-      trait: 'Toma decisiones calculadas',
-    },
-    spider: {
-      name: 'Tejedor Paciente',
-      trait: 'Crea oportunidades metódicamente',
-    },
-    squirrel: {
-      name: 'Coleccionista Ingenioso',
-      trait: 'Prepara sabiamente para el futuro',
-    },
-    toucan: {
-      name: 'Conector Social',
-      trait: 'Construye puentes entre personas',
-    },
-    turtle: {
-      name: 'Guerrero Constante',
-      trait: 'Progresa con esfuerzo constante',
-    },
-    whale: {
-      name: 'Gigante Pacífico',
-      trait: 'Mantiene la calma en cualquier situación',
-    },
-    wolf: {
-      name: 'Compañero Leal',
-      trait: 'Valora las conexiones profundas',
-    },
-    woodpecker: {
-      name: 'Trabajador Diligente',
-      trait: 'Persiste hasta lograr sus objetivos',
+    analysisError: 'No se pudo generar el análisis de personalidad',
+    unauthorizedError: 'Clave API no válida o faltante. Por favor, verifica tu configuración.',
+    rateLimitError: 'Límite de solicitudes excedido. Por favor, inténtalo más tarde.',
+    animals: {
+      cat: {
+        name: 'Espíritu Independiente',
+        trait: 'Valora la libertad y la autosuficiencia',
+      },
+      chameleon: {
+        name: 'Transformador Adaptable',
+        trait: 'Se adapta fácilmente a nuevas situaciones',
+      },
+      crab: {
+        name: 'Guardián Protector',
+        trait: 'Defiende a sus seres queridos con lealtad',
+      },
+      dragon: {
+        name: 'Fuerza Poderosa',
+        trait: 'Inspira respeto y autoridad',
+      },
+      flamingo: {
+        name: 'Presencia Graciosa',
+        trait: 'Aporta elegancia a cada situación',
+      },
+      fox: {
+        name: 'Mente Astuta',
+        trait: 'Resuelve problemas con ingenio y sabiduría',
+      },
+      goat: {
+        name: 'Escalador Determinado',
+        trait: 'Supera obstáculos con persistencia',
+      },
+      gorilla: {
+        name: 'Líder Fuerte',
+        trait: 'Guía a otros con fuerza y sabiduría',
+      },
+      hedgehog: {
+        name: 'Protector Cauteloso',
+        trait: 'Protege cuidadosamente sus límites',
+      },
+      horse: {
+        name: 'Corredor Ambicioso',
+        trait: 'Persigue objetivos con determinación',
+      },
+      kangaroo: {
+        name: 'Espíritu Energético',
+        trait: 'Aborda la vida con entusiasmo',
+      },
+      lion: {
+        name: 'Líder Natural',
+        trait: 'Natural para tomar el mando',
+      },
+      owl: {
+        name: 'Observador Sabio',
+        trait: 'Ve profundamente en las situaciones',
+      },
+      phoenix: {
+        name: 'Alma Resiliente',
+        trait: 'Se levanta más fuerte de los desafíos',
+      },
+      seahorse: {
+        name: 'Navegante Gentil',
+        trait: 'Se mueve por la vida con gracia',
+      },
+      seal: {
+        name: 'Amigo Juguetón',
+        trait: 'Aporta alegría a las relaciones',
+      },
+      snake: {
+        name: 'Planificador Estratégico',
+        trait: 'Toma decisiones calculadas',
+      },
+      spider: {
+        name: 'Tejedor Paciente',
+        trait: 'Crea oportunidades metódicamente',
+      },
+      squirrel: {
+        name: 'Coleccionista Ingenioso',
+        trait: 'Prepara sabiamente para el futuro',
+      },
+      toucan: {
+        name: 'Conector Social',
+        trait: 'Construye puentes entre personas',
+      },
+      turtle: {
+        name: 'Guerrero Constante',
+        trait: 'Progresa con esfuerzo constante',
+      },
+      whale: {
+        name: 'Gigante Pacífico',
+        trait: 'Mantiene la calma en cualquier situación',
+      },
+      wolf: {
+        name: 'Compañero Leal',
+        trait: 'Valora las conexiones profundas',
+      },
+      woodpecker: {
+        name: 'Trabajador Diligente',
+        trait: 'Persiste hasta lograr sus objetivos',
+      },
     },
   },
 };
