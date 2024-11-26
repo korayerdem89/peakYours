@@ -39,6 +39,7 @@ interface StoredAnalysis {
   lastUpdatedAt: number;
   lastRaterCount: number;
   zodiacSign: string;
+  locale: string;
 }
 
 const PERSONALITY_ANIMALS: Record<string, PersonalityAnimal> = {
@@ -337,28 +338,26 @@ Format your response as JSON:
   const shouldUpdateAnalysis = async (
     currentRaters: number,
     lastStoredRaters: number,
-    currentZodiacSign: string
+    currentZodiacSign: string,
+    currentLocale: string
   ): Promise<boolean> => {
     try {
-      // AsyncStorage'da analiz var mı kontrol et
       const stored = await AsyncStorage.getItem(`personality_analysis_${user?.uid}`);
       const storedData = stored ? JSON.parse(stored) : null;
 
-      // AsyncStorage'da veri yoksa analiz yapılmalı
       if (!storedData) return true;
 
-      // Burç değişmişse analiz yapılmalı
       if (storedData.zodiacSign !== currentZodiacSign) return true;
 
-      // İlk kez analiz yapılıyorsa
+      if (storedData.locale !== currentLocale) return true;
+
       if (lastStoredRaters === 0) return true;
 
-      // Son analiz ile şimdiki arasında 5 veya daha fazla yeni değerlendirme varsa
       const raterDifference = currentRaters - lastStoredRaters;
       return raterDifference >= 5;
     } catch (error) {
       console.error('Error in shouldUpdateAnalysis:', error);
-      return true; // Hata durumunda güvenli tarafta kal ve yeni analiz yap
+      return true;
     }
   };
 
@@ -376,7 +375,8 @@ Format your response as JSON:
     spiritAnimal: string,
     analysis: string,
     raterCount: number,
-    zodiacSign: string
+    zodiacSign: string,
+    locale: string
   ) => {
     try {
       const dataToStore: StoredAnalysis = {
@@ -385,6 +385,7 @@ Format your response as JSON:
         lastUpdatedAt: Date.now(),
         lastRaterCount: raterCount,
         zodiacSign,
+        locale,
       };
       await AsyncStorage.setItem(`personality_analysis_${user?.uid}`, JSON.stringify(dataToStore));
     } catch (error) {
@@ -401,14 +402,13 @@ Format your response as JSON:
         const storedData = await getStoredAnalysis();
         const lastStoredRaters = storedData?.lastRaterCount || 0;
 
-        // shouldUpdateAnalysis'e burç bilgisini de gönder
         const needsUpdate = await shouldUpdateAnalysis(
           currentRaters,
           lastStoredRaters,
-          user.zodiacSign
+          user.zodiacSign,
+          locale
         );
 
-        // Kayıtlı veri varsa ve güncelleme gerekmiyorsa
         if (storedData && !needsUpdate) {
           const animalKey = Object.keys(PERSONALITY_ANIMALS).find((key) =>
             key.includes(storedData.spiritAnimal.toUpperCase())
@@ -422,12 +422,16 @@ Format your response as JSON:
           }
         }
 
-        // Yeni analiz gerekiyorsa
         await generatePersonalityAnalysis(goodTraits, badTraits, user.zodiacSign);
 
-        // Yeni analizi kaydet
         if (personalityAnimal && analysis) {
-          await storeAnalysis(personalityAnimal.id, analysis, currentRaters, user.zodiacSign);
+          await storeAnalysis(
+            personalityAnimal.id,
+            analysis,
+            currentRaters,
+            user.zodiacSign,
+            locale
+          );
         }
       } catch (error) {
         console.error('Error in loadAnalysis:', error);
