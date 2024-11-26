@@ -8,9 +8,16 @@ import { Alert } from 'react-native';
 import { useUpdateUser } from '@/hooks/useUserQueries';
 import { useTraitAverages } from '@/hooks/useTraitAverages';
 import { useUserData } from '@/hooks/useUserQueries';
-import Animated, { FadeIn } from 'react-native-reanimated';
+import Animated, {
+  FadeIn,
+  useAnimatedStyle,
+  withSpring,
+  withSequence,
+  withRepeat,
+  useSharedValue,
+  withDelay,
+} from 'react-native-reanimated';
 import { theme } from '@/constants/theme';
-import ReferralShare from '@/components/main/ReferralShare';
 import { ZODIAC_SIGNS } from '@/constants/zodiac';
 import { useTraitDetails } from '@/hooks/useTraitDetails';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -31,6 +38,7 @@ interface StoredAnalysis {
   analysis: string;
   lastUpdatedAt: number;
   lastRaterCount: number;
+  zodiacSign: string;
 }
 
 const PERSONALITY_ANIMALS: Record<string, PersonalityAnimal> = {
@@ -326,13 +334,32 @@ Format your response as JSON:
     }
   };
 
-  const shouldUpdateAnalysis = (currentRaters: number, lastStoredRaters: number): boolean => {
-    // İlk kez analiz yapılıyorsa
-    if (lastStoredRaters === 0) return true;
+  const shouldUpdateAnalysis = async (
+    currentRaters: number,
+    lastStoredRaters: number,
+    currentZodiacSign: string
+  ): Promise<boolean> => {
+    try {
+      // AsyncStorage'da analiz var mı kontrol et
+      const stored = await AsyncStorage.getItem(`personality_analysis_${user?.uid}`);
+      const storedData = stored ? JSON.parse(stored) : null;
 
-    // Son analiz ile şimdiki arasında 5 veya daha fazla yeni değerlendirme varsa
-    const raterDifference = currentRaters - lastStoredRaters;
-    return raterDifference >= 5;
+      // AsyncStorage'da veri yoksa analiz yapılmalı
+      if (!storedData) return true;
+
+      // Burç değişmişse analiz yapılmalı
+      if (storedData.zodiacSign !== currentZodiacSign) return true;
+
+      // İlk kez analiz yapılıyorsa
+      if (lastStoredRaters === 0) return true;
+
+      // Son analiz ile şimdiki arasında 5 veya daha fazla yeni değerlendirme varsa
+      const raterDifference = currentRaters - lastStoredRaters;
+      return raterDifference >= 5;
+    } catch (error) {
+      console.error('Error in shouldUpdateAnalysis:', error);
+      return true; // Hata durumunda güvenli tarafta kal ve yeni analiz yap
+    }
   };
 
   const getStoredAnalysis = async (): Promise<StoredAnalysis | null> => {
@@ -345,13 +372,19 @@ Format your response as JSON:
     }
   };
 
-  const storeAnalysis = async (spiritAnimal: string, analysis: string, raterCount: number) => {
+  const storeAnalysis = async (
+    spiritAnimal: string,
+    analysis: string,
+    raterCount: number,
+    zodiacSign: string
+  ) => {
     try {
       const dataToStore: StoredAnalysis = {
         spiritAnimal,
         analysis,
         lastUpdatedAt: Date.now(),
         lastRaterCount: raterCount,
+        zodiacSign,
       };
       await AsyncStorage.setItem(`personality_analysis_${user?.uid}`, JSON.stringify(dataToStore));
     } catch (error) {
@@ -369,8 +402,15 @@ Format your response as JSON:
         const storedData = await getStoredAnalysis();
         const lastStoredRaters = storedData?.lastRaterCount || 0;
 
+        // shouldUpdateAnalysis'e burç bilgisini de gönder
+        const needsUpdate = await shouldUpdateAnalysis(
+          currentRaters,
+          lastStoredRaters,
+          user.zodiacSign
+        );
+
         // Kayıtlı veri varsa ve güncelleme gerekmiyorsa
-        if (storedData && !shouldUpdateAnalysis(currentRaters, lastStoredRaters)) {
+        if (storedData && !needsUpdate) {
           const animalKey = Object.keys(PERSONALITY_ANIMALS).find((key) =>
             key.includes(storedData.spiritAnimal.toUpperCase())
           );
@@ -388,7 +428,7 @@ Format your response as JSON:
 
         // Yeni analizi kaydet
         if (personalityAnimal && analysis) {
-          await storeAnalysis(personalityAnimal.id, analysis, currentRaters);
+          await storeAnalysis(personalityAnimal.id, analysis, currentRaters, user.zodiacSign);
         }
       } catch (error) {
         console.error('Error in loadAnalysis:', error);
@@ -419,6 +459,25 @@ Format your response as JSON:
     }
   };
 
+  // Bounce animasyonu için shared value
+  const bounceValue = useSharedValue(0);
+
+  // 5 saniyede bir tekrarlanan bounce efekti
+  useEffect(() => {
+    const interval = setInterval(() => {
+      bounceValue.value = withSequence(
+        withSpring(-10), // Yukarı zıpla
+        withDelay(100, withSpring(0)) // Aşağı in
+      );
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  const bounceStyle = useAnimatedStyle(() => ({
+    transform: [{ translateY: bounceValue.value }],
+  }));
+
   if (!user?.zodiacSign) {
     return (
       <View className="flex-1 bg-background-light dark:bg-background-dark">
@@ -440,70 +499,64 @@ Format your response as JSON:
       <ScrollView
         className="flex-1 px-4"
         contentContainerStyle={{
-          flexGrow: 1, // ScrollView içeriğinin tam yükseklikte olmasını sağlar
-          paddingBottom: 48,
+          paddingTop: 16,
+          paddingBottom: 96,
         }}
-        showsVerticalScrollIndicator={true} // Scroll çubuğunu göster
-        bounces={true} // iOS'ta bounce efektini etkinleştir
-      >
-        {/* Header Warning */}
+        showsVerticalScrollIndicator={false}>
+        {/* Header Warning - Daha yumuşak bir görünüm */}
         <Animated.View
           entering={FadeIn.duration(500)}
-          className="rounded-xl bg-secondary-light/10 p-4 dark:bg-secondary-dark/20">
-          <Text className="text-center font-medium text-sm text-secondary-dark dark:text-secondary-light">
-            {t('ideas.accuracyWarning')}
+          className="dark:bg-accent-dark/20 rounded-2xl bg-accent-light/20 p-5">
+          <Text className="text-center font-medium text-sm text-secondary-dark/80 dark:text-secondary-light/80">
+            ✨ {t('ideas.accuracyWarning')} ✨
           </Text>
         </Animated.View>
 
-        {/* Spirit Animal Card */}
+        {/* Spirit Animal Card - Daha canlı ve eğlenceli */}
         <Animated.View
           entering={FadeIn.delay(200).duration(500)}
-          className="mt-4 rounded-xl bg-background-light p-4 shadow-sm dark:bg-surface-dark">
+          className="mt-6 rounded-2xl bg-surface-light p-6 shadow-lg dark:bg-surface-dark">
           <View className="flex-row items-center justify-between">
             {personalityAnimal && (
-              <View className="flex-row items-center gap-4  ">
-                <View className="items-center justify-center rounded-full bg-primary-light/10 p-3 dark:bg-primary-dark/20">
+              <View className="flex-row items-center gap-5">
+                {/* Zıplayan hayvan ikonu */}
+                <Animated.View
+                  style={bounceStyle}
+                  className="items-center justify-center rounded-full bg-primary-light/15 p-4 shadow-sm dark:bg-primary-dark/25">
                   <Image
                     source={personalityAnimal.image}
-                    className="h-10 w-10"
+                    className="h-14 w-14" // Biraz daha büyük
                     resizeMode="contain"
                   />
-                </View>
+                </Animated.View>
 
-                {/* Right Side - Text Content */}
-                <View className="flex-1 ">
-                  <Text className="mb-1 font-medium text-sm text-text-light-secondary dark:text-text-dark-secondary">
-                    {t('ideas.spiritAnimal.title')}
+                {/* Text Content - Daha canlı renkler ve spacing */}
+                <View className="flex-1">
+                  <Text className="mb-2 font-medium text-sm text-primary-dark/70 dark:text-primary-light/70">
+                    ⭐ {t('ideas.spiritAnimal.title')}
                   </Text>
-                  <Text className="font-bold text-xl text-primary-dark dark:text-primary-light">
+                  <Text className="font-bold text-2xl text-primary-dark dark:text-primary-light">
                     {t(`ideas.animals.${personalityAnimal.id}.name`)}
                   </Text>
-                  <Text className="mt-1 font-regular text-xs text-text-light-secondary/70 dark:text-text-dark-secondary/70">
+                  <Text className="mt-2 font-medium text-sm text-text-light-secondary/80 dark:text-text-dark-secondary/80">
                     {t(`ideas.animals.${personalityAnimal.id}.trait`)}
                   </Text>
                 </View>
               </View>
             )}
-
-            {/* Right Side - Decorative Icon */}
-            <View className="ml-2 opacity-20">
-              <Text className="font-bold text-2xl text-primary-dark dark:text-primary-light">
-                🌟
-              </Text>
-            </View>
           </View>
         </Animated.View>
 
-        {/* Analysis Card */}
+        {/* Analysis Card - Daha yumuşak köşeler ve gölgeler */}
         <Animated.View
           entering={FadeIn.delay(400).duration(500)}
-          className="mb-8 mt-4 rounded-xl bg-background-light p-4 shadow-sm dark:bg-surface-dark">
-          <Text className="mb-3 font-semibold text-lg text-text-light dark:text-text-dark">
-            {t('ideas.analysis.title')}
+          className="my-6 rounded-2xl bg-surface-light p-6 shadow-lg dark:bg-surface-dark">
+          <Text className="mb-4 font-semibold text-xl text-primary-dark dark:text-primary-light">
+            🔮 {t('ideas.analysis.title')}
           </Text>
           <Text
-            className="text-base leading-relaxed text-text-light dark:text-text-dark"
-            style={{ paddingBottom: 8 }}>
+            className="text-base leading-relaxed text-text-light-secondary dark:text-text-dark-secondary"
+            style={{ paddingBottom: 12 }}>
             {analysis}
           </Text>
         </Animated.View>
