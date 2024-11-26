@@ -12,6 +12,8 @@ import Animated, { FadeIn } from 'react-native-reanimated';
 import { theme } from '@/constants/theme';
 import ReferralShare from '@/components/main/ReferralShare';
 import { ZODIAC_SIGNS } from '@/constants/zodiac';
+import { useTraitDetails } from '@/hooks/useTraitDetails';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // Types
 interface PersonalityAnimal {
@@ -22,6 +24,13 @@ interface PersonalityAnimal {
 interface TraitAverage {
   trait: string;
   averagePoints: number;
+}
+
+interface StoredAnalysis {
+  spiritAnimal: string;
+  analysis: string;
+  lastUpdatedAt: number;
+  lastRaterCount: number;
 }
 
 const PERSONALITY_ANIMALS: Record<string, PersonalityAnimal> = {
@@ -134,6 +143,7 @@ export default function Ideas() {
   const { data: userData } = useUserData(user?.uid);
   const { data: goodTraits } = useTraitAverages(userData?.refCodes?.en, 'goodsides');
   const { data: badTraits } = useTraitAverages(userData?.refCodes?.en, 'badsides');
+  const { data: traitDetails } = useTraitDetails(userData?.refCodes?.en, 'goodsides');
   const updateUser = useUpdateUser();
 
   const systemMessages = {
@@ -316,11 +326,80 @@ Format your response as JSON:
     }
   };
 
-  useEffect(() => {
-    if (goodTraits && badTraits && user?.zodiacSign) {
-      generatePersonalityAnalysis(goodTraits, badTraits, user.zodiacSign);
+  const shouldUpdateAnalysis = (currentRaters: number, lastStoredRaters: number): boolean => {
+    // İlk kez analiz yapılıyorsa
+    if (lastStoredRaters === 0) return true;
+
+    // Son analiz ile şimdiki arasında 5 veya daha fazla yeni değerlendirme varsa
+    const raterDifference = currentRaters - lastStoredRaters;
+    return raterDifference >= 5;
+  };
+
+  const getStoredAnalysis = async (): Promise<StoredAnalysis | null> => {
+    try {
+      const stored = await AsyncStorage.getItem(`personality_analysis_${user?.uid}`);
+      return stored ? JSON.parse(stored) : null;
+    } catch (error) {
+      console.error('Error reading stored analysis:', error);
+      return null;
     }
-  }, [goodTraits, badTraits, user?.zodiacSign, locale]);
+  };
+
+  const storeAnalysis = async (spiritAnimal: string, analysis: string, raterCount: number) => {
+    try {
+      const dataToStore: StoredAnalysis = {
+        spiritAnimal,
+        analysis,
+        lastUpdatedAt: Date.now(),
+        lastRaterCount: raterCount,
+      };
+      await AsyncStorage.setItem(`personality_analysis_${user?.uid}`, JSON.stringify(dataToStore));
+    } catch (error) {
+      console.error('Error storing analysis:', error);
+    }
+  };
+
+  useEffect(() => {
+    const loadAnalysis = async () => {
+      if (!goodTraits || !badTraits || !user?.zodiacSign || !traitDetails) return;
+
+      try {
+        setIsLoading(true);
+        const currentRaters = traitDetails.totalRaters || 0;
+        const storedData = await getStoredAnalysis();
+        const lastStoredRaters = storedData?.lastRaterCount || 0;
+
+        // Kayıtlı veri varsa ve güncelleme gerekmiyorsa
+        if (storedData && !shouldUpdateAnalysis(currentRaters, lastStoredRaters)) {
+          const animalKey = Object.keys(PERSONALITY_ANIMALS).find((key) =>
+            key.includes(storedData.spiritAnimal.toUpperCase())
+          );
+
+          if (animalKey && PERSONALITY_ANIMALS[animalKey]) {
+            setPersonalityAnimal(PERSONALITY_ANIMALS[animalKey]);
+            setAnalysis(storedData.analysis);
+            setIsLoading(false);
+            return;
+          }
+        }
+
+        // Yeni analiz gerekiyorsa
+        await generatePersonalityAnalysis(goodTraits, badTraits, user.zodiacSign);
+
+        // Yeni analizi kaydet
+        if (personalityAnimal && analysis) {
+          await storeAnalysis(personalityAnimal.id, analysis, currentRaters);
+        }
+      } catch (error) {
+        console.error('Error in loadAnalysis:', error);
+        Alert.alert(t('common.error'), t('ideas.analysisError'));
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    loadAnalysis();
+  }, [goodTraits, badTraits, user?.zodiacSign, traitDetails?.totalRaters, locale]);
 
   const handleZodiacSubmit = async (zodiacId: string) => {
     if (!user?.uid) return;
@@ -358,12 +437,20 @@ Format your response as JSON:
 
   return (
     <SafeAreaView className="flex-1 bg-background-light dark:bg-background-dark">
-      <ScrollView className="flex-1 px-4">
+      <ScrollView
+        className="flex-1 px-4"
+        contentContainerStyle={{
+          flexGrow: 1, // ScrollView içeriğinin tam yükseklikte olmasını sağlar
+          paddingBottom: 48,
+        }}
+        showsVerticalScrollIndicator={true} // Scroll çubuğunu göster
+        bounces={true} // iOS'ta bounce efektini etkinleştir
+      >
         {/* Header Warning */}
         <Animated.View
           entering={FadeIn.duration(500)}
-          className="mt-4 rounded-xl bg-primary-light/10 p-4 dark:bg-primary-dark/20">
-          <Text className="text-center font-medium text-sm text-primary-dark dark:text-primary-light">
+          className="rounded-xl bg-secondary-light/10 p-4 dark:bg-secondary-dark/20">
+          <Text className="text-center font-medium text-sm text-secondary-dark dark:text-secondary-light">
             {t('ideas.accuracyWarning')}
           </Text>
         </Animated.View>
@@ -374,24 +461,24 @@ Format your response as JSON:
           className="mt-4 rounded-xl bg-background-light p-4 shadow-sm dark:bg-surface-dark">
           <View className="flex-row items-center justify-between">
             {personalityAnimal && (
-              <View className="flex-row items-center space-x-4">
-                <View className="h-16 w-16 items-center justify-center rounded-full bg-primary-light/10 p-2 dark:bg-primary-dark/20">
+              <View className="flex-row items-center gap-4  ">
+                <View className="items-center justify-center rounded-full bg-primary-light/10 p-3 dark:bg-primary-dark/20">
                   <Image
                     source={personalityAnimal.image}
-                    className="h-12 w-12"
+                    className="h-10 w-10"
                     resizeMode="contain"
                   />
                 </View>
 
                 {/* Right Side - Text Content */}
-                <View className="flex-1">
+                <View className="flex-1 ">
                   <Text className="mb-1 font-medium text-sm text-text-light-secondary dark:text-text-dark-secondary">
                     {t('ideas.spiritAnimal.title')}
                   </Text>
                   <Text className="font-bold text-xl text-primary-dark dark:text-primary-light">
                     {t(`ideas.animals.${personalityAnimal.id}.name`)}
                   </Text>
-                  <Text className="mt-1 text-xs text-text-light-secondary/70 dark:text-text-dark-secondary/70">
+                  <Text className="mt-1 font-regular text-xs text-text-light-secondary/70 dark:text-text-dark-secondary/70">
                     {t(`ideas.animals.${personalityAnimal.id}.trait`)}
                   </Text>
                 </View>
@@ -410,21 +497,15 @@ Format your response as JSON:
         {/* Analysis Card */}
         <Animated.View
           entering={FadeIn.delay(400).duration(500)}
-          className="ounded-xl bg-background-light p-2 shadow-sm dark:bg-surface-dark">
-          <Text className="font-semibold   text-lg text-text-light dark:text-text-dark">
+          className="mb-8 mt-4 rounded-xl bg-background-light p-4 shadow-sm dark:bg-surface-dark">
+          <Text className="mb-3 font-semibold text-lg text-text-light dark:text-text-dark">
             {t('ideas.analysis.title')}
           </Text>
-          <Text className="text-base leading-relaxed text-text-light-secondary dark:text-text-dark-secondary">
+          <Text
+            className="text-base leading-relaxed text-text-light dark:text-text-dark"
+            style={{ paddingBottom: 8 }}>
             {analysis}
           </Text>
-        </Animated.View>
-
-        {/* Share Section */}
-        <Animated.View entering={FadeIn.delay(600).duration(500)} className="my-6">
-          <Text className="mb-2 text-center text-sm text-text-light-secondary dark:text-text-dark-secondary">
-            {t('personality.referral.inviteText')}
-          </Text>
-          <ReferralShare />
         </Animated.View>
       </ScrollView>
     </SafeAreaView>
