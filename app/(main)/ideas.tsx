@@ -491,8 +491,11 @@ Format your response as JSON:
 
   if (isLoading) {
     return (
-      <View className="flex-1 items-center justify-center bg-background-light dark:bg-background-dark">
+      <View className="flex-1 items-center justify-center gap-3 bg-background-light dark:bg-background-dark">
         <ActivityIndicator size="large" color={theme.colors.primary.light} />
+        <Text className="font-medium text-base text-primary-dark/70 dark:text-primary-light/70">
+          {t('common.analyzing')}
+        </Text>
       </View>
     );
   }
@@ -558,7 +561,7 @@ Format your response as JSON:
             🔮 {t('ideas.analysis.title')}
           </Text>
           <Text
-            className="text-base leading-relaxed text-text-light-secondary dark:text-text-dark-secondary"
+            className="text-base leading-relaxed text-text-light dark:text-text-dark-secondary"
             style={{ paddingBottom: 12 }}>
             {analysis}
           </Text>

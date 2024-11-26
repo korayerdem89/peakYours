@@ -12,6 +12,7 @@ export default {
     saving: 'Kaydediliyor...',
     quoteOfDay: 'Günün Sözü',
     or: 'veya',
+    analyzing: 'Analiz Ediliyor...',
   },
   auth: {
     signIn: {
@@ -40,6 +41,11 @@ export default {
       english: 'İngilizce',
       spanish: 'İspanyolca',
       chinese: 'Çince',
+      changeConfirmTitle: 'Dil Değiştirilsin mi?',
+      changeConfirmMessage: 'Dili 24 saatte bir kez değiştirebilirsiniz. Emin misiniz?',
+      changeButton: 'Dili Değiştir',
+      waitMessage: 'Dili tekrar değiştirmek için lütfen 24 saat bekleyin.',
+      timeRemaining: 'Dili %{hours} saat %{minutes} dakika sonra değiştirebilirsiniz.',
     },
     theme: {
       title: 'Gece Modu',

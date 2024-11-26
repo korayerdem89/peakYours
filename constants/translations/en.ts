@@ -12,6 +12,7 @@ export default {
     saving: 'Saving...',
     quoteOfDay: 'Quote of the Day',
     or: 'or',
+    analyzing: 'Analyzing...',
   },
   auth: {
     signIn: {
@@ -40,6 +41,11 @@ export default {
       english: 'English',
       spanish: 'Spanish',
       chinese: 'Chinese',
+      changeConfirmTitle: 'Change Language?',
+      changeConfirmMessage: 'You can change the language once every 24 hours. Are you sure?',
+      changeButton: 'Change Language',
+      waitMessage: 'Please wait 24 hours before changing the language again.',
+      timeRemaining: 'You can change the language in %{hours} hours and %{minutes} minutes.',
     },
     theme: {
       title: 'Night Mode',

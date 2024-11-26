@@ -12,6 +12,7 @@ export default {
     saving: 'Guardando...',
     quoteOfDay: 'Frase del Día',
     or: 'o',
+    analyzing: 'Analizando...',
   },
   auth: {
     signIn: {
@@ -40,6 +41,11 @@ export default {
       english: 'Inglés',
       spanish: 'Español',
       chinese: 'Chino',
+      changeConfirmTitle: '¿Cambiar Idioma?',
+      changeConfirmMessage: 'Puedes cambiar el idioma una vez cada 24 horas. ¿Estás seguro?',
+      changeButton: 'Cambiar Idioma',
+      waitMessage: 'Por favor espera 24 horas antes de cambiar el idioma nuevamente.',
+      timeRemaining: 'Podrás cambiar el idioma en %{hours} horas y %{minutes} minutos.',
     },
     theme: {
       title: 'Modo Nocturno',

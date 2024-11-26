@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import { useColorScheme } from 'nativewind';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { Accordion } from '@/components/Accordion';
 import { useAuth } from '@/store/useAuth';
@@ -31,6 +32,9 @@ const LANGUAGES = [
 
 const DEFAULT_AVATAR = 'https://ui-avatars.com/api/?background=random';
 
+const LANGUAGE_CHANGE_KEY = 'last_language_change';
+const HOURS_24 = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
+
 export default function SettingsScreen() {
   const { colorScheme, toggleColorScheme: originalToggle } = useColorScheme();
   const { user, updateUserData } = useAuth();
@@ -50,9 +54,59 @@ export default function SettingsScreen() {
     });
   }, [isTogglingTheme, originalToggle]);
 
+  const checkLanguageChangeEligibility = async () => {
+    try {
+      const lastChange = await AsyncStorage.getItem(LANGUAGE_CHANGE_KEY);
+      if (!lastChange) return true;
+
+      const lastChangeTime = parseInt(lastChange, 10);
+      const now = Date.now();
+      const timeDiff = now - lastChangeTime;
+
+      if (timeDiff < HOURS_24) {
+        const remainingTime = HOURS_24 - timeDiff;
+        const hours = Math.floor(remainingTime / (60 * 60 * 1000));
+        const minutes = Math.floor((remainingTime % (60 * 60 * 1000)) / (60 * 1000));
+
+        Alert.alert(t('common.error'), t('settings.language.timeRemaining', { hours, minutes }));
+        return false;
+      }
+
+      return true;
+    } catch (error) {
+      console.error('Error checking language change eligibility:', error);
+      return true;
+    }
+  };
+
   const handleLanguageChange = async (langCode: string) => {
     if (langCode === locale) return;
-    await setAppLocale(langCode);
+
+    try {
+      const canChange = await checkLanguageChangeEligibility();
+      if (!canChange) return;
+
+      Alert.alert(
+        t('settings.language.changeConfirmTitle'),
+        t('settings.language.changeConfirmMessage'),
+        [
+          {
+            text: t('common.cancel'),
+            style: 'cancel',
+          },
+          {
+            text: t('settings.language.changeButton'),
+            onPress: async () => {
+              await setAppLocale(langCode);
+              await AsyncStorage.setItem(LANGUAGE_CHANGE_KEY, Date.now().toString());
+            },
+          },
+        ]
+      );
+    } catch (error) {
+      console.error('Error handling language change:', error);
+      Alert.alert(t('common.error'), t('common.unexpectedError'));
+    }
   };
 
   const handleSignOut = async () => {
