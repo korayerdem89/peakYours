@@ -7,6 +7,7 @@ import Animated, {
   withDelay,
   withRepeat,
   withSpring,
+  Easing,
 } from 'react-native-reanimated';
 import { useEffect, useMemo } from 'react';
 import { Text } from 'react-native';
@@ -39,15 +40,16 @@ function TraitBar({ trait, value, color, delay, style }: TraitBarProps) {
   }));
 
   useEffect(() => {
+    width.value = 0;
+
     width.value = withDelay(
       delay,
-      withSequence(
-        withTiming(value, {
-          duration: 600,
-        })
-      )
+      withTiming(value, {
+        duration: 600,
+        easing: Easing.bezier(0.25, 0.1, 0.25, 1),
+      })
     );
-  }, []);
+  }, [value, delay]);
 
   return (
     <View className="xs:mb-1.5 flex-row items-center sm:mb-2 md:mb-2.5">
@@ -59,7 +61,10 @@ function TraitBar({ trait, value, color, delay, style }: TraitBarProps) {
           {t(`personality.traits.${trait}`)}
         </Text>
         <View className="xs:mt-0.5 flex-row items-center sm:mt-1 md:mt-1.5">
-          <Animated.View className="xs:h-1 rounded-full sm:h-1.5 md:h-2" style={animatedStyle} />
+          <Animated.View
+            className="xs:h-1 rounded-full sm:h-1.5 md:h-2"
+            style={[animatedStyle, { minWidth: 2 }]}
+          />
         </View>
       </View>
       <Text className="xs:text-[10px] ml-2 text-gray-600 dark:text-gray-400 sm:text-xs md:text-sm">

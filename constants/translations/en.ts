@@ -162,4 +162,112 @@ export default {
       message: 'You can now view your comprehensive personality analysis',
     },
   },
+  ideas: {
+    accuracyWarning: 'The more people rate you, the more accurate your analysis will be!',
+    spiritAnimal: {
+      title: 'Your Spirit Animal',
+    },
+    analysis: {
+      title: 'Your Personality Analysis',
+    },
+    analysisError: 'Failed to generate personality analysis',
+    animals: {
+      cat: {
+        name: 'Independent Spirit',
+        trait: 'Values freedom and self-reliance',
+      },
+      chameleon: {
+        name: 'Adaptable Transformer',
+        trait: 'Easily adjusts to new situations',
+      },
+      crab: {
+        name: 'Protective Guardian',
+        trait: 'Defends loved ones with loyalty',
+      },
+      dragon: {
+        name: 'Powerful Force',
+        trait: 'Commands respect and authority',
+      },
+      flamingo: {
+        name: 'Graceful Presence',
+        trait: 'Brings elegance to every situation',
+      },
+      fox: {
+        name: 'Clever Mind',
+        trait: 'Solves problems with wit and wisdom',
+      },
+      goat: {
+        name: 'Determined Climber',
+        trait: 'Overcomes obstacles with persistence',
+      },
+      gorilla: {
+        name: 'Strong Leader',
+        trait: 'Guides others with strength and wisdom',
+      },
+      hedgehog: {
+        name: 'Cautious Protector',
+        trait: 'Carefully guards their boundaries',
+      },
+      horse: {
+        name: 'Ambitious Runner',
+        trait: 'Pursues goals with determination',
+      },
+      kangaroo: {
+        name: 'Energetic Spirit',
+        trait: 'Approaches life with enthusiasm',
+      },
+      lion: {
+        name: 'Born Leader',
+        trait: 'Natural at taking charge',
+      },
+      owl: {
+        name: 'Wise Observer',
+        trait: 'Sees deeply into situations',
+      },
+      phoenix: {
+        name: 'Resilient Soul',
+        trait: 'Rises stronger from challenges',
+      },
+      seahorse: {
+        name: 'Gentle Navigator',
+        trait: 'Moves through life with grace',
+      },
+      seal: {
+        name: 'Playful Friend',
+        trait: 'Brings joy to relationships',
+      },
+      snake: {
+        name: 'Strategic Planner',
+        trait: 'Makes calculated decisions',
+      },
+      spider: {
+        name: 'Patient Weaver',
+        trait: 'Creates opportunities methodically',
+      },
+      squirrel: {
+        name: 'Resourceful Collector',
+        trait: 'Prepares wisely for the future',
+      },
+      toucan: {
+        name: 'Social Connector',
+        trait: 'Builds bridges between people',
+      },
+      turtle: {
+        name: 'Steady Warrior',
+        trait: 'Progresses with consistent effort',
+      },
+      whale: {
+        name: 'Peaceful Giant',
+        trait: 'Maintains calm in any situation',
+      },
+      wolf: {
+        name: 'Loyal Companion',
+        trait: 'Values deep connections',
+      },
+      woodpecker: {
+        name: 'Diligent Worker',
+        trait: 'Persists until goals are achieved',
+      },
+    },
+  },
 };

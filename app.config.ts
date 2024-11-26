@@ -41,6 +41,7 @@ const config: ExpoConfig = {
     ],
   ],
   extra: {
+    OPENAI_API_KEY: process.env.EXPO_PUBLIC_OPENAI_API_KEY,
     eas: {
       projectId: '825e19a8-f734-4813-b726-e5c2b215b0af',
     },

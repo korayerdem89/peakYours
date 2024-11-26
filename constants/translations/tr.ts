@@ -130,7 +130,7 @@ export default {
     details: {
       title: 'Değerlendirme Detayları',
       description: '%{count} değerlendirme',
-      viewAll: 'Tüm Değerlendirmeleri Gör',
+      viewAll: 'Değerlendirmeleri Gör',
       noRatings: 'Henüz değerlendirme yapılmamış',
       ratedBy: 'Değerlendiren',
       ratedAt: 'Tarih',
@@ -162,5 +162,115 @@ export default {
       title: 'Burç Seçildi',
       message: 'Artık kapsamlı kişilik analizinizi görüntüleyebilirsiniz',
     },
+  },
+  ideas: {
+    accuracyWarning: 'Ne kadar çok kişi sizi puanlarsa, analiz o kadar doğru olur!',
+    spiritAnimal: {
+      title: 'Ruh Hayvanınız',
+    },
+    analysis: {
+      title: 'Kişilik Analiziniz',
+    },
+    analysisError: 'Kişilik analizi oluşturulamadı',
+    animals: {
+      cat: {
+        name: 'Bağımsız Ruh',
+        trait: 'Özgürlüğe ve kendine güvene değer verir',
+      },
+      chameleon: {
+        name: 'Uyumlu Dönüşümcü',
+        trait: 'Yeni durumlara kolayca uyum sağlar',
+      },
+      crab: {
+        name: 'Koruyucu Yengeç',
+        trait: 'Sevdiklerini sadakatle korur',
+      },
+      dragon: {
+        name: 'Güçlü Ejderha',
+        trait: 'Saygı ve otorite uyandırır',
+      },
+      flamingo: {
+        name: 'Zarif Flamingo',
+        trait: 'Her duruma zarafet katar',
+      },
+      fox: {
+        name: 'Kurnaz Tilki',
+        trait: 'Sorunları zekası ve bilgeliğiyle çözer',
+      },
+      goat: {
+        name: 'Kararlı Keçi',
+        trait: 'Engelleri azimle aşar',
+      },
+      gorilla: {
+        name: 'Güçlü Goril',
+        trait: 'Başkalarına güç ve bilgelikle rehberlik eder',
+      },
+      hedgehog: {
+        name: 'Tedbirli Kirpi',
+        trait: 'Sınırlarını dikkatle korur',
+      },
+      horse: {
+        name: 'Hırslı At',
+        trait: 'Hedeflerini kararlılıkla takip eder',
+      },
+      kangaroo: {
+        name: 'Enerjik Kanguru',
+        trait: 'Hayata coşkuyla yaklaşır',
+      },
+      lion: {
+        name: 'Lider Aslan',
+        trait: 'Doğuştan liderlik özelliklerine sahip',
+      },
+      owl: {
+        name: 'Bilge Baykuş',
+        trait: 'Durumları derinden analiz eder',
+      },
+      phoenix: {
+        name: 'Dirençli Anka Kuşu',
+        trait: 'Zorluklardan daha güçlü çıkar',
+      },
+      seahorse: {
+        name: 'Nazik Denizatı',
+        trait: 'Hayatta zarafetle ilerler',
+      },
+      seal: {
+        name: 'Oyuncu Fok',
+        trait: 'İlişkilere neşe katar',
+      },
+      snake: {
+        name: 'Stratejik Yılan',
+        trait: 'Hesaplanmış kararlar alır',
+      },
+      spider: {
+        name: 'Sabırlı Örümcek',
+        trait: 'Fırsatları metodlu bir şekilde yaratır',
+      },
+      squirrel: {
+        name: 'Becerikli Sincap',
+        trait: 'Geleceği akıllıca planlar',
+      },
+      toucan: {
+        name: 'Sosyal Tukan',
+        trait: 'İnsanlar arasında köprüler kurar',
+      },
+      turtle: {
+        name: 'Kararlı Kaplumbağa',
+        trait: 'Sürekli çabayla ilerler',
+      },
+      whale: {
+        name: 'Huzurlu Balina',
+        trait: 'Her duruma zarafet katar',
+      },
+      wolf: {
+        name: 'Sadık Kurt',
+        trait: 'Derin bağlar değer verir',
+      },
+      woodpecker: {
+        name: 'Çalışkan Ağaçkakan',
+        trait: 'Sürekli çabayla ilerler',
+      },
+    },
+    unauthorizedError: 'API anahtarı geçersiz veya eksik. Lütfen yapılandırmanızı kontrol edin.',
+    rateLimitError: 'İstek limiti aşıldı. Lütfen daha sonra tekrar deneyin.',
   },
 };
