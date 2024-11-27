@@ -1,5 +1,5 @@
 import { View, Image, Text, ScrollView, ActivityIndicator } from 'react-native';
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useAuth } from '@/store/useAuth';
 import { ZodiacModal } from '@/components/ZodiacModal';
@@ -13,7 +13,6 @@ import Animated, {
   useAnimatedStyle,
   withSpring,
   withSequence,
-  withRepeat,
   useSharedValue,
   withDelay,
 } from 'react-native-reanimated';

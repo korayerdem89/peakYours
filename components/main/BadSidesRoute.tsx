@@ -95,9 +95,9 @@ export default function BadSidesRoute() {
         value: traitAverages?.find((t) => t.trait === 'stubborn')?.averagePoints || 0,
       },
       {
-        trait: 'impatient',
+        trait: 'selfish',
         color: colorPalette[1],
-        value: traitAverages?.find((t) => t.trait === 'impatient')?.averagePoints || 0,
+        value: traitAverages?.find((t) => t.trait === 'selfish')?.averagePoints || 0,
       },
       {
         trait: 'moody',
