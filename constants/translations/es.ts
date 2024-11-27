@@ -286,5 +286,11 @@ export default {
         trait: 'Persiste hasta lograr sus objetivos',
       },
     },
+    noRatingsWarning: {
+      title: '¡Analicemos tu Personalidad!',
+      description:
+        'Descubre tu análisis de personalidad único donde combinamos la energía cósmica de tu signo zodiacal con las percepciones de IA basadas en las calificaciones de tus amigos. ¡Prepárate para un viaje personalizado de autodescubrimiento!',
+      cta: 'Comparte tu perfil y comienza a recolectar calificaciones',
+    },
   },
 };

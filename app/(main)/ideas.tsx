@@ -149,9 +149,70 @@ export default function Ideas() {
   const [isLoading, setIsLoading] = useState(true);
 
   const { data: userData } = useUserData(user?.uid);
+  const { data: traitDetails } = useTraitDetails(userData?.refCodes?.en, 'goodsides');
+
+  // Bounce animasyonu için shared value
+  const bounceValue = useSharedValue(0);
+
+  // 5 saniyede bir tekrarlanan bounce efekti
+  useEffect(() => {
+    const interval = setInterval(() => {
+      bounceValue.value = withSequence(
+        withSpring(-10), // Yukarı zıpla
+        withDelay(100, withSpring(0)) // Aşağı in
+      );
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  const bounceStyle = useAnimatedStyle(() => ({
+    transform: [{ translateY: bounceValue.value }],
+  }));
+
+  if (!traitDetails?.totalRaters) {
+    return (
+      <SafeAreaView className="flex-1 bg-accent-light dark:bg-background-dark">
+        <ScrollView
+          className="flex-1 p-4"
+          contentContainerStyle={{ flexGrow: 1 }}
+          showsVerticalScrollIndicator={false}>
+          <Animated.View entering={FadeIn.duration(1000)} className="flex-1 justify-center">
+            <View className="rounded-2xl bg-surface-light p-6 shadow-sm dark:bg-surface-dark">
+              {/* İllüstrasyon Container */}
+              <Animated.View style={bounceStyle} className="mb-8 items-center">
+                <Image
+                  source={{ uri: 'https://picsum.photos/200/300' }}
+                  className="h-48 w-48"
+                  resizeMode="contain"
+                />
+              </Animated.View>
+
+              {/* Başlık */}
+              <Text className="text-primary-default mb-4 text-center font-bold text-2xl dark:text-primary-light">
+                {t('ideas.noRatingsWarning.title')}
+              </Text>
+
+              {/* Açıklama */}
+              <Text className="mb-6 text-center font-medium text-base text-text-light-secondary dark:text-text-dark-secondary">
+                {t('ideas.noRatingsWarning.description')}
+              </Text>
+
+              {/* CTA Bölümü */}
+              <View className="mt-4 rounded-xl bg-primary-light/10 p-4 dark:bg-primary-dark/10">
+                <Text className="text-center font-semibold text-sm text-primary-dark dark:text-primary-light">
+                  {t('ideas.noRatingsWarning.cta')}
+                </Text>
+              </View>
+            </View>
+          </Animated.View>
+        </ScrollView>
+      </SafeAreaView>
+    );
+  }
+
   const { data: goodTraits } = useTraitAverages(userData?.refCodes?.en, 'goodsides');
   const { data: badTraits } = useTraitAverages(userData?.refCodes?.en, 'badsides');
-  const { data: traitDetails } = useTraitDetails(userData?.refCodes?.en, 'goodsides');
   const updateUser = useUpdateUser();
 
   const systemMessages = {
@@ -460,25 +521,6 @@ Format your response as JSON:
       Alert.alert(t('common.error'), t('settings.zodiacCard.updateError'));
     }
   };
-
-  // Bounce animasyonu için shared value
-  const bounceValue = useSharedValue(0);
-
-  // 5 saniyede bir tekrarlanan bounce efekti
-  useEffect(() => {
-    const interval = setInterval(() => {
-      bounceValue.value = withSequence(
-        withSpring(-10), // Yukarı zıpla
-        withDelay(100, withSpring(0)) // Aşağı in
-      );
-    }, 5000);
-
-    return () => clearInterval(interval);
-  }, []);
-
-  const bounceStyle = useAnimatedStyle(() => ({
-    transform: [{ translateY: bounceValue.value }],
-  }));
 
   if (!user?.zodiacSign) {
     return (

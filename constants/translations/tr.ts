@@ -278,5 +278,11 @@ export default {
     },
     unauthorizedError: 'API anahtarı geçersiz veya eksik. Lütfen yapılandırmanızı kontrol edin.',
     rateLimitError: 'İstek limiti aşıldı. Lütfen daha sonra tekrar deneyin.',
+    noRatingsWarning: {
+      title: 'Haydi Kişiliğinizi Analiz Edelim!',
+      description:
+        'Burcunuzun kozmik enerjisini, arkadaşlarınızın değerlendirmeleriyle harmanlayarak size özel yapay zeka destekli kişilik analizinizi oluşturuyoruz. Kendinizi keşfetme yolculuğuna hazır olun!',
+      cta: 'Profilinizi paylaşın ve puanları toplamaya başlayın',
+    },
   },
 };

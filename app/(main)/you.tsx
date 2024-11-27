@@ -87,7 +87,7 @@ export default function YouScreen() {
   );
 
   return (
-    <SafeAreaView className="flex-1 bg-background-tab dark:bg-background-dark">
+    <SafeAreaView className="flex-1 bg-accent-light dark:bg-background-dark">
       <View className="p-2">
         <QuoteCard />
       </View>

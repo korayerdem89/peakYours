@@ -275,5 +275,11 @@ export default {
         trait: 'Persists until goals are achieved',
       },
     },
+    noRatingsWarning: {
+      title: "Let's Analyze Your Personality!",
+      description:
+        "Discover your unique personality analysis where we blend your zodiac sign's cosmic energy with AI-powered insights from your friends' ratings. Get ready for a personalized journey of self-discovery!",
+      cta: 'Share your profile and start collecting ratings',
+    },
   },
 };
