@@ -27,13 +27,13 @@ export const BadSidesRateRoute = memo(({ referenceCode }: BadSidesRateRouteProps
   const [isLoading, setIsLoading] = useState(false);
   const [hasExistingRating, setHasExistingRating] = useState(false);
   const [traits, setTraits] = useState<Trait[]>([
-    { name: 'stubborn', points: 0 },
-    { name: 'impatient', points: 0 },
-    { name: 'moody', points: 0 },
+    { name: 'angry', points: 0 },
     { name: 'arrogant', points: 0 },
     { name: 'jealous', points: 0 },
     { name: 'lazy', points: 0 },
-    { name: 'careless', points: 0 },
+    { name: 'pessimistic', points: 0 },
+    { name: 'selfish', points: 0 },
+    { name: 'forgetful', points: 0 },
   ]);
 
   const remainingPoints = useMemo(

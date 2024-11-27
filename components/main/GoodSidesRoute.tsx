@@ -120,39 +120,39 @@ export default function GoodSidesRoute() {
   const traits = useMemo(
     () => [
       {
+        trait: 'empathic',
+        color: theme.colors.personality.empathic,
+        value: traitAverages?.find((t) => t.trait === 'empathic')?.averagePoints || 0,
+      },
+      {
         trait: 'friendly',
         color: theme.colors.personality.friendly,
         value: traitAverages?.find((t) => t.trait === 'friendly')?.averagePoints || 0,
       },
       {
-        trait: 'adventurous',
-        color: theme.colors.personality.adventurous,
-        value: traitAverages?.find((t) => t.trait === 'adventurous')?.averagePoints || 0,
+        trait: 'helpful',
+        color: theme.colors.personality.helpful,
+        value: traitAverages?.find((t) => t.trait === 'helpful')?.averagePoints || 0,
       },
       {
-        trait: 'thinker',
-        color: theme.colors.personality.thinker,
-        value: traitAverages?.find((t) => t.trait === 'thinker')?.averagePoints || 0,
+        trait: 'honest',
+        color: theme.colors.personality.honest,
+        value: traitAverages?.find((t) => t.trait === 'honest')?.averagePoints || 0,
       },
       {
-        trait: 'protective',
-        color: theme.colors.personality.protective,
-        value: traitAverages?.find((t) => t.trait === 'protective')?.averagePoints || 0,
+        trait: 'patient',
+        color: theme.colors.personality.patient,
+        value: traitAverages?.find((t) => t.trait === 'patient')?.averagePoints || 0,
       },
       {
-        trait: 'cheerful',
-        color: theme.colors.personality.cheerful,
-        value: traitAverages?.find((t) => t.trait === 'cheerful')?.averagePoints || 0,
+        trait: 'reliable',
+        color: theme.colors.personality.reliable,
+        value: traitAverages?.find((t) => t.trait === 'reliable')?.averagePoints || 0,
       },
       {
-        trait: 'creativity',
-        color: theme.colors.personality.creativity,
-        value: traitAverages?.find((t) => t.trait === 'creativity')?.averagePoints || 0,
-      },
-      {
-        trait: 'leader',
-        color: theme.colors.personality.leader,
-        value: traitAverages?.find((t) => t.trait === 'leader')?.averagePoints || 0,
+        trait: 'respectful',
+        color: theme.colors.personality.respectful,
+        value: traitAverages?.find((t) => t.trait === 'respectful')?.averagePoints || 0,
       },
     ],
     [traitAverages]

@@ -90,39 +90,39 @@ export default function BadSidesRoute() {
   const traits = useMemo(
     () => [
       {
-        trait: 'stubborn',
-        color: colorPalette[0],
-        value: traitAverages?.find((t) => t.trait === 'stubborn')?.averagePoints || 0,
-      },
-      {
-        trait: 'selfish',
-        color: colorPalette[1],
-        value: traitAverages?.find((t) => t.trait === 'selfish')?.averagePoints || 0,
-      },
-      {
-        trait: 'moody',
-        color: colorPalette[2],
-        value: traitAverages?.find((t) => t.trait === 'moody')?.averagePoints || 0,
+        trait: 'angry',
+        color: theme.colors.personality.angry,
+        value: traitAverages?.find((t) => t.trait === 'angry')?.averagePoints || 0,
       },
       {
         trait: 'arrogant',
-        color: colorPalette[3],
+        color: theme.colors.personality.arrogant,
         value: traitAverages?.find((t) => t.trait === 'arrogant')?.averagePoints || 0,
       },
       {
         trait: 'jealous',
-        color: colorPalette[4],
+        color: theme.colors.personality.jealous,
         value: traitAverages?.find((t) => t.trait === 'jealous')?.averagePoints || 0,
       },
       {
         trait: 'lazy',
-        color: colorPalette[5],
+        color: theme.colors.personality.lazy,
         value: traitAverages?.find((t) => t.trait === 'lazy')?.averagePoints || 0,
       },
       {
-        trait: 'careless',
-        color: colorPalette[6],
-        value: traitAverages?.find((t) => t.trait === 'careless')?.averagePoints || 0,
+        trait: 'pessimistic',
+        color: theme.colors.personality.pessimistic,
+        value: traitAverages?.find((t) => t.trait === 'pessimistic')?.averagePoints || 0,
+      },
+      {
+        trait: 'selfish',
+        color: theme.colors.personality.selfish,
+        value: traitAverages?.find((t) => t.trait === 'selfish')?.averagePoints || 0,
+      },
+      {
+        trait: 'forgetful',
+        color: theme.colors.personality.forgetful,
+        value: traitAverages?.find((t) => t.trait === 'forgetful')?.averagePoints || 0,
       },
     ],
     [traitAverages]
