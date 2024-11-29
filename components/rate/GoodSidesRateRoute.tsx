@@ -8,7 +8,7 @@ import { RatingService } from '@/services/rating';
 import { useAuth } from '@/store/useAuth';
 import Button from '../Button';
 import { useQueryClient } from '@tanstack/react-query';
-
+import { useColorScheme } from 'react-native';
 const TOTAL_POINTS = 35;
 const MAX_TRAIT_POINTS = 10;
 
@@ -19,90 +19,134 @@ interface Trait {
 
 interface GoodSidesRateRouteProps {
   referenceCode: string;
+  onTabChange: () => void;
 }
 
-export const GoodSidesRateRoute = memo(({ referenceCode }: GoodSidesRateRouteProps) => {
-  const { t } = useTranslation();
-  const { user } = useAuth();
-  const [isSubmitted, setIsSubmitted] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [hasExistingRating, setHasExistingRating] = useState(false);
-  const [traits, setTraits] = useState<Trait[]>([
-    { name: 'empathic', points: 0 },
-    { name: 'friendly', points: 0 },
-    { name: 'helpful', points: 0 },
-    { name: 'honest', points: 0 },
-    { name: 'patient', points: 0 },
-    { name: 'reliable', points: 0 },
-    { name: 'respectful', points: 0 },
-  ]);
+export const GoodSidesRateRoute = memo(
+  ({ referenceCode, onTabChange }: GoodSidesRateRouteProps) => {
+    const { t } = useTranslation();
+    const colorScheme = useColorScheme();
+    const { user } = useAuth();
+    const [isSubmitted, setIsSubmitted] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+    const [hasExistingRating, setHasExistingRating] = useState(false);
+    const [traits, setTraits] = useState<Trait[]>([
+      { name: 'empathic', points: 0 },
+      { name: 'friendly', points: 0 },
+      { name: 'helpful', points: 0 },
+      { name: 'honest', points: 0 },
+      { name: 'patient', points: 0 },
+      { name: 'reliable', points: 0 },
+      { name: 'respectful', points: 0 },
+    ]);
 
-  const remainingPoints = useMemo(
-    () => TOTAL_POINTS - traits.reduce((sum, trait) => sum + trait.points, 0),
-    [traits]
-  );
-
-  const handlePointChange = useCallback((index: number, increase: boolean) => {
-    setTraits((current) =>
-      current.map((trait, idx) => {
-        if (idx !== index) return trait;
-        const newPoints = trait.points + (increase ? 1 : -1);
-        if (newPoints < 0 || newPoints > MAX_TRAIT_POINTS) return trait;
-        return { ...trait, points: newPoints };
-      })
+    const remainingPoints = useMemo(
+      () => TOTAL_POINTS - traits.reduce((sum, trait) => sum + trait.points, 0),
+      [traits]
     );
-  }, []);
 
-  useEffect(() => {
-    const checkExistingRating = async () => {
-      if (!user?.uid) return;
+    const handlePointChange = useCallback((index: number, increase: boolean) => {
+      setTraits((current) =>
+        current.map((trait, idx) => {
+          if (idx !== index) return trait;
+          const newPoints = trait.points + (increase ? 1 : -1);
+          if (newPoints < 0 || newPoints > MAX_TRAIT_POINTS) return trait;
+          return { ...trait, points: newPoints };
+        })
+      );
+    }, []);
 
-      try {
-        const exists = await RatingService.checkExistingRating(
-          referenceCode,
-          user.uid,
-          'goodsides'
-        );
-        if (exists) {
-          const previousRating = await RatingService.getPreviousRating(
+    useEffect(() => {
+      const checkExistingRating = async () => {
+        if (!user?.uid) return;
+
+        try {
+          const exists = await RatingService.checkExistingRating(
             referenceCode,
             user.uid,
             'goodsides'
           );
-          if (previousRating) {
-            setTraits(
-              previousRating.traits.map((trait) => ({
-                name: trait.name as keyof typeof theme.colors.personality,
-                points: trait.points,
-              }))
+          if (exists) {
+            const previousRating = await RatingService.getPreviousRating(
+              referenceCode,
+              user.uid,
+              'goodsides'
             );
+            if (previousRating) {
+              setTraits(
+                previousRating.traits.map((trait) => ({
+                  name: trait.name as keyof typeof theme.colors.personality,
+                  points: trait.points,
+                }))
+              );
+            }
+            setIsSubmitted(true);
+            setHasExistingRating(true);
+            Toast.show({
+              type: 'error',
+              text1: t('personality.rating.alreadyRated'),
+              position: 'bottom',
+              visibilityTime: 3000,
+              text1Style: {
+                fontFamily: 'Poppins_400Regular',
+                color: colorScheme === 'dark' ? '#C5CEE0' : theme.colors.error.dark,
+              },
+            });
           }
-          setIsSubmitted(true);
-          setHasExistingRating(true);
-          Toast.show({
-            type: 'info',
-            text1: t('personality.rating.alreadyRated'),
-            position: 'bottom',
-            visibilityTime: 3000,
-          });
+        } catch (error) {
+          console.error('Error checking existing rating:', error);
         }
+      };
+
+      checkExistingRating();
+    }, [referenceCode, user?.uid, t]);
+
+    const queryClient = useQueryClient();
+
+    const handleSubmit = async () => {
+      if (!user?.uid || remainingPoints !== 0) return;
+
+      try {
+        setIsLoading(true);
+        await RatingService.saveRating(referenceCode, user.uid, traits, 'goodsides');
+
+        await Promise.all([
+          queryClient.invalidateQueries({
+            queryKey: ['traitDetails', referenceCode],
+          }),
+          queryClient.invalidateQueries({
+            queryKey: ['traitAverages', referenceCode, 'goodsides'],
+          }),
+        ]);
+
+        setIsSubmitted(true);
+        setHasExistingRating(true);
+
+        Toast.show({
+          type: 'info',
+          text1: t('personality.rating.nextBadSides'),
+          position: 'bottom',
+          visibilityTime: 3000,
+          onHide: () => onTabChange(),
+          text1Style: {
+            fontFamily: 'Poppins_400Regular',
+            color: colorScheme === 'dark' ? '#C5CEE0' : theme.colors.secondary.dark,
+          },
+        });
       } catch (error) {
-        console.error('Error checking existing rating:', error);
+        Toast.show({
+          type: 'error',
+          text1: t('common.error'),
+          text2: t('personality.rating.errorMessage'),
+          position: 'bottom',
+          visibilityTime: 4000,
+        });
+      } finally {
+        setIsLoading(false);
       }
     };
 
-    checkExistingRating();
-  }, [referenceCode, user?.uid, t]);
-
-  const queryClient = useQueryClient();
-
-  const handleSubmit = async () => {
-    if (!user?.uid || remainingPoints !== 0) return;
-
-    try {
-      setIsLoading(true);
-      await RatingService.saveRating(referenceCode, user.uid, traits, 'goodsides');
-
+    const handleReset = useCallback(async () => {
       await Promise.all([
         queryClient.invalidateQueries({
           queryKey: ['traitDetails', referenceCode],
@@ -111,135 +155,103 @@ export const GoodSidesRateRoute = memo(({ referenceCode }: GoodSidesRateRoutePro
           queryKey: ['traitAverages', referenceCode, 'goodsides'],
         }),
       ]);
+      setIsSubmitted(false);
+      setHasExistingRating(false);
+      setTraits(traits.map((trait) => ({ ...trait, points: 0 })));
+    }, []);
 
-      setIsSubmitted(true);
-      setHasExistingRating(true);
+    const handleTestSubmit = async () => {
+      if (!user?.uid) return;
 
-      Toast.show({
-        type: 'success',
-        text1: t('personality.rating.success'),
-        text2: t('personality.rating.successMessage'),
-        position: 'bottom',
-        visibilityTime: 3000,
-      });
-    } catch (error) {
-      Toast.show({
-        type: 'error',
-        text1: t('common.error'),
-        text2: t('personality.rating.errorMessage'),
-        position: 'bottom',
-        visibilityTime: 4000,
-      });
-    } finally {
-      setIsLoading(false);
-    }
-  };
+      const testUserId = Math.random().toString(36).substring(2, 15);
 
-  const handleReset = useCallback(async () => {
-    await Promise.all([
-      queryClient.invalidateQueries({
-        queryKey: ['traitDetails', referenceCode],
-      }),
-      queryClient.invalidateQueries({
-        queryKey: ['traitAverages', referenceCode, 'goodsides'],
-      }),
-    ]);
-    setIsSubmitted(false);
-    setHasExistingRating(false);
-    setTraits(traits.map((trait) => ({ ...trait, points: 0 })));
-  }, []);
+      const randomTraits = traits.map((trait) => ({
+        ...trait,
+        points: Math.floor(Math.random() * (MAX_TRAIT_POINTS + 1)),
+      }));
 
-  const handleTestSubmit = async () => {
-    if (!user?.uid) return;
+      try {
+        await RatingService.saveRating(referenceCode, testUserId, randomTraits, 'goodsides');
+        await Promise.all([
+          queryClient.invalidateQueries({
+            queryKey: ['traitDetails', referenceCode],
+          }),
+          queryClient.invalidateQueries({
+            queryKey: ['traitAverages', referenceCode, 'goodsides'],
+          }),
+        ]);
+        Toast.show({
+          type: 'success',
+          text1: 'Test rating submitted successfully!',
+          position: 'bottom',
+          visibilityTime: 3000,
+        });
+      } catch (error) {
+        Toast.show({
+          type: 'error',
+          text1: 'Error submitting test rating',
+          position: 'bottom',
+          visibilityTime: 4000,
+        });
+      }
+    };
 
-    const testUserId = Math.random().toString(36).substring(2, 15);
-
-    const randomTraits = traits.map((trait) => ({
-      ...trait,
-      points: Math.floor(Math.random() * (MAX_TRAIT_POINTS + 1)),
-    }));
-
-    try {
-      await RatingService.saveRating(referenceCode, testUserId, randomTraits, 'goodsides');
-      await Promise.all([
-        queryClient.invalidateQueries({
-          queryKey: ['traitDetails', referenceCode],
-        }),
-        queryClient.invalidateQueries({
-          queryKey: ['traitAverages', referenceCode, 'goodsides'],
-        }),
-      ]);
-      Toast.show({
-        type: 'success',
-        text1: 'Test rating submitted successfully!',
-        position: 'bottom',
-        visibilityTime: 3000,
-      });
-    } catch (error) {
-      Toast.show({
-        type: 'error',
-        text1: 'Error submitting test rating',
-        position: 'bottom',
-        visibilityTime: 4000,
-      });
-    }
-  };
-
-  return (
-    <View className="xs:p-2 flex-1 sm:p-3 md:p-4">
-      <View className="mb-3 flex-row items-center justify-between rounded-lg bg-surface-light p-2 dark:bg-surface-dark">
-        <Text
-          className={`font-medium text-sm ${!isSubmitted ? 'text-text-light' : 'text-secondary-dark'} dark:text-text-dark`}>
-          {isSubmitted
-            ? t('personality.rating.yourRating')
-            : t('personality.rating.remainingPoints')}
-        </Text>
-        {!isSubmitted && (
-          <Text className="font-semibold text-base text-secondary-dark">{remainingPoints}</Text>
-        )}
-      </View>
-
-      {traits.map((trait, index) => (
-        <TraitBar
-          key={trait.name}
-          name={trait.name}
-          points={trait.points}
-          color={theme.colors.personality[trait.name]}
-          maxPoints={MAX_TRAIT_POINTS}
-          onIncrease={() => handlePointChange(index, true)}
-          onDecrease={() => handlePointChange(index, false)}
-          remainingPoints={remainingPoints}
-          label={t(`personality.traits.${trait.name}`)}
-          disabled={isSubmitted || hasExistingRating}
-        />
-      ))}
-
-      <Button
-        size="sm"
-        title={isSubmitted ? t('personality.rating.saved') : t('personality.rating.complete')}
-        onPress={handleSubmit}
-        disabled={remainingPoints !== 0 || isSubmitted || isLoading}
-        className={`mt-4 ${
-          remainingPoints !== 0 || isSubmitted || isLoading
-            ? 'bg-gray-300 dark:bg-gray-600'
-            : 'bg-primary-default'
-        }`}
-      />
-
-      {hasExistingRating && (
-        <Pressable onPress={handleReset} className="mt-4 items-center">
-          <Text className="font-medium text-secondary-dark">
-            {t('personality.rating.rateAgain')}
+    return (
+      <View className="xs:p-2 flex-1 sm:p-3 md:p-4">
+        <View className="mb-3 flex-row items-center justify-between rounded-lg bg-surface-light p-2 dark:bg-surface-dark">
+          <Text
+            className={`font-medium text-sm ${!isSubmitted ? 'text-text-light' : 'text-secondary-dark'} dark:text-text-dark`}>
+            {isSubmitted
+              ? t('personality.rating.yourRating')
+              : t('personality.rating.remainingPoints')}
           </Text>
-        </Pressable>
-      )}
+          {!isSubmitted && (
+            <Text className="font-semibold text-base text-secondary-dark">{remainingPoints}</Text>
+          )}
+        </View>
 
-      <Button
-        size="sm"
-        title="Test Submit"
-        onPress={handleTestSubmit}
-        className="mt-2 bg-gray-300 dark:bg-gray-600"
-      />
-    </View>
-  );
-});
+        {traits.map((trait, index) => (
+          <TraitBar
+            key={trait.name}
+            name={trait.name}
+            points={trait.points}
+            color={theme.colors.personality[trait.name]}
+            maxPoints={MAX_TRAIT_POINTS}
+            onIncrease={() => handlePointChange(index, true)}
+            onDecrease={() => handlePointChange(index, false)}
+            remainingPoints={remainingPoints}
+            label={t(`personality.traits.${trait.name}`)}
+            disabled={isSubmitted || hasExistingRating}
+          />
+        ))}
+
+        <Button
+          size="sm"
+          title={isSubmitted ? t('personality.rating.saved') : t('personality.rating.complete')}
+          onPress={handleSubmit}
+          disabled={remainingPoints !== 0 || isSubmitted || isLoading}
+          className={`mt-4 ${
+            remainingPoints !== 0 || isSubmitted || isLoading
+              ? 'bg-gray-300 dark:bg-gray-600'
+              : 'bg-primary-default'
+          }`}
+        />
+
+        {hasExistingRating && (
+          <Pressable onPress={handleReset} className="mt-4 items-center">
+            <Text className="font-medium text-secondary-dark">
+              {t('personality.rating.rateAgain')}
+            </Text>
+          </Pressable>
+        )}
+
+        <Button
+          size="sm"
+          title="Test Submit"
+          onPress={handleTestSubmit}
+          className="mt-2 bg-gray-300 dark:bg-gray-600"
+        />
+      </View>
+    );
+  }
+);

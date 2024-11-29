@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useCallback } from 'react';
+import React, { useState, useMemo, useCallback, useEffect } from 'react';
 import { View, Text, ScrollView, useWindowDimensions, Pressable } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTranslation } from '@/providers/LanguageProvider';
@@ -17,6 +17,7 @@ import { UserData } from '@/types/user';
 import { Image as RNImage } from 'react-native';
 import { GoodSidesRateRoute } from '@/components/rate/GoodSidesRateRoute';
 import { BadSidesRateRoute } from '@/components/rate/BadSidesRateRoute';
+import Toast from 'react-native-toast-message';
 
 const DEFAULT_AVATAR = 'https://ui-avatars.com/api/?background=random';
 
@@ -39,18 +40,22 @@ export default function RateScreen() {
     [locale, t]
   );
 
+  const handleTabChange = useCallback(() => {
+    setIndex(1); // BadSidesRoute'a geçiş yap
+  }, []);
+
   const renderScene = useCallback(
     ({ route }: { route: Route }) => {
       switch (route.key) {
         case 'goodsides':
-          return <GoodSidesRateRoute referenceCode={referenceCode} />;
+          return <GoodSidesRateRoute referenceCode={referenceCode} onTabChange={handleTabChange} />;
         case 'badsides':
           return <BadSidesRateRoute referenceCode={referenceCode} />;
         default:
           return null;
       }
     },
-    [referenceCode]
+    [referenceCode, handleTabChange]
   );
 
   const renderTabBar = useMemo(

@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { View, useWindowDimensions, Text, Pressable } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
@@ -15,6 +15,7 @@ import QuoteCard from '@/components/main/QuoteCard';
 import Button from '@/components/Button';
 import { router } from 'expo-router';
 import BadSidesRoute from '@/components/main/BadSidesRoute';
+import Toast from 'react-native-toast-message';
 
 // Bad sides için geçici komponent
 const BadsidesRoute = React.memo(() => (

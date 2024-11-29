@@ -7,7 +7,9 @@ import { RatingService } from '@/services/rating';
 import { useAuth } from '@/store/useAuth';
 import Button from '../Button';
 import { useQueryClient } from '@tanstack/react-query';
-
+import { useRouter } from 'expo-router';
+import { useColorScheme } from 'react-native';
+import { theme } from '@/constants/theme';
 const TOTAL_POINTS = 35;
 const MAX_TRAIT_POINTS = 10;
 const BAD_TRAIT_COLOR = '#D97650';
@@ -25,6 +27,7 @@ export const BadSidesRateRoute = memo(({ referenceCode }: BadSidesRateRouteProps
   const { t } = useTranslation();
   const { user } = useAuth();
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const colorScheme = useColorScheme();
   const [isLoading, setIsLoading] = useState(false);
   const [hasExistingRating, setHasExistingRating] = useState(false);
   const [traits, setTraits] = useState<Trait[]>([
@@ -43,6 +46,7 @@ export const BadSidesRateRoute = memo(({ referenceCode }: BadSidesRateRouteProps
   );
 
   const queryClient = useQueryClient();
+  const router = useRouter();
 
   useEffect(() => {
     const checkExistingRating = async () => {
@@ -67,10 +71,14 @@ export const BadSidesRateRoute = memo(({ referenceCode }: BadSidesRateRouteProps
           setIsSubmitted(true);
           setHasExistingRating(true);
           Toast.show({
-            type: 'info',
+            type: 'error',
             text1: t('personality.rating.alreadyRated'),
             position: 'bottom',
             visibilityTime: 3000,
+            text1Style: {
+              fontFamily: 'Poppins_400Regular',
+              color: colorScheme === 'dark' ? '#C5CEE0' : theme.colors.error.dark,
+            },
           });
         }
       } catch (error) {
@@ -112,11 +120,15 @@ export const BadSidesRateRoute = memo(({ referenceCode }: BadSidesRateRouteProps
       setHasExistingRating(true);
 
       Toast.show({
-        type: 'success',
-        text1: t('personality.rating.success'),
-        text2: t('personality.rating.successMessage'),
+        type: 'info',
+        text1: t('personality.rating.friendlyReminder'),
         position: 'bottom',
         visibilityTime: 3000,
+        onHide: () => router.replace('/(main)/you'),
+        text1Style: {
+          fontFamily: 'Poppins_400Regular',
+          color: colorScheme === 'dark' ? '#C5CEE0' : theme.colors.secondary.dark,
+        },
       });
     } catch (error) {
       Toast.show({
