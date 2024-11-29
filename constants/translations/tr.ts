@@ -286,4 +286,10 @@ export default {
       cta: 'Profilinizi paylaşın ve puanları toplamaya başlayın',
     },
   },
+  tasks: {
+    completionInfo:
+      'Her kişilik özelliğinden 5 görev tamamladığınızda o kişilik özelliğiniz 1 puan artacak',
+    refreshLimit: 'Günlük Yenileme Hakkı',
+    completed: 'Görev tamamlandı!',
+  },
 };
