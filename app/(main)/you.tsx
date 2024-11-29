@@ -53,7 +53,7 @@ export default function YouScreen() {
       {...props}
       indicatorStyle={{
         backgroundColor:
-          colorScheme === 'dark' ? theme.colors.accent.light : theme.colors.secondary.dark,
+          colorScheme === 'dark' ? theme.colors.primary.dark : theme.colors.primary.light,
       }}
       style={{
         backgroundColor: colorScheme === 'dark' ? '#131A2A' : '#FAFAFA',
@@ -68,7 +68,9 @@ export default function YouScreen() {
         width: '100%',
         textAlign: 'center',
       }}
-      activeColor={colorScheme === 'dark' ? theme.colors.accent.light : theme.colors.secondary.dark}
+      activeColor={
+        colorScheme === 'dark' ? theme.colors.primary.light : theme.colors.secondary.dark
+      }
       inactiveColor={colorScheme === 'dark' ? '#C5CEE0' : '#8F9BB3'}
       pressColor="transparent"
       scrollEnabled={false}

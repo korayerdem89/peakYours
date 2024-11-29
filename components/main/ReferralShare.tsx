@@ -26,7 +26,7 @@ export default function ReferralShare() {
   return (
     <Pressable
       onPress={handleShare}
-      className="xs:mt-1 xs:p-2 flex-row items-center justify-center rounded-xl border border-secondary-dark bg-[#eaf0fd] dark:bg-surface-dark sm:mt-1.5 sm:p-2.5 md:mt-2 md:p-3"
+      className="xs:mt-1 xs:p-2 flex-row items-center justify-center rounded-xl border border-secondary-dark bg-[#eaf0fd] dark:bg-gray-300 sm:mt-1.5 sm:p-2.5 md:mt-2 md:p-3"
       style={({ pressed }) => ({
         transform: [{ scale: pressed ? 0.98 : 1 }],
         shadowColor: theme.colors.secondary.default,

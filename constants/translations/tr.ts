@@ -284,5 +284,6 @@ export default {
         'Burcunuzun kozmik enerjisini, arkadaşlarınızın değerlendirmeleriyle harmanlayarak size özel yapay zeka destekli kişilik analizinizi oluşturuyoruz. Kendinizi keşfetme yolculuğuna hazır olun!',
       cta: 'Profilinizi paylaşın ve puanları toplamaya başlayın',
     },
+    updateFrequency: '5 kişi daha sizi puanladığında yeni analiz',
   },
 };

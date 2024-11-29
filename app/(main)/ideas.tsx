@@ -557,12 +557,15 @@ Format your response as JSON:
           <Text className="text-center font-medium text-sm text-secondary-dark/80 dark:text-secondary-light/80">
             ✨ {t('ideas.accuracyWarning')} ✨
           </Text>
+          <Text className="mt-2 text-center font-regular text-xs text-text-light dark:text-text-dark-secondary/60">
+            {t('ideas.updateFrequency')}
+          </Text>
         </Animated.View>
 
         {/* Spirit Animal Card - Daha canlı ve eğlenceli */}
         <Animated.View
           entering={FadeIn.delay(200).duration(500)}
-          className="mt-6 rounded-2xl bg-surface-light p-6 shadow-lg dark:bg-surface-dark">
+          className="mt-2 rounded-2xl bg-surface-light p-6 shadow-lg dark:bg-surface-dark">
           <View className="flex-row items-center justify-between">
             {personalityAnimal && (
               <View className="flex-row items-center gap-5">
@@ -597,7 +600,7 @@ Format your response as JSON:
         {/* Analysis Card - Daha yumuşak köşeler ve gölgeler */}
         <Animated.View
           entering={FadeIn.delay(400).duration(500)}
-          className="my-6 rounded-2xl bg-surface-light p-6 shadow-lg dark:bg-surface-dark">
+          className="my-2 rounded-2xl bg-surface-light p-6 shadow-lg dark:bg-surface-dark">
           <Text className="mb-4 font-semibold text-xl text-primary-dark dark:text-primary-light">
             🔮 {t('ideas.analysis.title')}
           </Text>

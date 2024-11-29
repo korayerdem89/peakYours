@@ -281,5 +281,6 @@ export default {
         "Discover your unique personality analysis where we blend your zodiac sign's cosmic energy with AI-powered insights from your friends' ratings. Get ready for a personalized journey of self-discovery!",
       cta: 'Share your profile and start collecting ratings',
     },
+    updateFrequency: 'New analysis when 5 more people rate you',
   },
 };

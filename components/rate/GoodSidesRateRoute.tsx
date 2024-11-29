@@ -7,6 +7,7 @@ import Toast from 'react-native-toast-message';
 import { RatingService } from '@/services/rating';
 import { useAuth } from '@/store/useAuth';
 import Button from '../Button';
+import { useQueryClient } from '@tanstack/react-query';
 
 const TOTAL_POINTS = 35;
 const MAX_TRAIT_POINTS = 10;
@@ -93,12 +94,23 @@ export const GoodSidesRateRoute = memo(({ referenceCode }: GoodSidesRateRoutePro
     checkExistingRating();
   }, [referenceCode, user?.uid, t]);
 
+  const queryClient = useQueryClient();
+
   const handleSubmit = async () => {
     if (!user?.uid || remainingPoints !== 0) return;
 
     try {
       setIsLoading(true);
       await RatingService.saveRating(referenceCode, user.uid, traits, 'goodsides');
+
+      await Promise.all([
+        queryClient.invalidateQueries({
+          queryKey: ['traitDetails', referenceCode],
+        }),
+        queryClient.invalidateQueries({
+          queryKey: ['traitAverages', referenceCode, 'goodsides'],
+        }),
+      ]);
 
       setIsSubmitted(true);
       setHasExistingRating(true);
@@ -128,6 +140,42 @@ export const GoodSidesRateRoute = memo(({ referenceCode }: GoodSidesRateRoutePro
     setHasExistingRating(false);
     setTraits(traits.map((trait) => ({ ...trait, points: 0 })));
   }, []);
+
+  const handleTestSubmit = async () => {
+    if (!user?.uid) return;
+
+    const testUserId = Math.random().toString(36).substring(2, 15);
+
+    const randomTraits = traits.map((trait) => ({
+      ...trait,
+      points: Math.floor(Math.random() * (MAX_TRAIT_POINTS + 1)),
+    }));
+
+    try {
+      await RatingService.saveRating(referenceCode, testUserId, randomTraits, 'goodsides');
+      await Promise.all([
+        queryClient.invalidateQueries({
+          queryKey: ['traitDetails', referenceCode],
+        }),
+        queryClient.invalidateQueries({
+          queryKey: ['traitAverages', referenceCode, 'goodsides'],
+        }),
+      ]);
+      Toast.show({
+        type: 'success',
+        text1: 'Test rating submitted successfully!',
+        position: 'bottom',
+        visibilityTime: 3000,
+      });
+    } catch (error) {
+      Toast.show({
+        type: 'error',
+        text1: 'Error submitting test rating',
+        position: 'bottom',
+        visibilityTime: 4000,
+      });
+    }
+  };
 
   return (
     <View className="xs:p-2 flex-1 sm:p-3 md:p-4">
@@ -177,6 +225,13 @@ export const GoodSidesRateRoute = memo(({ referenceCode }: GoodSidesRateRoutePro
           </Text>
         </Pressable>
       )}
+
+      <Button
+        size="sm"
+        title="Test Submit"
+        onPress={handleTestSubmit}
+        className="mt-2 bg-gray-300 dark:bg-gray-600"
+      />
     </View>
   );
 });

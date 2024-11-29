@@ -292,5 +292,6 @@ export default {
         'Descubre tu análisis de personalidad único donde combinamos la energía cósmica de tu signo zodiacal con las percepciones de IA basadas en las calificaciones de tus amigos. ¡Prepárate para un viaje personalizado de autodescubrimiento!',
       cta: 'Comparte tu perfil y comienza a recolectar calificaciones',
     },
+    updateFrequency: 'Nuevo análisis cuando 5 personas más te califiquen',
   },
 };

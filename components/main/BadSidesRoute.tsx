@@ -129,13 +129,13 @@ export default function BadSidesRoute() {
   );
 
   return (
-    <View className="xs:m-1 rounded-sm bg-white dark:bg-gray-300 sm:m-2 md:m-3">
+    <View className="xs:m-1 rounded-sm bg-white dark:bg-gray-700 sm:m-2 md:m-3">
       <View className="xs:p-2 xs:pb-4 sm:p-3 sm:pb-6 md:p-4 md:pb-8">
         <Text className="xs:text-sm font-semibold text-gray-800 dark:text-gray-900 sm:text-base md:text-lg">
           {t('personality.negativeTraitsTitle')} 🎯
         </Text>
         <View className="flex-row items-center justify-between">
-          <Text className="mt-1 text-xs text-gray-600 dark:text-gray-700 sm:text-sm">
+          <Text className="mt-1 text-xs text-gray-600 dark:text-gray-400 sm:text-sm">
             {t('personality.details.description', { count: traitDetails?.totalRaters || 0 })}
           </Text>
 
@@ -155,7 +155,7 @@ export default function BadSidesRoute() {
             </Pressable>
           ) : null}
         </View>
-        <View className="my-2 h-[1px] bg-gray-300 dark:bg-border-light" />
+        <View className="my-2 h-[1px] bg-gray-300 dark:bg-border-dark" />
         {traits.map((trait, index) => (
           <TraitBar
             key={trait.trait}
@@ -181,7 +181,7 @@ export default function BadSidesRoute() {
         <Animated.View>
           <Pressable
             onPress={() => router.push('/modal/rate')}
-            className="xs:mt-1 xs:p-2 flex-row items-center justify-center rounded-xl border border-primary-dark bg-[#f7f1ff] dark:bg-surface-dark sm:mt-1.5 sm:p-2.5 md:mt-2 md:p-3">
+            className="xs:mt-1 xs:p-2 flex-row items-center justify-center rounded-xl border border-primary-dark bg-[#f7f1ff] dark:bg-gray-300 sm:mt-1.5 sm:p-2.5 md:mt-2 md:p-3">
             <View className="xs:gap-1 flex-row items-center justify-center sm:gap-1.5 md:gap-2">
               <MaterialIcons
                 name="star"
