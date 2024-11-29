@@ -135,7 +135,15 @@ export const GoodSidesRateRoute = memo(({ referenceCode }: GoodSidesRateRoutePro
     }
   };
 
-  const handleReset = useCallback(() => {
+  const handleReset = useCallback(async () => {
+    await Promise.all([
+      queryClient.invalidateQueries({
+        queryKey: ['traitDetails', referenceCode],
+      }),
+      queryClient.invalidateQueries({
+        queryKey: ['traitAverages', referenceCode, 'goodsides'],
+      }),
+    ]);
     setIsSubmitted(false);
     setHasExistingRating(false);
     setTraits(traits.map((trait) => ({ ...trait, points: 0 })));
