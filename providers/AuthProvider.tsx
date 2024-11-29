@@ -22,6 +22,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
           await setUser(firebaseUser.uid);
         } else {
           await setUser(null);
+          console.log('User is not logged in');
         }
       } finally {
         setLoading(false);
