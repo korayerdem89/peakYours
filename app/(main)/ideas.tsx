@@ -572,10 +572,10 @@ Format your response as JSON:
                 {/* Zıplayan hayvan ikonu */}
                 <Animated.View
                   style={bounceStyle}
-                  className="items-center justify-center rounded-full bg-amber-50 p-4 shadow-sm dark:bg-primary-dark/25">
+                  className="items-center justify-center rounded-full bg-amber-50 p-4  shadow-sm shadow-gray-500 dark:bg-primary-dark/25">
                   <Image
                     source={personalityAnimal.image}
-                    className="h-14 w-14" // Biraz daha büyük
+                    className="h-14 w-14 " // Biraz daha büyük
                     resizeMode="contain"
                   />
                 </Animated.View>
