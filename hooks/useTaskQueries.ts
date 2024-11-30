@@ -16,11 +16,13 @@ export function useTaskTraits() {
     queryKey: ['taskTraits', user?.uid],
     queryFn: async () => {
       if (!user?.uid) return null;
-      const data = await FirestoreService.getDoc<{ traits: Record<string, number> }>(
+
+      const userData = await FirestoreService.getDoc<{ traits: Record<string, number> }>(
         'users',
-        `${user.uid}/traits`
+        user.uid
       );
-      return data?.traits || {};
+
+      return userData?.traits || {};
     },
     enabled: !!user?.uid,
   });

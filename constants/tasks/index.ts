@@ -1,5 +1,5 @@
 import { friendlyTasks } from './friendly-tasks';
-import { empathyTasks } from './empathic-tasks';
+import { empathicTasks } from './empathic-tasks';
 import { reliableTasks } from './reliable-tasks';
 import { lazyTasks } from './lazy-tasks';
 import { respectfulTasks } from './restpectful-tasks';
@@ -15,7 +15,7 @@ import { selfishTasks } from './selfish-tasks';
 
 export {
   friendlyTasks,
-  empathyTasks,
+  empathicTasks,
   reliableTasks,
   lazyTasks,
   respectfulTasks,

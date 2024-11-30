@@ -28,9 +28,7 @@ export default function TasksScreen() {
   const { data: userData } = useUserData(user?.uid);
   const { data: goodTraits } = useTraitAverages(userData?.refCodes?.en, 'goodsides');
   const { data: badTraits } = useTraitAverages(userData?.refCodes?.en, 'badsides');
-  const { data: taskTraits } = useTaskTraits();
   const updateTaskTrait = useUpdateTaskTrait();
-
   const [refreshLimit, setRefreshLimit] = useState(3);
   const [tasks, setTasks] = useState<Task[]>([]);
   const [completedTasks, setCompletedTasks] = useState<string[]>([]);
@@ -46,26 +44,29 @@ export default function TasksScreen() {
       .sort((a, b) => b.averagePoints - a.averagePoints)
       .slice(0, 3);
 
-    const goodTasks = lowestGoodTraits
-      .map((trait) => {
-        const task = getRandomTask(trait.trait);
-        return task ? { ...task, type: 'goodsides' as const } : null;
-      })
-      .filter((task): task is Task => task !== null);
+    const goodTasks = lowestGoodTraits.flatMap((trait) => {
+      const task1 = getRandomTask(trait.trait);
+      return [task1 ? { ...task1, type: 'goodsides' as const } : null].filter(
+        (t): t is Task => t !== null
+      );
+    });
 
-    const badTasks = highestBadTraits
-      .map((trait) => {
-        const task = getRandomTask(trait.trait);
-        return task ? { ...task, type: 'badsides' as const } : null;
-      })
-      .filter((task): task is Task => task !== null);
+    const badTasks = highestBadTraits.flatMap((trait) => {
+      const task1 = getRandomTask(trait.trait);
+
+      return [task1 ? { ...task1, type: 'badsides' as const } : null].filter(
+        (t): t is Task => t !== null
+      );
+    });
 
     return [...goodTasks, ...badTasks];
   }, [goodTraits, badTraits]);
 
   useEffect(() => {
-    setTasks(getInitialTasks());
-  }, [getInitialTasks]);
+    if (goodTraits && badTraits) {
+      setTasks(getInitialTasks());
+    }
+  }, [goodTraits, badTraits, getInitialTasks]);
 
   const handleRefreshTask = useCallback(
     (taskId: string, trait: string) => {
@@ -75,12 +76,7 @@ export default function TasksScreen() {
         prev.map((task) => {
           if (task.id === taskId) {
             const newTask = getRandomTask(trait);
-            return newTask
-              ? {
-                  ...newTask,
-                  type: task.type,
-                }
-              : task;
+            return newTask ? { ...newTask, type: task.type } : task;
           }
           return task;
         })
@@ -129,8 +125,8 @@ export default function TasksScreen() {
           </Text>
         </View>
 
-        <ScrollView className="max-h-[50%]" showsVerticalScrollIndicator={false}>
-          {tasks.map((task) => (
+        <View className="rounded-xl bg-white/80 p-4 shadow-sm dark:bg-black/20">
+          {tasks.map((task, index) => (
             <TaskItem
               key={task.id}
               task={task}
@@ -138,9 +134,10 @@ export default function TasksScreen() {
               onComplete={() => handleCompleteTask(task.id, task.trait)}
               isCompleted={completedTasks.includes(task.id)}
               isRefreshDisabled={refreshLimit <= 0}
+              isLastItem={index === tasks.length - 1}
             />
           ))}
-        </ScrollView>
+        </View>
       </View>
     </SafeAreaView>
   );

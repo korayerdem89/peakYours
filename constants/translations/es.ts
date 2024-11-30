@@ -120,8 +120,6 @@ export default {
       patient: 'Paciente',
       reliable: 'Confiable',
       respectful: 'Respetuoso',
-    },
-    negativeTraits: {
       angry: 'Enojado',
       arrogant: 'Arrogante',
       jealous: 'Celoso',
@@ -293,5 +291,16 @@ export default {
       cta: 'Comparte tu perfil y comienza a recolectar calificaciones',
     },
     updateFrequency: 'Nuevo análisis cada 5 calificaciones',
+  },
+  tasks: {
+    refreshTask: 'Actualizar tarea',
+    completeTask: 'Completar tarea',
+    refreshLimit: 'Límite de actualización',
+    completed: '¡Tarea completada!',
+    completionInfo:
+      'Completa 5 tareas de cada rasgo de personalidad para aumentar ese rasgo en 1 punto',
+    noTasks: 'No hay tareas disponibles',
+    dailyTasks: 'Tareas diarias',
+    remainingRefreshes: 'Actualizaciones restantes',
   },
 };

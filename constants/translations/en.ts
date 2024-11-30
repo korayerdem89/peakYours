@@ -73,8 +73,6 @@ export default {
       patient: 'Patient',
       reliable: 'Reliable',
       respectful: 'Respectful',
-    },
-    negativeTraits: {
       angry: 'Angry',
       arrogant: 'Arrogant',
       jealous: 'Jealous',
@@ -282,5 +280,16 @@ export default {
       cta: 'Share your profile and start collecting ratings',
     },
     updateFrequency: 'New analysis every 5 ratings',
+  },
+  tasks: {
+    refreshTask: 'Refresh task',
+    completeTask: 'Complete task',
+    refreshLimit: 'Refresh Limit',
+    completed: 'Task completed!',
+    completionInfo:
+      'Complete 5 tasks from each personality trait to increase that trait by 1 point',
+    noTasks: 'No tasks available',
+    dailyTasks: 'Daily Tasks',
+    remainingRefreshes: 'Remaining refreshes',
   },
 };

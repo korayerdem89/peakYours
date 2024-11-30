@@ -1,7 +1,7 @@
-export const empathyTasks = [
+export const empathicTasks = [
   {
-    id: 'empathy_1',
-    trait: 'empathy',
+    id: 'empathic_1',
+    trait: 'empathic',
     text: {
       tr: 'Bugün bir arkadaşının veya aile üyenin duygularını anlamaya çalış',
       en: 'Try to understand the feelings of a friend or family member today',
@@ -10,8 +10,8 @@ export const empathyTasks = [
     color: '#FFD700',
   },
   {
-    id: 'empathy_2',
-    trait: 'empathy',
+    id: 'empathic_2',
+    trait: 'empathic',
     text: {
       tr: 'Bir arkadaşının sorununu dinle ve ona destek ol',
       en: "Listen to a friend's problem and support them",
@@ -20,8 +20,8 @@ export const empathyTasks = [
     color: '#FFD700',
   },
   {
-    id: 'empathy_3',
-    trait: 'empathy',
+    id: 'empathic_3',
+    trait: 'empathic',
     text: {
       tr: 'Birine içten bir şekilde "Nasılsın?" diye sor ve cevabını dikkatle dinle',
       en: 'Sincerely ask someone "How are you?" and listen carefully to their answer',
@@ -30,8 +30,8 @@ export const empathyTasks = [
     color: '#FFD700',
   },
   {
-    id: 'empathy_4',
-    trait: 'empathy',
+    id: 'empathic_4',
+    trait: 'empathic',
     text: {
       tr: 'Bir arkadaşının veya aile üyenin gününü güzelleştirmek için küçük bir jest yap',
       en: "Do a small gesture to brighten a friend or family member's day",
@@ -40,18 +40,18 @@ export const empathyTasks = [
     color: '#FFD700',
   },
   {
-    id: 'empathy_5',
-    trait: 'empathy',
+    id: 'empathic_5',
+    trait: 'empathic',
     text: {
       tr: 'Birinin duygularını anlamaya çalış ve ona empati göster',
-      en: "Try to understand someone's feelings and show empathy",
+      en: "Try to understand someone's feelings and show empathic",
       es: 'Intenta entender los sentimientos de alguien y muestra empatía',
     },
     color: '#FFD700',
   },
   {
-    id: 'empathy_6',
-    trait: 'empathy',
+    id: 'empathic_6',
+    trait: 'empathic',
     text: {
       tr: 'Bir arkadaşının veya aile üyenin yaşadığı bir durumu anlamaya çalış',
       en: 'Try to understand a situation a friend or family member is going through',
@@ -60,8 +60,8 @@ export const empathyTasks = [
     color: '#FFD700',
   },
   {
-    id: 'empathy_7',
-    trait: 'empathy',
+    id: 'empathic_7',
+    trait: 'empathic',
     text: {
       tr: 'Birine içten bir şekilde teşekkür et ve minnettarlığını göster',
       en: 'Sincerely thank someone and show your gratitude',
@@ -70,8 +70,8 @@ export const empathyTasks = [
     color: '#FFD700',
   },
   {
-    id: 'empathy_8',
-    trait: 'empathy',
+    id: 'empathic_8',
+    trait: 'empathic',
     text: {
       tr: 'Bir arkadaşının veya aile üyenin duygularını paylaşmasına izin ver',
       en: 'Allow a friend or family member to share their feelings',
@@ -80,8 +80,8 @@ export const empathyTasks = [
     color: '#FFD700',
   },
   {
-    id: 'empathy_9',
-    trait: 'empathy',
+    id: 'empathic_9',
+    trait: 'empathic',
     text: {
       tr: 'Birine moral verici bir mesaj gönder',
       en: 'Send an uplifting message to someone',
@@ -90,8 +90,8 @@ export const empathyTasks = [
     color: '#FFD700',
   },
   {
-    id: 'empathy_10',
-    trait: 'empathy',
+    id: 'empathic_10',
+    trait: 'empathic',
     text: {
       tr: 'Bir arkadaşının veya aile üyenin duygularını anlamaya çalış ve ona destek ol',
       en: "Try to understand a friend or family member's feelings and support them",
@@ -100,8 +100,8 @@ export const empathyTasks = [
     color: '#FFD700',
   },
   {
-    id: 'empathy_11',
-    trait: 'empathy',
+    id: 'empathic_11',
+    trait: 'empathic',
     text: {
       tr: 'Birine içten bir şekilde "Seni anlıyorum" de',
       en: 'Sincerely say "I understand you" to someone',
@@ -110,8 +110,8 @@ export const empathyTasks = [
     color: '#FFD700',
   },
   {
-    id: 'empathy_12',
-    trait: 'empathy',
+    id: 'empathic_12',
+    trait: 'empathic',
     text: {
       tr: 'Bir arkadaşının veya aile üyenin duygularını paylaşmasına izin ver ve onu dinle',
       en: 'Allow a friend or family member to share their feelings and listen to them',
@@ -120,8 +120,8 @@ export const empathyTasks = [
     color: '#FFD700',
   },
   {
-    id: 'empathy_13',
-    trait: 'empathy',
+    id: 'empathic_13',
+    trait: 'empathic',
     text: {
       tr: 'Birine içten bir şekilde "Yanındayım" de',
       en: 'Sincerely say "I am here for you" to someone',
@@ -130,18 +130,18 @@ export const empathyTasks = [
     color: '#FFD700',
   },
   {
-    id: 'empathy_14',
-    trait: 'empathy',
+    id: 'empathic_14',
+    trait: 'empathic',
     text: {
       tr: 'Bir arkadaşının veya aile üyenin duygularını anlamaya çalış ve ona empati göster',
-      en: "Try to understand a friend or family member's feelings and show empathy",
+      en: "Try to understand a friend or family member's feelings and show empathic",
       es: 'Intenta entender los sentimientos de un amigo o familiar y muestra empatía',
     },
     color: '#FFD700',
   },
   {
-    id: 'empathy_15',
-    trait: 'empathy',
+    id: 'empathic_15',
+    trait: 'empathic',
     text: {
       tr: 'Birine içten bir şekilde "Seni dinliyorum" de',
       en: 'Sincerely say "I am listening to you" to someone',
@@ -150,8 +150,8 @@ export const empathyTasks = [
     color: '#FFD700',
   },
   {
-    id: 'empathy_16',
-    trait: 'empathy',
+    id: 'empathic_16',
+    trait: 'empathic',
     text: {
       tr: 'Bir arkadaşının veya aile üyenin duygularını paylaşmasına izin ver ve onu anla',
       en: 'Allow a friend or family member to share their feelings and understand them',
@@ -160,8 +160,8 @@ export const empathyTasks = [
     color: '#FFD700',
   },
   {
-    id: 'empathy_17',
-    trait: 'empathy',
+    id: 'empathic_17',
+    trait: 'empathic',
     text: {
       tr: 'Birine içten bir şekilde "Seni önemsiyorum" de',
       en: 'Sincerely say "I care about you" to someone',
@@ -170,8 +170,8 @@ export const empathyTasks = [
     color: '#FFD700',
   },
   {
-    id: 'empathy_18',
-    trait: 'empathy',
+    id: 'empathic_18',
+    trait: 'empathic',
     text: {
       tr: 'Bir arkadaşının veya aile üyenin duygularını anlamaya çalış ve ona destek ol',
       en: "Try to understand a friend or family member's feelings and support them",
@@ -180,8 +180,8 @@ export const empathyTasks = [
     color: '#FFD700',
   },
   {
-    id: 'empathy_19',
-    trait: 'empathy',
+    id: 'empathic_19',
+    trait: 'empathic',
     text: {
       tr: 'Birine içten bir şekilde "Seni düşünüyorum" de',
       en: 'Sincerely say "I am thinking of you" to someone',
@@ -190,8 +190,8 @@ export const empathyTasks = [
     color: '#FFD700',
   },
   {
-    id: 'empathy_20',
-    trait: 'empathy',
+    id: 'empathic_20',
+    trait: 'empathic',
     text: {
       tr: 'Bir arkadaşının veya aile üyenin duygularını paylaşmasına izin ver ve onu dinle',
       en: 'Allow a friend or family member to share their feelings and listen to them',
@@ -200,8 +200,8 @@ export const empathyTasks = [
     color: '#FFD700',
   },
   {
-    id: 'empathy_21',
-    trait: 'empathy',
+    id: 'empathic_21',
+    trait: 'empathic',
     text: {
       tr: 'Birine içten bir şekilde "Seni anlıyorum" de',
       en: 'Sincerely say "I understand you" to someone',
@@ -210,18 +210,18 @@ export const empathyTasks = [
     color: '#FFD700',
   },
   {
-    id: 'empathy_22',
-    trait: 'empathy',
+    id: 'empathic_22',
+    trait: 'empathic',
     text: {
       tr: 'Bir arkadaşının veya aile üyenin duygularını anlamaya çalış ve ona empati göster',
-      en: "Try to understand a friend or family member's feelings and show empathy",
+      en: "Try to understand a friend or family member's feelings and show empathic",
       es: 'Intenta entender los sentimientos de un amigo o familiar y muestra empatía',
     },
     color: '#FFD700',
   },
   {
-    id: 'empathy_23',
-    trait: 'empathy',
+    id: 'empathic_23',
+    trait: 'empathic',
     text: {
       tr: 'Birine içten bir şekilde "Yanındayım" de',
       en: 'Sincerely say "I am here for you" to someone',
@@ -230,8 +230,8 @@ export const empathyTasks = [
     color: '#FFD700',
   },
   {
-    id: 'empathy_24',
-    trait: 'empathy',
+    id: 'empathic_24',
+    trait: 'empathic',
     text: {
       tr: 'Bir arkadaşının veya aile üyenin duygularını paylaşmasına izin ver ve onu anla',
       en: 'Allow a friend or family member to share their feelings and understand them',
@@ -240,8 +240,8 @@ export const empathyTasks = [
     color: '#FFD700',
   },
   {
-    id: 'empathy_25',
-    trait: 'empathy',
+    id: 'empathic_25',
+    trait: 'empathic',
     text: {
       tr: 'Birine içten bir şekilde "Seni dinliyorum" de',
       en: 'Sincerely say "I am listening to you" to someone',
@@ -250,8 +250,8 @@ export const empathyTasks = [
     color: '#FFD700',
   },
   {
-    id: 'empathy_26',
-    trait: 'empathy',
+    id: 'empathic_26',
+    trait: 'empathic',
     text: {
       tr: 'Bir arkadaşının veya aile üyenin duygularını anlamaya çalış ve ona destek ol',
       en: "Try to understand a friend or family member's feelings and support them",
@@ -260,8 +260,8 @@ export const empathyTasks = [
     color: '#FFD700',
   },
   {
-    id: 'empathy_27',
-    trait: 'empathy',
+    id: 'empathic_27',
+    trait: 'empathic',
     text: {
       tr: 'Birine içten bir şekilde "Seni önemsiyorum" de',
       en: 'Sincerely say "I care about you" to someone',
@@ -270,8 +270,8 @@ export const empathyTasks = [
     color: '#FFD700',
   },
   {
-    id: 'empathy_28',
-    trait: 'empathy',
+    id: 'empathic_28',
+    trait: 'empathic',
     text: {
       tr: 'Bir arkadaşının veya aile üyenin duygularını paylaşmasına izin ver ve onu dinle',
       en: 'Allow a friend or family member to share their feelings and listen to them',
@@ -280,8 +280,8 @@ export const empathyTasks = [
     color: '#FFD700',
   },
   {
-    id: 'empathy_29',
-    trait: 'empathy',
+    id: 'empathic_29',
+    trait: 'empathic',
     text: {
       tr: 'Birine içten bir şekilde "Seni anlıyorum" de',
       en: 'Sincerely say "I understand you" to someone',
@@ -290,18 +290,18 @@ export const empathyTasks = [
     color: '#FFD700',
   },
   {
-    id: 'empathy_30',
-    trait: 'empathy',
+    id: 'empathic_30',
+    trait: 'empathic',
     text: {
       tr: 'Bir arkadaşının veya aile üyenin duygularını anlamaya çalış ve ona empati göster',
-      en: "Try to understand a friend or family member's feelings and show empathy",
+      en: "Try to understand a friend or family member's feelings and show empathic",
       es: 'Intenta entender los sentimientos de un amigo o familiar y muestra empatía',
     },
     color: '#FFD700',
   },
   {
-    id: 'empathy_31',
-    trait: 'empathy',
+    id: 'empathic_31',
+    trait: 'empathic',
     text: {
       tr: 'Birine içten bir şekilde "Yanındayım" de',
       en: 'Sincerely say "I am here for you" to someone',
@@ -310,8 +310,8 @@ export const empathyTasks = [
     color: '#FFD700',
   },
   {
-    id: 'empathy_32',
-    trait: 'empathy',
+    id: 'empathic_32',
+    trait: 'empathic',
     text: {
       tr: 'Bir arkadaşının veya aile üyenin duygularını paylaşmasına izin ver ve onu anla',
       en: 'Allow a friend or family member to share their feelings and understand them',
@@ -320,8 +320,8 @@ export const empathyTasks = [
     color: '#FFD700',
   },
   {
-    id: 'empathy_33',
-    trait: 'empathy',
+    id: 'empathic_33',
+    trait: 'empathic',
     text: {
       tr: 'Birine içten bir şekilde "Seni dinliyorum" de',
       en: 'Sincerely say "I am listening to you" to someone',
@@ -330,8 +330,8 @@ export const empathyTasks = [
     color: '#FFD700',
   },
   {
-    id: 'empathy_34',
-    trait: 'empathy',
+    id: 'empathic_34',
+    trait: 'empathic',
     text: {
       tr: 'Bir arkadaşının veya aile üyenin duygularını anlamaya çalış ve ona destek ol',
       en: "Try to understand a friend or family member's feelings and support them",
@@ -340,8 +340,8 @@ export const empathyTasks = [
     color: '#FFD700',
   },
   {
-    id: 'empathy_35',
-    trait: 'empathy',
+    id: 'empathic_35',
+    trait: 'empathic',
     text: {
       tr: 'Birine içten bir şekilde "Seni önemsiyorum" de',
       en: 'Sincerely say "I care about you" to someone',
@@ -350,8 +350,8 @@ export const empathyTasks = [
     color: '#FFD700',
   },
   {
-    id: 'empathy_36',
-    trait: 'empathy',
+    id: 'empathic_36',
+    trait: 'empathic',
     text: {
       tr: 'Bir arkadaşının veya aile üyenin duygularını paylaşmasına izin ver ve onu dinle',
       en: 'Allow a friend or family member to share their feelings and listen to them',
@@ -360,8 +360,8 @@ export const empathyTasks = [
     color: '#FFD700',
   },
   {
-    id: 'empathy_37',
-    trait: 'empathy',
+    id: 'empathic_37',
+    trait: 'empathic',
     text: {
       tr: 'Birine içten bir şekilde "Seni anlıyorum" de',
       en: 'Sincerely say "I understand you" to someone',
@@ -370,18 +370,18 @@ export const empathyTasks = [
     color: '#FFD700',
   },
   {
-    id: 'empathy_38',
-    trait: 'empathy',
+    id: 'empathic_38',
+    trait: 'empathic',
     text: {
       tr: 'Bir arkadaşının veya aile üyenin duygularını anlamaya çalış ve ona empati göster',
-      en: "Try to understand a friend or family member's feelings and show empathy",
+      en: "Try to understand a friend or family member's feelings and show empathic",
       es: 'Intenta entender los sentimientos de un amigo o familiar y muestra empatía',
     },
     color: '#FFD700',
   },
   {
-    id: 'empathy_39',
-    trait: 'empathy',
+    id: 'empathic_39',
+    trait: 'empathic',
     text: {
       tr: 'Birine içten bir şekilde "Yanındayım" de',
       en: 'Sincerely say "I am here for you" to someone',
@@ -390,8 +390,8 @@ export const empathyTasks = [
     color: '#FFD700',
   },
   {
-    id: 'empathy_40',
-    trait: 'empathy',
+    id: 'empathic_40',
+    trait: 'empathic',
     text: {
       tr: 'Bir arkadaşının veya aile üyenin duygularını paylaşmasına izin ver ve onu anla',
       en: 'Allow a friend or family member to share their feelings and understand them',
@@ -400,8 +400,8 @@ export const empathyTasks = [
     color: '#FFD700',
   },
   {
-    id: 'empathy_41',
-    trait: 'empathy',
+    id: 'empathic_41',
+    trait: 'empathic',
     text: {
       tr: 'Birine içten bir şekilde "Seni dinliyorum" de',
       en: 'Sincerely say "I am listening to you" to someone',
@@ -410,8 +410,8 @@ export const empathyTasks = [
     color: '#FFD700',
   },
   {
-    id: 'empathy_42',
-    trait: 'empathy',
+    id: 'empathic_42',
+    trait: 'empathic',
     text: {
       tr: 'Bir arkadaşının veya aile üyenin duygularını anlamaya çalış ve ona destek ol',
       en: "Try to understand a friend or family member's feelings and support them",
@@ -420,8 +420,8 @@ export const empathyTasks = [
     color: '#FFD700',
   },
   {
-    id: 'empathy_43',
-    trait: 'empathy',
+    id: 'empathic_43',
+    trait: 'empathic',
     text: {
       tr: 'Birine içten bir şekilde "Seni önemsiyorum" de',
       en: 'Sincerely say "I care about you" to someone',
@@ -430,8 +430,8 @@ export const empathyTasks = [
     color: '#FFD700',
   },
   {
-    id: 'empathy_44',
-    trait: 'empathy',
+    id: 'empathic_44',
+    trait: 'empathic',
     text: {
       tr: 'Bir arkadaşının veya aile üyenin duygularını paylaşmasına izin ver ve onu dinle',
       en: 'Allow a friend or family member to share their feelings and listen to them',
@@ -440,8 +440,8 @@ export const empathyTasks = [
     color: '#FFD700',
   },
   {
-    id: 'empathy_45',
-    trait: 'empathy',
+    id: 'empathic_45',
+    trait: 'empathic',
     text: {
       tr: 'Birine içten bir şekilde "Seni anlıyorum" de',
       en: 'Sincerely say "I understand you" to someone',
@@ -450,18 +450,18 @@ export const empathyTasks = [
     color: '#FFD700',
   },
   {
-    id: 'empathy_46',
-    trait: 'empathy',
+    id: 'empathic_46',
+    trait: 'empathic',
     text: {
       tr: 'Bir arkadaşının veya aile üyenin duygularını anlamaya çalış ve ona empati göster',
-      en: "Try to understand a friend or family member's feelings and show empathy",
+      en: "Try to understand a friend or family member's feelings and show empathic",
       es: 'Intenta entender los sentimientos de un amigo o familiar y muestra empatía',
     },
     color: '#FFD700',
   },
   {
-    id: 'empathy_47',
-    trait: 'empathy',
+    id: 'empathic_47',
+    trait: 'empathic',
     text: {
       tr: 'Birine içten bir şekilde "Yanındayım" de',
       en: 'Sincerely say "I am here for you" to someone',
@@ -470,8 +470,8 @@ export const empathyTasks = [
     color: '#FFD700',
   },
   {
-    id: 'empathy_48',
-    trait: 'empathy',
+    id: 'empathic_48',
+    trait: 'empathic',
     text: {
       tr: 'Bir arkadaşının veya aile üyenin duygularını paylaşmasına izin ver ve onu anla',
       en: 'Allow a friend or family member to share their feelings and understand them',
@@ -480,8 +480,8 @@ export const empathyTasks = [
     color: '#FFD700',
   },
   {
-    id: 'empathy_49',
-    trait: 'empathy',
+    id: 'empathic_49',
+    trait: 'empathic',
     text: {
       tr: 'Birine içten bir şekilde "Seni dinliyorum" de',
       en: 'Sincerely say "I am listening to you" to someone',
@@ -490,8 +490,8 @@ export const empathyTasks = [
     color: '#FFD700',
   },
   {
-    id: 'empathy_50',
-    trait: 'empathy',
+    id: 'empathic_50',
+    trait: 'empathic',
     text: {
       tr: 'Bir arkadaşının veya aile üyenin duygularını anlamaya çalış ve ona destek ol',
       en: "Try to understand a friend or family member's feelings and support them",

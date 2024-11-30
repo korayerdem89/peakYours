@@ -15,11 +15,13 @@ interface TaskItemProps {
       es: string;
     };
     color: string;
+    type: 'goodsides' | 'badsides';
   };
   onRefresh: () => void;
   onComplete: () => void;
   isCompleted: boolean;
   isRefreshDisabled: boolean;
+  isLastItem?: boolean;
 }
 
 export default function TaskItem({
@@ -28,52 +30,63 @@ export default function TaskItem({
   onComplete,
   isCompleted,
   isRefreshDisabled,
+  isLastItem = false,
 }: TaskItemProps) {
   const { colorScheme } = useColorScheme();
-  const { locale } = useTranslation();
+  const { t, locale } = useTranslation();
+  const isDark = colorScheme === 'dark';
 
   return (
-    <View className="dark:bg-background-dark-secondary mb-3 flex-row items-center rounded-xl bg-background-light p-4">
-      <View className="flex-1">
-        <Text
-          className={`text-sm ${
-            isCompleted
-              ? 'text-text-light-secondary/40 line-through dark:text-text-dark-secondary/40'
-              : 'text-text-light dark:text-text-dark'
-          }`}>
-          {task.text[locale as keyof typeof task.text]}
-        </Text>
-      </View>
+    <>
+      <View className={`p-4 ${isCompleted ? 'opacity-70' : ''}`}>
+        <View className="flex-row items-start justify-between space-x-4">
+          <View className="flex-1">
+            <View className="mb-2 flex-row items-center space-x-2">
+              <Text className="font-poppins-medium text-xs" style={{ color: task.color }}>
+                #{t(`personality.traits.${task.trait}`)}
+              </Text>
+            </View>
+            <Text
+              className={`font-poppins text-sm text-text-light dark:text-text-dark ${
+                isCompleted ? 'line-through' : ''
+              }`}>
+              {task.text[locale as keyof typeof task.text]}
+            </Text>
+          </View>
 
-      <View className="flex-row items-center gap-3">
-        <TouchableOpacity onPress={onRefresh} disabled={isRefreshDisabled} className="p-2">
-          <Ionicons
-            name="refresh"
-            size={20}
-            color={
-              isRefreshDisabled
-                ? theme.colors.text.light + '40'
-                : colorScheme === 'dark'
-                  ? theme.colors.text.dark
-                  : theme.colors.text.light
-            }
-          />
-        </TouchableOpacity>
+          <View className="flex-row items-center space-x-2">
+            <TouchableOpacity
+              onPress={onRefresh}
+              disabled={isRefreshDisabled}
+              className={`rounded-full p-2 ${isRefreshDisabled ? 'opacity-30' : ''}`}
+              accessibilityLabel={t('tasks.refreshTask')}>
+              <Ionicons
+                name="refresh"
+                size={20}
+                color={isDark ? theme.colors.text.dark : theme.colors.text.light}
+              />
+            </TouchableOpacity>
 
-        <TouchableOpacity onPress={onComplete} className="p-2">
-          <Ionicons
-            name="checkmark-circle"
-            size={22}
-            color={
-              isCompleted
-                ? task.color
-                : colorScheme === 'dark'
-                  ? theme.colors.text.dark
-                  : theme.colors.text.light
-            }
-          />
-        </TouchableOpacity>
+            <TouchableOpacity
+              onPress={onComplete}
+              className="rounded-full p-2"
+              accessibilityLabel={t('tasks.completeTask')}>
+              <Ionicons
+                name={isCompleted ? 'checkmark-circle' : 'checkmark-circle-outline'}
+                size={24}
+                color={
+                  isCompleted
+                    ? task.color
+                    : isDark
+                      ? theme.colors.text.dark
+                      : theme.colors.text.light
+                }
+              />
+            </TouchableOpacity>
+          </View>
+        </View>
       </View>
-    </View>
+      {!isLastItem && <View className="h-[1px] w-full bg-text-light/10 dark:bg-text-dark/10" />}
+    </>
   );
 }
