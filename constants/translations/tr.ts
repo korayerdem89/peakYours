@@ -278,10 +278,10 @@ export default {
     unauthorizedError: 'API anahtarı geçersiz veya eksik. Lütfen yapılandırmanızı kontrol edin.',
     rateLimitError: 'İstek limiti aşıldı. Lütfen daha sonra tekrar deneyin.',
     noRatingsWarning: {
-      title: 'Haydi Kişiliğinizi Analiz Edelim!',
+      title: 'Kişisel Gelişim Yolculuğuna Başlayalım!',
       description:
-        'Burcunuzun kozmik enerjisini, arkadaşlarınızın değerlendirmeleriyle harmanlayarak size özel yapay zeka destekli kişilik analizinizi oluşturuyoruz. Kendinizi keşfetme yolculuğuna hazır olun!',
-      cta: 'Profilinizi paylaşın ve puanları toplamaya başlayın',
+        'Günlük görevleri tamamlayarak kişilik özelliklerinizi geliştirebilirsiniz. Ama önce, başlamak için arkadaşlarınızdan birkaç değerlendirmeye ihtiyacınız var!',
+      cta: 'Görevleri açmak için profilinizi paylaşın ve puanları toplamaya başlayın',
     },
   },
   tasks: {

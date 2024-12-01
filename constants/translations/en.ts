@@ -291,5 +291,11 @@ export default {
     noTasks: 'No tasks available',
     dailyTasks: 'Daily Tasks',
     remainingRefreshes: 'Remaining refreshes',
+    noRatingsWarning: {
+      title: "Let's Start Your Personal Growth Journey!",
+      description:
+        "Complete daily tasks to improve your personality traits. But first, you'll need some ratings from your friends to get started!",
+      cta: 'Share your profile and start collecting ratings to unlock tasks',
+    },
   },
 };

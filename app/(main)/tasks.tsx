@@ -1,14 +1,23 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity, Image } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTranslation } from '@/providers/LanguageProvider';
 import { useAuth } from '@/store/useAuth';
 import { useUserData } from '@/hooks/useUserQueries';
 import { useTraitAverages } from '@/hooks/useTraitAverages';
-import { useTaskTraits, useUpdateTaskTrait } from '@/hooks/useTaskQueries';
+import { useUpdateTaskTrait } from '@/hooks/useTaskQueries';
 import { Ionicons } from '@expo/vector-icons';
 import Toast from 'react-native-toast-message';
 import { getRandomTask } from '@/utils/taskUtils';
+import { useTraitDetails } from '@/hooks/useTraitDetails';
+import Animated, {
+  FadeIn,
+  useSharedValue,
+  withSequence,
+  withSpring,
+  withDelay,
+  useAnimatedStyle,
+} from 'react-native-reanimated';
 
 interface Task {
   id: string;
@@ -32,6 +41,58 @@ export default function TasksScreen() {
   const [refreshLimit, setRefreshLimit] = useState(3);
   const [tasks, setTasks] = useState<Task[]>([]);
   const [completedTasks, setCompletedTasks] = useState<string[]>([]);
+  const { data: traitDetails } = useTraitDetails(userData?.refCodes?.en, 'goodsides');
+
+  const bounceValue = useSharedValue(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      bounceValue.value = withSequence(withSpring(-10), withDelay(100, withSpring(0)));
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  const bounceStyle = useAnimatedStyle(() => ({
+    transform: [{ translateY: bounceValue.value }],
+  }));
+
+  if (!traitDetails?.totalRaters) {
+    return (
+      <SafeAreaView className="flex-1 bg-accent-light dark:bg-background-dark">
+        <ScrollView
+          className="flex-1 p-4"
+          contentContainerStyle={{ flexGrow: 1 }}
+          showsVerticalScrollIndicator={false}>
+          <Animated.View entering={FadeIn.duration(1000)} className="flex-1 justify-center">
+            <View className="rounded-2xl bg-surface-light p-6 shadow-sm dark:bg-surface-dark">
+              <Animated.View style={bounceStyle} className="mb-8 items-center">
+                <Image
+                  source={{ uri: 'https://picsum.photos/200/300' }}
+                  className="h-48 w-48"
+                  resizeMode="contain"
+                />
+              </Animated.View>
+
+              <Text className="text-primary-default mb-4 text-center font-bold text-2xl dark:text-primary-light">
+                {t('tasks.noRatingsWarning.title')}
+              </Text>
+
+              <Text className="mb-6 text-center font-medium text-base text-text-light-secondary dark:text-text-dark-secondary">
+                {t('tasks.noRatingsWarning.description')}
+              </Text>
+
+              <View className="mt-4 rounded-xl bg-primary-light/10 p-4 dark:bg-primary-dark/10">
+                <Text className="text-center font-semibold text-sm text-primary-dark dark:text-primary-light">
+                  {t('tasks.noRatingsWarning.cta')}
+                </Text>
+              </View>
+            </View>
+          </Animated.View>
+        </ScrollView>
+      </SafeAreaView>
+    );
+  }
 
   const getInitialTasks = useCallback(() => {
     if (!goodTraits || !badTraits) return [];

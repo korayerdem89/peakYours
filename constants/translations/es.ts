@@ -302,5 +302,11 @@ export default {
     noTasks: 'No hay tareas disponibles',
     dailyTasks: 'Tareas diarias',
     remainingRefreshes: 'Actualizaciones restantes',
+    noRatingsWarning: {
+      title: '¡Comencemos tu Viaje de Crecimiento Personal!',
+      description:
+        'Completa tareas diarias para mejorar tus rasgos de personalidad. ¡Pero primero, necesitarás algunas calificaciones de tus amigos para comenzar!',
+      cta: 'Comparte tu perfil y comienza a recolectar calificaciones para desbloquear tareas',
+    },
   },
 };
