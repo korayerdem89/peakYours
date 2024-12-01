@@ -6,7 +6,7 @@ import { useAuth } from '@/store/useAuth';
 import { useUserData } from '@/hooks/useUserQueries';
 import { useTraitAverages } from '@/hooks/useTraitAverages';
 import { useUpdateTaskTrait } from '@/hooks/useTaskQueries';
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import Toast from 'react-native-toast-message';
 import { getRandomTask } from '@/utils/taskUtils';
 import { useTraitDetails } from '@/hooks/useTraitDetails';
@@ -19,6 +19,10 @@ import Animated, {
   useAnimatedStyle,
 } from 'react-native-reanimated';
 import { theme } from '@/constants/theme';
+import * as Progress from 'react-native-progress';
+import { useTasks } from '@/hooks/useTasks';
+import { Accordion } from '@/components/Accordion';
+import { useRouter } from 'expo-router';
 
 interface Task {
   id: string;
@@ -43,6 +47,9 @@ export default function TasksScreen() {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [completedTasks, setCompletedTasks] = useState<string[]>([]);
   const { data: traitDetails } = useTraitDetails(userData?.refCodes?.en, 'goodsides');
+  const { taskData, updateTaskPoints } = useTasks(user?.uid);
+  const [showLeaderboard, setShowLeaderboard] = useState(false);
+  const router = useRouter();
 
   const bounceValue = useSharedValue(0);
 
@@ -153,23 +160,42 @@ export default function TasksScreen() {
     }
   };
 
+  // Calculate remaining time
+  const timeUntilRefresh = useCallback(() => {
+    if (!taskData?.lastRefresh) return 0;
+    const lastRefresh = taskData.lastRefresh.toDate();
+    const now = new Date();
+    const diff = 24 * 60 * 60 * 1000 - (now.getTime() - lastRefresh.getTime());
+    return Math.max(0, diff / (24 * 60 * 60 * 1000));
+  }, [taskData?.lastRefresh]);
+
   return (
     <SafeAreaView className="flex-1 bg-background-light dark:bg-background-dark">
       <View className="flex-1 p-4">
-        {/* Header */}
-        <View className="mb-4">
+        {/* Header with Info */}
+        <View className="mb-6">
           <Text className="font-poppins-semibold text-center text-2xl text-primary-dark dark:text-primary-light">
             {t('tasks.dailyTasks')}
           </Text>
-          <View className="mt-2 flex-row items-center justify-center">
-            <Text className="text-sm text-secondary-dark/60 dark:text-secondary-light/60">
-              {t('tasks.remainingRefreshes')}: {refreshLimit}
+
+          <Accordion title={t('tasks.howItWorks')}>
+            <Text className="p-4 text-sm text-text-light dark:text-text-dark">
+              {t('tasks.completionInfo')}
             </Text>
-          </View>
+          </Accordion>
         </View>
 
-        {/* Tasks Card */}
-        <ScrollView showsVerticalScrollIndicator={false}>
+        {/* Refresh Counter */}
+        <View className="mb-4 flex-row items-center">
+          <MaterialCommunityIcons name="refresh" size={20} color={theme.colors.secondary.default} />
+          <Text className="font-poppins-medium ml-2 text-text-light dark:text-text-dark">
+            {taskData?.refreshesLeft || 7}
+            <Text className="text-sm text-text-light-secondary"> {t('tasks.refreshes')}</Text>
+          </Text>
+        </View>
+
+        {/* Tasks List */}
+        <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
           <View className="rounded-lg bg-gray-50 p-4 dark:bg-gray-800">
             {tasks.map((task, index) => (
               <View key={task.id}>
@@ -235,6 +261,42 @@ export default function TasksScreen() {
             ))}
           </View>
         </ScrollView>
+
+        {/* Bottom Stats */}
+        <View className="mt-4 space-y-4">
+          {/* Time Progress */}
+          <View className="items-center space-y-2">
+            <Progress.Bar
+              progress={timeUntilRefresh()}
+              width={null}
+              height={8}
+              color={theme.colors.primary.default}
+              unfilledColor={theme.colors.background.tab}
+              borderWidth={0}
+              className="w-full rounded-full"
+            />
+            <Text className="text-xs text-text-light-secondary dark:text-text-dark-secondary">
+              {t('tasks.refreshIn')}
+            </Text>
+          </View>
+
+          {/* Points & Leaderboard */}
+          <View className="flex-row items-center justify-between rounded-lg bg-surface-light p-4 dark:bg-surface-dark">
+            <View>
+              <Text className="font-poppins-medium text-lg text-text-light dark:text-text-dark">
+                {taskData?.points || 0}
+                <Text className="text-sm text-text-light-secondary"> {t('tasks.points')}</Text>
+              </Text>
+            </View>
+
+            <TouchableOpacity
+              onPress={() => router.push('/modal/leaderboard')}
+              className="bg-primary-default flex-row items-center rounded-full px-4 py-2">
+              <Ionicons name="trophy" size={20} color="white" className="mr-2" />
+              <Text className="font-poppins-medium text-white">{t('tasks.leaderboard')}</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
       </View>
     </SafeAreaView>
   );

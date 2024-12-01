@@ -291,7 +291,7 @@ export default {
     refreshLimit: 'Refresh Limit',
     completed: 'Task completed!',
     completionInfo:
-      'Complete 5 tasks from each personality trait to increase that trait by 1 point',
+      'Complete 5 tasks for each trait to increase your personality score by 1 point!',
     noTasks: 'No tasks available',
     dailyTasks: 'Daily Tasks',
     remainingRefreshes: 'Remaining refreshes',
@@ -301,5 +301,15 @@ export default {
         "Complete daily tasks to improve your personality traits. But first, you'll need some ratings from your friends to get started!",
       cta: 'Share your profile and start collecting ratings to unlock tasks',
     },
+    howItWorks: 'How It Works',
+    refreshes: 'refreshes left',
+    refreshIn: 'Tasks refresh in 24 hours',
+    points: 'points',
+    leaderboard: 'Leaderboard',
+  },
+  leaderboard: {
+    title: 'Leaderboard',
+    subtitle: 'Top Performers This Week',
+    you: 'You',
   },
 };

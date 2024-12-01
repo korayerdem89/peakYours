@@ -51,4 +51,13 @@ interface FirestoreSchema {
       };
     };
   };
+
+  userTasks: {
+    [userId: string]: {
+      points: number;
+      lastRefresh: Timestamp;
+      completedTasks: string[];
+      refreshesLeft: number;
+    };
+  };
 }
