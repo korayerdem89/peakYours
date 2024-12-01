@@ -20,14 +20,25 @@ export const useAuth = create<AuthState>((set) => ({
   isLoading: true,
   setUser: async (userId) => {
     try {
-      if (userId && queryClient) {
+      if (!queryClient) {
+        console.error('QueryClient is not initialized');
+        set({ user: null });
+        return;
+      }
+
+      if (userId) {
         const userData = await queryClient.fetchQuery({
           queryKey: ['user', userId],
           queryFn: () => UserService.getUser(userId),
+          staleTime: 0,
         });
 
         if (userData) {
           set({ user: userData });
+          console.log('User data set successfully:', userData);
+        } else {
+          console.warn('No user data found for ID:', userId);
+          set({ user: null });
         }
       } else {
         set({ user: null });
@@ -35,6 +46,7 @@ export const useAuth = create<AuthState>((set) => ({
     } catch (error) {
       console.error('Error fetching user data:', error);
       set({ user: null });
+      throw error;
     }
   },
   updateUserData: (data) => {

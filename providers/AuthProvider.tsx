@@ -17,13 +17,18 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   useEffect(() => {
     const unsubscribe = auth().onAuthStateChanged(async (firebaseUser) => {
+      setLoading(true);
       try {
         if (firebaseUser) {
           await setUser(firebaseUser.uid);
+          console.log('User logged in:', firebaseUser.uid);
         } else {
           await setUser(null);
           console.log('User is not logged in');
         }
+      } catch (error) {
+        console.error('Auth state change error:', error);
+        await setUser(null);
       } finally {
         setLoading(false);
       }

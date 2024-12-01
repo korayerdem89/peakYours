@@ -40,16 +40,20 @@ export default function SignInScreen() {
 
       const { data } = await GoogleSignin.signIn();
 
-      if (data) {
-        const credential = auth.GoogleAuthProvider.credential(data.idToken);
-        const { user: firebaseUser } = await auth().signInWithCredential(credential);
-
-        // Firestore'a kaydet
-        await UserService.saveUserToFirestore(firebaseUser);
-
-        // User verilerini set et
-        await setUser(firebaseUser.uid);
+      if (!data?.idToken) {
+        throw new Error('No ID token received');
       }
+
+      const credential = auth.GoogleAuthProvider.credential(data.idToken);
+      const { user: firebaseUser } = await auth().signInWithCredential(credential);
+
+      // Firestore'a kaydet
+      await UserService.saveUserToFirestore(firebaseUser);
+      console.log('User saved to Firestore:', firebaseUser.uid);
+
+      // User verilerini set et
+      await setUser(firebaseUser.uid);
+      console.log('Sign-in complete, user set');
     } catch (error) {
       if (isErrorWithCode(error)) {
         switch (error.code) {
