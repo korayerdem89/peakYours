@@ -302,7 +302,7 @@ export default {
       cta: 'Share your profile and start collecting ratings to unlock tasks',
     },
     howItWorks: 'How It Works',
-    refreshes: 'refreshes left',
+    refreshes: 'Daily Refreshes Left',
     refreshIn: 'Tasks refresh in 24 hours',
     points: 'points',
     leaderboard: 'Leaderboard',

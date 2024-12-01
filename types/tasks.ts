@@ -3,7 +3,6 @@ import { Timestamp } from '@react-native-firebase/firestore';
 export interface UserTasks {
   points: number;
   lastRefresh: Timestamp;
-  completedTasks: string[];
   refreshesLeft: number;
 }
 

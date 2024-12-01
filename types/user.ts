@@ -12,11 +12,14 @@ export interface UserData {
   refCodes?: {
     en: string;
   };
+  traits?: {
+    [key: string]: number; // Her bir trait için sayısal değer
+  };
 }
 
 export type AuthUser = Pick<
   UserData,
-  'uid' | 'email' | 'displayName' | 'photoURL' | 'zodiacSign' | 'refCodes'
+  'uid' | 'email' | 'displayName' | 'photoURL' | 'zodiacSign' | 'refCodes' | 'traits'
 >;
 
 export type BasicUserInfo = Pick<UserData, 'uid' | 'email' | 'displayName' | 'photoURL'>;

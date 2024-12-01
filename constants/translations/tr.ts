@@ -298,5 +298,6 @@ export default {
     noTasks: 'Henüz görev bulunmuyor',
     dailyTasks: 'Günlük Görevler',
     remainingRefreshes: 'Kalan yenileme hakkı',
+    refreshes: 'Günlük Yenileme Hakkı',
   },
 };

@@ -312,5 +312,6 @@ export default {
         'Completa tareas diarias para mejorar tus rasgos de personalidad. ¡Pero primero, necesitarás algunas calificaciones de tus amigos para comenzar!',
       cta: 'Comparte tu perfil y comienza a recolectar calificaciones para desbloquear tareas',
     },
+    refreshes: 'Actualizaciones Diarias Restantes',
   },
 };

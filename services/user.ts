@@ -15,6 +15,9 @@ export interface UserData {
   refCodes?: {
     en: string;
   };
+  traits?: {
+    [key: string]: number; // Her bir trait için sayısal değer
+  };
 }
 
 export class UserService {
@@ -70,6 +73,7 @@ export class UserService {
         lastLoginAt: firestore.FieldValue.serverTimestamp(),
         createdAt: firestore.FieldValue.serverTimestamp(),
         refCodes,
+        traits: {}, // Boş traits objesi ile başlat
       };
 
       const userDoc = firestore().collection('users').doc(user.uid);

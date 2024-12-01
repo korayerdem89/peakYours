@@ -2,7 +2,7 @@ import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
 import { useRouter } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTranslation } from '@/providers/LanguageProvider';
-import { Ionicons, FontAwesome5 } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons';
 import { theme } from '@/constants/theme';
 import Animated, { FadeIn } from 'react-native-reanimated';
 
@@ -42,7 +42,7 @@ export default function LeaderboardModal() {
 
         {/* Trophy Section */}
         <Animated.View entering={FadeIn.duration(500)} className="mb-6 items-center">
-          <FontAwesome5
+          <Ionicons
             name="trophy"
             size={64}
             color={theme.colors.primary.default}

@@ -1,6 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { FirestoreService } from '@/services/firestore';
-import { Timestamp } from '@react-native-firebase/firestore';
+import { UserTasksService } from '@/services/userTasks';
 import { UserTasks } from '@/types/tasks';
 
 export function useTasks(userId: string | undefined) {
@@ -8,28 +8,46 @@ export function useTasks(userId: string | undefined) {
 
   const { data: taskData } = useQuery({
     queryKey: ['userTasks', userId],
-    queryFn: () => FirestoreService.getDoc<UserTasks>('userTasks', userId!),
+    queryFn: async () => {
+      if (!userId) return null;
+      const data = await FirestoreService.getDoc<UserTasks>('userTasks', userId);
+      if (!data) {
+        return UserTasksService.initializeUserTasks(userId);
+      }
+      return data;
+    },
     enabled: !!userId,
   });
 
   const updateTaskPoints = useMutation({
-    mutationFn: (points: number) =>
-      FirestoreService.updateDoc('userTasks', userId!, {
-        points: (taskData?.points || 0) + points,
-      }),
+    mutationFn: async (points: number) => {
+      if (!userId) throw new Error('User not found');
+      await UserTasksService.updateUserTaskPoints(userId, points);
+    },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['userTasks', userId] });
     },
   });
 
   const refreshTasks = useMutation({
-    mutationFn: () =>
-      FirestoreService.updateDoc('userTasks', userId!, {
-        lastRefresh: Timestamp.now(),
-        refreshesLeft: 7,
-        completedTasks: [],
-      }),
+    mutationFn: async () => {
+      if (!userId) throw new Error('User not found');
+      await UserTasksService.refreshUserTasks(userId);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['userTasks', userId] });
+    },
   });
 
-  return { taskData, updateTaskPoints, refreshTasks };
+  const decrementRefreshes = useMutation({
+    mutationFn: async () => {
+      if (!userId) throw new Error('User not found');
+      await UserTasksService.decrementRefreshes(userId);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['userTasks', userId] });
+    },
+  });
+
+  return { taskData, updateTaskPoints, refreshTasks, decrementRefreshes };
 }
