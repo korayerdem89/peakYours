@@ -118,6 +118,10 @@ export default {
       resetMessage: 'Tüm puanlar sıfırlandı.',
       alreadyRated: 'Bu kullanıcıyı zaten puanladınız',
       yourRating: 'Değerlendirmeniz',
+      nextBadSides: 'Harika! Şimdi gelişim alanlarını puanlayalım',
+      friendlyReminder: 'Dürüst geri bildirimin için teşekkürler!',
+      testSuccess: 'Test puanlaması başarıyla gönderildi!',
+      testError: 'Test puanlaması gönderilirken hata oluştu',
     },
     level: 'Seviye',
     positiveTraits: 'Güçlü Yönleriniz',
@@ -130,7 +134,7 @@ export default {
         'Arkadaşlarının kişilik özelliklerini değerlendirmesine izin ver ve dürüst geri bildirimler al',
       inviteText: 'Dostlarınız sizi değerlendirsin!',
     },
-    negativeTraitsTitle: 'Geliştirmen Gereken Yönler',
+    traitsTitle: 'Geliştirmen Gereken Yönler',
     details: {
       title: 'Değerlendirme Detayları',
       description: '%{count} değerlendirme',
@@ -200,7 +204,7 @@ export default {
       },
       fox: {
         name: 'Kurnaz Tilki',
-        trait: 'Sorunları zekası ve bilgeliğiyle çözer',
+        trait: 'Sorunlar zekası ve bilgeliğiyle çözer',
       },
       goat: {
         name: 'Kararlı Keçi',

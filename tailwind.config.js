@@ -60,13 +60,20 @@ module.exports = {
           dark: '#BF2D55',
         },
         personality: {
-          friendly: '#FF5252', // Canlı kırmızı - Arkadaş canlısı için sıcak ve davetkar
-          adventurous: '#00BCD4', // Parlak turkuaz - Macera ve heyecan hissi
-          thinker: '#3F51B5', // Koyu mavi - Derinlik ve düşünce
-          protective: '#4CAF50', // Belirgin yeşil - Güven ve koruma
-          cheerful: '#FFC107', // Canlı sarı - Neşe ve pozitiflik
-          leader: '#9C27B0', // Belirgin mor - Liderlik ve güç
-          creativity: '#E91E63',
+          empathic: '#FF6B6B', // Sıcak kırmızı
+          friendly: '#4ECDC4', // Turkuaz
+          helpful: '#45B7D1', // Açık mavi
+          honest: '#FFB75E', // Turuncu
+          patient: '#9B59B6', // Mor
+          reliable: '#3498DB', // Koyu mavi
+          respectful: '#FF7F50', // Mercan
+          angry: '#E74C3C', // Koyu kırmızı
+          arrogant: '#C0392B', // Bordo
+          jealous: '#D35400', // Turuncu-kahve
+          lazy: '#7F8C8D', // Gri
+          pessimistic: '#2C3E50', // Lacivert
+          selfish: '#E67E22', // Turuncu
+          forgetful: '#95A5A6', // Açık gri
         },
       },
       spacing: {

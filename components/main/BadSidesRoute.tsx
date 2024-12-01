@@ -55,7 +55,7 @@ function TraitBar({ trait, value, color, delay, style }: TraitBarProps) {
           style={{ color }}
           className="xs:text-xs font-medium sm:text-sm md:text-base"
           numberOfLines={1}>
-          {t(`personality.negativeTraits.${trait}`)}
+          {t(`personality.traits.${trait}`)}
         </Text>
         <View className="xs:mt-0.5 flex-row items-center sm:mt-1 md:mt-1.5">
           <Animated.View className="xs:h-1 rounded-full sm:h-1.5 md:h-2" style={animatedStyle} />
@@ -132,7 +132,7 @@ export default function BadSidesRoute() {
     <View className="xs:m-1 rounded-sm bg-white dark:bg-gray-700 sm:m-2 md:m-3">
       <View className="xs:p-2 xs:pb-4 sm:p-3 sm:pb-6 md:p-4 md:pb-8">
         <Text className="xs:text-sm font-semibold text-gray-800 dark:text-gray-900 sm:text-base md:text-lg">
-          {t('personality.negativeTraitsTitle')} 🎯
+          {t('personality.traitsTitle')} 🎯
         </Text>
         <View className="flex-row items-center justify-between">
           <Text className="mt-1 text-xs text-gray-600 dark:text-gray-400 sm:text-sm">

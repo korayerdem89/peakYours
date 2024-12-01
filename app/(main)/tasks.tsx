@@ -18,6 +18,7 @@ import Animated, {
   withDelay,
   useAnimatedStyle,
 } from 'react-native-reanimated';
+import { theme } from '@/constants/theme';
 
 interface Task {
   id: string;
@@ -167,45 +168,69 @@ export default function TasksScreen() {
           </View>
         </View>
 
-        {/* Tasks List */}
+        {/* Tasks Card */}
         <ScrollView showsVerticalScrollIndicator={false}>
-          <View className="gap-4">
-            {tasks.map((task) => (
-              <View
-                key={task.id}
-                className="flex-row items-center justify-between rounded-lg bg-gray-50 p-4 dark:bg-gray-800">
-                <View className="mr-4 flex-1">
-                  <Text className="font-poppins-medium mb-1 text-xs" style={{ color: task.color }}>
-                    #{t(`personality.traits.${task.trait}`)}
-                  </Text>
-                  <Text
-                    className={`text-sm text-gray-800 dark:text-gray-200 ${
-                      completedTasks.includes(task.id) ? 'text-gray-400 line-through' : ''
-                    }`}>
-                    {task.text[locale as keyof typeof task.text]}
-                  </Text>
+          <View className="rounded-lg bg-gray-50 p-4 dark:bg-gray-800">
+            {tasks.map((task, index) => (
+              <View key={task.id}>
+                <View className="flex-row items-center justify-between py-3">
+                  <View className="mr-4 flex-1">
+                    <Text
+                      className="mb-1 font-medium text-xs"
+                      style={{
+                        color:
+                          theme.colors.personality[
+                            task.trait as keyof typeof theme.colors.personality
+                          ],
+                      }}>
+                      #{t(`personality.traits.${task.trait}`)}
+                    </Text>
+                    <Text
+                      className={`text-sm text-gray-800 dark:text-gray-200 ${
+                        completedTasks.includes(task.id) ? 'text-gray-400 line-through' : ''
+                      }`}>
+                      {task.text[locale as keyof typeof task.text]}
+                    </Text>
+                  </View>
+
+                  <View className="flex-row items-center gap-4">
+                    <TouchableOpacity
+                      onPress={() => handleRefreshTask(task.id, task.trait)}
+                      disabled={refreshLimit <= 0}
+                      className={`p-2 ${refreshLimit <= 0 ? 'opacity-30' : ''}`}>
+                      <Ionicons
+                        name="refresh"
+                        size={20}
+                        color={
+                          theme.colors.personality[
+                            task.trait as keyof typeof theme.colors.personality
+                          ]
+                        }
+                      />
+                    </TouchableOpacity>
+
+                    <TouchableOpacity onPress={() => handleCompleteTask(task.id, task.trait)}>
+                      <Ionicons
+                        name={
+                          completedTasks.includes(task.id)
+                            ? 'checkmark-circle'
+                            : 'checkmark-circle-outline'
+                        }
+                        size={24}
+                        color={
+                          theme.colors.personality[
+                            task.trait as keyof typeof theme.colors.personality
+                          ]
+                        }
+                      />
+                    </TouchableOpacity>
+                  </View>
                 </View>
 
-                <View className="flex-row items-center gap-4">
-                  <TouchableOpacity
-                    onPress={() => handleRefreshTask(task.id, task.trait)}
-                    disabled={refreshLimit <= 0}
-                    className={`p-2 ${refreshLimit <= 0 ? 'opacity-30' : ''}`}>
-                    <Ionicons name="refresh" size={20} color={task.color} />
-                  </TouchableOpacity>
-
-                  <TouchableOpacity onPress={() => handleCompleteTask(task.id, task.trait)}>
-                    <Ionicons
-                      name={
-                        completedTasks.includes(task.id)
-                          ? 'checkmark-circle'
-                          : 'checkmark-circle-outline'
-                      }
-                      size={24}
-                      color={task.color}
-                    />
-                  </TouchableOpacity>
-                </View>
+                {/* Separator - son item hariç hepsinin altına ekle */}
+                {index < tasks.length - 1 && (
+                  <View className="h-[1px] w-full bg-gray-200 dark:bg-gray-700" />
+                )}
               </View>
             ))}
           </View>

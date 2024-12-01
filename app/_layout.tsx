@@ -14,6 +14,7 @@ import Toast from 'react-native-toast-message';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useOnlineManager } from '@/hooks/useOnlineManager';
 import { useAppState } from '@/hooks/useAppState';
+import { toastConfig } from '@/config/toast';
 
 import {
   useFonts,
@@ -165,7 +166,7 @@ export default function RootLayout() {
               <AuthProvider>
                 <InitialLayout />
               </AuthProvider>
-              <Toast />
+              <Toast config={toastConfig} />
             </View>
           </ThemeProvider>
         </LanguageProvider>

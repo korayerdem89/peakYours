@@ -10,6 +10,8 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'expo-router';
 import { useColorScheme } from 'react-native';
 import { theme } from '@/constants/theme';
+import { Ionicons } from '@expo/vector-icons';
+
 const TOTAL_POINTS = 35;
 const MAX_TRAIT_POINTS = 10;
 const BAD_TRAIT_COLOR = '#D97650';
@@ -75,10 +77,6 @@ export const BadSidesRateRoute = memo(({ referenceCode }: BadSidesRateRouteProps
             text1: t('personality.rating.alreadyRated'),
             position: 'bottom',
             visibilityTime: 3000,
-            text1Style: {
-              fontFamily: 'Poppins_400Regular',
-              color: colorScheme === 'dark' ? '#C5CEE0' : theme.colors.error.dark,
-            },
           });
         }
       } catch (error) {
@@ -125,10 +123,6 @@ export const BadSidesRateRoute = memo(({ referenceCode }: BadSidesRateRouteProps
         position: 'bottom',
         visibilityTime: 3000,
         onHide: () => router.replace('/(main)/you'),
-        text1Style: {
-          fontFamily: 'Poppins_400Regular',
-          color: colorScheme === 'dark' ? '#C5CEE0' : theme.colors.secondary.dark,
-        },
       });
     } catch (error) {
       Toast.show({
@@ -180,14 +174,14 @@ export const BadSidesRateRoute = memo(({ referenceCode }: BadSidesRateRouteProps
 
       Toast.show({
         type: 'success',
-        text1: 'Test rating submitted successfully!',
+        text1: t('personality.rating.testSuccess'),
         position: 'bottom',
         visibilityTime: 3000,
       });
     } catch (error) {
       Toast.show({
         type: 'error',
-        text1: 'Error submitting test rating',
+        text1: t('personality.rating.testError'),
         position: 'bottom',
         visibilityTime: 4000,
       });
@@ -215,7 +209,7 @@ export const BadSidesRateRoute = memo(({ referenceCode }: BadSidesRateRouteProps
           onIncrease={() => handlePointChange(index, true)}
           onDecrease={() => handlePointChange(index, false)}
           remainingPoints={remainingPoints}
-          label={t(`personality.negativeTraits.${trait.name}`)}
+          label={t(`personality.traits.${trait.name}`)}
           disabled={isSubmitted}
         />
       ))}
