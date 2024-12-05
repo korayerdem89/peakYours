@@ -21,6 +21,11 @@ export function TaskList({
 }: TaskListProps) {
   const { t, locale } = useTranslation();
 
+  const handleRefresh = async (taskId: string, trait: string) => {
+    if (refreshLimit <= 0) return; // Early return if no refreshes left
+    onRefreshTask(taskId, trait);
+  };
+
   return (
     <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
       <View className="rounded-lg bg-gray-50 p-4 dark:bg-gray-800">
@@ -47,21 +52,22 @@ export function TaskList({
               <View className="flex-row items-center gap-4">
                 {!completedTasks.includes(task.id) && (
                   <TouchableOpacity
-                    onPress={() => onRefreshTask(task.id, task.trait)}
+                    onPress={() => handleRefresh(task.id, task.trait)}
                     disabled={refreshLimit <= 0}
                     className={`p-2 ${refreshLimit <= 0 ? 'opacity-30' : ''}`}>
                     <Ionicons
                       name="refresh"
                       size={20}
                       color={
-                        theme.colors.personality[
-                          task.trait as keyof typeof theme.colors.personality
-                        ]
+                        refreshLimit <= 0
+                          ? theme.colors.text.light
+                          : theme.colors.personality[
+                              task.trait as keyof typeof theme.colors.personality
+                            ]
                       }
                     />
                   </TouchableOpacity>
                 )}
-
                 <TouchableOpacity onPress={() => onCompleteTask(task.id, task.trait)}>
                   <Ionicons
                     name={

@@ -31,6 +31,7 @@ import { TaskList } from '@/components/tasks/TaskList';
 import { TaskProgress } from '@/components/tasks/TaskProgress';
 import { TaskInfo } from '@/components/tasks/TaskInfo';
 import { UserData } from '@/services/user';
+import { TaskDebug } from '@/components/tasks/TaskDebug';
 
 interface Task {
   id: string;
@@ -45,22 +46,12 @@ interface Task {
 }
 
 export default function TasksScreen() {
-  const { t, locale } = useTranslation();
+  const { t } = useTranslation();
   const { user } = useAuth();
   const { data: userData } = useUserData(user?.uid) || null;
-  const { data: goodTraits } = useTraitAverages(userData?.refCodes?.en, 'goodsides');
-  const { data: badTraits } = useTraitAverages(userData?.refCodes?.en, 'badsides');
-  const updateTaskTrait = useUpdateTaskTrait();
-  const { taskData, updateTaskPoints, refreshTasks, decrementRefreshes } = useTasks(user?.uid);
-  const [refreshLimit, setRefreshLimit] = useState(7);
-  const [tasks, setTasks] = useState<Task[]>([]);
-  const [completedTasks, setCompletedTasks] = useState<string[]>([]);
   const { data: traitDetails } = useTraitDetails(userData?.refCodes?.en, 'goodsides');
-  const router = useRouter();
-  const [levelUpTrait, setLevelUpTrait] = useState<string | null>(null);
 
   const bounceValue = useSharedValue(0);
-
   useEffect(() => {
     const interval = setInterval(() => {
       bounceValue.value = withSequence(withSpring(-10), withDelay(100, withSpring(0)));
@@ -68,7 +59,6 @@ export default function TasksScreen() {
 
     return () => clearInterval(interval);
   }, []);
-
   const bounceStyle = useAnimatedStyle(() => ({
     transform: [{ translateY: bounceValue.value }],
   }));
@@ -109,6 +99,16 @@ export default function TasksScreen() {
       </SafeAreaView>
     );
   }
+
+  ////traitdetails.totalRaters varsa alttaki dataları da çek
+  const [levelUpTrait, setLevelUpTrait] = useState<string | null>(null);
+  const { data: goodTraits } = useTraitAverages(userData?.refCodes?.en, 'goodsides');
+  const { data: badTraits } = useTraitAverages(userData?.refCodes?.en, 'badsides');
+  const updateTaskTrait = useUpdateTaskTrait();
+  const { taskData, updateTaskPoints, refreshTasks, decrementRefreshes } = useTasks(user?.uid);
+  const [refreshLimit, setRefreshLimit] = useState(7);
+  const [tasks, setTasks] = useState<Task[]>([]);
+  const [completedTasks, setCompletedTasks] = useState<string[]>([]);
 
   // Load initial tasks and completed tasks
   useEffect(() => {
@@ -155,8 +155,9 @@ export default function TasksScreen() {
         });
       }
     }
-
-    loadTaskData();
+    setTimeout(() => {
+      loadTaskData();
+    }, 1000);
   }, [user?.uid, goodTraits, badTraits]); // Dependencies include traits data
 
   // Remove getInitialTasks call from here if it exists
@@ -277,7 +278,7 @@ export default function TasksScreen() {
         <TaskHeader />
         <TaskInfo userData={userData ?? ({} as UserData)} />
         <TaskRefreshCounter refreshesLeft={taskData?.refreshesLeft || 7} />
-
+        <TaskDebug />
         <TaskList
           tasks={tasks}
           completedTasks={completedTasks}

@@ -322,5 +322,10 @@ export default {
       refreshLimit:
         'Puedes actualizar las tareas hasta 7 veces al día si deseas diferentes desafíos.',
     },
+    debug: {
+      clearCache: 'Limpiar Caché de Tareas',
+      cacheCleared: 'Caché de tareas limpiado con éxito',
+      clearError: 'Error al limpiar el caché de tareas',
+    },
   },
 };

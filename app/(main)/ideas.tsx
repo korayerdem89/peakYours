@@ -142,17 +142,12 @@ const PERSONALITY_ANIMALS: Record<string, PersonalityAnimal> = {
 
 export default function Ideas() {
   const { user, updateUserData } = useAuth();
-  const { t, locale } = useTranslation();
-  const [showZodiacModal, setShowZodiacModal] = useState(!user?.zodiacSign);
-  const [personalityAnimal, setPersonalityAnimal] = useState<PersonalityAnimal | null>(null);
-  const [analysis, setAnalysis] = useState('');
-  const [isLoading, setIsLoading] = useState(true);
   const { data: userData } = useUserData(user?.uid);
   const { data: traitDetails } = useTraitDetails(userData?.refCodes?.en, 'goodsides');
+  const { t, locale } = useTranslation();
 
   // Bounce animasyonu için shared value
   const bounceValue = useSharedValue(0);
-
   // 5 saniyede bir tekrarlanan bounce efekti
   useEffect(() => {
     const interval = setInterval(() => {
@@ -210,10 +205,15 @@ export default function Ideas() {
     );
   }
 
+  ////traitdetails.totalRaters varsa alttaki dataları da çek
   const { data: goodTraits } = useTraitAverages(userData?.refCodes?.en, 'goodsides');
   const { data: badTraits } = useTraitAverages(userData?.refCodes?.en, 'badsides');
   const updateUser = useUpdateUser();
 
+  const [showZodiacModal, setShowZodiacModal] = useState(!user?.zodiacSign);
+  const [personalityAnimal, setPersonalityAnimal] = useState<PersonalityAnimal | null>(null);
+  const [analysis, setAnalysis] = useState('');
+  const [isLoading, setIsLoading] = useState(true);
   const systemMessages = {
     en: `You are a friendly and witty personality analyst who loves combining astrology with personality traits! 
     While you're an expert in both fields, you prefer explaining things in a warm, casual tone with occasional humor.

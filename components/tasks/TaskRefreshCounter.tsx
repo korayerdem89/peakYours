@@ -10,11 +10,18 @@ interface TaskRefreshCounterProps {
 export function TaskRefreshCounter({ refreshesLeft }: TaskRefreshCounterProps) {
   const { t } = useTranslation();
 
+  // Ensure refreshesLeft never goes below 0
+  const displayRefreshes = Math.max(0, refreshesLeft);
+
   return (
-    <View className="mb-4 flex-row items-center">
-      <MaterialCommunityIcons name="refresh" size={20} color={theme.colors.secondary.default} />
+    <View className="mb-4 flex-row items-center justify-end">
+      <MaterialCommunityIcons
+        name="refresh"
+        size={20}
+        color={displayRefreshes > 0 ? theme.colors.secondary.default : theme.colors.text.light}
+      />
       <Text className="font-poppins-medium ml-2 text-text-light dark:text-text-dark">
-        {refreshesLeft}
+        {displayRefreshes}
         <Text className="text-sm text-text-light-secondary"> {t('tasks.refreshes')}</Text>
       </Text>
     </View>

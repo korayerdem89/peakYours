@@ -313,6 +313,11 @@ export default {
       dailyRefresh: 'Tasks are refreshed every 24 hours with new challenges.',
       refreshLimit: 'You can refresh tasks up to 7 times per day if you want different challenges.',
     },
+    debug: {
+      clearCache: 'Clear Task Cache',
+      cacheCleared: 'Task cache cleared successfully',
+      clearError: 'Error clearing task cache',
+    },
   },
   leaderboard: {
     title: 'Leaderboard',

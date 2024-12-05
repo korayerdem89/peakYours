@@ -306,5 +306,10 @@ export default {
       dailyRefresh: 'Görevler her 24 saatte bir yeni zorluklarla yenilenir.',
       refreshLimit: 'Farklı görevler istiyorsanız günde 7 kez yenileme hakkınız var.',
     },
+    debug: {
+      clearCache: 'Görev Önbelleğini Temizle',
+      cacheCleared: 'Görev önbelleği başarıyla temizlendi',
+      clearError: 'Önbellek temizlenirken hata oluştu',
+    },
   },
 };
