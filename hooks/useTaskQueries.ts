@@ -3,14 +3,8 @@ import { FirestoreService } from '@/services/firestore';
 import { useAuth } from '@/store/useAuth';
 import firestore from '@react-native-firebase/firestore';
 
-interface TaskTrait {
-  name: string;
-  points: number;
-}
-
 export function useTaskTraits() {
   const { user } = useAuth();
-  const queryClient = useQueryClient();
 
   return useQuery({
     queryKey: ['taskTraits', user?.uid],

@@ -8,7 +8,7 @@ export function TaskHeader() {
   const { t } = useTranslation();
 
   return (
-    <Animated.View entering={FadeIn.duration(1000)} className="mb-6 items-center">
+    <Animated.View entering={FadeIn.duration(1000)} className="mb-2 items-center">
       <View className="flex-row items-center justify-center space-x-2 rounded-2xl bg-primary-light/10 px-6 py-3 dark:bg-primary-dark/10">
         <MaterialCommunityIcons
           name="checkbox-marked-circle-outline"

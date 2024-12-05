@@ -20,9 +20,9 @@ export function TaskRefreshCounter({ refreshesLeft }: TaskRefreshCounterProps) {
         size={20}
         color={displayRefreshes > 0 ? theme.colors.secondary.default : theme.colors.text.light}
       />
-      <Text className="font-poppins-medium ml-2 text-text-light dark:text-text-dark">
+      <Text className="font-poppins-semibold text-md mr-2 text-text-light dark:text-text-dark">
+        <Text className="text-sm text-text-light-secondary"> {t('tasks.refreshes')} = </Text>
         {displayRefreshes}
-        <Text className="text-sm text-text-light-secondary"> {t('tasks.refreshes')}</Text>
       </Text>
     </View>
   );

@@ -30,7 +30,7 @@ export function TaskInfo({ userData }: TaskInfoProps) {
   });
 
   return (
-    <View className="mb-4 rounded-xl bg-gray-50/50 dark:bg-gray-800/50">
+    <View className="mb-4 rounded-xl bg-gray-100 dark:bg-gray-800/50">
       <TouchableOpacity
         onPress={() => setIsExpanded(!isExpanded)}
         className="flex-row items-center justify-between p-4">
@@ -42,10 +42,10 @@ export function TaskInfo({ userData }: TaskInfoProps) {
             className="mr-3"
           />
           <View>
-            <Text className="font-poppins-medium text-text-light-primary dark:text-text-dark-primary text-base">
+            <Text className="dark:text-text-dark-primary font-semibold text-base text-text-light">
               {t('tasks.info.title')}
             </Text>
-            <Text className="font-poppins text-sm text-text-light-secondary dark:text-text-dark-secondary">
+            <Text className="font-medium text-sm text-text-light-secondary dark:text-text-dark-secondary">
               {t('tasks.info.completedTasks', { count: totalTasksCompleted })}
             </Text>
           </View>
@@ -70,9 +70,9 @@ export function TaskInfo({ userData }: TaskInfoProps) {
 
 function InfoItem({ icon, text }: { icon: any; text: string }) {
   return (
-    <View className="flex-row items-start">
+    <View className="mb-1 flex-row items-start">
       <MaterialIcons name={icon} size={18} color={theme.colors.text.light} className="mr-3 mt-1" />
-      <Text className="font-poppins flex-1 text-sm text-text-light-secondary dark:text-text-dark-secondary">
+      <Text className="flex-1 font-regular text-sm text-text-light dark:text-text-dark">
         {text}
       </Text>
     </View>

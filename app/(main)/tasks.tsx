@@ -32,6 +32,7 @@ import { TaskProgress } from '@/components/tasks/TaskProgress';
 import { TaskInfo } from '@/components/tasks/TaskInfo';
 import { UserData } from '@/services/user';
 import { TaskDebug } from '@/components/tasks/TaskDebug';
+import { TaskMotivation } from '@/components/tasks/TaskMotivation';
 
 interface Task {
   id: string;
@@ -105,7 +106,7 @@ export default function TasksScreen() {
   const { data: goodTraits } = useTraitAverages(userData?.refCodes?.en, 'goodsides');
   const { data: badTraits } = useTraitAverages(userData?.refCodes?.en, 'badsides');
   const updateTaskTrait = useUpdateTaskTrait();
-  const { taskData, updateTaskPoints, refreshTasks, decrementRefreshes } = useTasks(user?.uid);
+  const { taskData, refreshTasks, decrementRefreshes } = useTasks(user?.uid);
   const [refreshLimit, setRefreshLimit] = useState(7);
   const [tasks, setTasks] = useState<Task[]>([]);
   const [completedTasks, setCompletedTasks] = useState<string[]>([]);
@@ -209,9 +210,6 @@ export default function TasksScreen() {
       // Update task trait in users collection
       await updateTaskTrait.mutateAsync(trait);
 
-      // Update points in userTasks collection
-      await updateTaskPoints.mutateAsync(10);
-
       // Update completed tasks in local state and storage
       const newCompletedTasks = [...completedTasks, taskId];
       setCompletedTasks(newCompletedTasks);
@@ -276,9 +274,13 @@ export default function TasksScreen() {
     <SafeAreaView className="flex-1 bg-background-light dark:bg-background-dark">
       <View className="flex-1 p-4">
         <TaskHeader />
+
+        <TaskMotivation />
+
         <TaskInfo userData={userData ?? ({} as UserData)} />
+
         <TaskRefreshCounter refreshesLeft={taskData?.refreshesLeft || 7} />
-        <TaskDebug />
+
         <TaskList
           tasks={tasks}
           completedTasks={completedTasks}
@@ -286,10 +288,14 @@ export default function TasksScreen() {
           onRefreshTask={handleRefreshTask}
           onCompleteTask={handleCompleteTask}
         />
+
         <TaskProgress progress={timeUntilRefresh()} />
+
         {levelUpTrait && (
           <TraitLevelUpAnimation trait={levelUpTrait} onComplete={() => setLevelUpTrait(null)} />
         )}
+
+        {__DEV__ && <TaskDebug />}
       </View>
     </SafeAreaView>
   );

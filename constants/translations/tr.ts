@@ -303,7 +303,7 @@ export default {
       title: 'Görev Bilgileri',
       completedTasks: '{{count}} görev tamamlandı',
       levelUp: 'Kişilik puanınızı 1 puan artırmak için aynı özellikten 5 görev tamamlayın.',
-      dailyRefresh: 'Görevler her 24 saatte bir yeni zorluklarla yenilenir.',
+      dailyRefresh: 'Görevler her 24 saatte bir yenilenir',
       refreshLimit: 'Farklı görevler istiyorsanız günde 7 kez yenileme hakkınız var.',
     },
     debug: {
@@ -311,5 +311,6 @@ export default {
       cacheCleared: 'Görev önbelleği başarıyla temizlendi',
       clearError: 'Önbellek temizlenirken hata oluştu',
     },
+    motivation: 'Görevleri yapın ve kendinize değer katın',
   },
 };

@@ -318,7 +318,7 @@ export default {
       completedTasks: '{{count}} tareas completadas',
       levelUp:
         'Completa 5 tareas del mismo rasgo para aumentar tu puntuación de personalidad en 1 punto.',
-      dailyRefresh: 'Las tareas se actualizan cada 24 horas con nuevos desafíos.',
+      dailyRefresh: 'Las tareas se actualizan cada 24 horas',
       refreshLimit:
         'Puedes actualizar las tareas hasta 7 veces al día si deseas diferentes desafíos.',
     },
@@ -327,5 +327,6 @@ export default {
       cacheCleared: 'Caché de tareas limpiado con éxito',
       clearError: 'Error al limpiar el caché de tareas',
     },
+    motivation: 'Completa tareas y añade valor a ti mismo',
   },
 };
