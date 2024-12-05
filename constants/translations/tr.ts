@@ -299,5 +299,12 @@ export default {
     dailyTasks: 'Günlük Görevler',
     remainingRefreshes: 'Kalan yenileme hakkı',
     refreshes: 'Günlük Yenileme Hakkı',
+    info: {
+      title: 'Görev Bilgileri',
+      completedTasks: '{{count}} görev tamamlandı',
+      levelUp: 'Kişilik puanınızı 1 puan artırmak için aynı özellikten 5 görev tamamlayın.',
+      dailyRefresh: 'Görevler her 24 saatte bir yeni zorluklarla yenilenir.',
+      refreshLimit: 'Farklı görevler istiyorsanız günde 7 kez yenileme hakkınız var.',
+    },
   },
 };

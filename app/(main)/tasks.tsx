@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { View, Text, ScrollView, TouchableOpacity, Image } from 'react-native';
+import { View, Text, ScrollView, Image } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTranslation } from '@/providers/LanguageProvider';
 import { useAuth } from '@/store/useAuth';
@@ -25,6 +25,12 @@ import { Accordion } from '@/components/Accordion';
 import { useRouter } from 'expo-router';
 import { StorageService } from '@/utils/storage';
 import { TraitLevelUpAnimation } from '@/components/TraitLevelUpAnimation';
+import { TaskHeader } from '@/components/tasks/TaskHeader';
+import { TaskRefreshCounter } from '@/components/tasks/TaskRefreshCounter';
+import { TaskList } from '@/components/tasks/TaskList';
+import { TaskProgress } from '@/components/tasks/TaskProgress';
+import { TaskInfo } from '@/components/tasks/TaskInfo';
+import { UserData } from '@/services/user';
 
 interface Task {
   id: string;
@@ -41,7 +47,7 @@ interface Task {
 export default function TasksScreen() {
   const { t, locale } = useTranslation();
   const { user } = useAuth();
-  const { data: userData } = useUserData(user?.uid);
+  const { data: userData } = useUserData(user?.uid) || null;
   const { data: goodTraits } = useTraitAverages(userData?.refCodes?.en, 'goodsides');
   const { data: badTraits } = useTraitAverages(userData?.refCodes?.en, 'badsides');
   const updateTaskTrait = useUpdateTaskTrait();
@@ -268,148 +274,18 @@ export default function TasksScreen() {
   return (
     <SafeAreaView className="flex-1 bg-background-light dark:bg-background-dark">
       <View className="flex-1 p-4">
-        {/* Modernized Header with Icon */}
+        <TaskHeader />
+        <TaskInfo userData={userData ?? ({} as UserData)} />
+        <TaskRefreshCounter refreshesLeft={taskData?.refreshesLeft || 7} />
 
-        {/* Header with Info */}
-        <View className="mb-6">
-          <Animated.View entering={FadeIn.duration(1000)} className="mb-6 items-center">
-            <View className="flex-row items-center justify-center space-x-2 rounded-2xl bg-primary-light/10 px-6 py-3 dark:bg-primary-dark/10">
-              <MaterialCommunityIcons
-                name="checkbox-marked-circle-outline"
-                size={28}
-                color={theme.colors.primary.default}
-                className="mr-2"
-              />
-              <Text className="font-poppins-semibold text-2xl text-primary-dark dark:text-primary-light">
-                {t('tasks.dailyTasks')}
-              </Text>
-            </View>
-
-            <View className="mt-2 h-1 w-16 rounded-full bg-primary-light/20 dark:bg-primary-dark/20" />
-          </Animated.View>
-
-          <Accordion title={t('tasks.howItWorks')}>
-            <Text className="p-4 text-sm text-text-light dark:text-text-dark">
-              {t('tasks.completionInfo')}
-            </Text>
-          </Accordion>
-        </View>
-
-        {/* Refresh Counter */}
-        <View className="mb-4 flex-row items-center">
-          <MaterialCommunityIcons name="refresh" size={20} color={theme.colors.secondary.default} />
-          <Text className="font-poppins-medium ml-2 text-text-light dark:text-text-dark">
-            {taskData?.refreshesLeft || 7}
-            <Text className="text-sm text-text-light-secondary"> {t('tasks.refreshes')}</Text>
-          </Text>
-        </View>
-
-        {/* Tasks List */}
-        <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
-          <View className="rounded-lg bg-gray-50 p-4 dark:bg-gray-800">
-            {tasks.map((task, index) => (
-              <View key={task.id}>
-                <View className="flex-row items-center justify-between py-3">
-                  <View className="mr-4 flex-1">
-                    <Text
-                      className="mb-1 font-medium text-xs"
-                      style={{
-                        color:
-                          theme.colors.personality[
-                            task.trait as keyof typeof theme.colors.personality
-                          ],
-                      }}>
-                      #{t(`personality.traits.${task.trait}`)}
-                    </Text>
-                    <Text
-                      className={`text-sm text-gray-800 dark:text-gray-200 ${
-                        completedTasks.includes(task.id) ? 'text-gray-400 line-through' : ''
-                      }`}>
-                      {task.text[locale as keyof typeof task.text]}
-                    </Text>
-                  </View>
-
-                  <View className="flex-row items-center gap-4">
-                    {!completedTasks.includes(task.id) && (
-                      <TouchableOpacity
-                        onPress={() => handleRefreshTask(task.id, task.trait)}
-                        disabled={refreshLimit <= 0}
-                        className={`p-2 ${refreshLimit <= 0 ? 'opacity-30' : ''}`}>
-                        <Ionicons
-                          name="refresh"
-                          size={20}
-                          color={
-                            theme.colors.personality[
-                              task.trait as keyof typeof theme.colors.personality
-                            ]
-                          }
-                        />
-                      </TouchableOpacity>
-                    )}
-
-                    <TouchableOpacity onPress={() => handleCompleteTask(task.id, task.trait)}>
-                      <Ionicons
-                        name={
-                          completedTasks.includes(task.id)
-                            ? 'checkmark-circle'
-                            : 'checkmark-circle-outline'
-                        }
-                        size={24}
-                        color={
-                          theme.colors.personality[
-                            task.trait as keyof typeof theme.colors.personality
-                          ]
-                        }
-                      />
-                    </TouchableOpacity>
-                  </View>
-                </View>
-
-                {index < tasks.length - 1 && (
-                  <View className="h-[1px] w-full bg-gray-200 dark:bg-gray-700" />
-                )}
-              </View>
-            ))}
-          </View>
-        </ScrollView>
-
-        {/* Bottom Stats */}
-        <View className="mt-4 space-y-4">
-          {/* Time Progress */}
-          <View className="items-center space-y-2">
-            <Progress.Bar
-              progress={timeUntilRefresh()}
-              width={null}
-              height={8}
-              color={theme.colors.primary.default}
-              unfilledColor={theme.colors.background.tab}
-              borderWidth={0}
-              className="w-full rounded-full"
-            />
-            <Text className="text-xs text-text-light-secondary dark:text-text-dark-secondary">
-              {t('tasks.refreshIn')}
-            </Text>
-          </View>
-
-          {/* Points & Leaderboard */}
-          <View className="flex-row items-center justify-between rounded-lg bg-surface-light p-4 dark:bg-surface-dark">
-            <View>
-              <Text className="font-poppins-medium text-lg text-text-light dark:text-text-dark">
-                {taskData?.points || 0}
-                <Text className="text-sm text-text-light-secondary"> {t('tasks.points')}</Text>
-              </Text>
-            </View>
-
-            <TouchableOpacity
-              onPress={() => router.push('/modal/leaderboard')}
-              className="bg-primary-default flex-row items-center rounded-full px-4 py-2">
-              <Ionicons name="trophy" size={20} color="white" className="mr-2" />
-              <Text className="font-poppins-medium text-white">{t('tasks.leaderboard')}</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-
-        {/* Level Up Animation */}
+        <TaskList
+          tasks={tasks}
+          completedTasks={completedTasks}
+          refreshLimit={refreshLimit}
+          onRefreshTask={handleRefreshTask}
+          onCompleteTask={handleCompleteTask}
+        />
+        <TaskProgress progress={timeUntilRefresh()} />
         {levelUpTrait && (
           <TraitLevelUpAnimation trait={levelUpTrait} onComplete={() => setLevelUpTrait(null)} />
         )}

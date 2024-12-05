@@ -313,5 +313,14 @@ export default {
       cta: 'Comparte tu perfil y comienza a recolectar calificaciones para desbloquear tareas',
     },
     refreshes: 'Actualizaciones Diarias Restantes',
+    info: {
+      title: 'Información de Tareas',
+      completedTasks: '{{count}} tareas completadas',
+      levelUp:
+        'Completa 5 tareas del mismo rasgo para aumentar tu puntuación de personalidad en 1 punto.',
+      dailyRefresh: 'Las tareas se actualizan cada 24 horas con nuevos desafíos.',
+      refreshLimit:
+        'Puedes actualizar las tareas hasta 7 veces al día si deseas diferentes desafíos.',
+    },
   },
 };

@@ -306,6 +306,13 @@ export default {
     refreshIn: 'Tasks refresh in 24 hours',
     points: 'points',
     leaderboard: 'Leaderboard',
+    info: {
+      title: 'Task Information',
+      completedTasks: '{{count}} tasks completed',
+      levelUp: 'Complete 5 tasks of the same trait to increase your personality score by 1 point.',
+      dailyRefresh: 'Tasks are refreshed every 24 hours with new challenges.',
+      refreshLimit: 'You can refresh tasks up to 7 times per day if you want different challenges.',
+    },
   },
   leaderboard: {
     title: 'Leaderboard',
