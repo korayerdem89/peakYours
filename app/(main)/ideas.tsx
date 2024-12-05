@@ -147,7 +147,6 @@ export default function Ideas() {
   const [personalityAnimal, setPersonalityAnimal] = useState<PersonalityAnimal | null>(null);
   const [analysis, setAnalysis] = useState('');
   const [isLoading, setIsLoading] = useState(true);
-
   const { data: userData } = useUserData(user?.uid);
   const { data: traitDetails } = useTraitDetails(userData?.refCodes?.en, 'goodsides');
 
