@@ -125,7 +125,7 @@ export default {
       testSuccess: 'Test puanlaması başarıyla gönderildi!',
       testError: 'Test puanlaması gönderilirken hata oluştu',
     },
-    level: 'Seviye',
+    level: 'puan',
     positiveTraits: 'Güçlü Yönleriniz',
     referral: {
       title: 'Profilini Paylaş',

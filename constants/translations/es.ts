@@ -116,7 +116,7 @@ export default {
       testSuccess: '¡Calificación de prueba enviada con éxito!',
       testError: 'Error al enviar la calificación de prueba',
     },
-    level: 'Nivel',
+    level: 'puntos',
     positiveTraits: 'Rasgos Positivos de Personalidad',
     traits: {
       empathic: 'Empático',

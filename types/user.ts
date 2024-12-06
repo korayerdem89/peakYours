@@ -25,3 +25,17 @@ export type AuthUser = Pick<
 export type BasicUserInfo = Pick<UserData, 'uid' | 'email' | 'displayName' | 'photoURL'>;
 
 export type ZodiacUpdateData = Partial<Pick<UserData, 'zodiacSign'>>;
+
+export interface Trait {
+  trait: string;
+  points: number;
+}
+
+export interface TraitAverage {
+  trait: string;
+  averagePoints: number;
+}
+
+export interface UserTraits {
+  [key: string]: number;
+}

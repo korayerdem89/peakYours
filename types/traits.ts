@@ -26,6 +26,7 @@ export interface UserRating {
   userId: string;
   traits: TraitRating[];
   ratedAt: string;
+  displayName: string;
 }
 
 export interface TraitDetails {

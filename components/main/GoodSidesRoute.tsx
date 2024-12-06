@@ -21,6 +21,7 @@ import { useAuth } from '@/store/useAuth';
 import { useUserData } from '@/hooks/useUserQueries';
 import { useTraitDetails } from '@/hooks/useTraitDetails';
 import { MaterialIcons } from '@expo/vector-icons';
+import { calculateTraitValue } from '@/utils/numberHelpers';
 
 interface TraitBarProps {
   trait: string;
@@ -68,7 +69,7 @@ function TraitBar({ trait, value, color, delay, style }: TraitBarProps) {
         </View>
       </View>
       <Text className="xs:text-[10px] ml-2 text-gray-600 dark:text-gray-400 sm:text-xs md:text-sm">
-        {value}% {t('personality.level')}
+        {value} {t('personality.level')}
       </Text>
     </View>
   );
@@ -122,40 +123,40 @@ export default function GoodSidesRoute() {
       {
         trait: 'empathic',
         color: theme.colors.personality.empathic,
-        value: traitAverages?.find((t) => t.trait === 'empathic')?.averagePoints || 0,
+        value: calculateTraitValue('empathic', traitAverages, userData?.traits, true),
       },
       {
         trait: 'friendly',
         color: theme.colors.personality.friendly,
-        value: traitAverages?.find((t) => t.trait === 'friendly')?.averagePoints || 0,
+        value: calculateTraitValue('friendly', traitAverages, userData?.traits, true),
       },
       {
         trait: 'helpful',
         color: theme.colors.personality.helpful,
-        value: traitAverages?.find((t) => t.trait === 'helpful')?.averagePoints || 0,
+        value: calculateTraitValue('helpful', traitAverages, userData?.traits, true),
       },
       {
         trait: 'honest',
         color: theme.colors.personality.honest,
-        value: traitAverages?.find((t) => t.trait === 'honest')?.averagePoints || 0,
+        value: calculateTraitValue('honest', traitAverages, userData?.traits, true),
       },
       {
         trait: 'patient',
         color: theme.colors.personality.patient,
-        value: traitAverages?.find((t) => t.trait === 'patient')?.averagePoints || 0,
+        value: calculateTraitValue('patient', traitAverages, userData?.traits, true),
       },
       {
         trait: 'reliable',
         color: theme.colors.personality.reliable,
-        value: traitAverages?.find((t) => t.trait === 'reliable')?.averagePoints || 0,
+        value: calculateTraitValue('reliable', traitAverages, userData?.traits, true),
       },
       {
         trait: 'respectful',
         color: theme.colors.personality.respectful,
-        value: traitAverages?.find((t) => t.trait === 'respectful')?.averagePoints || 0,
+        value: calculateTraitValue('respectful', traitAverages, userData?.traits, true),
       },
     ],
-    [traitAverages]
+    [traitAverages, userData?.traits]
   );
 
   const handleRatePress = () => {
@@ -194,7 +195,7 @@ export default function GoodSidesRoute() {
           <TraitBar
             key={trait.trait}
             trait={trait.trait}
-            value={trait.value * 10}
+            value={trait.value}
             color={trait.color}
             delay={index * 150}
           />

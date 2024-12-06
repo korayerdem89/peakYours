@@ -125,7 +125,7 @@ export default {
       testSuccess: 'Test rating submitted successfully!',
       testError: 'Error submitting test rating',
     },
-    level: 'Level',
+    level: 'points',
     positiveTraits: 'Your Strengths',
     referral: {
       title: 'Share Your Profile',

@@ -140,6 +140,7 @@ export const RatingService = {
           userId: doc.id,
           traits: data.traits || [],
           ratedAt,
+          displayName: data.displayName || '',
         };
       });
 

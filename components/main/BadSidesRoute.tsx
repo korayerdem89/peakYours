@@ -5,8 +5,6 @@ import Animated, {
   useSharedValue,
   withSequence,
   withDelay,
-  withRepeat,
-  withSpring,
 } from 'react-native-reanimated';
 import { useEffect, useMemo } from 'react';
 import { Text } from 'react-native';
@@ -19,6 +17,7 @@ import { useUserData } from '@/hooks/useUserQueries';
 import { useTraitDetails } from '@/hooks/useTraitDetails';
 import { MaterialIcons } from '@expo/vector-icons';
 import ReferralShare from './ReferralShare';
+import { calculateTraitValue } from '@/utils/numberHelpers';
 
 interface TraitBarProps {
   trait: string;
@@ -28,7 +27,7 @@ interface TraitBarProps {
   style?: any;
 }
 
-function TraitBar({ trait, value, color, delay, style }: TraitBarProps) {
+function TraitBar({ trait, value, color, delay }: TraitBarProps) {
   const { t } = useTranslation();
   const width = useSharedValue(0);
 
@@ -62,7 +61,7 @@ function TraitBar({ trait, value, color, delay, style }: TraitBarProps) {
         </View>
       </View>
       <Text className="xs:text-[10px] ml-2 text-gray-600 dark:text-gray-400 sm:text-xs md:text-sm">
-        {value}% {t('personality.level')}
+        {value} {t('personality.level')}
       </Text>
     </View>
   );
@@ -75,7 +74,6 @@ export default function BadSidesRoute() {
   const { data: traitAverages } = useTraitAverages(userData?.refCodes?.en, 'badsides');
   const { data: traitDetails } = useTraitDetails(userData?.refCodes?.en, 'badsides');
   const layout = useWindowDimensions();
-  const shakeAnimation = useSharedValue(0);
 
   const colorPalette = [
     '#D94141',
@@ -90,42 +88,37 @@ export default function BadSidesRoute() {
   const traits = useMemo(
     () => [
       {
-        trait: 'angry',
-        color: theme.colors.personality.angry,
-        value: traitAverages?.find((t) => t.trait === 'angry')?.averagePoints || 0,
-      },
-      {
         trait: 'arrogant',
         color: theme.colors.personality.arrogant,
-        value: traitAverages?.find((t) => t.trait === 'arrogant')?.averagePoints || 0,
+        value: calculateTraitValue('arrogant', traitAverages, userData?.traits, false),
       },
       {
         trait: 'jealous',
         color: theme.colors.personality.jealous,
-        value: traitAverages?.find((t) => t.trait === 'jealous')?.averagePoints || 0,
+        value: calculateTraitValue('jealous', traitAverages, userData?.traits, false),
       },
       {
         trait: 'lazy',
         color: theme.colors.personality.lazy,
-        value: traitAverages?.find((t) => t.trait === 'lazy')?.averagePoints || 0,
+        value: calculateTraitValue('lazy', traitAverages, userData?.traits, false),
       },
       {
         trait: 'pessimistic',
         color: theme.colors.personality.pessimistic,
-        value: traitAverages?.find((t) => t.trait === 'pessimistic')?.averagePoints || 0,
+        value: calculateTraitValue('pessimistic', traitAverages, userData?.traits, false),
       },
       {
         trait: 'selfish',
         color: theme.colors.personality.selfish,
-        value: traitAverages?.find((t) => t.trait === 'selfish')?.averagePoints || 0,
+        value: calculateTraitValue('selfish', traitAverages, userData?.traits, false),
       },
       {
         trait: 'forgetful',
         color: theme.colors.personality.forgetful,
-        value: traitAverages?.find((t) => t.trait === 'forgetful')?.averagePoints || 0,
+        value: calculateTraitValue('forgetful', traitAverages, userData?.traits, false),
       },
     ],
-    [traitAverages]
+    [traitAverages, userData?.traits]
   );
 
   return (
@@ -160,7 +153,7 @@ export default function BadSidesRoute() {
           <TraitBar
             key={trait.trait}
             trait={trait.trait}
-            value={trait.value * 10}
+            value={trait.value}
             color={colorPalette[index]}
             delay={index * 150}
           />
