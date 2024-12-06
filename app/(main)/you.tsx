@@ -7,22 +7,12 @@ import { useColorScheme } from 'nativewind';
 import { theme } from '@/constants/theme';
 import GoodSidesRoute from '../../components/main/GoodSidesRoute';
 import { useTranslation } from '@/providers/LanguageProvider';
-import { TabRoute, TabViewProps } from '@/types';
+import { TabViewProps } from '@/types';
 import { useAuth } from '@/store/useAuth';
 import { useFocusEffect } from '@react-navigation/native';
 import { useUpdateUser, useUserData } from '@/hooks/useUserQueries';
 import QuoteCard from '@/components/main/QuoteCard';
-import Button from '@/components/Button';
-import { router } from 'expo-router';
 import BadSidesRoute from '@/components/main/BadSidesRoute';
-import Toast from 'react-native-toast-message';
-
-// Bad sides için geçici komponent
-const BadsidesRoute = React.memo(() => (
-  <View className="flex-1 bg-background-tab p-4 dark:bg-background-dark">
-    {/* Bad sides içeriği */}
-  </View>
-));
 
 export default function YouScreen() {
   const { t, locale } = useTranslation();
