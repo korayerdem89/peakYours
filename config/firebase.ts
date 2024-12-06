@@ -18,6 +18,13 @@ const handleError = (error: Error) => {
   console.error('Firebase Error:', error);
 };
 
+// Global bir state temizleme fonksiyonu
+let clearAuthStates: (() => void) | null = null;
+
+export const registerClearAuthStates = (callback: () => void) => {
+  clearAuthStates = callback;
+};
+
 // Firebase servislerini export et
 export { db, fbAuth, fbStorage, handleError, GoogleSignin };
 
@@ -31,8 +38,16 @@ export type FirebaseError = {
 // Yardımcı fonksiyonlar
 export const signOut = async () => {
   try {
-    await GoogleSignin.signOut();
-    await fbAuth.signOut();
+    // Önce state'leri temizle
+    if (clearAuthStates) {
+      clearAuthStates();
+    }
+
+    // Sonra sign out işlemlerini yap
+    await Promise.all([
+      GoogleSignin.signOut().catch(() => null), // Hata olsa bile devam et
+      fbAuth.signOut(),
+    ]);
   } catch (error) {
     handleError(error as Error);
     throw error;

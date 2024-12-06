@@ -1,12 +1,11 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { View, Text, ScrollView, Image } from 'react-native';
+import { View, Text, ScrollView, Image, ActivityIndicator } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTranslation } from '@/providers/LanguageProvider';
 import { useAuth } from '@/store/useAuth';
 import { useUserData } from '@/hooks/useUserQueries';
 import { useTraitAverages } from '@/hooks/useTraitAverages';
 import { useUpdateTaskTrait } from '@/hooks/useTaskQueries';
-import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import Toast from 'react-native-toast-message';
 import { getRandomTask } from '@/utils/taskUtils';
 import { useTraitDetails } from '@/hooks/useTraitDetails';
@@ -18,11 +17,7 @@ import Animated, {
   withDelay,
   useAnimatedStyle,
 } from 'react-native-reanimated';
-import { theme } from '@/constants/theme';
-import * as Progress from 'react-native-progress';
 import { useTasks } from '@/hooks/useTasks';
-import { Accordion } from '@/components/Accordion';
-import { useRouter } from 'expo-router';
 import { StorageService } from '@/utils/storage';
 import { TraitLevelUpAnimation } from '@/components/TraitLevelUpAnimation';
 import { TaskHeader } from '@/components/tasks/TaskHeader';
@@ -33,6 +28,8 @@ import { TaskInfo } from '@/components/tasks/TaskInfo';
 import { UserData } from '@/services/user';
 import { TaskDebug } from '@/components/tasks/TaskDebug';
 import { TaskMotivation } from '@/components/tasks/TaskMotivation';
+import { updateUserTaskDate } from '@/services/user';
+import { theme } from '@/constants/theme';
 
 interface Task {
   id: string;
@@ -102,64 +99,75 @@ export default function TasksScreen() {
   }
 
   ////traitdetails.totalRaters varsa alttaki dataları da çek
-  const [levelUpTrait, setLevelUpTrait] = useState<string | null>(null);
+  const [levelUpTrait, setLevelUpTrait] = useState<{
+    trait: string;
+    type: 'goodsides' | 'badsides';
+  } | null>(null);
   const { data: goodTraits } = useTraitAverages(userData?.refCodes?.en, 'goodsides');
   const { data: badTraits } = useTraitAverages(userData?.refCodes?.en, 'badsides');
   const updateTaskTrait = useUpdateTaskTrait();
   const { taskData, refreshTasks, decrementRefreshes } = useTasks(user?.uid);
-  const [refreshLimit, setRefreshLimit] = useState(7);
+  const [refreshLimit, setRefreshLimit] = useState(taskData?.refreshesLeft ?? 0);
   const [tasks, setTasks] = useState<Task[]>([]);
   const [completedTasks, setCompletedTasks] = useState<string[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  // Refresh sayacını taskData ile senkronize et
+  useEffect(() => {
+    if (taskData?.refreshesLeft !== undefined) {
+      setRefreshLimit(taskData.refreshesLeft);
+    }
+  }, [taskData?.refreshesLeft]);
 
   // Load initial tasks and completed tasks
   useEffect(() => {
     async function loadTaskData() {
-      if (!user?.uid || !goodTraits || !badTraits) return;
+      if (!user?.uid || !goodTraits || !badTraits || !userData) return;
 
       try {
-        // Get saved tasks and last refresh time
+        const today = new Date().toISOString().split('T')[0];
+        let currentTasks: Task[] = [];
+        let currentCompletedTasks: string[] = [];
+
+        // 1. Önce kaydedilmiş taskları kontrol et
         const savedTasks = await StorageService.getDailyTasks(user.uid);
-        const lastRefreshTime = await StorageService.getLastRefreshTime(user.uid);
-        const savedCompletedTasks = await StorageService.getCompletedTasks(user.uid);
-        const now = new Date();
 
-        // Check if we need new tasks (no saved tasks or 24 hours passed)
-        if (
-          !savedTasks ||
-          !lastRefreshTime ||
-          now.getTime() - lastRefreshTime.getTime() > 24 * 60 * 60 * 1000
-        ) {
-          // Generate new tasks
-          const newTasks = getInitialTasks();
-          setTasks(newTasks);
-          setCompletedTasks([]);
-          setRefreshLimit(7);
-
-          // Save new state
-          await StorageService.saveDailyTasks(user.uid, newTasks);
-          await StorageService.saveCompletedTasks(user.uid, []);
-          await StorageService.saveLastRefreshTime(user.uid);
-          await refreshTasks.mutateAsync();
+        if (savedTasks) {
+          currentTasks = savedTasks;
         } else {
-          // Use existing tasks and completed tasks
-          setTasks(savedTasks);
-          setCompletedTasks(savedCompletedTasks);
-
-          // Set refresh limit from Firestore data
-          setRefreshLimit(taskData?.refreshesLeft ?? 7);
+          // Eğer kaydedilmiş task yoksa yeni tasklar oluştur
+          currentTasks = getInitialTasks();
+          await StorageService.saveDailyTasks(user.uid, currentTasks);
+          await refreshTasks.mutateAsync();
         }
+
+        // 2. Firebase'den gelen lastTasksDates'e göre completed taskları belirle
+        if (userData.lastTasksDates) {
+          currentTasks.forEach((task) => {
+            const lastCompletedDate = userData.lastTasksDates?.[task.trait];
+            if (lastCompletedDate === today) {
+              currentCompletedTasks.push(task.id);
+            }
+          });
+        }
+
+        // 3. State'leri güncelle
+        setTasks(currentTasks);
+        setCompletedTasks(currentCompletedTasks);
+        setRefreshLimit(taskData?.refreshesLeft ?? 0);
       } catch (error) {
         console.error('Error loading task data:', error);
         Toast.show({
           type: 'error',
           text1: t('tasks.loadError'),
         });
+      } finally {
+        setIsLoading(false);
       }
     }
-    setTimeout(() => {
-      loadTaskData();
-    }, 1000);
-  }, [user?.uid, goodTraits, badTraits]); // Dependencies include traits data
+
+    loadTaskData();
+  }, [user?.uid, goodTraits, badTraits, userData]);
 
   // Remove getInitialTasks call from here if it exists
   useEffect(() => {
@@ -198,33 +206,30 @@ export default function TasksScreen() {
   }, [goodTraits, badTraits]);
 
   const handleCompleteTask = async (taskId: string, trait: string) => {
-    if (!user?.uid || completedTasks.includes(taskId)) {
-      return;
-    }
+    if (!user?.uid || completedTasks.includes(taskId)) return;
 
     try {
-      // Get current trait value
-      const currentTraitValue = userData?.traits?.[trait] || 0;
-      const willLevelUp = (currentTraitValue + 1) % 5 === 0;
+      const today = new Date().toISOString().split('T')[0];
 
-      // Update task trait in users collection
-      await updateTaskTrait.mutateAsync(trait);
+      const updatedCompletedTasks = [...completedTasks, taskId];
+      setCompletedTasks(updatedCompletedTasks);
 
-      // Update completed tasks in local state and storage
-      const newCompletedTasks = [...completedTasks, taskId];
-      setCompletedTasks(newCompletedTasks);
-      await StorageService.saveCompletedTasks(user.uid, newCompletedTasks);
+      await Promise.all([
+        StorageService.saveCompletedTasks(user.uid, updatedCompletedTasks),
+        updateUserTaskDate(user.uid, trait, today),
+        updateTaskTrait.mutateAsync(trait),
+      ]);
 
-      // Show level up animation if applicable
-      if (willLevelUp) {
-        setLevelUpTrait(trait);
+      // Level up kontrolü
+      const task = tasks.find((t) => t.id === taskId);
+      if (task) {
+        setLevelUpTrait({
+          trait: task.trait,
+          type: task.type,
+        });
       }
-
-      Toast.show({
-        type: 'success',
-        text1: t('tasks.completed'),
-      });
     } catch (error) {
+      console.error('Error completing task:', error);
       Toast.show({
         type: 'error',
         text1: t('tasks.error'),
@@ -251,7 +256,7 @@ export default function TasksScreen() {
         setTasks(newTasks);
         await StorageService.saveDailyTasks(user.uid, newTasks);
         await decrementRefreshes.mutateAsync();
-        setRefreshLimit((prev) => prev - 1);
+        setRefreshLimit((prev) => Math.max(0, prev - 1));
       }
     } catch (error) {
       Toast.show({
@@ -270,6 +275,14 @@ export default function TasksScreen() {
     return Math.max(0, diff / (24 * 60 * 60 * 1000));
   }, [taskData?.lastRefresh]);
 
+  if (isLoading) {
+    return (
+      <View className="flex-1 items-center justify-center bg-background-light dark:bg-background-dark">
+        <ActivityIndicator size="large" color={theme.colors.primary.default} />
+      </View>
+    );
+  }
+
   return (
     <SafeAreaView className="flex-1 bg-background-light dark:bg-background-dark">
       <View className="flex-1 p-4">
@@ -279,8 +292,8 @@ export default function TasksScreen() {
 
         <TaskInfo userData={userData ?? ({} as UserData)} />
 
-        <TaskRefreshCounter refreshesLeft={taskData?.refreshesLeft || 7} />
-
+        <TaskRefreshCounter refreshesLeft={refreshLimit} />
+        {/* <TaskDebug /> */}
         <TaskList
           tasks={tasks}
           completedTasks={completedTasks}
@@ -292,10 +305,12 @@ export default function TasksScreen() {
         <TaskProgress progress={timeUntilRefresh()} />
 
         {levelUpTrait && (
-          <TraitLevelUpAnimation trait={levelUpTrait} onComplete={() => setLevelUpTrait(null)} />
+          <TraitLevelUpAnimation
+            trait={levelUpTrait.trait}
+            type={levelUpTrait.type}
+            onComplete={() => setLevelUpTrait(null)}
+          />
         )}
-
-        {__DEV__ && <TaskDebug />}
       </View>
     </SafeAreaView>
   );

@@ -75,7 +75,14 @@ function Button({
         !isDarkMode && variant !== 'outline' && { ...theme.shadows.md },
         animatedStyle,
         style,
-        disabled && styles.disabledButton,
+        disabled && [
+          styles.disabledButton,
+          {
+            backgroundColor: isDarkMode
+              ? theme.colors.background.dark
+              : theme.colors.background.light,
+          },
+        ],
       ]}
       {...props}>
       <Text
@@ -86,6 +93,7 @@ function Button({
           size === 'lg' && styles.largeText,
           variant === 'outline' && styles.outlineText,
           isDarkMode && styles.darkModeText,
+          disabled && { color: theme.colors.primary.light },
         ]}>
         {title}
       </Text>

@@ -209,7 +209,6 @@ export default function Ideas() {
   const { data: goodTraits } = useTraitAverages(userData?.refCodes?.en, 'goodsides');
   const { data: badTraits } = useTraitAverages(userData?.refCodes?.en, 'badsides');
   const updateUser = useUpdateUser();
-
   const [showZodiacModal, setShowZodiacModal] = useState(!user?.zodiacSign);
   const [personalityAnimal, setPersonalityAnimal] = useState<PersonalityAnimal | null>(null);
   const [analysis, setAnalysis] = useState('');
@@ -413,7 +412,7 @@ Format your response as JSON:
       if (lastStoredRaters === 0) return true;
 
       const raterDifference = currentRaters - lastStoredRaters;
-      return raterDifference >= 5;
+      return raterDifference >= 3;
     } catch (error) {
       console.error('Error in shouldUpdateAnalysis:', error);
       return true;

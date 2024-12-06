@@ -17,6 +17,7 @@ export interface TraitAverages {
 export interface RatingData {
   traits: TraitRating[];
   ratedBy: string;
+  displayName: string;
   createdAt: FirebaseFirestoreTypes.FieldValue;
   updatedAt: FirebaseFirestoreTypes.FieldValue;
 }

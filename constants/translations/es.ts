@@ -6,6 +6,7 @@ export default {
     settings: 'Ajustes',
     save: 'Guardar',
     cancel: 'Cancelar',
+    confirm: 'Confirmar',
     delete: 'Eliminar',
     edit: 'Editar',
     submit: 'Enviar',
@@ -26,7 +27,7 @@ export default {
       inProgress: 'El inicio de sesión ya está en progreso',
       playServices: 'Google Play Services no está disponible',
       default: 'Ocurrió un error durante el inicio de sesión',
-      unexpected: 'Ocurrió un error inesperado',
+      unexpected: 'Ocurrió un error inesperado. Por favor, inténtalo de nuevo.',
     },
   },
   settings: {
@@ -35,6 +36,7 @@ export default {
     creditScore: 'Tu Crédito',
     accountSettings: 'Configuración de la Cuenta',
     signOut: 'Cerrar Sesión',
+    signOutConfirm: '¿Estás seguro de que quieres cerrar sesión?',
     language: {
       title: 'Idioma',
       turkish: 'Turco',
@@ -109,7 +111,7 @@ export default {
       resetMessage: 'Todas las calificaciones han sido restablecidas.',
       successMessage: 'Tu calificación se ha guardado con éxito.',
       errorMessage: 'Ocurrió un error al guardar tu calificación.',
-      nextBadSides: '¡Genial! Ahora califiquemos las áreas de mejora',
+      nextBadSides: 'ahora es el momento de calificar los aspectos que necesitan mejorar :)',
       friendlyReminder: '¡Gracias por tu honesta opinión!',
       testSuccess: '¡Calificación de prueba enviada con éxito!',
       testError: 'Error al enviar la calificación de prueba',

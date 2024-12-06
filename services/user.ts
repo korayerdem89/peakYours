@@ -1,4 +1,5 @@
 import firestore, { FirebaseFirestoreTypes } from '@react-native-firebase/firestore';
+import { db } from '@/config/firebase';
 import { FirebaseAuthTypes } from '@react-native-firebase/auth';
 import { FirestoreService } from './firestore';
 import { generateRefCodes } from '@/utils/generateRefCode';
@@ -17,6 +18,10 @@ export interface UserData {
   };
   traits?: {
     [key: string]: number; // Her bir trait için sayısal değer
+  };
+  lastTaskDate?: string; // YYYY-MM-DD formatı
+  lastTasksDates?: {
+    [trait: string]: string; // { "empathic": "2024-03-20", "reliable": "2024-03-20" }
   };
 }
 
@@ -107,5 +112,41 @@ export class UserService {
       console.error('Update user error:', error);
       throw error;
     }
+  }
+}
+
+// Günlük task kontrolü için yardımcı fonksiyon
+export function isSameDay(date1: Date, date2: Date): boolean {
+  return (
+    date1.getFullYear() === date2.getFullYear() &&
+    date1.getMonth() === date2.getMonth() &&
+    date1.getDate() === date2.getDate()
+  );
+}
+
+// Task tarihini güncelle
+export async function updateUserLastTaskDate(userId: string, date: string) {
+  try {
+    await db.collection('users').doc(userId).update({
+      lastTaskDate: date,
+    });
+  } catch (error) {
+    console.error('Error updating last task date:', error);
+    throw error;
+  }
+}
+
+// Task trait tarihini güncelle
+export async function updateUserTaskDate(userId: string, trait: string, date: string) {
+  try {
+    await db
+      .collection('users')
+      .doc(userId)
+      .update({
+        [`lastTasksDates.${trait}`]: date,
+      });
+  } catch (error) {
+    console.error('Error updating task date:', error);
+    throw error;
   }
 }

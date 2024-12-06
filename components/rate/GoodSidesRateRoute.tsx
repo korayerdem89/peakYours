@@ -26,7 +26,6 @@ interface GoodSidesRateRouteProps {
 export const GoodSidesRateRoute = memo(
   ({ referenceCode, onTabChange }: GoodSidesRateRouteProps) => {
     const { t } = useTranslation();
-    const colorScheme = useColorScheme();
     const { user } = useAuth();
     const [isSubmitted, setIsSubmitted] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
@@ -105,7 +104,13 @@ export const GoodSidesRateRoute = memo(
 
       try {
         setIsLoading(true);
-        await RatingService.saveRating(referenceCode, user.uid, traits, 'goodsides');
+        await RatingService.saveRating(
+          referenceCode,
+          user.uid,
+          traits,
+          'goodsides',
+          user?.displayName || ''
+        );
 
         await Promise.all([
           queryClient.invalidateQueries({
@@ -164,7 +169,13 @@ export const GoodSidesRateRoute = memo(
       }));
 
       try {
-        await RatingService.saveRating(referenceCode, testUserId, randomTraits, 'goodsides');
+        await RatingService.saveRating(
+          referenceCode,
+          testUserId,
+          randomTraits,
+          'goodsides',
+          user?.displayName || ''
+        );
         await Promise.all([
           queryClient.invalidateQueries({
             queryKey: ['traitDetails', referenceCode],

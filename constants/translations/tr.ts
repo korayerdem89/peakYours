@@ -1,11 +1,12 @@
 export default {
   common: {
     loading: 'Yükleniyor...',
-    error: 'Bir hata oluştu',
+    error: 'Hata',
     success: 'Başarılı',
     settings: 'Ayarlar',
     save: 'Kaydet',
     cancel: 'İptal',
+    confirm: 'Onayla',
     delete: 'Sil',
     edit: 'Düzenle',
     submit: 'Gönder',
@@ -26,7 +27,7 @@ export default {
       inProgress: 'Giriş işlemi zaten devam ediyor',
       playServices: 'Google Play Servisleri kullanılamıyor',
       default: 'Giriş sırasında bir hata oluştu',
-      unexpected: 'Beklenmeyen bir hata oluştu',
+      unexpected: 'Beklenmeyen bir hata oluştu. Lütfen tekrar deneyin.',
     },
   },
   settings: {
@@ -35,6 +36,7 @@ export default {
     creditScore: 'Krediniz',
     accountSettings: 'Hesap Ayarları',
     signOut: 'Çıkış Yap',
+    signOutConfirm: 'Çıkış yapmak istediğinizden emin misiniz?',
     language: {
       title: 'Dil',
       turkish: 'Türkçe',
@@ -118,7 +120,7 @@ export default {
       resetMessage: 'Tüm puanlar sıfırlandı.',
       alreadyRated: 'Bu kullanıcıyı zaten puanladınız',
       yourRating: 'Değerlendirmeniz',
-      nextBadSides: 'Harika! Şimdi gelişim alanlarını puanlayalım',
+      nextBadSides: 'şimdi sırada geliştirmesi gereken yanları puanlamakta :)',
       friendlyReminder: 'Dürüst geri bildirimin için teşekkürler!',
       testSuccess: 'Test puanlaması başarıyla gönderildi!',
       testError: 'Test puanlaması gönderilirken hata oluştu',
@@ -173,7 +175,7 @@ export default {
   },
   ideas: {
     accuracyWarning: 'Ne kadar çok kişi sizi puanlarsa, analiz o kadar doğru olur!',
-    updateFrequency: 'Her 5 puanlamada yeni analiz',
+    updateFrequency: 'Her 3 kişi sizi puanladığında yeni analiz',
     spiritAnimal: {
       title: 'Ruh Hayvanınız',
     },

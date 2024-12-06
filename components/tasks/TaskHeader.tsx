@@ -8,8 +8,8 @@ export function TaskHeader() {
   const { t } = useTranslation();
 
   return (
-    <Animated.View entering={FadeIn.duration(1000)} className="mb-2 items-center">
-      <View className="flex-row items-center justify-center space-x-2 rounded-2xl bg-primary-light/10 px-6 py-3 dark:bg-primary-dark/10">
+    <View>
+      <View className="mb-2 flex-row items-center justify-center space-x-2 rounded-2xl bg-primary-light/10 px-6 py-3 dark:bg-primary-dark/10">
         <MaterialCommunityIcons
           name="checkbox-marked-circle-outline"
           size={28}
@@ -20,8 +20,6 @@ export function TaskHeader() {
           {t('tasks.dailyTasks')}
         </Text>
       </View>
-
-      <View className="mt-2 h-1 w-16 rounded-full bg-primary-light/20 dark:bg-primary-dark/20" />
-    </Animated.View>
+    </View>
   );
 }

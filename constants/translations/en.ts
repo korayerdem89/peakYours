@@ -1,7 +1,7 @@
 export default {
   common: {
     loading: 'Loading...',
-    error: 'An error occurred',
+    error: 'Error',
     success: 'Success',
     settings: 'Settings',
     save: 'Save',
@@ -13,6 +13,7 @@ export default {
     quoteOfDay: 'Quote of the Day',
     or: 'or',
     analyzing: 'Analyzing...',
+    confirm: 'Confirm',
   },
   auth: {
     signIn: {
@@ -26,7 +27,7 @@ export default {
       inProgress: 'Sign in is already in progress',
       playServices: 'Google Play Services is not available',
       default: 'An error occurred during sign in',
-      unexpected: 'An unexpected error occurred',
+      unexpected: 'An unexpected error occurred. Please try again.',
     },
   },
   settings: {
@@ -35,6 +36,7 @@ export default {
     creditScore: 'Your Credit',
     accountSettings: 'Account Settings',
     signOut: 'Sign Out',
+    signOutConfirm: 'Are you sure you want to sign out?',
     language: {
       title: 'Language',
       turkish: 'Turkish',
@@ -118,7 +120,7 @@ export default {
       resetMessage: 'All ratings have been reset.',
       alreadyRated: 'You have already rated this profile',
       yourRating: 'Your Rating',
-      nextBadSides: "Great! Now let's rate the areas for improvement",
+      nextBadSides: "now it's time to rate the aspects that need improvement :)",
       friendlyReminder: 'Thank you for your honest feedback!',
       testSuccess: 'Test rating submitted successfully!',
       testError: 'Error submitting test rating',
@@ -283,7 +285,7 @@ export default {
         "Discover your unique personality analysis where we blend your zodiac sign's cosmic energy with AI-powered insights from your friends' ratings. Get ready for a personalized journey of self-discovery!",
       cta: 'Share your profile and start collecting ratings',
     },
-    updateFrequency: 'New analysis every 5 ratings',
+    updateFrequency: 'New analysis after every 3 ratings',
   },
   tasks: {
     refreshTask: 'Refresh task',

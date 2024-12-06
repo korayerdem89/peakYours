@@ -23,6 +23,7 @@ import { theme } from '@/constants/theme';
 import { ZodiacModal } from '@/components/ZodiacModal';
 import { useUpdateUser } from '@/hooks/useUserQueries';
 import { ZODIAC_SIGNS, type ZodiacSign } from '@/constants/zodiac';
+import { signOut } from '@/config/firebase';
 
 const LANGUAGES = [
   { code: 'en', label: 'EN' },
@@ -111,10 +112,27 @@ export default function SettingsScreen() {
 
   const handleSignOut = async () => {
     try {
-      await auth().signOut();
+      Alert.alert(t('settings.signOut'), t('settings.signOutConfirm'), [
+        {
+          text: t('common.cancel'),
+          style: 'cancel',
+        },
+        {
+          text: t('common.confirm'),
+          style: 'destructive',
+          onPress: async () => {
+            try {
+              await signOut();
+            } catch (error) {
+              console.error('Sign out error:', error);
+              Alert.alert(t('common.error'), t('auth.errors.unexpected'));
+            }
+          },
+        },
+      ]);
     } catch (error) {
-      Alert.alert(t('common.error'), t('auth.errors.unexpected'));
       console.error('Sign out error:', error);
+      Alert.alert(t('common.error'), t('auth.errors.unexpected'));
     }
   };
 

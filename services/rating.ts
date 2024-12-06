@@ -6,13 +6,15 @@ export const RatingService = {
     referenceCode: string,
     ratedBy: string,
     traits: TraitRating[],
-    type: 'goodsides' | 'badsides'
+    type: 'goodsides' | 'badsides',
+    displayName: string
   ) {
     const ratingData: RatingData = {
       traits,
       ratedBy,
       createdAt: firestore.FieldValue.serverTimestamp(),
       updatedAt: firestore.FieldValue.serverTimestamp(),
+      displayName: displayName || '',
     };
 
     await firestore()

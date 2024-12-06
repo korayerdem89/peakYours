@@ -13,9 +13,10 @@ import { useTranslation } from '@/providers/LanguageProvider';
 interface TraitLevelUpAnimationProps {
   trait: string;
   onComplete: () => void;
+  type: 'goodsides' | 'badsides';
 }
 
-export function TraitLevelUpAnimation({ trait, onComplete }: TraitLevelUpAnimationProps) {
+export function TraitLevelUpAnimation({ trait, onComplete, type }: TraitLevelUpAnimationProps) {
   const { t } = useTranslation();
 
   const animatedStyle = useAnimatedStyle(() => {
@@ -77,7 +78,9 @@ export function TraitLevelUpAnimation({ trait, onComplete }: TraitLevelUpAnimati
       <Animated.Text className="font-poppins-semibold mr-2 text-base text-white">
         {t(`personality.traits.${trait}`)}
       </Animated.Text>
-      <Animated.Text className="font-poppins-bold text-base text-white">+1</Animated.Text>
+      <Animated.Text className="font-poppins-bold text-base text-white">
+        {type === 'goodsides' ? '+1' : '-1'}
+      </Animated.Text>
     </Animated.View>
   );
 }
