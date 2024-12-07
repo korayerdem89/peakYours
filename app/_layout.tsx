@@ -118,7 +118,27 @@ export default function RootLayout() {
 
   useEffect(() => {
     const appOpenAd = AppOpenAd.createForAdRequest(appOpenAdUnitId, {
-      requestNonPersonalizedAdsOnly: true,
+      keywords: [
+        'zodiac',
+        'tarot',
+        'astrology',
+        'personality',
+        'psychology',
+        'psychic',
+        'personalgrowth',
+        'spiritual',
+        'spiritualgrowth',
+        'spiritualjourney',
+        'spiritualpath',
+        'spiritualpractice',
+        'spiritualteacher',
+        'spiritualteachertraining',
+        'fitness',
+        'health',
+        'wellness',
+        'mindfulness',
+        'meditation',
+      ],
     });
 
     const showAppOpenAd = async () => {
