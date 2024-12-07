@@ -1,8 +1,17 @@
 import { Tabs } from 'expo-router';
 import { CustomTabBar } from '@/components/CustomTabBar';
 import { Platform } from 'react-native';
+import { useEffect } from 'react';
+import { useInterstitialAd } from '@/store/useInterstitialAd';
 
 export default function MainLayout() {
+  const loadAd = useInterstitialAd((state) => state.loadAd);
+
+  // İlk yüklemeyi yap
+  useEffect(() => {
+    loadAd();
+  }, []);
+
   return (
     <Tabs
       screenOptions={{

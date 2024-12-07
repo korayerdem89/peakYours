@@ -22,6 +22,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useOnlineManager } from '@/hooks/useOnlineManager';
 import { useAppState } from '@/hooks/useAppState';
 import { toastConfig } from '@/config/toast';
+import { useInterstitialAd } from '@/store/useInterstitialAd';
 
 import {
   useFonts,
@@ -46,6 +47,8 @@ import {
 } from '@expo-google-fonts/poppins';
 import { AdEventType, AppOpenAd, MobileAds, TestIds } from 'react-native-google-mobile-ads';
 
+const MIN_TIME_BETWEEN_ADS = 60 * 1000; // 1 dakika (milisaniye cinsinden)
+
 // Prevent splash screen from auto-hiding
 SplashScreen.preventAutoHideAsync();
 
@@ -67,14 +70,10 @@ function InitialLayout() {
   const segments = useSegments();
   const router = useRouter();
   const { user, isLoading } = useAuth();
+  const { lastShowTime, setLastShowTime, canShowAd } = useInterstitialAd();
 
-  // Son reklam gösterim zamanını tutacak ref
-  const lastAdShowTime = useRef<number>(0);
-  const MIN_TIME_BETWEEN_ADS = 4 * 60 * 1000; // 4 dakika (milisaniye cinsinden)
-
-  // Reklam yükleme ve gösterme mantığını ayrı bir fonksiyon olarak tanımlayalım
   const showAppOpenAd = async (): Promise<AppOpenAd | null> => {
-    if (!user?.zodiacSign) return null;
+    if (!user?.zodiacSign || !canShowAd()) return null;
 
     const appOpenAd = AppOpenAd.createForAdRequest(appOpenAdUnitId, {
       keywords: [
@@ -106,6 +105,7 @@ function InitialLayout() {
       appOpenAd.addAdEventListener(AdEventType.LOADED, () => {
         console.log('App Open Ad loaded');
         appOpenAd.show().catch(console.error);
+        setLastShowTime(Date.now());
       });
 
       appOpenAd.addAdEventListener(AdEventType.ERROR, (error) => {
@@ -123,34 +123,21 @@ function InitialLayout() {
     }
   };
 
-  // AppState değişikliklerini dinleyelim
   useEffect(() => {
     let appOpenAd: AppOpenAd | null = null;
 
     const handleAppStateChange = async (nextAppState: AppStateStatus) => {
-      if (nextAppState === 'active') {
-        const now = Date.now();
-        const timeSinceLastAd = now - lastAdShowTime.current;
-
-        // Son reklamdan beri yeterli süre geçtiyse yeni reklam göster
-        if (timeSinceLastAd >= MIN_TIME_BETWEEN_ADS) {
-          if (appOpenAd) {
-            appOpenAd.removeAllListeners();
-          }
-          appOpenAd = await showAppOpenAd();
-          if (appOpenAd) {
-            lastAdShowTime.current = now;
-          }
+      if (nextAppState === 'active' && canShowAd()) {
+        if (appOpenAd) {
+          appOpenAd.removeAllListeners();
         }
+        appOpenAd = await showAppOpenAd();
       }
     };
 
     // İlk açılışta reklamı göster
     showAppOpenAd().then((ad) => {
       appOpenAd = ad;
-      if (ad) {
-        lastAdShowTime.current = Date.now();
-      }
     });
 
     const subscription = AppState.addEventListener('change', handleAppStateChange);

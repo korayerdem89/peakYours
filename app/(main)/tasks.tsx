@@ -32,6 +32,7 @@ import { updateUserTaskDate } from '@/services/user';
 import { theme } from '@/constants/theme';
 import { BannerAdSize } from 'react-native-google-mobile-ads';
 import { BannerAd, TestIds } from 'react-native-google-mobile-ads';
+import { useInterstitialAd } from '@/store/useInterstitialAd';
 
 interface Task {
   id: string;
@@ -62,6 +63,8 @@ export default function TasksScreen() {
   const bounceStyle = useAnimatedStyle(() => ({
     transform: [{ translateY: bounceValue.value }],
   }));
+
+  const { showAd, isLoaded, canShowAd } = useInterstitialAd();
 
   if (!traitDetails?.totalRaters) {
     return (
@@ -113,7 +116,7 @@ export default function TasksScreen() {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [completedTasks, setCompletedTasks] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-
+  const [isFirstRefresh, setFirstRefresh] = useState(true);
   // Refresh sayacını taskData ile senkronize et
   useEffect(() => {
     if (taskData?.refreshesLeft !== undefined) {
@@ -249,18 +252,36 @@ export default function TasksScreen() {
     }
 
     try {
+      // Önce reklam göstermeyi dene
+      let adShown = false;
+      if (isLoaded && (canShowAd() || isFirstRefresh)) {
+        adShown = await showAd();
+      }
+
+      // Reklam gösterilsin veya gösterilmesin, task yenileme işlemine devam et
       const newTask = getRandomTask(trait);
       if (newTask) {
         const newTasks = tasks.map((task) =>
           task.id === taskId ? { ...newTask, id: `${trait}-${Date.now()}`, type: task.type } : task
         );
 
+        // Task yenileme işlemlerini yap
+        await Promise.all([
+          StorageService.saveDailyTasks(user.uid, newTasks),
+          decrementRefreshes.mutateAsync(),
+        ]);
+
         setTasks(newTasks);
-        await StorageService.saveDailyTasks(user.uid, newTasks);
-        await decrementRefreshes.mutateAsync();
         setRefreshLimit((prev) => Math.max(0, prev - 1));
+        setFirstRefresh(false);
+        // Başarılı işlem mesajı
+        Toast.show({
+          type: 'success',
+          text1: t('tasks.refreshSuccess'),
+        });
       }
     } catch (error) {
+      console.error('Error in handleRefreshTask:', error);
       Toast.show({
         type: 'error',
         text1: t('tasks.error'),

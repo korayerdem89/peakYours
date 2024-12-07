@@ -19,6 +19,7 @@ import {
   InterstitialAd,
   AdEventType,
 } from 'react-native-google-mobile-ads';
+import { useInterstitialAd } from '@/store/useInterstitialAd';
 
 const adUnitId = 'ca-app-pub-6312844121446107/7886655538';
 
@@ -55,6 +56,8 @@ export default function YouScreen() {
   const [loaded, setLoaded] = useState(false);
   const { data: userData } = useUserData(user?.uid);
   const updateUser = useUpdateUser();
+  const showAd = useInterstitialAd((state) => state.showAd);
+  const isLoaded = useInterstitialAd((state) => state.isLoaded);
 
   const routes = useMemo(
     () => [
@@ -112,18 +115,6 @@ export default function YouScreen() {
     }, [userData?.zodiacSign])
   );
 
-  const handleTabPress = useCallback(() => {
-    if (loaded) {
-      try {
-        interstitial.show();
-      } catch (error) {
-        console.error('Error showing interstitial ad:', error);
-        setLoaded(false);
-        interstitial.load();
-      }
-    }
-  }, [loaded]);
-
   const renderTabBar = useCallback(
     (props: TabViewProps) => (
       <TabBar
@@ -152,10 +143,14 @@ export default function YouScreen() {
         inactiveColor={colorScheme === 'dark' ? '#C5CEE0' : '#8F9BB3'}
         pressColor="transparent"
         scrollEnabled={false}
-        onTabPress={handleTabPress}
+        onTabPress={() => {
+          if (isLoaded) {
+            showAd();
+          }
+        }}
       />
     ),
-    [colorScheme, layout.width, loaded]
+    [colorScheme, layout.width, isLoaded, showAd]
   );
 
   if (!loaded) return null;
