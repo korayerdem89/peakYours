@@ -20,6 +20,7 @@ import { theme } from '@/constants/theme';
 import { ZODIAC_SIGNS } from '@/constants/zodiac';
 import { useTraitDetails } from '@/hooks/useTraitDetails';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { BannerAd, BannerAdSize, TestIds } from 'react-native-google-mobile-ads';
 
 // Types
 interface PersonalityAnimal {
@@ -549,8 +550,9 @@ Format your response as JSON:
         }}
         showsVerticalScrollIndicator={false}>
         {/* Header Warning - Daha yumuşak bir görünüm */}
-        <Animated.View
-          entering={FadeIn.duration(500)}
+        <View className="gap-4">
+          <Animated.View
+            entering={FadeIn.duration(500)}
           className="dark:bg-accent-dark/20 rounded-2xl bg-accent-light/20 p-5">
           <Text className="text-center font-medium text-sm text-secondary-dark/80 dark:text-secondary-light/80">
             ✨ {t('ideas.accuracyWarning')} ✨
@@ -559,11 +561,20 @@ Format your response as JSON:
             {t('ideas.updateFrequency')}
           </Text>
         </Animated.View>
-
+        <BannerAd
+          unitId={TestIds.BANNER}
+          size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
+          requestOptions={{
+            requestNonPersonalizedAdsOnly: true,
+          }}
+          onAdFailedToLoad={(error: Error) => {
+            console.error('Banner ad failed to load:', error);
+          }}
+        />
         {/* Spirit Animal Card - Daha canlı ve eğlenceli */}
         <Animated.View
           entering={FadeIn.delay(200).duration(500)}
-          className="mt-2 rounded-2xl bg-surface-light p-6 shadow-lg dark:bg-surface-dark">
+          className="rounded-2xl bg-surface-light p-6 shadow-lg dark:bg-surface-dark">
           <View className="flex-row items-center justify-between">
             {personalityAnimal && (
               <View className="flex-row items-center gap-5">
@@ -598,7 +609,7 @@ Format your response as JSON:
         {/* Analysis Card - Daha yumuşak köşeler ve gölgeler */}
         <Animated.View
           entering={FadeIn.delay(400).duration(500)}
-          className="my-2 rounded-2xl bg-surface-light p-6 shadow-lg dark:bg-surface-dark">
+          className="rounded-2xl bg-surface-light p-6 shadow-lg dark:bg-surface-dark">
           <Text className="mb-4 font-semibold text-xl text-primary-dark dark:text-primary-light">
             🔮 {t('ideas.analysis.title')}
           </Text>
@@ -608,6 +619,17 @@ Format your response as JSON:
             {analysis}
           </Text>
         </Animated.View>
+        <BannerAd
+          unitId={TestIds.BANNER}
+          size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
+          requestOptions={{
+            requestNonPersonalizedAdsOnly: true,
+          }}
+          onAdFailedToLoad={(error: Error) => {
+            console.error('Banner ad failed to load:', error);
+          }}
+        />
+        </View>
       </ScrollView>
     </SafeAreaView>
   );

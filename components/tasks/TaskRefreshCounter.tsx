@@ -14,7 +14,7 @@ export function TaskRefreshCounter({ refreshesLeft }: TaskRefreshCounterProps) {
   const displayRefreshes = Math.max(0, refreshesLeft);
 
   return (
-    <View className="mb-4 flex-row items-center justify-end">
+    <View className="flex-row items-center justify-end">
       <MaterialCommunityIcons
         name="refresh"
         size={20}

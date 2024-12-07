@@ -9,7 +9,7 @@ export function TaskHeader() {
 
   return (
     <View>
-      <View className="mb-2 flex-row items-center justify-center space-x-2 rounded-2xl bg-primary-light/10 px-6 py-3 dark:bg-primary-dark/10">
+      <View className="flex-row items-center justify-center space-x-2 rounded-2xl bg-primary-light/10 px-6 py-3 dark:bg-primary-dark/10">
         <MaterialCommunityIcons
           name="checkbox-marked-circle-outline"
           size={28}

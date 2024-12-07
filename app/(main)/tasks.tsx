@@ -30,6 +30,8 @@ import { TaskDebug } from '@/components/tasks/TaskDebug';
 import { TaskMotivation } from '@/components/tasks/TaskMotivation';
 import { updateUserTaskDate } from '@/services/user';
 import { theme } from '@/constants/theme';
+import { BannerAdSize } from 'react-native-google-mobile-ads';
+import { BannerAd, TestIds } from 'react-native-google-mobile-ads';
 
 interface Task {
   id: string;
@@ -285,11 +287,20 @@ export default function TasksScreen() {
 
   return (
     <SafeAreaView className="flex-1 bg-background-light dark:bg-background-dark">
-      <View className="flex-1 p-4">
+      <View className="flex-1 p-4 gap-4 pb-10">
         <TaskHeader />
 
         <TaskMotivation />
-
+        <BannerAd
+          unitId={TestIds.BANNER}
+          size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
+          requestOptions={{
+            requestNonPersonalizedAdsOnly: true,
+          }}
+          onAdFailedToLoad={(error: Error) => {
+            console.error('Banner ad failed to load:', error);
+          }}
+        />
         <TaskInfo userData={userData ?? ({} as UserData)} />
 
         <TaskRefreshCounter refreshesLeft={refreshLimit} />

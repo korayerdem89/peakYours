@@ -3,6 +3,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { useTranslation } from '@/providers/LanguageProvider';
 import { theme } from '@/constants/theme';
 import { Task } from '@/types/tasks';
+import { BannerAd, BannerAdSize, TestIds } from 'react-native-google-mobile-ads';
 
 interface TaskListProps {
   tasks: Task[];
@@ -90,6 +91,16 @@ export function TaskList({
           </View>
         ))}
       </View>
+        <BannerAd
+          unitId={TestIds.BANNER}
+          size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
+          requestOptions={{
+            requestNonPersonalizedAdsOnly: true,
+          }}
+          onAdFailedToLoad={(error: Error) => {
+            console.error('Banner ad failed to load:', error);
+          }}
+        />
     </ScrollView>
   );
 }
