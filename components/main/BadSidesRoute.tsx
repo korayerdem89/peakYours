@@ -85,41 +85,45 @@ export default function BadSidesRoute() {
     '#D9AB9F',
   ];
 
-  const traits = useMemo(
-    () => [
+  const traits = useMemo(() => {
+    const unsortedTraits = [
       {
         trait: 'arrogant',
-        color: theme.colors.personality.arrogant,
         value: calculateTraitValue('arrogant', traitAverages, userData?.traits, false),
       },
       {
         trait: 'jealous',
-        color: theme.colors.personality.jealous,
         value: calculateTraitValue('jealous', traitAverages, userData?.traits, false),
       },
       {
         trait: 'lazy',
-        color: theme.colors.personality.lazy,
         value: calculateTraitValue('lazy', traitAverages, userData?.traits, false),
       },
       {
         trait: 'pessimistic',
-        color: theme.colors.personality.pessimistic,
         value: calculateTraitValue('pessimistic', traitAverages, userData?.traits, false),
       },
       {
         trait: 'selfish',
-        color: theme.colors.personality.selfish,
         value: calculateTraitValue('selfish', traitAverages, userData?.traits, false),
       },
       {
         trait: 'forgetful',
-        color: theme.colors.personality.forgetful,
         value: calculateTraitValue('forgetful', traitAverages, userData?.traits, false),
       },
-    ],
-    [traitAverages, userData?.traits]
-  );
+      {
+        trait: 'angry',
+        value: calculateTraitValue('angry', traitAverages, userData?.traits, false),
+      },
+    ];
+
+    return unsortedTraits
+      .sort((a, b) => b.value - a.value)
+      .map((trait, index) => ({
+        ...trait,
+        color: colorPalette[index],
+      }));
+  }, [traitAverages, userData?.traits]);
 
   return (
     <View className="xs:m-1 rounded-sm bg-white dark:bg-gray-700 sm:m-2 md:m-3">
@@ -154,7 +158,7 @@ export default function BadSidesRoute() {
             key={trait.trait}
             trait={trait.trait}
             value={trait.value}
-            color={colorPalette[index]}
+            color={trait.color}
             delay={index * 150}
           />
         ))}

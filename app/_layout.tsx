@@ -1,8 +1,15 @@
 import '@/global.css';
 import { Stack, useRouter, useSegments } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
-import { View, ActivityIndicator, StyleSheet, Platform } from 'react-native';
-import { useEffect } from 'react';
+import {
+  View,
+  ActivityIndicator,
+  StyleSheet,
+  Platform,
+  AppState,
+  AppStateStatus,
+} from 'react-native';
+import { useEffect, useRef } from 'react';
 import { useDarkMode } from '@/store/useDarkMode';
 import { useColorScheme } from 'react-native';
 import { ThemeProvider } from '@/providers/ThemeProvider';
@@ -61,6 +68,101 @@ function InitialLayout() {
   const router = useRouter();
   const { user, isLoading } = useAuth();
 
+  // Son reklam gösterim zamanını tutacak ref
+  const lastAdShowTime = useRef<number>(0);
+  const MIN_TIME_BETWEEN_ADS = 4 * 60 * 1000; // 4 dakika (milisaniye cinsinden)
+
+  // Reklam yükleme ve gösterme mantığını ayrı bir fonksiyon olarak tanımlayalım
+  const showAppOpenAd = async (): Promise<AppOpenAd | null> => {
+    if (!user?.zodiacSign) return null;
+
+    const appOpenAd = AppOpenAd.createForAdRequest(appOpenAdUnitId, {
+      keywords: [
+        'zodiac',
+        'tarot',
+        'astrology',
+        'personality',
+        'psychology',
+        'psychic',
+        'personalgrowth',
+        'spiritual',
+        'spiritualgrowth',
+        'spiritualjourney',
+        'spiritualpath',
+        'spiritualpractice',
+        'spiritualteacher',
+        'spiritualteachertraining',
+        'fitness',
+        'health',
+        'wellness',
+        'mindfulness',
+        'meditation',
+      ],
+    });
+
+    try {
+      await appOpenAd.load();
+
+      appOpenAd.addAdEventListener(AdEventType.LOADED, () => {
+        console.log('App Open Ad loaded');
+        appOpenAd.show().catch(console.error);
+      });
+
+      appOpenAd.addAdEventListener(AdEventType.ERROR, (error) => {
+        console.error('App Open Ad error:', error);
+      });
+
+      appOpenAd.addAdEventListener(AdEventType.CLOSED, () => {
+        console.log('App Open Ad closed');
+      });
+
+      return appOpenAd;
+    } catch (error) {
+      console.error('App Open Ad load error:', error);
+      return null;
+    }
+  };
+
+  // AppState değişikliklerini dinleyelim
+  useEffect(() => {
+    let appOpenAd: AppOpenAd | null = null;
+
+    const handleAppStateChange = async (nextAppState: AppStateStatus) => {
+      if (nextAppState === 'active') {
+        const now = Date.now();
+        const timeSinceLastAd = now - lastAdShowTime.current;
+
+        // Son reklamdan beri yeterli süre geçtiyse yeni reklam göster
+        if (timeSinceLastAd >= MIN_TIME_BETWEEN_ADS) {
+          if (appOpenAd) {
+            appOpenAd.removeAllListeners();
+          }
+          appOpenAd = await showAppOpenAd();
+          if (appOpenAd) {
+            lastAdShowTime.current = now;
+          }
+        }
+      }
+    };
+
+    // İlk açılışta reklamı göster
+    showAppOpenAd().then((ad) => {
+      appOpenAd = ad;
+      if (ad) {
+        lastAdShowTime.current = Date.now();
+      }
+    });
+
+    const subscription = AppState.addEventListener('change', handleAppStateChange);
+
+    return () => {
+      subscription.remove();
+      if (appOpenAd) {
+        appOpenAd.removeAllListeners();
+      }
+    };
+  }, [user]);
+
   useEffect(() => {
     if (isLoading) return;
 
@@ -115,61 +217,6 @@ export default function RootLayout() {
 
   // Query yapılandırmasını uygula
   useQueryConfig();
-
-  useEffect(() => {
-    const appOpenAd = AppOpenAd.createForAdRequest(appOpenAdUnitId, {
-      keywords: [
-        'zodiac',
-        'tarot',
-        'astrology',
-        'personality',
-        'psychology',
-        'psychic',
-        'personalgrowth',
-        'spiritual',
-        'spiritualgrowth',
-        'spiritualjourney',
-        'spiritualpath',
-        'spiritualpractice',
-        'spiritualteacher',
-        'spiritualteachertraining',
-        'fitness',
-        'health',
-        'wellness',
-        'mindfulness',
-        'meditation',
-      ],
-    });
-
-    const showAppOpenAd = async () => {
-      try {
-        await appOpenAd.load();
-
-        appOpenAd.addAdEventListener(AdEventType.LOADED, () => {
-          console.log('App Open Ad loaded');
-          appOpenAd.show().catch(console.error);
-        });
-
-        appOpenAd.addAdEventListener(AdEventType.ERROR, (error) => {
-          console.error('App Open Ad error:', error);
-        });
-
-        appOpenAd.addAdEventListener(AdEventType.CLOSED, () => {
-          console.log('App Open Ad closed');
-        });
-      } catch (error) {
-        console.error('App Open Ad load error:', error);
-      }
-    };
-
-    // Uygulama ilk açıldığında App Open Ad'i göster
-    showAppOpenAd();
-
-    // Cleanup
-    return () => {
-      appOpenAd.removeAllListeners();
-    };
-  }, []);
 
   useEffect(() => {
     setDarkMode(systemColorScheme === 'dark');
