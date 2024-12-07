@@ -91,16 +91,16 @@ export function TaskList({
           </View>
         ))}
       </View>
-        <BannerAd
-          unitId={TestIds.BANNER}
-          size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
-          requestOptions={{
-            requestNonPersonalizedAdsOnly: true,
-          }}
-          onAdFailedToLoad={(error: Error) => {
-            console.error('Banner ad failed to load:', error);
-          }}
-        />
+      <BannerAd
+        unitId={'ca-app-pub-6312844121446107/2492397048'}
+        size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
+        requestOptions={{
+          requestNonPersonalizedAdsOnly: true,
+        }}
+        onAdFailedToLoad={(error: Error) => {
+          console.error('Banner ad failed to load:', error);
+        }}
+      />
     </ScrollView>
   );
 }

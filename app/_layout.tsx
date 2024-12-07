@@ -37,6 +37,7 @@ import {
   Poppins_800ExtraBold_Italic,
   Poppins_900Black_Italic,
 } from '@expo-google-fonts/poppins';
+import { AdEventType, AppOpenAd, MobileAds, TestIds } from 'react-native-google-mobile-ads';
 
 // Prevent splash screen from auto-hiding
 SplashScreen.preventAutoHideAsync();
@@ -51,6 +52,8 @@ const LoadingOverlay = () => (
     <ActivityIndicator size="large" color="#7C4DFF" />
   </View>
 );
+
+const appOpenAdUnitId = 'ca-app-pub-6312844121446107/5033994003';
 
 // Protected Route kontrolü için yeni component
 function InitialLayout() {
@@ -112,6 +115,41 @@ export default function RootLayout() {
 
   // Query yapılandırmasını uygula
   useQueryConfig();
+
+  useEffect(() => {
+    const appOpenAd = AppOpenAd.createForAdRequest(appOpenAdUnitId, {
+      requestNonPersonalizedAdsOnly: true,
+    });
+
+    const showAppOpenAd = async () => {
+      try {
+        await appOpenAd.load();
+
+        appOpenAd.addAdEventListener(AdEventType.LOADED, () => {
+          console.log('App Open Ad loaded');
+          appOpenAd.show().catch(console.error);
+        });
+
+        appOpenAd.addAdEventListener(AdEventType.ERROR, (error) => {
+          console.error('App Open Ad error:', error);
+        });
+
+        appOpenAd.addAdEventListener(AdEventType.CLOSED, () => {
+          console.log('App Open Ad closed');
+        });
+      } catch (error) {
+        console.error('App Open Ad load error:', error);
+      }
+    };
+
+    // Uygulama ilk açıldığında App Open Ad'i göster
+    showAppOpenAd();
+
+    // Cleanup
+    return () => {
+      appOpenAd.removeAllListeners();
+    };
+  }, []);
 
   useEffect(() => {
     setDarkMode(systemColorScheme === 'dark');

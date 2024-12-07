@@ -42,34 +42,34 @@ export default function YouScreen() {
 
   const renderTabBar = (props: TabViewProps) => (
     <>
-            <TabBar
-          {...props}
-          indicatorStyle={{
-            backgroundColor:
+      <TabBar
+        {...props}
+        indicatorStyle={{
+          backgroundColor:
             colorScheme === 'dark' ? theme.colors.primary.dark : theme.colors.primary.light,
-          }}
-          style={{
-            backgroundColor: colorScheme === 'dark' ? '#131A2A' : '#FAFAFA',
-            marginTop:10
-          }}
-          tabStyle={{
-            width: layout.width / 2,
-            flex: 1,
-          }}
-          labelStyle={{
-            fontFamily: 'Poppins_600SemiBold',
-            textTransform: 'none',
-            width: '100%',
-            textAlign: 'center',
-          }}
-          activeColor={
-            colorScheme === 'dark' ? theme.colors.primary.light : theme.colors.secondary.dark
-          }
-          inactiveColor={colorScheme === 'dark' ? '#C5CEE0' : '#8F9BB3'}
-          pressColor="transparent"
-          scrollEnabled={false}
+        }}
+        style={{
+          backgroundColor: colorScheme === 'dark' ? '#131A2A' : '#FAFAFA',
+          marginTop: 10,
+        }}
+        tabStyle={{
+          width: layout.width / 2,
+          flex: 1,
+        }}
+        labelStyle={{
+          fontFamily: 'Poppins_600SemiBold',
+          textTransform: 'none',
+          width: '100%',
+          textAlign: 'center',
+        }}
+        activeColor={
+          colorScheme === 'dark' ? theme.colors.primary.light : theme.colors.secondary.dark
+        }
+        inactiveColor={colorScheme === 'dark' ? '#C5CEE0' : '#8F9BB3'}
+        pressColor="transparent"
+        scrollEnabled={false}
       />
-      </>
+    </>
   );
 
   useFocusEffect(
@@ -84,17 +84,17 @@ export default function YouScreen() {
   );
 
   return (
-    <SafeAreaView className="flex-1 bg-accent-light dark:bg-background-dark pt-10">
-                    <BannerAd
-          unitId={TestIds.BANNER}
-          size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
-          requestOptions={{
-            requestNonPersonalizedAdsOnly: true,
-          }}
-          onAdFailedToLoad={(error: Error) => {
-            console.error('Banner ad failed to load:', error);
-          }}
-        />
+    <SafeAreaView className="flex-1 bg-accent-light pt-10 dark:bg-background-dark">
+      <BannerAd
+        unitId={'ca-app-pub-6312844121446107/2492397048'}
+        size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
+        requestOptions={{
+          requestNonPersonalizedAdsOnly: true,
+        }}
+        onAdFailedToLoad={(error: Error) => {
+          console.error('Banner ad failed to load:', error);
+        }}
+      />
       <TabView
         navigationState={{ index, routes }}
         renderScene={renderScene}

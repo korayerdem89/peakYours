@@ -553,82 +553,82 @@ Format your response as JSON:
         <View className="gap-4">
           <Animated.View
             entering={FadeIn.duration(500)}
-          className="dark:bg-accent-dark/20 rounded-2xl bg-accent-light/20 p-5">
-          <Text className="text-center font-medium text-sm text-secondary-dark/80 dark:text-secondary-light/80">
-            ✨ {t('ideas.accuracyWarning')} ✨
-          </Text>
-          <Text className="mt-2 text-center font-regular text-xs text-text-light dark:text-text-dark-secondary/60">
-            {t('ideas.updateFrequency')}
-          </Text>
-        </Animated.View>
-        <BannerAd
-          unitId={TestIds.BANNER}
-          size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
-          requestOptions={{
-            requestNonPersonalizedAdsOnly: true,
-          }}
-          onAdFailedToLoad={(error: Error) => {
-            console.error('Banner ad failed to load:', error);
-          }}
-        />
-        {/* Spirit Animal Card - Daha canlı ve eğlenceli */}
-        <Animated.View
-          entering={FadeIn.delay(200).duration(500)}
-          className="rounded-2xl bg-surface-light p-6 shadow-lg dark:bg-surface-dark">
-          <View className="flex-row items-center justify-between">
-            {personalityAnimal && (
-              <View className="flex-row items-center gap-5">
-                {/* Zıplayan hayvan ikonu */}
-                <Animated.View
-                  style={bounceStyle}
-                  className="items-center justify-center rounded-full bg-amber-50 p-4  shadow-sm shadow-gray-500 dark:bg-primary-dark/25">
-                  <Image
-                    source={personalityAnimal.image}
-                    className="h-14 w-14 " // Biraz daha büyük
-                    resizeMode="contain"
-                  />
-                </Animated.View>
+            className="dark:bg-accent-dark/20 rounded-2xl bg-accent-light/20 p-5">
+            <Text className="text-center font-medium text-sm text-secondary-dark/80 dark:text-secondary-light/80">
+              ✨ {t('ideas.accuracyWarning')} ✨
+            </Text>
+            <Text className="mt-2 text-center font-regular text-xs text-text-light dark:text-text-dark-secondary/60">
+              {t('ideas.updateFrequency')}
+            </Text>
+          </Animated.View>
+          <BannerAd
+            unitId={'ca-app-pub-6312844121446107/2492397048'}
+            size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
+            requestOptions={{
+              requestNonPersonalizedAdsOnly: true,
+            }}
+            onAdFailedToLoad={(error: Error) => {
+              console.error('Banner ad failed to load:', error);
+            }}
+          />
+          {/* Spirit Animal Card - Daha canlı ve eğlenceli */}
+          <Animated.View
+            entering={FadeIn.delay(200).duration(500)}
+            className="rounded-2xl bg-surface-light p-6 shadow-lg dark:bg-surface-dark">
+            <View className="flex-row items-center justify-between">
+              {personalityAnimal && (
+                <View className="flex-row items-center gap-5">
+                  {/* Zıplayan hayvan ikonu */}
+                  <Animated.View
+                    style={bounceStyle}
+                    className="items-center justify-center rounded-full bg-amber-50 p-4  shadow-sm shadow-gray-500 dark:bg-primary-dark/25">
+                    <Image
+                      source={personalityAnimal.image}
+                      className="h-14 w-14 " // Biraz daha büyük
+                      resizeMode="contain"
+                    />
+                  </Animated.View>
 
-                {/* Text Content - Daha canlı renkler ve spacing */}
-                <View className="flex-1">
-                  <Text className="mb-2 font-medium text-sm text-amber-500 dark:text-primary-light/70">
-                    ⭐ {t('ideas.spiritAnimal.title')}
-                  </Text>
-                  <Text className="font-bold text-2xl text-amber-600 dark:text-primary-light">
-                    {t(`ideas.animals.${personalityAnimal.id}.name`)}
-                  </Text>
-                  <Text className="mt-2 font-medium text-sm text-gray-400 dark:text-text-dark-secondary/80">
-                    {t(`ideas.animals.${personalityAnimal.id}.trait`)}
-                  </Text>
+                  {/* Text Content - Daha canlı renkler ve spacing */}
+                  <View className="flex-1">
+                    <Text className="mb-2 font-medium text-sm text-amber-500 dark:text-primary-light/70">
+                      ⭐ {t('ideas.spiritAnimal.title')}
+                    </Text>
+                    <Text className="font-bold text-2xl text-amber-600 dark:text-primary-light">
+                      {t(`ideas.animals.${personalityAnimal.id}.name`)}
+                    </Text>
+                    <Text className="mt-2 font-medium text-sm text-gray-400 dark:text-text-dark-secondary/80">
+                      {t(`ideas.animals.${personalityAnimal.id}.trait`)}
+                    </Text>
+                  </View>
                 </View>
-              </View>
-            )}
-          </View>
-        </Animated.View>
+              )}
+            </View>
+          </Animated.View>
 
-        {/* Analysis Card - Daha yumuşak köşeler ve gölgeler */}
-        <Animated.View
-          entering={FadeIn.delay(400).duration(500)}
-          className="rounded-2xl bg-surface-light p-6 shadow-lg dark:bg-surface-dark">
-          <Text className="mb-4 font-semibold text-xl text-primary-dark dark:text-primary-light">
-            🔮 {t('ideas.analysis.title')}
-          </Text>
-          <Text
-            className="text-base leading-relaxed text-text-light dark:text-text-dark-secondary"
-            style={{ paddingBottom: 12 }}>
-            {analysis}
-          </Text>
-        </Animated.View>
-        <BannerAd
-          unitId={TestIds.BANNER}
-          size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
-          requestOptions={{
-            requestNonPersonalizedAdsOnly: true,
-          }}
-          onAdFailedToLoad={(error: Error) => {
-            console.error('Banner ad failed to load:', error);
-          }}
-        />
+          {/* Analysis Card - Daha yumuşak köşeler ve gölgeler */}
+          <Animated.View
+            entering={FadeIn.delay(400).duration(500)}
+            className="rounded-2xl bg-surface-light p-6 shadow-lg dark:bg-surface-dark">
+            <Text className="mb-4 font-semibold text-xl text-primary-dark dark:text-primary-light">
+              🔮 {t('ideas.analysis.title')}
+            </Text>
+            <Text
+              className="text-base leading-relaxed text-text-light dark:text-text-dark-secondary"
+              style={{ paddingBottom: 12 }}>
+              {analysis}
+            </Text>
+          </Animated.View>
+          <BannerAd
+            unitId={'ca-app-pub-6312844121446107/2492397048'}
+            size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
+            requestOptions={{
+              requestNonPersonalizedAdsOnly: true,
+            }}
+            onAdFailedToLoad={(error: Error) => {
+              console.error('Banner ad failed to load:', error);
+            }}
+          />
         </View>
       </ScrollView>
     </SafeAreaView>
