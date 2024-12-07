@@ -23,6 +23,8 @@ import { useOnlineManager } from '@/hooks/useOnlineManager';
 import { useAppState } from '@/hooks/useAppState';
 import { toastConfig } from '@/config/toast';
 import { useInterstitialAd } from '@/store/useInterstitialAd';
+import { LoadingModal } from '@/components/LoadingModal';
+import { useLoadingStore } from '@/store/useLoadingStore';
 
 import {
   useFonts,
@@ -71,6 +73,7 @@ function InitialLayout() {
   const router = useRouter();
   const { user, isLoading } = useAuth();
   const { lastShowTime, setLastShowTime, canShowAd } = useInterstitialAd();
+  const { isLoading: globalLoading } = useLoadingStore();
 
   const showAppOpenAd = async (): Promise<AppOpenAd | null> => {
     if (!user?.zodiacSign || !canShowAd()) return null;
