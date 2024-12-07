@@ -288,8 +288,6 @@ export default function TasksScreen() {
   return (
     <SafeAreaView className="flex-1 bg-background-light dark:bg-background-dark">
       <View className="flex-1 gap-4 p-4 pb-10">
-        <TaskHeader />
-        <TaskMotivation />
         <BannerAd
           unitId={'ca-app-pub-6312844121446107/2492397048'}
           size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
@@ -300,6 +298,9 @@ export default function TasksScreen() {
             console.error('Banner ad failed to load:', error);
           }}
         />
+        <TaskHeader />
+        <TaskMotivation />
+
         <TaskInfo userData={userData ?? ({} as UserData)} />
 
         <TaskRefreshCounter refreshesLeft={refreshLimit} />

@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect } from 'react';
-import { View, useWindowDimensions, Text, Pressable } from 'react-native';
+import { View, useWindowDimensions, Text, Pressable, StatusBar, Platform } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 import { useState, useMemo } from 'react';
@@ -13,7 +13,38 @@ import { useFocusEffect } from '@react-navigation/native';
 import { useUpdateUser, useUserData } from '@/hooks/useUserQueries';
 import QuoteCard from '@/components/main/QuoteCard';
 import BadSidesRoute from '@/components/main/BadSidesRoute';
-import { BannerAd, BannerAdSize, TestIds } from 'react-native-google-mobile-ads';
+import {
+  BannerAd,
+  BannerAdSize,
+  InterstitialAd,
+  AdEventType,
+} from 'react-native-google-mobile-ads';
+
+const adUnitId = 'ca-app-pub-6312844121446107/7886655538';
+
+const interstitial = InterstitialAd.createForAdRequest(adUnitId, {
+  keywords: [
+    'zodiac',
+    'tarot',
+    'astrology',
+    'personality',
+    'psychology',
+    'psychic',
+    'personalgrowth',
+    'spiritual',
+    'spiritualgrowth',
+    'spiritualjourney',
+    'spiritualpath',
+    'spiritualpractice',
+    'spiritualteacher',
+    'spiritualteachertraining',
+    'fitness',
+    'health',
+    'wellness',
+    'mindfulness',
+    'meditation',
+  ],
+});
 
 export default function YouScreen() {
   const { t, locale } = useTranslation();
@@ -21,8 +52,10 @@ export default function YouScreen() {
   const { colorScheme } = useColorScheme();
   const [index, setIndex] = useState(0);
   const { user } = useAuth();
+  const [loaded, setLoaded] = useState(false);
   const { data: userData } = useUserData(user?.uid);
   const updateUser = useUpdateUser();
+
   const routes = useMemo(
     () => [
       { key: 'goodsides', title: t('tabs.goodsides') },
@@ -40,8 +73,59 @@ export default function YouScreen() {
     badsides: BadSidesRoute,
   });
 
-  const renderTabBar = (props: TabViewProps) => (
-    <>
+  useEffect(() => {
+    const unsubscribeLoaded = interstitial.addAdEventListener(AdEventType.LOADED, () => {
+      setLoaded(true);
+    });
+
+    const unsubscribeOpened = interstitial.addAdEventListener(AdEventType.OPENED, () => {
+      if (Platform.OS === 'ios') {
+        StatusBar.setHidden(true);
+      }
+    });
+
+    const unsubscribeClosed = interstitial.addAdEventListener(AdEventType.CLOSED, () => {
+      if (Platform.OS === 'ios') {
+        StatusBar.setHidden(false);
+      }
+      setLoaded(false);
+      interstitial.load();
+    });
+
+    interstitial.load();
+
+    return () => {
+      unsubscribeLoaded();
+      unsubscribeOpened();
+      unsubscribeClosed();
+    };
+  }, []);
+
+  useFocusEffect(
+    useCallback(() => {
+      if (userData?.zodiacSign && user?.uid) {
+        updateUser.mutateAsync({
+          userId: user.uid,
+          data: { zodiacSign: userData.zodiacSign },
+        });
+      }
+    }, [userData?.zodiacSign])
+  );
+
+  const handleTabPress = useCallback(() => {
+    if (loaded) {
+      try {
+        interstitial.show();
+      } catch (error) {
+        console.error('Error showing interstitial ad:', error);
+        setLoaded(false);
+        interstitial.load();
+      }
+    }
+  }, [loaded]);
+
+  const renderTabBar = useCallback(
+    (props: TabViewProps) => (
       <TabBar
         {...props}
         indicatorStyle={{
@@ -68,20 +152,13 @@ export default function YouScreen() {
         inactiveColor={colorScheme === 'dark' ? '#C5CEE0' : '#8F9BB3'}
         pressColor="transparent"
         scrollEnabled={false}
+        onTabPress={handleTabPress}
       />
-    </>
+    ),
+    [colorScheme, layout.width, loaded]
   );
 
-  useFocusEffect(
-    useCallback(() => {
-      if (userData?.zodiacSign && user?.uid) {
-        updateUser.mutateAsync({
-          userId: user.uid,
-          data: { zodiacSign: userData.zodiacSign },
-        });
-      }
-    }, [userData?.zodiacSign])
-  );
+  if (!loaded) return null;
 
   return (
     <SafeAreaView className="flex-1 bg-accent-light pt-10 dark:bg-background-dark">
