@@ -314,5 +314,6 @@ export default {
       clearError: 'Önbellek temizlenirken hata oluştu',
     },
     motivation: 'Görevleri yapın ve kendinize değer katın',
+    refreshSuccess: 'Görev başarıyla yenilendi',
   },
 };

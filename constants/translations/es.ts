@@ -330,5 +330,6 @@ export default {
       clearError: 'Error al limpiar el caché de tareas',
     },
     motivation: 'Completa tareas y añade valor a ti mismo',
+    refreshSuccess: 'Tarea actualizada con éxito',
   },
 };

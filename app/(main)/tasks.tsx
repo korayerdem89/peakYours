@@ -31,7 +31,7 @@ import { TaskMotivation } from '@/components/tasks/TaskMotivation';
 import { updateUserTaskDate } from '@/services/user';
 import { theme } from '@/constants/theme';
 import { BannerAdSize } from 'react-native-google-mobile-ads';
-import { BannerAd, TestIds } from 'react-native-google-mobile-ads';
+import { BannerAd } from 'react-native-google-mobile-ads';
 import { useInterstitialAd } from '@/store/useInterstitialAd';
 
 interface Task {

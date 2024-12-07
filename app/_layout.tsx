@@ -45,7 +45,7 @@ import {
   Poppins_800ExtraBold_Italic,
   Poppins_900Black_Italic,
 } from '@expo-google-fonts/poppins';
-import { AdEventType, AppOpenAd, MobileAds, TestIds } from 'react-native-google-mobile-ads';
+import { AdEventType, AppOpenAd } from 'react-native-google-mobile-ads';
 
 const MIN_TIME_BETWEEN_ADS = 60 * 1000; // 1 dakika (milisaniye cinsinden)
 

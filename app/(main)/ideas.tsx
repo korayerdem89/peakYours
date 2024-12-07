@@ -20,7 +20,7 @@ import { theme } from '@/constants/theme';
 import { ZODIAC_SIGNS } from '@/constants/zodiac';
 import { useTraitDetails } from '@/hooks/useTraitDetails';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { BannerAd, BannerAdSize, TestIds } from 'react-native-google-mobile-ads';
+import { BannerAd, BannerAdSize } from 'react-native-google-mobile-ads';
 
 // Types
 interface PersonalityAnimal {

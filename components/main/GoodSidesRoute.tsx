@@ -22,7 +22,6 @@ import { useUserData } from '@/hooks/useUserQueries';
 import { useTraitDetails } from '@/hooks/useTraitDetails';
 import { MaterialIcons } from '@expo/vector-icons';
 import { calculateTraitValue } from '@/utils/numberHelpers';
-import { BannerAd, BannerAdSize, TestIds } from 'react-native-google-mobile-ads';
 
 interface TraitBarProps {
   trait: string;

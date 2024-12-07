@@ -321,6 +321,7 @@ export default {
       clearError: 'Error clearing task cache',
     },
     motivation: 'Complete tasks and add value to yourself',
+    refreshSuccess: 'Task refreshed successfully',
   },
   leaderboard: {
     title: 'Leaderboard',

@@ -3,7 +3,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { useTranslation } from '@/providers/LanguageProvider';
 import { theme } from '@/constants/theme';
 import { Task } from '@/types/tasks';
-import { BannerAd, BannerAdSize, TestIds } from 'react-native-google-mobile-ads';
+import { BannerAd, BannerAdSize } from 'react-native-google-mobile-ads';
 
 interface TaskListProps {
   tasks: Task[];
