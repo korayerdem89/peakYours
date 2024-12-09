@@ -33,6 +33,7 @@ import { theme } from '@/constants/theme';
 import { BannerAdSize } from 'react-native-google-mobile-ads';
 import { BannerAd } from 'react-native-google-mobile-ads';
 import { useInterstitialAd } from '@/store/useInterstitialAd';
+import { useLoadingStore } from '@/store/useLoadingStore';
 
 interface Task {
   id: string;
@@ -115,7 +116,7 @@ export default function TasksScreen() {
   const [refreshLimit, setRefreshLimit] = useState(taskData?.refreshesLeft ?? 0);
   const [tasks, setTasks] = useState<Task[]>([]);
   const [completedTasks, setCompletedTasks] = useState<string[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const { setIsLoading } = useLoadingStore();
   const [isFirstRefresh, setFirstRefresh] = useState(true);
 
   // Refresh sayacını taskData ile senkronize et
@@ -128,8 +129,8 @@ export default function TasksScreen() {
   // Load initial tasks and completed tasks
   useEffect(() => {
     async function loadTaskData() {
+      setIsLoading(true);
       if (!user?.uid || !goodTraits || !badTraits || !userData) return;
-
       try {
         const today = new Date().toISOString().split('T')[0];
         let currentTasks: Task[] = [];
@@ -290,14 +291,6 @@ export default function TasksScreen() {
     const diff = 24 * 60 * 60 * 1000 - (now.getTime() - lastRefresh.getTime());
     return Math.max(0, diff / (24 * 60 * 60 * 1000));
   }, [taskData?.lastRefresh]);
-
-  if (isLoading) {
-    return (
-      <View className="flex-1 items-center justify-center bg-background-light dark:bg-background-dark">
-        <ActivityIndicator size="large" color={theme.colors.primary.default} />
-      </View>
-    );
-  }
 
   return (
     <SafeAreaView className="flex-1 bg-background-light dark:bg-background-dark">
