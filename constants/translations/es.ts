@@ -322,7 +322,7 @@ export default {
         'Completa 5 tareas del mismo rasgo para aumentar tu puntuación de personalidad en 1 punto.',
       dailyRefresh: 'Las tareas se actualizan cada 24 horas',
       refreshLimit:
-        'Puedes actualizar las tareas hasta 7 veces al día si deseas diferentes desafíos.',
+        'Puedes actualizar las tareas hasta 10 veces al día si deseas diferentes desafíos.',
     },
     debug: {
       clearCache: 'Limpiar Caché de Tareas',

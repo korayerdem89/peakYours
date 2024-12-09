@@ -313,7 +313,8 @@ export default {
       completedTasks: '{{count}} tasks completed',
       levelUp: 'Complete 5 tasks of the same trait to increase your personality score by 1 point.',
       dailyRefresh: 'Tasks are refreshed every 24 hours',
-      refreshLimit: 'You can refresh tasks up to 7 times per day if you want different challenges.',
+      refreshLimit:
+        'You can refresh tasks up to 10 times per day if you want different challenges.',
     },
     debug: {
       clearCache: 'Clear Task Cache',

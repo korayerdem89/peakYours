@@ -117,6 +117,7 @@ export default function TasksScreen() {
   const [completedTasks, setCompletedTasks] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isFirstRefresh, setFirstRefresh] = useState(true);
+
   // Refresh sayacını taskData ile senkronize et
   useEffect(() => {
     if (taskData?.refreshesLeft !== undefined) {
