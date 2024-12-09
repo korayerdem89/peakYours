@@ -20,6 +20,7 @@ import {
   AdEventType,
 } from 'react-native-google-mobile-ads';
 import { useInterstitialAd } from '@/store/useInterstitialAd';
+import { useLoadingStore } from '@/store/useLoadingStore';
 
 const adUnitId = 'ca-app-pub-6312844121446107/7886655538';
 

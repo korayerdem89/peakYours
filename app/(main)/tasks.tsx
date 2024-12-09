@@ -175,14 +175,6 @@ export default function TasksScreen() {
     loadTaskData();
   }, [user?.uid, goodTraits, badTraits, userData]);
 
-  // Remove getInitialTasks call from here if it exists
-  useEffect(() => {
-    if (goodTraits && badTraits) {
-      // Don't set tasks here anymore
-      // The tasks will be managed by the loadTaskData function
-    }
-  }, [goodTraits, badTraits]);
-
   const getInitialTasks = useCallback(() => {
     if (!goodTraits || !badTraits) return [];
 

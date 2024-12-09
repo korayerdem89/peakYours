@@ -25,6 +25,7 @@ import { toastConfig } from '@/config/toast';
 import { useInterstitialAd } from '@/store/useInterstitialAd';
 import { LoadingModal } from '@/components/LoadingModal';
 import { useLoadingStore } from '@/store/useLoadingStore';
+import { useAppUsage } from '@/hooks/useAppUsage';
 
 import {
   useFonts,
@@ -49,8 +50,6 @@ import {
 } from '@expo-google-fonts/poppins';
 import { AdEventType, AppOpenAd } from 'react-native-google-mobile-ads';
 
-const MIN_TIME_BETWEEN_ADS = 60 * 1000; // 1 dakika (milisaniye cinsinden)
-
 // Prevent splash screen from auto-hiding
 SplashScreen.preventAutoHideAsync();
 
@@ -73,10 +72,11 @@ function InitialLayout() {
   const router = useRouter();
   const { user, isLoading } = useAuth();
   const { lastShowTime, setLastShowTime, canShowAd } = useInterstitialAd();
-  const { isLoading: globalLoading } = useLoadingStore();
+  const { usageCount, isFirstTime } = useAppUsage();
+  const { setIsLoading } = useLoadingStore();
 
   const showAppOpenAd = async (): Promise<AppOpenAd | null> => {
-    if (!user?.zodiacSign || !canShowAd()) return null;
+    if (usageCount < 4 || !canShowAd()) return null;
 
     const appOpenAd = AppOpenAd.createForAdRequest(appOpenAdUnitId, {
       keywords: [
@@ -128,7 +128,7 @@ function InitialLayout() {
 
   useEffect(() => {
     let appOpenAd: AppOpenAd | null = null;
-
+    setIsLoading(true);
     const handleAppStateChange = async (nextAppState: AppStateStatus) => {
       if (nextAppState === 'active' && canShowAd()) {
         if (appOpenAd) {
@@ -142,7 +142,7 @@ function InitialLayout() {
     showAppOpenAd().then((ad) => {
       appOpenAd = ad;
     });
-
+    setIsLoading(false);
     const subscription = AppState.addEventListener('change', handleAppStateChange);
 
     return () => {
@@ -172,6 +172,16 @@ function InitialLayout() {
       }
     }
   }, [user, segments, isLoading]);
+
+  // useEffect(() => {
+  //   if (isFirstTime) {
+  //     // İlk kez kullanım için özel işlemler
+  //     console.log('First time using the app!');
+  //   }
+
+  //   // Her açılışta kullanım sayısını loglayalım
+  //   console.log('App usage count:', usageCount);
+  // }, [isFirstTime, usageCount]);
 
   return <Stack screenOptions={{ headerShown: false }} />;
 }
@@ -204,7 +214,7 @@ function useQueryConfig() {
 export default function RootLayout() {
   const systemColorScheme = useColorScheme();
   const { setDarkMode } = useDarkMode();
-
+  const { isLoading } = useLoadingStore();
   // Query yapılandırmasını uygula
   useQueryConfig();
 
@@ -261,6 +271,7 @@ export default function RootLayout() {
               <AuthProvider>
                 <InitialLayout />
               </AuthProvider>
+              <LoadingModal visible={isLoading} />
               <Toast config={toastConfig} />
             </View>
           </ThemeProvider>

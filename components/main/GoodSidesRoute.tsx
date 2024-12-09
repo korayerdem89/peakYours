@@ -112,12 +112,6 @@ export default function GoodSidesRoute() {
     return () => clearInterval(interval);
   });
 
-  useEffect(() => {
-    if (traitAverages) {
-      console.log('Trait Averages:', traitAverages);
-    }
-  }, [traitAverages]);
-
   const traits = useMemo(
     () => [
       {
