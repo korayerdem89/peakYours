@@ -225,7 +225,7 @@ export default function Ideas() {
   const [showZodiacModal, setShowZodiacModal] = useState(!user?.zodiacSign);
   const [personalityAnimal, setPersonalityAnimal] = useState<PersonalityAnimal | null>(null);
   const [analysis, setAnalysis] = useState('');
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const systemMessages = {
     en: `You are a friendly and witty personality analyst who loves combining astrology with personality traits! 
     While you're an expert in both fields, you prefer explaining things in a warm, casual tone with occasional humor.
