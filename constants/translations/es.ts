@@ -291,11 +291,12 @@ export default {
       },
     },
     dailyHoroscope: {
-      title: 'Horóscopo Diario',
+      title: 'Consejos Diarios',
+      loading: 'Cargando consejos diarios...',
       tags: {
-        general: 'general',
-        love: 'amor',
-        career: 'trabajo',
+        general: 'Consejo General',
+        love: 'Consejo de Amor',
+        career: 'Consejo de Carrera',
       },
     },
     noRatingsWarning: {

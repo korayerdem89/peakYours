@@ -280,11 +280,12 @@ export default {
       },
     },
     dailyHoroscope: {
-      title: 'Daily Horoscope',
+      title: 'Daily Advice',
+      loading: 'Loading daily advice...',
       tags: {
-        general: 'general',
-        love: 'love',
-        career: 'career',
+        general: 'General Advice',
+        love: 'Love Advice',
+        career: 'Career Advice',
       },
     },
     noRatingsWarning: {

@@ -5,19 +5,28 @@ import Animated, {
   useSharedValue,
   withSequence,
   withDelay,
+  withRepeat,
+  withSpring,
+  Easing,
 } from 'react-native-reanimated';
-import { useEffect, useMemo } from 'react';
 import { Text } from 'react-native';
 import { useTranslation } from '@/providers/LanguageProvider';
 import { theme } from '@/constants/theme';
+import ReferralShare from './ReferralShare';
 import { router } from 'expo-router';
+import { AntDesign } from '@expo/vector-icons';
 import { useTraitAverages } from '@/hooks/useTraitAverages';
 import { useAuth } from '@/store/useAuth';
 import { useUserData } from '@/hooks/useUserQueries';
 import { useTraitDetails } from '@/hooks/useTraitDetails';
 import { MaterialIcons } from '@expo/vector-icons';
-import ReferralShare from './ReferralShare';
-import { calculateTraitValue } from '@/utils/numberHelpers';
+import { useEffect } from 'react';
+
+interface Trait {
+  trait: string;
+  color: string;
+  value: number;
+}
 
 interface TraitBarProps {
   trait: string;
@@ -71,9 +80,10 @@ export default function BadSidesRoute() {
   const { t } = useTranslation();
   const { user } = useAuth();
   const { data: userData } = useUserData(user?.uid);
-  const { data: traitAverages } = useTraitAverages(userData?.refCodes?.en, 'badsides');
   const { data: traitDetails } = useTraitDetails(userData?.refCodes?.en, 'badsides');
+  const traits = useTraitAverages(userData?.refCodes?.en, 'badsides', userData);
   const layout = useWindowDimensions();
+  const shakeAnimation = useSharedValue(0);
 
   const colorPalette = [
     '#D94141',
@@ -85,57 +95,17 @@ export default function BadSidesRoute() {
     '#D9AB9F',
   ];
 
-  const traits = useMemo(() => {
-    const unsortedTraits = [
-      {
-        trait: 'arrogant',
-        value: calculateTraitValue('arrogant', traitAverages, userData?.traits, false),
-      },
-      {
-        trait: 'jealous',
-        value: calculateTraitValue('jealous', traitAverages, userData?.traits, false),
-      },
-      {
-        trait: 'lazy',
-        value: calculateTraitValue('lazy', traitAverages, userData?.traits, false),
-      },
-      {
-        trait: 'pessimistic',
-        value: calculateTraitValue('pessimistic', traitAverages, userData?.traits, false),
-      },
-      {
-        trait: 'selfish',
-        value: calculateTraitValue('selfish', traitAverages, userData?.traits, false),
-      },
-      {
-        trait: 'forgetful',
-        value: calculateTraitValue('forgetful', traitAverages, userData?.traits, false),
-      },
-      {
-        trait: 'angry',
-        value: calculateTraitValue('angry', traitAverages, userData?.traits, false),
-      },
-    ];
-
-    return unsortedTraits
-      .sort((a, b) => b.value - a.value)
-      .map((trait, index) => ({
-        ...trait,
-        color: colorPalette[index],
-      }));
-  }, [traitAverages, userData?.traits]);
-
   return (
     <View className="xs:m-1 rounded-sm bg-white dark:bg-gray-700 sm:m-2 md:m-3">
       <View className="xs:p-2 xs:pb-4 sm:p-3 sm:pb-6 md:p-4 md:pb-8">
         <Text className="xs:text-sm font-semibold text-gray-800 dark:text-gray-900 sm:text-base md:text-lg">
-          {t('personality.traitsTitle')} 🎯
+          {t('personality.negativeTraits')} 🚫
         </Text>
+
         <View className="flex-row items-center justify-between">
           <Text className="mt-1 text-xs text-gray-600 dark:text-gray-400 sm:text-sm">
             {t('personality.details.description', { count: traitDetails?.totalRaters || 0 })}
           </Text>
-
           {traitDetails?.totalRaters ? (
             <Pressable
               onPress={() => router.push('/modal/TraitDetails?type=badsides')}
@@ -152,8 +122,10 @@ export default function BadSidesRoute() {
             </Pressable>
           ) : null}
         </View>
+
         <View className="my-2 h-[1px] bg-gray-300 dark:bg-border-dark" />
-        {traits.map((trait, index) => (
+
+        {traits.map((trait: Trait, index: number) => (
           <TraitBar
             key={trait.trait}
             trait={trait.trait}

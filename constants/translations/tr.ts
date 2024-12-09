@@ -282,11 +282,12 @@ export default {
       },
     },
     dailyHoroscope: {
-      title: 'Günün Yorumu',
+      title: 'Günlük Tavsiyeler',
+      loading: 'Günlük tavsiyeler yükleniyor...',
       tags: {
-        general: 'genel',
-        love: 'aşk',
-        career: 'iş',
+        general: 'Genel Tavsiye',
+        love: 'Aşk Tavsiyesi',
+        career: 'Kariyer Tavsiyesi',
       },
     },
     unauthorizedError: 'API anahtarı geçersiz veya eksik. Lütfen yapılandırmanızı kontrol edin.',

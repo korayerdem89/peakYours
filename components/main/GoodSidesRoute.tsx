@@ -21,7 +21,12 @@ import { useAuth } from '@/store/useAuth';
 import { useUserData } from '@/hooks/useUserQueries';
 import { useTraitDetails } from '@/hooks/useTraitDetails';
 import { MaterialIcons } from '@expo/vector-icons';
-import { calculateTraitValue } from '@/utils/numberHelpers';
+
+interface Trait {
+  trait: string;
+  color: string;
+  value: number;
+}
 
 interface TraitBarProps {
   trait: string;
@@ -79,8 +84,8 @@ export default function GoodSidesRoute() {
   const { t } = useTranslation();
   const { user } = useAuth();
   const { data: userData } = useUserData(user?.uid);
-  const { data: traitAverages } = useTraitAverages(userData?.refCodes?.en, 'goodsides');
   const { data: traitDetails } = useTraitDetails(userData?.refCodes?.en, 'goodsides');
+  const traits = useTraitAverages(userData?.refCodes?.en, 'goodsides', userData);
   const layout = useWindowDimensions();
   const shakeAnimation = useSharedValue(0);
 
@@ -111,47 +116,6 @@ export default function GoodSidesRoute() {
 
     return () => clearInterval(interval);
   });
-
-  const traits = useMemo(
-    () => [
-      {
-        trait: 'empathic',
-        color: theme.colors.personality.empathic,
-        value: calculateTraitValue('empathic', traitAverages, userData?.traits, true),
-      },
-      {
-        trait: 'friendly',
-        color: theme.colors.personality.friendly,
-        value: calculateTraitValue('friendly', traitAverages, userData?.traits, true),
-      },
-      {
-        trait: 'helpful',
-        color: theme.colors.personality.helpful,
-        value: calculateTraitValue('helpful', traitAverages, userData?.traits, true),
-      },
-      {
-        trait: 'honest',
-        color: theme.colors.personality.honest,
-        value: calculateTraitValue('honest', traitAverages, userData?.traits, true),
-      },
-      {
-        trait: 'patient',
-        color: theme.colors.personality.patient,
-        value: calculateTraitValue('patient', traitAverages, userData?.traits, true),
-      },
-      {
-        trait: 'reliable',
-        color: theme.colors.personality.reliable,
-        value: calculateTraitValue('reliable', traitAverages, userData?.traits, true),
-      },
-      {
-        trait: 'respectful',
-        color: theme.colors.personality.respectful,
-        value: calculateTraitValue('respectful', traitAverages, userData?.traits, true),
-      },
-    ],
-    [traitAverages, userData?.traits]
-  );
 
   const handleRatePress = () => {
     router.push('/modal/rate');
@@ -185,7 +149,7 @@ export default function GoodSidesRoute() {
         </View>
         <View className="my-2 h-[1px] bg-gray-300 dark:bg-border-dark" />
 
-        {traits.map((trait, index) => (
+        {traits.map((trait: Trait, index: number) => (
           <TraitBar
             key={trait.trait}
             trait={trait.trait}

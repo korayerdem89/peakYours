@@ -26,10 +26,8 @@ import { TaskList } from '@/components/tasks/TaskList';
 import { TaskProgress } from '@/components/tasks/TaskProgress';
 import { TaskInfo } from '@/components/tasks/TaskInfo';
 import { UserData } from '@/services/user';
-import { TaskDebug } from '@/components/tasks/TaskDebug';
 import { TaskMotivation } from '@/components/tasks/TaskMotivation';
 import { updateUserTaskDate } from '@/services/user';
-import { theme } from '@/constants/theme';
 import { BannerAdSize } from 'react-native-google-mobile-ads';
 import { BannerAd } from 'react-native-google-mobile-ads';
 import { useInterstitialAd } from '@/store/useInterstitialAd';
@@ -109,8 +107,8 @@ export default function TasksScreen() {
     trait: string;
     type: 'goodsides' | 'badsides';
   } | null>(null);
-  const { data: goodTraits } = useTraitAverages(userData?.refCodes?.en, 'goodsides');
-  const { data: badTraits } = useTraitAverages(userData?.refCodes?.en, 'badsides');
+  const goodTraits = useTraitAverages(userData?.refCodes?.en, 'goodsides', userData);
+  const badTraits = useTraitAverages(userData?.refCodes?.en, 'badsides', userData);
   const updateTaskTrait = useUpdateTaskTrait();
   const { taskData, refreshTasks, decrementRefreshes } = useTasks(user?.uid);
   const [refreshLimit, setRefreshLimit] = useState(taskData?.refreshesLeft ?? 0);
@@ -179,12 +177,14 @@ export default function TasksScreen() {
   const getInitialTasks = useCallback(() => {
     if (!goodTraits || !badTraits) return [];
 
+    // En düşük puanlı 3 good trait
     const lowestGoodTraits = [...goodTraits]
-      .sort((a, b) => a.averagePoints - b.averagePoints)
+      .sort((a, b) => a.value - b.value) // Küçükten büyüğe sırala
       .slice(0, 3);
 
+    // En yüksek puanlı 3 bad trait
     const highestBadTraits = [...badTraits]
-      .sort((a, b) => b.averagePoints - a.averagePoints)
+      .sort((a, b) => b.value - a.value) // Büyükten küçüğe sırala
       .slice(0, 3);
 
     const goodTasks = lowestGoodTraits
