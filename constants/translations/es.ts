@@ -290,6 +290,14 @@ export default {
         trait: 'Persiste hasta lograr sus objetivos',
       },
     },
+    dailyHoroscope: {
+      title: 'Horóscopo Diario',
+      tags: {
+        general: 'general',
+        love: 'amor',
+        career: 'trabajo',
+      },
+    },
     noRatingsWarning: {
       title: '¡Analicemos tu Personalidad!',
       description:
@@ -319,7 +327,7 @@ export default {
       title: 'Información de Tareas',
       completedTasks: '{{count}} tareas completadas',
       levelUp:
-        'Completa 5 tareas del mismo rasgo para aumentar tu puntuación de personalidad en 1 punto.',
+        'Completa 5 tareas de un rasgo de personalidad específico para aumentar su puntuación en 1 punto.',
       dailyRefresh: 'Las tareas se actualizan cada 24 horas',
       refreshLimit:
         'Puedes actualizar las tareas hasta 10 veces al día si deseas diferentes desafíos.',

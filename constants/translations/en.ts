@@ -279,6 +279,14 @@ export default {
         trait: 'Persists until goals are achieved',
       },
     },
+    dailyHoroscope: {
+      title: 'Daily Horoscope',
+      tags: {
+        general: 'general',
+        love: 'love',
+        career: 'career',
+      },
+    },
     noRatingsWarning: {
       title: "Let's Analyze Your Personality!",
       description:
@@ -311,7 +319,7 @@ export default {
     info: {
       title: 'Task Information',
       completedTasks: '{{count}} tasks completed',
-      levelUp: 'Complete 5 tasks of the same trait to increase your personality score by 1 point.',
+      levelUp: 'Complete 5 tasks of a specific personality trait to increase its score by 1 point.',
       dailyRefresh: 'Tasks are refreshed every 24 hours',
       refreshLimit:
         'You can refresh tasks up to 10 times per day if you want different challenges.',

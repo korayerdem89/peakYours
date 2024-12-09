@@ -70,10 +70,10 @@ const appOpenAdUnitId = 'ca-app-pub-6312844121446107/5033994003';
 function InitialLayout() {
   const segments = useSegments();
   const router = useRouter();
-  const { user, isLoading } = useAuth();
+  const { user } = useAuth();
   const { lastShowTime, setLastShowTime, canShowAd } = useInterstitialAd();
   const { usageCount, isFirstTime } = useAppUsage();
-  const { setIsLoading } = useLoadingStore();
+  const { isLoading, setIsLoading } = useLoadingStore();
 
   const showAppOpenAd = async (): Promise<AppOpenAd | null> => {
     if (usageCount < 4 || !canShowAd()) return null;

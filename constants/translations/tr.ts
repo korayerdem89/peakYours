@@ -281,6 +281,14 @@ export default {
         trait: 'Sürekli çabayla ilerler',
       },
     },
+    dailyHoroscope: {
+      title: 'Günün Yorumu',
+      tags: {
+        general: 'genel',
+        love: 'aşk',
+        career: 'iş',
+      },
+    },
     unauthorizedError: 'API anahtarı geçersiz veya eksik. Lütfen yapılandırmanızı kontrol edin.',
     rateLimitError: 'İstek limiti aşıldı. Lütfen daha sonra tekrar deneyin.',
     noRatingsWarning: {
@@ -304,7 +312,8 @@ export default {
     info: {
       title: 'Görev Bilgileri',
       completedTasks: '{{count}} görev tamamlandı',
-      levelUp: 'Kişilik puanınızı 1 puan artırmak için aynı özellikten 5 görev tamamlayın.',
+      levelUp:
+        'Belirli bir kişilik özelliğinizi 1 puan arttırmak için, o özellikten 5 görev tamamlayın.',
       dailyRefresh: 'Görevler her 24 saatte bir yenilenir',
       refreshLimit: 'Farklı görevler istiyorsanız günde 10 kez yenileme hakkınız var.',
     },

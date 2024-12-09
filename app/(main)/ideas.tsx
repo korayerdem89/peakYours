@@ -21,6 +21,7 @@ import { ZODIAC_SIGNS } from '@/constants/zodiac';
 import { useTraitDetails } from '@/hooks/useTraitDetails';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { BannerAd, BannerAdSize } from 'react-native-google-mobile-ads';
+import { DailyHoroscope } from '@/components/ideas/DailyHoroscope';
 
 // Types
 interface PersonalityAnimal {
@@ -605,7 +606,7 @@ Format your response as JSON:
               )}
             </View>
           </Animated.View>
-
+          {/* <DailyHoroscope traits={traits} /> */}
           {/* Analysis Card - Daha yumuşak köşeler ve gölgeler */}
           <Animated.View
             entering={FadeIn.delay(400).duration(500)}
