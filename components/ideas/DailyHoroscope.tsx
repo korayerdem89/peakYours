@@ -85,10 +85,11 @@ interface StoredAdvice {
   love: string;
   career: string;
   timestamp: number;
+  locale: string;
 }
 
 export function DailyHoroscope({ goodTraits, badTraits, zodiacSign }: DailyHoroscopeProps) {
-  const { t } = useTranslation();
+  const { t, locale } = useTranslation();
   const [isInitialLoading, setIsInitialLoading] = useState(true);
   const [storedAdvice, setStoredAdvice] = useState<StoredAdvice | null>(null);
   const { width } = useWindowDimensions();
@@ -103,8 +104,33 @@ export function DailyHoroscope({ goodTraits, badTraits, zodiacSign }: DailyHoros
     goodTraits,
     badTraits,
     zodiacSign,
-    enabled: false, // Başlangıçta otomatik fetch'i devre dışı bırak
+    locale,
+    enabled: false,
   });
+
+  useEffect(() => {
+    const loadNewAdvice = async () => {
+      try {
+        setIsInitialLoading(true);
+        const newAdvice = await refetch();
+        if (newAdvice.data) {
+          const adviceWithTimestamp: StoredAdvice = {
+            ...newAdvice.data,
+            timestamp: Date.now(),
+            locale,
+          };
+          await AsyncStorage.setItem('dailyAdvice', JSON.stringify(adviceWithTimestamp));
+          setStoredAdvice(adviceWithTimestamp);
+        }
+      } catch (error) {
+        console.error('Error loading advice for new locale:', error);
+      } finally {
+        setIsInitialLoading(false);
+      }
+    };
+
+    loadNewAdvice();
+  }, [locale]);
 
   useEffect(() => {
     checkAndLoadAdvice();
@@ -118,20 +144,19 @@ export function DailyHoroscope({ goodTraits, badTraits, zodiacSign }: DailyHoros
         const now = Date.now();
         const hoursSinceLastAdvice = (now - parsedAdvice.timestamp) / (1000 * 60 * 60);
 
-        if (hoursSinceLastAdvice < 24) {
-          // 24 saat geçmemişse stored advice'ı kullan
+        if (hoursSinceLastAdvice < 24 && parsedAdvice.locale === locale) {
           setStoredAdvice(parsedAdvice);
           setIsInitialLoading(false);
           return;
         }
       }
 
-      // 24 saat geçmişse veya stored advice yoksa yeni advice al
       const newAdvice = await refetch();
       if (newAdvice.data) {
         const adviceWithTimestamp: StoredAdvice = {
           ...newAdvice.data,
           timestamp: Date.now(),
+          locale,
         };
         await AsyncStorage.setItem('dailyAdvice', JSON.stringify(adviceWithTimestamp));
         setStoredAdvice(adviceWithTimestamp);

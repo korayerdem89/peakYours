@@ -99,7 +99,7 @@ export default function BadSidesRoute() {
     <View className="xs:m-1 rounded-sm bg-white dark:bg-gray-700 sm:m-2 md:m-3">
       <View className="xs:p-2 xs:pb-4 sm:p-3 sm:pb-6 md:p-4 md:pb-8">
         <Text className="xs:text-sm font-semibold text-gray-800 dark:text-gray-900 sm:text-base md:text-lg">
-          {t('personality.negativeTraits')} 🚫
+          {t('personality.traitsTitle')} 🚫
         </Text>
 
         <View className="flex-row items-center justify-between">

@@ -1,17 +1,11 @@
 import { useQuery } from '@tanstack/react-query';
-import { DailyHoroscopeService } from '@/services/dailyHoroscopeService';
-import { useTranslation } from '@/providers/LanguageProvider';
-
-interface Trait {
-  trait: string;
-  value: number;
-  color: string;
-}
+import { generateAIHoroscope } from '@/utils/aiHelpers';
 
 interface UseDailyHoroscopeProps {
-  goodTraits: Trait[];
-  badTraits: Trait[];
+  goodTraits: Array<{ trait: string; value: number }>;
+  badTraits: Array<{ trait: string; value: number }>;
   zodiacSign: string;
+  locale: string;
   enabled?: boolean;
 }
 
@@ -19,15 +13,13 @@ export function useDailyHoroscope({
   goodTraits,
   badTraits,
   zodiacSign,
+  locale,
   enabled = true,
 }: UseDailyHoroscopeProps) {
-  const { locale } = useTranslation();
-
   return useQuery({
     queryKey: ['dailyHoroscope', zodiacSign, locale],
-    queryFn: () =>
-      DailyHoroscopeService.getDailyHoroscope(goodTraits, badTraits, zodiacSign, locale),
+    queryFn: () => generateAIHoroscope({ goodTraits, badTraits, zodiacSign, locale }),
+    staleTime: 24 * 60 * 60 * 1000,
     enabled,
-    staleTime: 24 * 60 * 60 * 1000, // 24 saat
   });
 }
