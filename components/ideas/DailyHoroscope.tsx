@@ -86,6 +86,7 @@ interface StoredAdvice {
   career: string;
   timestamp: number;
   locale: string;
+  zodiacSign: string;
 }
 
 export function DailyHoroscope({ goodTraits, badTraits, zodiacSign }: DailyHoroscopeProps) {
@@ -118,19 +119,20 @@ export function DailyHoroscope({ goodTraits, badTraits, zodiacSign }: DailyHoros
             ...newAdvice.data,
             timestamp: Date.now(),
             locale,
+            zodiacSign,
           };
           await AsyncStorage.setItem('dailyAdvice', JSON.stringify(adviceWithTimestamp));
           setStoredAdvice(adviceWithTimestamp);
         }
       } catch (error) {
-        console.error('Error loading advice for new locale:', error);
+        console.error('Error loading advice for new zodiac sign:', error);
       } finally {
         setIsInitialLoading(false);
       }
     };
 
     loadNewAdvice();
-  }, [locale]);
+  }, [zodiacSign, locale]);
 
   useEffect(() => {
     checkAndLoadAdvice();
@@ -144,7 +146,11 @@ export function DailyHoroscope({ goodTraits, badTraits, zodiacSign }: DailyHoros
         const now = Date.now();
         const hoursSinceLastAdvice = (now - parsedAdvice.timestamp) / (1000 * 60 * 60);
 
-        if (hoursSinceLastAdvice < 24 && parsedAdvice.locale === locale) {
+        if (
+          hoursSinceLastAdvice < 24 &&
+          parsedAdvice.locale === locale &&
+          parsedAdvice.zodiacSign === zodiacSign
+        ) {
           setStoredAdvice(parsedAdvice);
           setIsInitialLoading(false);
           return;
@@ -157,6 +163,7 @@ export function DailyHoroscope({ goodTraits, badTraits, zodiacSign }: DailyHoros
           ...newAdvice.data,
           timestamp: Date.now(),
           locale,
+          zodiacSign,
         };
         await AsyncStorage.setItem('dailyAdvice', JSON.stringify(adviceWithTimestamp));
         setStoredAdvice(adviceWithTimestamp);

@@ -17,7 +17,7 @@ export function useDailyHoroscope({
   enabled = true,
 }: UseDailyHoroscopeProps) {
   return useQuery({
-    queryKey: ['dailyHoroscope', zodiacSign, locale],
+    queryKey: ['dailyHoroscope', zodiacSign, locale, goodTraits, badTraits],
     queryFn: () => generateAIHoroscope({ goodTraits, badTraits, zodiacSign, locale }),
     staleTime: 24 * 60 * 60 * 1000,
     enabled,

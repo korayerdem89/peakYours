@@ -17,6 +17,8 @@ export async function generateAIHoroscope({
     const currentLocale = locale as keyof typeof systemMessages;
     const selectedMessage = systemMessages[currentLocale] || systemMessages.en;
 
+    const prompt = generateHoroscopePrompt(goodTraits, badTraits, zodiacSign, currentLocale);
+
     const response = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
       headers: {
@@ -32,7 +34,7 @@ export async function generateAIHoroscope({
           },
           {
             role: 'user',
-            content: generateHoroscopePrompt(goodTraits, badTraits, zodiacSign, currentLocale),
+            content: prompt,
           },
         ],
         temperature: 0.7,
