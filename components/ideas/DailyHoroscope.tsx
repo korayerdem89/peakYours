@@ -196,12 +196,6 @@ export function DailyHoroscope({ goodTraits, badTraits, zodiacSign }: DailyHoros
         <Text className="font-semibold text-xl text-primary-dark dark:text-primary-light">
           💡 {t('ideas.dailyHoroscope.title')}
         </Text>
-        <MaterialCommunityIcons
-          name="lightbulb-on-outline"
-          size={24}
-          color={theme.colors.primary.dark}
-          style={{ marginLeft: 8 }}
-        />
       </View>
 
       {isLoaderVisible ? (
