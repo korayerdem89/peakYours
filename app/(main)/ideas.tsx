@@ -226,6 +226,7 @@ export default function Ideas() {
   const [personalityAnimal, setPersonalityAnimal] = useState<PersonalityAnimal | null>(null);
   const [analysis, setAnalysis] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+
   const systemMessages = {
     en: `You are a friendly and witty personality analyst who loves combining astrology with personality traits! 
     While you're an expert in both fields, you prefer explaining things in a warm, casual tone with occasional humor.
@@ -573,20 +574,22 @@ ${content.paragraphs[2]}
   useEffect(() => {
     const loadAnalysis = async () => {
       if (!goodTraits || !badTraits || !user?.zodiacSign || !traitDetails) return;
+
       try {
         setIsLoading(true);
         const currentRaters = traitDetails.totalRaters || 0;
         const storedData = await getStoredAnalysis();
-        const lastStoredRaters = storedData?.lastRaterCount || 0;
 
         const needsUpdate = await shouldUpdateAnalysis(
           currentRaters,
-          lastStoredRaters,
+          storedData?.lastRaterCount || 0,
           user.zodiacSign,
           locale
         );
 
-        if (storedData && !needsUpdate) {
+        if (!storedData || storedData.zodiacSign !== user.zodiacSign || needsUpdate) {
+          await generatePersonalityAnalysis();
+        } else {
           const animalKey = Object.keys(PERSONALITY_ANIMALS).find((key) =>
             key.includes(storedData.spiritAnimal.toUpperCase())
           );
@@ -594,21 +597,9 @@ ${content.paragraphs[2]}
           if (animalKey && PERSONALITY_ANIMALS[animalKey]) {
             setPersonalityAnimal(PERSONALITY_ANIMALS[animalKey]);
             setAnalysis(storedData.analysis);
-            setIsLoading(false);
-            return;
+          } else {
+            await generatePersonalityAnalysis();
           }
-        }
-
-        await generatePersonalityAnalysis();
-
-        if (personalityAnimal && analysis) {
-          await storeAnalysis(
-            personalityAnimal.id,
-            analysis,
-            currentRaters,
-            user.zodiacSign,
-            locale
-          );
         }
       } catch (error) {
         console.error('Error in loadAnalysis:', error);
