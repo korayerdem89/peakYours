@@ -1,5 +1,5 @@
 import { View, Image, Text, ScrollView, ActivityIndicator } from 'react-native';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useAuth } from '@/store/useAuth';
 import { ZodiacModal } from '@/components/ZodiacModal';
@@ -20,8 +20,14 @@ import { theme } from '@/constants/theme';
 import { ZODIAC_SIGNS } from '@/constants/zodiac';
 import { useTraitDetails } from '@/hooks/useTraitDetails';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { BannerAd, BannerAdSize } from 'react-native-google-mobile-ads';
+import {
+  BannerAd,
+  BannerAdSize,
+  AdEventType,
+  RequestOptions,
+} from 'react-native-google-mobile-ads';
 import { DailyHoroscope } from '@/components/ideas/DailyHoroscope';
+import NetInfo from '@react-native-community/netinfo';
 
 // Types
 interface PersonalityAnimal {
@@ -226,6 +232,10 @@ export default function Ideas() {
   const [personalityAnimal, setPersonalityAnimal] = useState<PersonalityAnimal | null>(null);
   const [analysis, setAnalysis] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [bannerError, setBannerError] = useState(false);
+  const [retryCount, setRetryCount] = useState(0);
+  const MAX_RETRY = 3;
+  const RETRY_DELAY = 5000;
 
   const systemMessages = {
     en: `You are a friendly and witty personality analyst who loves combining astrology with personality traits! 
@@ -630,6 +640,41 @@ ${content.paragraphs[2]}
     }
   };
 
+  const handleBannerError = useCallback(
+    async (error: Error) => {
+      console.error('Banner ad failed to load:', error);
+      setBannerError(true);
+
+      const networkState = await NetInfo.fetch();
+
+      if (networkState.isConnected && retryCount < MAX_RETRY) {
+        setTimeout(() => {
+          setBannerError(false);
+          setRetryCount((prev) => prev + 1);
+        }, RETRY_DELAY);
+      }
+    },
+    [retryCount]
+  );
+
+  useEffect(() => {
+    const unsubscribe = NetInfo.addEventListener((state) => {
+      if (state.isConnected && bannerError) {
+        setBannerError(false);
+        setRetryCount(0);
+      }
+    });
+
+    return () => {
+      unsubscribe();
+    };
+  }, [bannerError]);
+
+  const requestOptions: RequestOptions = {
+    requestNonPersonalizedAdsOnly: true,
+    keywords: ['personality', 'zodiac', 'astrology', 'analysis', 'horoscope'],
+  };
+
   if (!user?.zodiacSign) {
     return (
       <View className="flex-1 bg-background-light dark:bg-background-dark">
@@ -651,6 +696,18 @@ ${content.paragraphs[2]}
 
   return (
     <SafeAreaView className="flex-1 bg-background-light dark:bg-background-dark">
+      {!bannerError && (
+        <BannerAd
+          unitId={'ca-app-pub-6312844121446107/2492397048'}
+          size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
+          requestOptions={requestOptions}
+          onAdFailedToLoad={handleBannerError}
+          onAdLoaded={() => {
+            setBannerError(false);
+            setRetryCount(0);
+          }}
+        />
+      )}
       <ScrollView
         className="flex-1 px-4"
         contentContainerStyle={{

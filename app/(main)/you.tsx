@@ -19,9 +19,11 @@ import {
   InterstitialAd,
   AdEventType,
   TestIds,
+  RequestOptions,
 } from 'react-native-google-mobile-ads';
 import { useInterstitialAd } from '@/store/useInterstitialAd';
 import { useLoadingStore } from '@/store/useLoadingStore';
+import NetInfo from '@react-native-community/netinfo';
 
 const adUnitId = 'ca-app-pub-6312844121446107/7886655538';
 
@@ -60,6 +62,10 @@ export default function YouScreen() {
   const updateUser = useUpdateUser();
   const showAd = useInterstitialAd((state) => state.showAd);
   const isLoaded = useInterstitialAd((state) => state.isLoaded);
+  const [bannerError, setBannerError] = useState(false);
+  const [retryCount, setRetryCount] = useState(0);
+  const MAX_RETRY = 3;
+  const RETRY_DELAY = 5000;
 
   const routes = useMemo(
     () => [
@@ -127,6 +133,41 @@ export default function YouScreen() {
     }, [userData?.zodiacSign])
   );
 
+  const handleBannerError = useCallback(
+    async (error: Error) => {
+      console.error('Banner ad failed to load:', error);
+      setBannerError(true);
+
+      const networkState = await NetInfo.fetch();
+
+      if (networkState.isConnected && retryCount < MAX_RETRY) {
+        setTimeout(() => {
+          setBannerError(false);
+          setRetryCount((prev) => prev + 1);
+        }, RETRY_DELAY);
+      }
+    },
+    [retryCount]
+  );
+
+  useEffect(() => {
+    const unsubscribe = NetInfo.addEventListener((state) => {
+      if (state.isConnected && bannerError) {
+        setBannerError(false);
+        setRetryCount(0);
+      }
+    });
+
+    return () => {
+      unsubscribe();
+    };
+  }, [bannerError]);
+
+  const requestOptions: RequestOptions = {
+    requestNonPersonalizedAdsOnly: true,
+    keywords: ['personality', 'zodiac', 'traits', 'self-discovery', 'character'],
+  };
+
   const renderTabBar = useCallback(
     (props: TabViewProps) => (
       <TabBar
@@ -167,16 +208,18 @@ export default function YouScreen() {
 
   return (
     <SafeAreaView className="flex-1 bg-accent-light pt-10 dark:bg-background-dark">
-      <BannerAd
-        unitId={'ca-app-pub-6312844121446107/2492397048'}
-        size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
-        requestOptions={{
-          requestNonPersonalizedAdsOnly: true,
-        }}
-        onAdFailedToLoad={(error: Error) => {
-          console.error('Banner ad failed to load:', error);
-        }}
-      />
+      {!bannerError && (
+        <BannerAd
+          unitId={'ca-app-pub-6312844121446107/2492397048'}
+          size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
+          requestOptions={requestOptions}
+          onAdFailedToLoad={handleBannerError}
+          onAdLoaded={() => {
+            setBannerError(false);
+            setRetryCount(0);
+          }}
+        />
+      )}
       <TabView
         navigationState={{ index, routes }}
         renderScene={renderScene}

@@ -28,10 +28,15 @@ import { TaskInfo } from '@/components/tasks/TaskInfo';
 import { UserData } from '@/services/user';
 import { TaskMotivation } from '@/components/tasks/TaskMotivation';
 import { updateUserTaskDate } from '@/services/user';
-import { BannerAdSize } from 'react-native-google-mobile-ads';
-import { BannerAd } from 'react-native-google-mobile-ads';
+import {
+  BannerAdSize,
+  BannerAd,
+  AdEventType,
+  RequestOptions,
+} from 'react-native-google-mobile-ads';
 import { useInterstitialAd } from '@/store/useInterstitialAd';
 import { useLoadingStore } from '@/store/useLoadingStore';
+import NetInfo from '@react-native-community/netinfo';
 
 interface Task {
   id: string;
@@ -64,6 +69,48 @@ export default function TasksScreen() {
   }));
 
   const { isLoaded, forceAd } = useInterstitialAd();
+
+  const [bannerError, setBannerError] = useState(false);
+  const [retryCount, setRetryCount] = useState(0);
+  const MAX_RETRY = 3;
+  const RETRY_DELAY = 5000; // 5 saniye
+
+  const handleBannerError = useCallback(
+    async (error: Error) => {
+      console.error('Banner ad failed to load:', error);
+      setBannerError(true);
+
+      // Network durumunu kontrol et
+      const networkState = await NetInfo.fetch();
+
+      if (networkState.isConnected && retryCount < MAX_RETRY) {
+        setTimeout(() => {
+          setBannerError(false);
+          setRetryCount((prev) => prev + 1);
+        }, RETRY_DELAY);
+      }
+    },
+    [retryCount]
+  );
+
+  // Network değişikliklerini dinle
+  useEffect(() => {
+    const unsubscribe = NetInfo.addEventListener((state) => {
+      if (state.isConnected && bannerError) {
+        setBannerError(false);
+        setRetryCount(0);
+      }
+    });
+
+    return () => {
+      unsubscribe();
+    };
+  }, [bannerError]);
+
+  const requestOptions: RequestOptions = {
+    requestNonPersonalizedAdsOnly: true,
+    keywords: ['personality', 'zodiac', 'astrology', 'tasks', 'self-improvement'],
+  };
 
   if (!traitDetails?.totalRaters) {
     return (
@@ -301,16 +348,18 @@ export default function TasksScreen() {
   return (
     <SafeAreaView className="flex-1 bg-background-light dark:bg-background-dark">
       <View className="flex-1 gap-4 p-4 pb-10">
-        <BannerAd
-          unitId={'ca-app-pub-6312844121446107/2492397048'}
-          size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
-          requestOptions={{
-            requestNonPersonalizedAdsOnly: true,
-          }}
-          onAdFailedToLoad={(error: Error) => {
-            console.error('Banner ad failed to load:', error);
-          }}
-        />
+        {!bannerError && (
+          <BannerAd
+            unitId={'ca-app-pub-6312844121446107/2492397048'}
+            size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
+            requestOptions={requestOptions}
+            onAdFailedToLoad={handleBannerError}
+            onAdLoaded={() => {
+              setBannerError(false);
+              setRetryCount(0);
+            }}
+          />
+        )}
         <TaskHeader />
         <TaskMotivation />
 
