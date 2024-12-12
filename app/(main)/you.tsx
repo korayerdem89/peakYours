@@ -18,6 +18,7 @@ import {
   BannerAdSize,
   InterstitialAd,
   AdEventType,
+  TestIds,
 } from 'react-native-google-mobile-ads';
 import { useInterstitialAd } from '@/store/useInterstitialAd';
 import { useLoadingStore } from '@/store/useLoadingStore';
@@ -54,7 +55,7 @@ export default function YouScreen() {
   const { colorScheme } = useColorScheme();
   const [index, setIndex] = useState(0);
   const { user } = useAuth();
-  const [loaded, setLoaded] = useState(false);
+  const [loaded, setLoaded] = useState(true);
   const { data: userData } = useUserData(user?.uid);
   const updateUser = useUpdateUser();
   const showAd = useInterstitialAd((state) => state.showAd);
@@ -92,7 +93,6 @@ export default function YouScreen() {
       if (Platform.OS === 'ios') {
         StatusBar.setHidden(false);
       }
-      setLoaded(false);
       interstitial.load();
     });
 
@@ -104,6 +104,17 @@ export default function YouScreen() {
       unsubscribeClosed();
     };
   }, []);
+
+  useFocusEffect(
+    useCallback(() => {
+      if (!loaded) {
+        interstitial.load();
+      }
+      return () => {
+        // Cleanup
+      };
+    }, [loaded])
+  );
 
   useFocusEffect(
     useCallback(() => {
@@ -153,8 +164,6 @@ export default function YouScreen() {
     ),
     [colorScheme, layout.width, isLoaded, showAd]
   );
-
-  if (!loaded) return null;
 
   return (
     <SafeAreaView className="flex-1 bg-accent-light pt-10 dark:bg-background-dark">
