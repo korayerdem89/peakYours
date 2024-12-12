@@ -115,7 +115,6 @@ export default function TasksScreen() {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [completedTasks, setCompletedTasks] = useState<string[]>([]);
   const { setIsLoading } = useLoadingStore();
-  const [isFirstRefresh, setFirstRefresh] = useState(true);
 
   // Refresh sayacını taskData ile senkronize et
   useEffect(() => {
@@ -244,17 +243,21 @@ export default function TasksScreen() {
       });
       return;
     }
-
+    Toast.show({
+      type: 'info',
+      text1: t('tasks.refreshInfo'),
+    });
     try {
       // Her refresh'te reklam göster
-      if (isLoaded) {
-        try {
-          await forceAd();
-        } catch (adError) {
-          console.error('Ad display error:', adError);
-          // Reklam gösteriminde hata olsa bile task yenilemeye devam et
+      setTimeout(async () => {
+        if (isLoaded) {
+          try {
+            await forceAd();
+          } catch (adError) {
+            console.error('Ad display error:', adError);
+          }
         }
-      }
+      }, 2000);
 
       const newTask = getRandomTask(trait);
       if (newTask) {
@@ -270,7 +273,6 @@ export default function TasksScreen() {
 
         setTasks(newTasks);
         setRefreshLimit((prev) => Math.max(0, prev - 1));
-        setFirstRefresh(false);
 
         // Başarılı işlem mesajı
         Toast.show({

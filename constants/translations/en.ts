@@ -332,6 +332,7 @@ export default {
     },
     motivation: 'Complete tasks and add value to yourself',
     refreshSuccess: 'Task refreshed successfully',
+    refreshInfo: 'Loading new task...',
   },
   leaderboard: {
     title: 'Leaderboard',

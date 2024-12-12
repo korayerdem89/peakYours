@@ -340,5 +340,6 @@ export default {
     },
     motivation: 'Completa tareas y añade valor a ti mismo',
     refreshSuccess: 'Tarea actualizada con éxito',
+    refreshInfo: 'Cargando nueva tarea...',
   },
 };

@@ -325,5 +325,6 @@ export default {
     },
     motivation: 'Görevleri yapın ve kendinize değer katın',
     refreshSuccess: 'Görev başarıyla yenilendi',
+    refreshInfo: 'Yeni görev yükleniyor...',
   },
 };

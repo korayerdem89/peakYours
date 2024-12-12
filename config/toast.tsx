@@ -12,28 +12,13 @@ export const toastConfig: ToastConfig = {
       text1Style={{
         fontSize: 15,
         fontFamily: 'Poppins_400Medium',
-        color:
-          props.type === 'success'
-            ? theme.colors.success.default
-            : props.type === 'info'
-              ? theme.colors.info.dark
-              : theme.colors.error.dark,
+        color: theme.colors.success.default,
       }}
-      renderLeadingIcon={() =>
-        props.type === 'success' ? (
-          <View style={{ marginLeft: 15, justifyContent: 'center' }}>
-            <Ionicons name="checkmark-circle" size={24} color={theme.colors.success.default} />
-          </View>
-        ) : props.type === 'error' ? (
-          <View style={{ marginLeft: 15, justifyContent: 'center' }}>
-            <Ionicons name="close-circle" size={24} color={theme.colors.error.dark} />
-          </View>
-        ) : (
-          <View style={{ marginLeft: 15, justifyContent: 'center' }}>
-            <Ionicons name="information-circle" size={24} color={theme.colors.info.dark} />
-          </View>
-        )
-      }
+      renderLeadingIcon={() => (
+        <View style={{ marginLeft: 15, justifyContent: 'center' }}>
+          <Ionicons name="checkmark-circle" size={24} color={theme.colors.success.default} />
+        </View>
+      )}
     />
   ),
   error: (props) => (
@@ -41,10 +26,16 @@ export const toastConfig: ToastConfig = {
       {...props}
       style={{ borderLeftColor: theme.colors.error.dark }}
       text1Style={{
+        color: theme.colors.error.dark,
         fontSize: 15,
         fontWeight: '500',
         fontFamily: 'Poppins_400Regular',
       }}
+      renderLeadingIcon={() => (
+        <View style={{ marginLeft: 15, justifyContent: 'center' }}>
+          <Ionicons name="close-circle" size={24} color={theme.colors.error.dark} />
+        </View>
+      )}
     />
   ),
   info: (props) => (
@@ -53,10 +44,16 @@ export const toastConfig: ToastConfig = {
       style={{ borderLeftColor: theme.colors.secondary.dark }}
       contentContainerStyle={{ paddingHorizontal: 15 }}
       text1Style={{
+        color: theme.colors.info.dark,
         fontSize: 15,
         fontWeight: '500',
         fontFamily: 'Poppins_400Regular',
       }}
+      renderLeadingIcon={() => (
+        <View style={{ marginLeft: 15, justifyContent: 'center' }}>
+          <Ionicons name="information-circle" size={24} color={theme.colors.info.dark} />
+        </View>
+      )}
     />
   ),
 };
