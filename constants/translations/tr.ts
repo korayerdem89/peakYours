@@ -118,7 +118,7 @@ export default {
       errorMessage: 'Puanlama kaydedilirken bir hata oluştu.',
       reset: 'Sıfırlandı',
       resetMessage: 'Tüm puanlar sıfırlandı.',
-      alreadyRated: 'Bu kullanıcıyı zaten puanladınız',
+      alreadyRated: 'Bu kullanıcının iyi yanlarını zaten puanladınız',
       yourRating: 'Değerlendirmeniz',
       nextBadSides: 'şimdi sırada geliştirmesi gereken yanları puanlamakta :)',
       friendlyReminder: 'Dürüst geri bildirimin için teşekkürler!',
@@ -316,7 +316,7 @@ export default {
       levelUp:
         'Belirli bir kişilik özelliğinizi 1 puan arttırmak için, o özellikten 5 görev tamamlayın.',
       dailyRefresh: 'Görevler her 24 saatte bir yenilenir',
-      refreshLimit: 'Farklı görevler istiyorsanız günde 10 kez yenileme hakkınız var.',
+      refreshLimit: 'Farklı görevler istiyorsanız günde 10 kez yenileme hakk��nız var.',
     },
     debug: {
       clearCache: 'Görev Önbelleğini Temizle',

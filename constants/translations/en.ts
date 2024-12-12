@@ -118,7 +118,7 @@ export default {
       deleteError: 'Failed to delete rating',
       reset: 'Reset',
       resetMessage: 'All ratings have been reset.',
-      alreadyRated: 'You have already rated this profile',
+      alreadyRated: "You've already rated this user's good traits",
       yourRating: 'Your Rating',
       nextBadSides: "now it's time to rate the aspects that need improvement :)",
       friendlyReminder: 'Thank you for your honest feedback!',

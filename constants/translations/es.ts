@@ -100,7 +100,7 @@ export default {
       close: 'Cerrar',
       remainingPoints: 'Puntos Restantes',
       saved: 'Calificación guardada',
-      alreadyRated: 'Ya has calificado este perfil',
+      alreadyRated: 'Ya has calificado los buenos rasgos de este usuario',
       yourRating: 'Tu Calificación',
       complete: 'Completar Calificación',
       rateAgain: 'Calificar de nuevo',

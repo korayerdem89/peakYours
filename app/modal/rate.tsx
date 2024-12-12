@@ -17,7 +17,6 @@ import { UserData } from '@/types/user';
 import { Image as RNImage } from 'react-native';
 import { GoodSidesRateRoute } from '@/components/rate/GoodSidesRateRoute';
 import { BadSidesRateRoute } from '@/components/rate/BadSidesRateRoute';
-import Toast from 'react-native-toast-message';
 
 const DEFAULT_AVATAR = 'https://ui-avatars.com/api/?background=random';
 

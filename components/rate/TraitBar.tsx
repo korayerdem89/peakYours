@@ -83,8 +83,8 @@ export const TraitBar = memo(
 
           <View className="flex-row items-center gap-1.5 rounded-full bg-gray-50 px-1 py-0.5">
             <AnimatedPressable
-              onPress={remainingPoints === 0 ? () => {} : onDecrease}
-              disabled={disabled || points === 0 || remainingPoints === 0}
+              onPress={onDecrease}
+              disabled={remainingPoints === 35 || points === 0}
               hitSlop={8}
               style={[
                 {
@@ -96,18 +96,18 @@ export const TraitBar = memo(
               <MaterialIcons
                 name="remove-circle-outline"
                 size={16}
-                color={disabled ? '#9CA3AF' : color}
+                color={remainingPoints === 35 || points === 0 ? '#9CA3AF' : color}
               />
             </AnimatedPressable>
 
             <Text
               className="w-5 text-center font-bold text-xs"
-              style={{ color: disabled ? '#9CA3AF' : color }}>
+              style={{ color: remainingPoints === 35 || points === 0 ? '#9CA3AF' : color }}>
               {points}
             </Text>
 
             <AnimatedPressable
-              onPress={onIncrease}
+              onPress={remainingPoints === 0 ? () => {} : onIncrease}
               disabled={disabled || points === maxPoints || remainingPoints === 0}
               hitSlop={12}
               style={[

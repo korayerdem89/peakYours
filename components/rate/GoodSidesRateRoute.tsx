@@ -83,10 +83,11 @@ export const GoodSidesRateRoute = memo(
             setIsSubmitted(true);
             setHasExistingRating(true);
             Toast.show({
-              type: 'error',
+              type: 'info',
               text1: t('personality.rating.alreadyRated'),
               position: 'bottom',
               visibilityTime: 3000,
+              onHide: () => onTabChange(),
             });
           }
         } catch (error) {
