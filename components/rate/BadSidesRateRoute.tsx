@@ -103,7 +103,13 @@ export const BadSidesRateRoute = memo(({ referenceCode }: BadSidesRateRouteProps
 
     try {
       setIsLoading(true);
-      await RatingService.saveRating(referenceCode, user.uid, traits, 'badsides');
+      await RatingService.saveRating(
+        referenceCode,
+        user.uid,
+        traits,
+        'badsides',
+        user?.displayName || ''
+      );
 
       await Promise.all([
         queryClient.invalidateQueries({
@@ -162,7 +168,13 @@ export const BadSidesRateRoute = memo(({ referenceCode }: BadSidesRateRouteProps
     }));
 
     try {
-      await RatingService.saveRating(referenceCode, testUserId, randomTraits, 'badsides');
+      await RatingService.saveRating(
+        referenceCode,
+        testUserId,
+        randomTraits,
+        'badsides',
+        user?.displayName || ''
+      );
       await Promise.all([
         queryClient.invalidateQueries({
           queryKey: ['traitDetails', referenceCode],
