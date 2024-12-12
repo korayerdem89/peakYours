@@ -30,7 +30,6 @@ function isErrorWithCode(error: any): error is { code: string } {
 
 export default function SignInScreen() {
   const { setUser } = useAuth();
-
   const { colorScheme } = useColorScheme();
   const { t } = useTranslation();
   const { isLoading, setIsLoading } = useLoadingStore();
