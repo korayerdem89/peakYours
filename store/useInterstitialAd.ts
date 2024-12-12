@@ -34,6 +34,7 @@ interface InterstitialState {
   lastShowTime: number;
   setIsLoaded: (loaded: boolean) => void;
   showAd: () => Promise<boolean>;
+  forceAd: () => Promise<boolean>;
   loadAd: () => void;
   setLastShowTime: (time: number) => void;
   canShowAd: () => boolean;
@@ -56,6 +57,23 @@ export const useInterstitialAd = create<InterstitialState>((set, get) => ({
       console.log('Not enough time has passed since the last ad');
       return false;
     }
+
+    if (isLoaded) {
+      try {
+        await interstitial.show();
+        setLastShowTime(Date.now());
+        return true;
+      } catch (error) {
+        console.error('Error showing interstitial ad:', error);
+        setIsLoaded(false);
+        interstitial.load();
+        return false;
+      }
+    }
+    return false;
+  },
+  forceAd: async () => {
+    const { isLoaded, setIsLoaded, canShowAd, setLastShowTime } = get();
 
     if (isLoaded) {
       try {

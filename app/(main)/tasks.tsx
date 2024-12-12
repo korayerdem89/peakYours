@@ -63,7 +63,7 @@ export default function TasksScreen() {
     transform: [{ translateY: bounceValue.value }],
   }));
 
-  const { showAd, isLoaded, canShowAd } = useInterstitialAd();
+  const { isLoaded, forceAd } = useInterstitialAd();
 
   if (!traitDetails?.totalRaters) {
     return (
@@ -246,13 +246,16 @@ export default function TasksScreen() {
     }
 
     try {
-      // Önce reklam göstermeyi dene
-      let adShown = false;
-      if (isLoaded && (canShowAd() || isFirstRefresh)) {
-        adShown = await showAd();
+      // Her refresh'te reklam göster
+      if (isLoaded) {
+        try {
+          await forceAd();
+        } catch (adError) {
+          console.error('Ad display error:', adError);
+          // Reklam gösteriminde hata olsa bile task yenilemeye devam et
+        }
       }
 
-      // Reklam gösterilsin veya gösterilmesin, task yenileme işlemine devam et
       const newTask = getRandomTask(trait);
       if (newTask) {
         const newTasks = tasks.map((task) =>
@@ -268,6 +271,7 @@ export default function TasksScreen() {
         setTasks(newTasks);
         setRefreshLimit((prev) => Math.max(0, prev - 1));
         setFirstRefresh(false);
+
         // Başarılı işlem mesajı
         Toast.show({
           type: 'success',
