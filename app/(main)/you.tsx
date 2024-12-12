@@ -78,7 +78,7 @@ export default function YouScreen() {
     badsides: BadSidesRoute,
   });
 
-  useEffect(() => {
+  useFocusEffect(() => {
     const unsubscribeLoaded = interstitial.addAdEventListener(AdEventType.LOADED, () => {
       setLoaded(true);
     });
@@ -103,7 +103,7 @@ export default function YouScreen() {
       unsubscribeOpened();
       unsubscribeClosed();
     };
-  }, []);
+  });
 
   useFocusEffect(
     useCallback(() => {
