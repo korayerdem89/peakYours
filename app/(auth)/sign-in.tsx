@@ -12,6 +12,7 @@ import { useTranslation } from '@/providers/LanguageProvider';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useColorScheme } from 'nativewind';
 import { useAuth } from '@/store/useAuth';
+import { useLoadingStore } from '@/store/useLoadingStore';
 
 const { width, height } = Dimensions.get('window');
 const BANNER_HEIGHT = height / 3;
@@ -29,10 +30,10 @@ function isErrorWithCode(error: any): error is { code: string } {
 
 export default function SignInScreen() {
   const { setUser } = useAuth();
-  const [isLoading, setIsLoading] = useState(false);
+
   const { colorScheme } = useColorScheme();
   const { t } = useTranslation();
-
+  const { isLoading, setIsLoading } = useLoadingStore();
   const signIn = async () => {
     try {
       setIsLoading(true);
