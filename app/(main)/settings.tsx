@@ -430,7 +430,7 @@ export default function SettingsScreen() {
         </Animated.View>
 
         {/* Theme Toggle */}
-        <Animated.View className="bg-gray- mt-4 flex-row items-center justify-between rounded-lg bg-background-light p-4 dark:bg-surface-dark">
+        {/* <Animated.View className="bg-gray- mt-4 flex-row items-center justify-between rounded-lg bg-background-light p-4 dark:bg-surface-dark">
           <Text className="pb-1 text-center font-medium text-[15px] text-text-light-secondary dark:text-text-dark-secondary">
             {t('settings.theme.title')}
           </Text>
@@ -444,7 +444,7 @@ export default function SettingsScreen() {
             }}
             thumbColor={colorScheme === 'dark' ? theme.colors.primary.light : '#d1d5db'}
           />
-        </Animated.View>
+        </Animated.View> */}
 
         {/* Account Settings Accordion */}
         <View className="mt-4">
