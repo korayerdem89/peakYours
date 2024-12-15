@@ -77,7 +77,7 @@ export function TaskInfo({ userData }: TaskInfoProps) {
             className="mr-3"
           />
           <View>
-            <Text className="dark:text-text-dark-primary font-semibold text-base text-text-light">
+            <Text className="font-semibold text-base text-text-light dark:text-text-dark-secondary">
               {t('tasks.info.title')}
             </Text>
             <Text className="font-medium text-sm text-text-light-secondary dark:text-text-dark-secondary">

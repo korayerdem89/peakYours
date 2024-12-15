@@ -375,7 +375,7 @@ export default {
       cacheCleared: 'Görev önbelleği başarıyla temizlendi',
       clearError: 'Önbellek temizlenirken hata oluştu',
     },
-    motivation: 'Görevleri yapın ve kendinize değer katın',
+    motivation: 'Günlük görevleri yaparak kişilik özelliklerinizi geliştirin',
     refreshSuccess: 'Görev başarıyla yenilendi',
     refreshInfo: 'Yeni görev yükleniyor...',
   },

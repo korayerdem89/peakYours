@@ -375,7 +375,7 @@ export default {
       cacheCleared: 'Caché de tareas limpiado con éxito',
       clearError: 'Error al limpiar el caché de tareas',
     },
-    motivation: 'Completa tareas y añade valor a ti mismo',
+    motivation: 'Mejora tus rasgos de personalidad completando tareas diarias',
     refreshSuccess: 'Tarea actualizada con éxito',
     refreshInfo: 'Cargando nueva tarea...',
   },

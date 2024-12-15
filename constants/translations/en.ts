@@ -366,7 +366,7 @@ export default {
       cacheCleared: 'Task cache cleared successfully',
       clearError: 'Error clearing task cache',
     },
-    motivation: 'Complete tasks and add value to yourself',
+    motivation: 'Improve your personality traits by completing daily tasks',
     refreshSuccess: 'Task refreshed successfully',
     refreshInfo: 'Loading new task...',
   },

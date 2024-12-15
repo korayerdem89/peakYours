@@ -9,7 +9,7 @@ export function TaskMotivation() {
   return (
     <View className="flex-row items-center justify-center">
       <FontAwesome name="star" size={20} color={theme.colors.primary.default} className="mr-2" />
-      <Text className="font-poppins-medium text-text-light-primary dark:text-text-dark-primary text-base">
+      <Text className="text-text-light-primary font-extralight text-sm dark:text-text-dark-secondary">
         {t('tasks.motivation')}
       </Text>
     </View>
