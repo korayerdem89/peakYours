@@ -28,6 +28,7 @@ import {
 } from 'react-native-google-mobile-ads';
 import { DailyHoroscope } from '@/components/ideas/DailyHoroscope';
 import NetInfo from '@react-native-community/netinfo';
+import Toast from 'react-native-toast-message';
 
 // Types
 interface PersonalityAnimal {
@@ -35,22 +36,89 @@ interface PersonalityAnimal {
   image: any; // For require() image imports
 }
 
-interface TraitAverage {
-  trait: string;
-  averagePoints: number;
+// Language specific content types
+interface LanguageContent {
+  instruction: string;
+  strengths: string;
+  growthAreas: string;
+  zodiacTitle: string;
+  spiritAnimals: string;
+  createTitle: string;
+  animalMatch: string;
+  animalCriteria: string[];
+  storyTitle: string;
+  paragraphs: string[];
 }
 
+const languageSpecificContent: Record<string, LanguageContent> = {
+  en: {
+    instruction:
+      'Analyze the personality traits and zodiac sign to find the most suitable spirit animal.',
+    strengths: 'Strengths:',
+    growthAreas: 'Growth Areas:',
+    zodiacTitle: 'Zodiac Sign:',
+    spiritAnimals: 'Available Spirit Animals:',
+    createTitle: 'Create Analysis',
+    animalMatch: 'Match the most suitable spirit animal based on:',
+    animalCriteria: [
+      '- Personality trait scores',
+      '- Zodiac sign characteristics',
+      '- Overall personality pattern',
+    ],
+    storyTitle: 'Create a personalized story that:',
+    paragraphs: [
+      '- Explains why this spirit animal matches their personality',
+      "- Highlights their strengths through the animal's characteristics",
+      '- Suggests growth areas using gentle metaphors',
+    ],
+  },
+  tr: {
+    instruction:
+      "Kişilik özelliklerini ve burç özelliklerini analiz ederek en uygun spirit animal'ı bul.",
+    strengths: 'Güçlü Yönler:',
+    growthAreas: 'Gelişim Alanları:',
+    zodiacTitle: 'Burç:',
+    spiritAnimals: 'Mevcut Spirit Animals:',
+    createTitle: 'Analiz Oluştur',
+    animalMatch: "En uygun spirit animal'ı şunlara göre seç:",
+    animalCriteria: ['- Kişilik özelliği puanları', '- Burç özellikleri', '- Genel kişilik yapısı'],
+    storyTitle: 'Şu özelliklere sahip kişisel bir hikaye oluştur:',
+    paragraphs: [
+      "- Bu spirit animal'ın neden kişiliğiyle eşleştiğini açıkla",
+      '- Hayvanın özellikleri üzerinden güçlü yanlarını vurgula',
+      '- Nazik metaforlar kullanarak gelişim alanlarını öner',
+    ],
+  },
+  es: {
+    instruction:
+      'Analiza los rasgos de personalidad y el signo zodiacal para encontrar el animal espiritual más adecuado.',
+    strengths: 'Fortalezas:',
+    growthAreas: 'Áreas de Crecimiento:',
+    zodiacTitle: 'Signo Zodiacal:',
+    spiritAnimals: 'Animales Espirituales Disponibles:',
+    createTitle: 'Crear Análisis',
+    animalMatch: 'Encuentra el animal espiritual más adecuado basado en:',
+    animalCriteria: [
+      '- Puntuaciones de rasgos de personalidad',
+      '- Características del signo zodiacal',
+      '- Patrón general de personalidad',
+    ],
+    storyTitle: 'Crea una historia personalizada que:',
+    paragraphs: [
+      '- Explique por qué este animal espiritual coincide con su personalidad',
+      '- Destaque sus fortalezas a través de las características del animal',
+      '- Sugiera áreas de crecimiento usando metáforas suaves',
+    ],
+  },
+};
+
+// Analiz response tipi
 interface AnalysisResponse {
   spiritAnimal: string;
-  analysis:
-    | {
-        firstParagraph?: string;
-        secondParagraph?: string;
-        thirdParagraph?: string;
-      }
-    | string;
+  analysis: string;
 }
 
+// Stored analysis tipi
 interface StoredAnalysis {
   spiritAnimal: string;
   analysis: string;
@@ -288,96 +356,24 @@ export default function Ideas() {
   };
 
   function generatePrompt(
-    goodTraits: TraitAverage[],
-    badTraits: TraitAverage[],
+    goodTraits: { trait: string; value: number }[],
+    badTraits: { trait: string; value: number }[],
     zodiacSign: string,
     locale: string
   ) {
-    const zodiacInfo = ZODIAC_SIGNS.find((sign: { id: string }) => sign.id === zodiacSign);
-
-    // Dil bazlı talimatları ve içeriği ayarla
-    const languageSpecificContent = {
-      tr: {
-        instruction: 'Analizi Türkçe dilinde yaz.',
-        strengths: 'Güçlü Yanların (ve bunlarda ne kadar iyisin):',
-        growthAreas: 'Gelişim Alanların (herkesin vardır!):',
-        zodiacTitle: 'Burcun:',
-        spiritAnimals: 'Mevcut Ruh Hayvanları:',
-        createTitle: 'Lütfen oluştur:',
-        animalMatch: '1. Sana En Uygun Ruh Hayvanı: Şunları en iyi temsil edeni seç:',
-        animalCriteria: [
-          '- Kişilik özelliklerinin kombinasyonu',
-          '- Burcunun karakteristik özellikleri',
-          '- Bu elementlerin benzersiz uyumu',
-        ],
-        storyTitle: '2. Kişisel Hikayen (Tam 3 paragraf, toplam 400 kelime):',
-        paragraphs: [
-          'İlk Paragraf (±150 kelime):',
-          'İkinci Paragraf (±150 kelime):',
-          'Üçüncü Paragraf (±100 kelime):',
-        ],
-      },
-      en: {
-        instruction: 'Write the analysis in English.',
-        strengths: 'Your Amazing Strengths (and how awesome you are at them):',
-        growthAreas: "Areas Where You're Growing (everyone's got them!):",
-        zodiacTitle: 'Your Zodiac Sign:',
-        spiritAnimals: 'Available Spirit Animals:',
-        createTitle: 'Please create:',
-        animalMatch: '1. Your Perfect Spirit Animal Match: Choose ONE that best represents:',
-        animalCriteria: [
-          '- The combination of your personality traits',
-          "- Your zodiac sign's characteristics",
-          '- The unique way these elements blend together',
-        ],
-        storyTitle: '2. Your Personal Story (Write exactly 3 paragraphs, 400 words total):',
-        paragraphs: [
-          'First Paragraph (±150 words):',
-          'Second Paragraph (±150 words):',
-          'Third Paragraph (±100 words):',
-        ],
-      },
-      es: {
-        instruction: 'Escribe el análisis en español.',
-        strengths: 'Tus Fortalezas Increíbles (y qué tan bueno eres en ellas):',
-        growthAreas: 'Áreas de Crecimiento (¡todos las tienen!):',
-        zodiacTitle: 'Tu Signo Zodiacal:',
-        spiritAnimals: 'Animales Espirituales Disponibles:',
-        createTitle: 'Por favor crea:',
-        animalMatch: '1. Tu Animal Espiritual Perfecto: Elige UNO que mejor represente:',
-        animalCriteria: [
-          '- La combinación de tus rasgos de personalidad',
-          '- Las características de tu signo zodiacal',
-          '- La forma única en que estos elementos se mezclan',
-        ],
-        storyTitle:
-          '2. Tu Historia Personal (Escribe exactamente 3 párrafos, 400 palabras en total):',
-        paragraphs: [
-          'Primer Párrafo (±150 palabras):',
-          'Segundo Párrafo (±150 palabras):',
-          'Tercer Párrafo (±100 palabras):',
-        ],
-      },
-    };
-
-    // Varsayılan dil olarak İngilizce'yi kullan, eğer belirtilen dil desteklenmiyorsa
-    const content =
-      languageSpecificContent[locale as keyof typeof languageSpecificContent] ||
-      languageSpecificContent.en;
+    const content = languageSpecificContent[locale] || languageSpecificContent.en;
 
     return `${content.instruction}
 
 ${content.strengths}
-${goodTraits.map((t) => `   🌟 ${t.trait}: ${t.averagePoints * 10}%`).join('\n')}
+${goodTraits.map((t) => `   🌟 ${t.trait}: ${t.value}%`).join('\n')}
 
 ${content.growthAreas}
-${badTraits.map((t) => `   💫 ${t.trait}: ${t.averagePoints * 10}%`).join('\n')}
+${badTraits.map((t) => `   💫 ${t.trait}: ${t.value}%`).join('\n')}
 
-${content.zodiacTitle} ${zodiacInfo ? `${t(zodiacInfo.name)} (${zodiacInfo.date})` : zodiacSign}
+${content.zodiacTitle} ${zodiacSign}
 
-${content.spiritAnimals} ${Object.keys(PERSONALITY_ANIMALS)
-      .map((key) => key.split('_')[1])
-      .join(', ')}
+${content.spiritAnimals} ${Object.keys(PERSONALITY_ANIMALS).join(', ')}
 
 ${content.createTitle}
 
@@ -385,50 +381,36 @@ ${content.animalMatch}
 ${content.animalCriteria.join('\n')}
 
 ${content.storyTitle}
-
-${content.paragraphs[0]}
-   - Paint a vivid picture of who you are
-   - Show how your zodiac traits and personality measurements create your unique character
-   - Use warm, friendly language and relatable examples
-   - Include some playful observations about how your traits make you special
-
-${content.paragraphs[1]}
-   - Discuss your strengths and areas for growth with warmth and understanding
-   - Show how your zodiac sign influences these traits
-   - Use encouraging language and gentle humor
-   - Highlight how your different traits work together
-
-${content.paragraphs[2]}
-   - Offer specific, actionable advice for personal growth
-   - Include 3-4 practical tips that combine zodiac wisdom with personality insights
-   - Make the suggestions fun and motivating
-   - End with an uplifting message about your potential`;
+${content.paragraphs.join('\n')}`;
   }
 
-  const generatePersonalityAnalysis = async () => {
+  const generateAnalysis = async () => {
     try {
       setIsLoading(true);
 
-      const goodTraitsFormatted = goodTraits.map((trait) => ({
-        trait: trait.trait,
-        averagePoints: trait.value / 10,
-      }));
-
-      const badTraitsFormatted = badTraits.map((trait) => ({
-        trait: trait.trait,
-        averagePoints: trait.value / 10,
-      }));
-
-      const currentLocale = locale as keyof typeof systemMessages;
-      if (!systemMessages[currentLocale]) {
-        console.warn(`Unsupported locale: ${locale}, falling back to 'en'`);
+      if (!user?.zodiacSign || !goodTraits?.length || !badTraits?.length) {
+        throw new Error('Missing required data');
       }
 
+      // useTraitAverages'dan gelen veriyi doğru şekilde formatlayalım
+      const personalityData = {
+        zodiacSign: user.zodiacSign,
+        goodTraits: goodTraits.map((trait) => ({
+          name: trait.trait,
+          score: trait.value, // averagePoints yerine value kullanılmalı
+        })),
+        badTraits: badTraits.map((trait) => ({
+          name: trait.trait,
+          score: trait.value, // averagePoints yerine value kullanılmalı
+        })),
+      };
+
+      // API'ye gönderilecek prompt
       const prompt = generatePrompt(
-        goodTraitsFormatted,
-        badTraitsFormatted,
-        user?.zodiacSign || '',
-        currentLocale
+        goodTraits,
+        badTraits,
+        user.zodiacSign,
+        locale as keyof typeof systemMessages
       );
 
       const response = await fetch('https://api.openai.com/v1/chat/completions', {
@@ -442,7 +424,7 @@ ${content.paragraphs[2]}
           messages: [
             {
               role: 'system',
-              content: systemMessages[currentLocale],
+              content: systemMessages[locale as keyof typeof systemMessages],
             },
             {
               role: 'user',
@@ -456,68 +438,37 @@ ${content.paragraphs[2]}
       });
 
       if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        console.error('API Error Details:', errorData);
         throw new Error(`API error: ${response.status}`);
       }
 
       const data = await response.json();
-      console.log('GPT Response:', data.choices[0].message.content); // Debug için
-
       const result: AnalysisResponse = JSON.parse(data.choices[0].message.content);
 
-      if (!result || !result.spiritAnimal) {
-        console.error('Invalid response format:', result);
-        throw new Error('Invalid response format');
-      }
-
-      const animalKey = Object.keys(PERSONALITY_ANIMALS).find((key) =>
-        key.includes(result.spiritAnimal.toUpperCase())
-      );
+      // Gelen spirit animal'ı kontrol et ve set et
+      const animalKey = Object.keys(PERSONALITY_ANIMALS).find((key) => key === result.spiritAnimal);
 
       if (!animalKey || !PERSONALITY_ANIMALS[animalKey]) {
-        console.error('Invalid spirit animal:', result.spiritAnimal);
-        throw new Error('Invalid spirit animal');
+        throw new Error(`Invalid spirit animal: ${result.spiritAnimal}`);
       }
 
       setPersonalityAnimal(PERSONALITY_ANIMALS[animalKey]);
+      setAnalysis(typeof result.analysis === 'string' ? result.analysis : '');
 
-      // Analiz metnini işle
-      let finalAnalysis = '';
-      if (typeof result.analysis === 'string') {
-        finalAnalysis = result.analysis;
-      } else if (typeof result.analysis === 'object' && result.analysis !== null) {
-        finalAnalysis = [
-          result.analysis.firstParagraph,
-          result.analysis.secondParagraph,
-          result.analysis.thirdParagraph,
-        ]
-          .filter(Boolean)
-          .join('\n\n');
-      }
-
-      if (!finalAnalysis) {
-        throw new Error('Invalid analysis format');
-      }
-
-      setAnalysis(finalAnalysis);
-
+      // Analizi cache'le
       await storeAnalysis(
         animalKey,
-        finalAnalysis,
+        result.analysis,
         traitDetails?.totalRaters || 0,
-        user?.zodiacSign || '',
-        currentLocale
+        user.zodiacSign,
+        locale as string
       );
-    } catch (error: any) {
+    } catch (error) {
       console.error('Analysis generation error:', error);
-      if (error.response?.status === 401) {
-        Alert.alert(t('common.error'), t('ideas.unauthorizedError'));
-      } else if (error.response?.status === 429) {
-        Alert.alert(t('common.error'), t('ideas.rateLimitError'));
-      } else {
-        Alert.alert(t('common.error'), t('ideas.analysisError'));
-      }
+      Toast.show({
+        type: 'error',
+        text1: t('ideas.analysisError'),
+        position: 'bottom',
+      });
     } finally {
       setIsLoading(false);
     }
@@ -598,7 +549,7 @@ ${content.paragraphs[2]}
         );
 
         if (!storedData || storedData.zodiacSign !== user.zodiacSign || needsUpdate) {
-          await generatePersonalityAnalysis();
+          await generateAnalysis();
         } else {
           const animalKey = Object.keys(PERSONALITY_ANIMALS).find((key) =>
             key.includes(storedData.spiritAnimal.toUpperCase())
@@ -608,7 +559,7 @@ ${content.paragraphs[2]}
             setPersonalityAnimal(PERSONALITY_ANIMALS[animalKey]);
             setAnalysis(storedData.analysis);
           } else {
-            await generatePersonalityAnalysis();
+            await generateAnalysis();
           }
         }
       } catch (error) {
