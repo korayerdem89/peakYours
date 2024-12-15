@@ -13,7 +13,7 @@ export const useDarkMode = create<DarkModeState>()(
     (set) => ({
       isDarkMode: false,
       toggleDarkMode: () => set((state) => ({ isDarkMode: !state.isDarkMode })),
-      setDarkMode: (isDark) => set({ isDarkMode: isDark }),
+      setDarkMode: (isDark) => set({ isDarkMode: false }),
     }),
     {
       name: 'dark-mode-storage',

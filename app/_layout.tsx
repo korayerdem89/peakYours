@@ -149,8 +149,8 @@ export default function RootLayout() {
   useQueryConfig();
 
   useEffect(() => {
-    setDarkMode(systemColorScheme === 'dark');
-  }, [systemColorScheme]);
+    setDarkMode(false);
+  }, []);
 
   let [fontsLoaded, fontError] = useFonts({
     Poppins_100Thin,
