@@ -61,6 +61,39 @@ export default {
       description: 'Toca para cambiar tu signo zodiacal',
       updateError: 'Error al actualizar el signo zodiacal. Por favor, inténtalo de nuevo.',
     },
+    deleteAccount: {
+      button: 'Eliminar Cuenta',
+      title: 'Eliminar Cuenta',
+      message:
+        '¿Estás seguro de que quieres eliminar tu cuenta? Todos tus datos serán eliminados permanentemente.',
+      confirm: 'Estoy Seguro',
+      success: 'Tu cuenta ha sido eliminada exitosamente',
+      error: 'Ocurrió un error al eliminar tu cuenta',
+    },
+    resetTraits: {
+      button: 'Restablecer Puntos Ganados de Tareas',
+      title: 'Restablecer Puntuaciones',
+      message:
+        'Se eliminarán todos los puntos de personalidad obtenidos de las tareas completadas. ¿Estás seguro?',
+      confirm: 'Estoy Seguro',
+      success: 'Tus puntuaciones han sido restablecidas exitosamente',
+      error: 'Ocurrió un error al restablecer las puntuaciones',
+      timeRestriction: {
+        title: 'Restablecer Puntos',
+        message: 'Puedes restablecer tus puntos de personalidad una vez cada 7 días.',
+        timeRemaining:
+          'Tiempo restante para el próximo restablecimiento: {{days}} días {{hours}} horas',
+        proceed: 'Continuar',
+      },
+    },
+    zodiac: {
+      timeRestriction: {
+        title: 'Cambio de Signo Zodiacal',
+        message: 'Puedes cambiar tu signo zodiacal una vez cada 48 horas.',
+        timeRemaining: 'Tiempo restante para nueva selección: {{hours}} horas {{minutes}} minutos',
+        proceed: 'Continuar',
+      },
+    },
   },
   tabs: {
     goodsides: 'Aspectos positivos',

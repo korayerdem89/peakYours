@@ -61,6 +61,37 @@ export default {
       description: 'Burcunuzu değiştirmek için dokunun',
       updateError: 'Burç güncellenirken bir hata oluştu. Lütfen tekrar deneyin.',
     },
+    deleteAccount: {
+      button: 'Hesabı Kaldır',
+      title: 'Hesabı Kaldır',
+      message: 'Hesabı silmek istediğinizden emin misiniz? Bütün verileriniz kaldırılacaktır.',
+      confirm: 'Eminim',
+      success: 'Hesabınız başarıyla silindi',
+      error: 'Hesap silinirken bir hata oluştu',
+    },
+    resetTraits: {
+      button: 'Görevlerden Kazandığım Puanları Sıfırla',
+      title: 'Puanları Sıfırla',
+      message:
+        'Yaptığınız görevlerden kazandığınız bütün kişilik puanları silinecektir, emin misiniz?',
+      confirm: 'Eminim',
+      success: 'Kişilik puanlarınız başarıyla sıfırlandı',
+      error: 'Puanlar sıfırlanırken bir hata oluştu',
+      timeRestriction: {
+        title: 'Puan Sıfırlama',
+        message: 'Kişilik puanlarınızı her 7 günde 1 kez sıfırlayabilirsiniz.',
+        timeRemaining: 'Yeni sıfırlama için kalan süre: {{days}} gün {{hours}} saat',
+        proceed: 'Tamam',
+      },
+    },
+    zodiac: {
+      timeRestriction: {
+        title: 'Burç Değişikliği',
+        message: 'Burcunuzu her 48 saatte 1 kez değiştirebilirsiniz.',
+        timeRemaining: 'Yeni burç seçimi için kalan süre: {{hours}} saat {{minutes}} dakika',
+        proceed: 'Tamam',
+      },
+    },
   },
   tabs: {
     goodsides: 'İyi Yanlar',
@@ -182,7 +213,8 @@ export default {
     analysis: {
       title: 'Kişilik Analiziniz',
     },
-    analysisError: 'Kişilik analizi oluşturulamadı',
+    analysisError: 'Analiz oluşturulurken bir hata oluştu',
+    initializationError: 'Kişilik analizi başlatılırken bir hata oluştu',
     animals: {
       cat: {
         name: 'Bağımsız Ruh',
@@ -277,7 +309,7 @@ export default {
         trait: 'Derin bağlar değer verir',
       },
       woodpecker: {
-        name: 'Çalışkan Ağaçkakan',
+        name: '��alışkan Ağaçkakan',
         trait: 'Sürekli çabayla ilerler',
       },
     },
@@ -316,7 +348,7 @@ export default {
       levelUp:
         'Belirli bir kişilik özelliğinizi 1 puan arttırmak için, o özellikten 5 görev tamamlayın.',
       dailyRefresh: 'Görevler her 24 saatte bir yenilenir',
-      refreshLimit: 'Farklı görevler istiyorsanız günde 10 kez yenileme hakk��nız var.',
+      refreshLimit: 'Farklı görevler istiyorsanız günde 10 kez yenileme hakkınız var.',
     },
     debug: {
       clearCache: 'Görev Önbelleğini Temizle',

@@ -61,6 +61,38 @@ export default {
       description: 'Tap to change your zodiac sign',
       updateError: 'Failed to update zodiac sign. Please try again.',
     },
+    deleteAccount: {
+      button: 'Delete Account',
+      title: 'Delete Account',
+      message:
+        'Are you sure you want to delete your account? All your data will be permanently removed.',
+      confirm: "I'm Sure",
+      success: 'Your account has been successfully deleted',
+      error: 'An error occurred while deleting your account',
+    },
+    resetTraits: {
+      button: 'Reset Points Earned from Tasks',
+      title: 'Reset Scores',
+      message: 'All personality points earned from completed tasks will be deleted. Are you sure?',
+      confirm: "I'm Sure",
+      success: 'Your personality scores have been successfully reset',
+      error: 'An error occurred while resetting scores',
+      timeRestriction: {
+        title: 'Reset Points',
+        message: 'You can reset your personality points once every 7 days.',
+        timeRemaining: 'Time remaining for next reset: {{days}} days {{hours}} hours',
+        proceed: 'Proceed',
+      },
+    },
+    zodiac: {
+      timeRestriction: {
+        title: 'Zodiac Change',
+        message: 'You can change your zodiac sign once every 48 hours.',
+        timeRemaining:
+          'Time remaining for new zodiac selection: {{hours}} hours {{minutes}} minutes',
+        proceed: 'Proceed',
+      },
+    },
   },
   tabs: {
     goodsides: 'Good Sides',

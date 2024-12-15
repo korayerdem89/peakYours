@@ -19,7 +19,6 @@ export interface UserData {
   traits?: {
     [key: string]: number; // Her bir trait için sayısal değer
   };
-  lastTaskDate?: string; // YYYY-MM-DD formatı
   lastTasksDates?: {
     [trait: string]: string; // { "empathic": "2024-03-20", "reliable": "2024-03-20" }
   };
@@ -122,18 +121,6 @@ export function isSameDay(date1: Date, date2: Date): boolean {
     date1.getMonth() === date2.getMonth() &&
     date1.getDate() === date2.getDate()
   );
-}
-
-// Task tarihini güncelle
-export async function updateUserLastTaskDate(userId: string, date: string) {
-  try {
-    await db.collection('users').doc(userId).update({
-      lastTaskDate: date,
-    });
-  } catch (error) {
-    console.error('Error updating last task date:', error);
-    throw error;
-  }
 }
 
 // Task trait tarihini güncelle
