@@ -96,7 +96,7 @@ export default {
     },
   },
   tabs: {
-    you: 'Perfil',
+    you: 'Tú',
     tasks: 'Tareas',
     analysis: 'Análisis',
     settings: 'Ajustes',

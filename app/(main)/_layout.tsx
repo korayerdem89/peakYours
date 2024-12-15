@@ -45,7 +45,7 @@ export default function MainLayout() {
       <Tabs.Screen
         name="tasks"
         options={{
-          title: t('tabs.analysis'),
+          title: t('tabs.tasks'),
         }}
       />
       <Tabs.Screen

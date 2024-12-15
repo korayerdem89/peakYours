@@ -95,9 +95,9 @@ export default {
     },
   },
   tabs: {
-    you: 'Profile',
+    you: 'You',
+    ideas: 'Ideas',
     tasks: 'Tasks',
-    analysis: 'Analysis',
     settings: 'Settings',
   },
   personality: {

@@ -110,8 +110,10 @@ export default {
     },
   },
   tabs: {
-    goodsides: 'İyi Yanlar',
-    badsides: 'Kötü Yanlar',
+    you: 'Sen',
+    ideas: 'Fikirler',
+    tasks: 'Görevler',
+    settings: 'Ayarlar',
   },
   personality: {
     traits: {
@@ -325,7 +327,7 @@ export default {
         trait: 'Derin bağlar değer verir',
       },
       woodpecker: {
-        name: '��alışkan Ağaçkakan',
+        name: 'alışkan Ağaçkakan',
         trait: 'Sürekli çabayla ilerler',
       },
     },
