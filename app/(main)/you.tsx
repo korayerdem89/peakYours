@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect } from 'react';
-import { View, useWindowDimensions, Text, Pressable, StatusBar, Platform } from 'react-native';
+import { useWindowDimensions, StatusBar, Platform } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 import { useState, useMemo } from 'react';
@@ -11,18 +11,15 @@ import { TabViewProps } from '@/types';
 import { useAuth } from '@/store/useAuth';
 import { useFocusEffect } from '@react-navigation/native';
 import { useUpdateUser, useUserData } from '@/hooks/useUserQueries';
-import QuoteCard from '@/components/main/QuoteCard';
 import BadSidesRoute from '@/components/main/BadSidesRoute';
 import {
   BannerAd,
   BannerAdSize,
   InterstitialAd,
   AdEventType,
-  TestIds,
   RequestOptions,
 } from 'react-native-google-mobile-ads';
 import { useInterstitialAd } from '@/store/useInterstitialAd';
-import { useLoadingStore } from '@/store/useLoadingStore';
 import NetInfo from '@react-native-community/netinfo';
 
 const adUnitId = 'ca-app-pub-6312844121446107/7886655538';
@@ -113,7 +110,7 @@ export default function YouScreen() {
 
   useFocusEffect(
     useCallback(() => {
-      if (!loaded) {
+      if (!loaded && user?.zodiacSign) {
         interstitial.load();
       }
       return () => {

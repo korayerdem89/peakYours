@@ -26,6 +26,8 @@ import { useInterstitialAd } from '@/store/useInterstitialAd';
 import { LoadingModal } from '@/components/LoadingModal';
 import { useLoadingStore } from '@/store/useLoadingStore';
 import { useAppUsage } from '@/hooks/useAppUsage';
+import { useTranslation } from '@/providers/LanguageProvider';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import {
   useFonts,
@@ -48,7 +50,8 @@ import {
   Poppins_800ExtraBold_Italic,
   Poppins_900Black_Italic,
 } from '@expo-google-fonts/poppins';
-import { AdEventType, AppOpenAd } from 'react-native-google-mobile-ads';
+
+const LANGUAGE_CHANGE_KEY = 'last_language_change';
 
 // Prevent splash screen from auto-hiding
 SplashScreen.preventAutoHideAsync();
@@ -64,94 +67,32 @@ const LoadingOverlay = () => (
   </View>
 );
 
-const appOpenAdUnitId = 'ca-app-pub-6312844121446107/5033994003';
-
 // Protected Route kontrolü için yeni component
 function InitialLayout() {
   const segments = useSegments();
   const router = useRouter();
   const { user } = useAuth();
-  const { lastShowTime, setLastShowTime, canShowAd } = useInterstitialAd();
-  const { usageCount, isFirstTime } = useAppUsage();
-  const { isLoading, setIsLoading } = useLoadingStore();
-
-  const showAppOpenAd = async (): Promise<AppOpenAd | null> => {
-    if (usageCount < 4 || !canShowAd()) return null;
-
-    const appOpenAd = AppOpenAd.createForAdRequest(appOpenAdUnitId, {
-      keywords: [
-        'zodiac',
-        'tarot',
-        'astrology',
-        'personality',
-        'psychology',
-        'psychic',
-        'personalgrowth',
-        'spiritual',
-        'spiritualgrowth',
-        'spiritualjourney',
-        'spiritualpath',
-        'spiritualpractice',
-        'spiritualteacher',
-        'spiritualteachertraining',
-        'fitness',
-        'health',
-        'wellness',
-        'mindfulness',
-        'meditation',
-      ],
-    });
-
-    try {
-      await appOpenAd.load();
-
-      appOpenAd.addAdEventListener(AdEventType.LOADED, () => {
-        console.log('App Open Ad loaded');
-        appOpenAd.show().catch(console.error);
-        setLastShowTime(Date.now());
-      });
-
-      appOpenAd.addAdEventListener(AdEventType.ERROR, (error) => {
-        console.error('App Open Ad error:', error);
-      });
-
-      appOpenAd.addAdEventListener(AdEventType.CLOSED, () => {
-        console.log('App Open Ad closed');
-      });
-
-      return appOpenAd;
-    } catch (error) {
-      console.error('App Open Ad load error:', error);
-      return null;
-    }
-  };
+  const { isFirstTime } = useAppUsage();
+  const { isLoading } = useLoadingStore();
 
   useEffect(() => {
-    let appOpenAd: AppOpenAd | null = null;
-    setIsLoading(true);
-    const handleAppStateChange = async (nextAppState: AppStateStatus) => {
-      if (nextAppState === 'active' && canShowAd()) {
-        if (appOpenAd) {
-          appOpenAd.removeAllListeners();
+    async function checkLanguageAndRedirect() {
+      try {
+        const lastLanguageChange = await AsyncStorage.getItem(LANGUAGE_CHANGE_KEY);
+
+        if (!lastLanguageChange && isFirstTime) {
+          router.replace('/(language-select)');
+          return;
         }
-        appOpenAd = await showAppOpenAd();
+      } catch (error) {
+        console.error('Error checking language:', error);
       }
-    };
+    }
 
-    // İlk açılışta reklamı göster
-    showAppOpenAd().then((ad) => {
-      appOpenAd = ad;
-    });
-    setIsLoading(false);
-    const subscription = AppState.addEventListener('change', handleAppStateChange);
-
-    return () => {
-      subscription.remove();
-      if (appOpenAd) {
-        appOpenAd.removeAllListeners();
-      }
-    };
-  }, [user]);
+    if (!isLoading) {
+      checkLanguageAndRedirect();
+    }
+  }, [isLoading, isFirstTime]);
 
   useEffect(() => {
     if (isLoading) return;
@@ -159,29 +100,18 @@ function InitialLayout() {
     const inAuthGroup = segments[0] === '(auth)';
     const inOnboardingGroup = segments[0] === '(onboarding)';
     const inMainGroup = segments[0] === '(main)';
+    const inLanguageSelect = segments[0] === '(language-select)';
 
     if (!user) {
-      // Kullanıcı giriş yapmamışsa ve main grubuna erişmeye çalışıyorsa
       if (inMainGroup) {
         router.replace('/(onboarding)');
       }
     } else {
-      // Kullanıcı giriş yapmışsa ve auth veya onboarding grubundaysa
-      if (inAuthGroup || inOnboardingGroup) {
+      if (inAuthGroup || inOnboardingGroup || inLanguageSelect) {
         router.replace('/(main)/you');
       }
     }
   }, [user, segments, isLoading]);
-
-  // useEffect(() => {
-  //   if (isFirstTime) {
-  //     // İlk kez kullanım için özel işlemler
-  //     console.log('First time using the app!');
-  //   }
-
-  //   // Her açılışta kullanım sayısını loglayalım
-  //   console.log('App usage count:', usageCount);
-  // }, [isFirstTime, usageCount]);
 
   return <Stack screenOptions={{ headerShown: false }} />;
 }

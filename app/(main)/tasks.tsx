@@ -28,12 +28,7 @@ import { TaskInfo } from '@/components/tasks/TaskInfo';
 import { UserData } from '@/services/user';
 import { TaskMotivation } from '@/components/tasks/TaskMotivation';
 import { updateUserTaskDate } from '@/services/user';
-import {
-  BannerAdSize,
-  BannerAd,
-  AdEventType,
-  RequestOptions,
-} from 'react-native-google-mobile-ads';
+import { BannerAdSize, BannerAd, RequestOptions } from 'react-native-google-mobile-ads';
 import { useInterstitialAd } from '@/store/useInterstitialAd';
 import { useLoadingStore } from '@/store/useLoadingStore';
 import NetInfo from '@react-native-community/netinfo';

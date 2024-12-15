@@ -6,7 +6,6 @@ import {
   GoogleSigninButton,
 } from '@react-native-google-signin/google-signin';
 import auth from '@react-native-firebase/auth';
-import { useState } from 'react';
 import { UserService } from '@/services/user';
 import { useTranslation } from '@/providers/LanguageProvider';
 import { SafeAreaView } from 'react-native-safe-area-context';
