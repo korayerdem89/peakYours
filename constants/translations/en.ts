@@ -99,6 +99,8 @@ export default {
     ideas: 'Ideas',
     tasks: 'Tasks',
     settings: 'Settings',
+    goodsides: 'Good Sides',
+    badsides: 'Bad Sides',
   },
   personality: {
     traits: {

@@ -114,6 +114,8 @@ export default {
     ideas: 'Fikirler',
     tasks: 'Görevler',
     settings: 'Ayarlar',
+    goodsides: 'İyi Yanlar',
+    badsides: 'Kötü Yanlar',
   },
   personality: {
     traits: {

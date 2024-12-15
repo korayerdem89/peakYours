@@ -97,9 +97,11 @@ export default {
   },
   tabs: {
     you: 'Tú',
+    ideas: 'Ideas',
     tasks: 'Tareas',
-    analysis: 'Análisis',
     settings: 'Ajustes',
+    goodsides: 'Lados Buenos',
+    badsides: 'Lados Malos',
   },
   personality: {
     friendly: 'Amigable',
