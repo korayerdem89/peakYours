@@ -110,7 +110,7 @@ export default function BadSidesRoute() {
             <Pressable
               onPress={() => router.push('/modal/TraitDetails?type=badsides')}
               className="mt-2 flex-row items-center">
-              <Text className="font-medium text-xs text-primary-dark sm:text-sm">
+              <Text className="font-medium text-xs text-primary-dark  dark:text-primary-light sm:text-sm">
                 {t('personality.details.viewAll')}
               </Text>
               <MaterialIcons
