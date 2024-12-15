@@ -8,15 +8,16 @@ import {
   Platform,
   AppState,
   AppStateStatus,
+  Alert,
 } from 'react-native';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useDarkMode } from '@/store/useDarkMode';
 import { useColorScheme } from 'react-native';
 import { ThemeProvider } from '@/providers/ThemeProvider';
 import { AuthProvider } from '@/providers/AuthProvider';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { useAuth } from '@/store/useAuth';
-import { LanguageProvider } from '@/providers/LanguageProvider';
+import { LanguageProvider, useTranslation } from '@/providers/LanguageProvider';
 import Toast from 'react-native-toast-message';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useOnlineManager } from '@/hooks/useOnlineManager';
@@ -26,7 +27,7 @@ import { useInterstitialAd } from '@/store/useInterstitialAd';
 import { LoadingModal } from '@/components/LoadingModal';
 import { useLoadingStore } from '@/store/useLoadingStore';
 import { useAppUsage } from '@/hooks/useAppUsage';
-import { useTranslation } from '@/providers/LanguageProvider';
+import { ZodiacModal } from '@/components/ZodiacModal';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import {
@@ -73,11 +74,12 @@ function InitialLayout() {
   const router = useRouter();
   const { user } = useAuth();
   const { isFirstTime } = useAppUsage();
-  const { isLoading } = useLoadingStore();
+  const { isLoading, setIsLoading } = useLoadingStore();
 
   useEffect(() => {
     async function checkLanguageAndRedirect() {
       try {
+        setIsLoading(true);
         const lastLanguageChange = await AsyncStorage.getItem(LANGUAGE_CHANGE_KEY);
 
         if (!lastLanguageChange && isFirstTime) {
@@ -86,17 +88,16 @@ function InitialLayout() {
         }
       } catch (error) {
         console.error('Error checking language:', error);
+      } finally {
+        setIsLoading(false);
       }
     }
 
-    if (!isLoading) {
-      checkLanguageAndRedirect();
-    }
-  }, [isLoading, isFirstTime]);
+    checkLanguageAndRedirect();
+  }, [isFirstTime]);
 
   useEffect(() => {
     if (isLoading) return;
-
     const inAuthGroup = segments[0] === '(auth)';
     const inOnboardingGroup = segments[0] === '(onboarding)';
     const inMainGroup = segments[0] === '(main)';
@@ -142,9 +143,10 @@ function useQueryConfig() {
 }
 
 export default function RootLayout() {
-  const systemColorScheme = useColorScheme();
+  // const systemColorScheme = useColorScheme();
   const { setDarkMode } = useDarkMode();
   const { isLoading } = useLoadingStore();
+
   // Query yapılandırmasını uygula
   useQueryConfig();
 

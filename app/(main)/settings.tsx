@@ -26,6 +26,7 @@ import { ZODIAC_SIGNS, type ZodiacSign } from '@/constants/zodiac';
 import { signOut } from '@/config/firebase';
 import { deleteUser, resetUserTraits } from '@/services/userService';
 import Toast from 'react-native-toast-message';
+import { useLoadingStore } from '@/store/useLoadingStore';
 
 const LANGUAGES = [
   { code: 'en', label: 'EN' },
@@ -50,19 +51,19 @@ export default function SettingsScreen() {
   const { locale, setAppLocale, t } = useTranslation();
   const [isTogglingTheme, setIsTogglingTheme] = useState(false);
   const [isZodiacModalVisible, setIsZodiacModalVisible] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const { setIsLoading } = useLoadingStore();
 
   const updateUser = useUpdateUser();
 
-  const toggleColorScheme = useCallback(() => {
-    if (isTogglingTheme) return;
+  // const toggleColorScheme = useCallback(() => {
+  //   if (isTogglingTheme) return;
 
-    setIsTogglingTheme(true);
-    requestAnimationFrame(() => {
-      originalToggle();
-      setTimeout(() => setIsTogglingTheme(false), 500);
-    });
-  }, [isTogglingTheme, originalToggle]);
+  //   setIsTogglingTheme(true);
+  //   requestAnimationFrame(() => {
+  //     originalToggle();
+  //     setTimeout(() => setIsTogglingTheme(false), 500);
+  //   });
+  // }, [isTogglingTheme, originalToggle]);
 
   const checkLanguageChangeEligibility = async () => {
     try {
