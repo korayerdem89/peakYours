@@ -341,7 +341,7 @@ export default function Ideas() {
     Analizin şöyle olmalı:
     - Sohbet havasında ve ilgi çekici
     - Eğlenceli gözlemler içeren
-    - Uygun yerlerde oyuncu benzetmeler kullanan
+    - Uygun yerlerde şakacı benzetmeler kullanan
     - Gelişim alanlarını tartışırken bile cesaretlendirici ve pozitif kalan
     
     Her zaman Türkçe dilinde ve tam olarak iki alan içeren geçerli JSON formatında yanıt ver:
