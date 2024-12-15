@@ -96,8 +96,10 @@ export default {
     },
   },
   tabs: {
-    goodsides: 'Aspectos positivos',
-    badsides: 'Aspectos negativos',
+    you: 'Perfil',
+    tasks: 'Tareas',
+    analysis: 'Análisis',
+    settings: 'Ajustes',
   },
   personality: {
     friendly: 'Amigable',
@@ -335,7 +337,7 @@ export default {
     noRatingsWarning: {
       title: '¡Analicemos tu Personalidad!',
       description:
-        'Descubre tu análisis de personalidad único donde combinamos la energía cósmica de tu signo zodiacal con las percepciones de IA basadas en las calificaciones de tus amigos. ¡Prepárate para un viaje personalizado de autodescubrimiento!',
+        'Descubre tu análisis de personalidad ��nico donde combinamos la energía cósmica de tu signo zodiacal con las percepciones de IA basadas en las calificaciones de tus amigos. ¡Prepárate para un viaje personalizado de autodescubrimiento!',
       cta: 'Comparte tu perfil y comienza a recolectar calificaciones',
     },
     updateFrequency: 'Nuevo análisis cada 5 calificaciones',

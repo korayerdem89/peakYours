@@ -95,8 +95,10 @@ export default {
     },
   },
   tabs: {
-    goodsides: 'Good Sides',
-    badsides: 'Bad Sides',
+    you: 'Profile',
+    tasks: 'Tasks',
+    analysis: 'Analysis',
+    settings: 'Settings',
   },
   personality: {
     traits: {
