@@ -1,5 +1,5 @@
 import { View, Text, Dimensions, Image, StyleSheet } from 'react-native';
-import { router } from 'expo-router';
+import { router, useRouter } from 'expo-router';
 import Button from '@/components/Button';
 import { theme } from '@/constants/theme';
 import Animated, {
@@ -10,6 +10,9 @@ import Animated, {
   Extrapolate,
 } from 'react-native-reanimated';
 import { useCallback, useEffect, useRef, useState } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useAppUsage } from '@/hooks/useAppUsage';
+import { LANGUAGE_CHANGE_KEY } from '@/app/modal/language-select';
 
 const AnimatedImage = Animated.createAnimatedComponent(Image);
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
@@ -44,6 +47,25 @@ export default function OnboardingScreen() {
   const currentIndex = useRef(0);
   const [countdown, setCountdown] = useState(COUNTDOWN_DURATION);
   const [isButtonEnabled, setIsButtonEnabled] = useState(false);
+  const router = useRouter();
+  const { isFirstTime } = useAppUsage();
+
+  useEffect(() => {
+    async function checkLanguageSettings() {
+      try {
+        const lastLanguageChange = await AsyncStorage.getItem(LANGUAGE_CHANGE_KEY);
+
+        // Dil seçimi yapılmamış ve ilk kez giriş yapılıyorsa
+        if (!lastLanguageChange && isFirstTime) {
+          router.push('/modal/language-select');
+        }
+      } catch (error) {
+        console.error('Error checking language settings:', error);
+      }
+    }
+
+    checkLanguageSettings();
+  }, [isFirstTime]);
 
   const scrollHandler = useAnimatedScrollHandler({
     onScroll: (event) => {

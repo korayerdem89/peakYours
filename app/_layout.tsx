@@ -73,44 +73,35 @@ function InitialLayout() {
   const segments = useSegments();
   const router = useRouter();
   const { user } = useAuth();
-  const { isFirstTime } = useAppUsage();
   const { isLoading, setIsLoading } = useLoadingStore();
 
   useEffect(() => {
-    async function checkLanguageAndRedirect() {
+    async function initialNavigation() {
       try {
         setIsLoading(true);
-        const lastLanguageChange = await AsyncStorage.getItem(LANGUAGE_CHANGE_KEY);
+        await SplashScreen.hideAsync();
 
-        if (!lastLanguageChange && isFirstTime) {
-          router.replace('/(language-select)');
-          return;
+        if (!user) {
+          router.replace('/(onboarding)');
+        } else {
+          router.replace('/(main)/you');
         }
       } catch (error) {
-        console.error('Error checking language:', error);
+        console.error('Navigation error:', error);
+        router.replace('/(onboarding)');
       } finally {
         setIsLoading(false);
       }
     }
 
-    checkLanguageAndRedirect();
-  }, [isFirstTime]);
+    initialNavigation();
+  }, [user]);
 
+  // Kullanıcı durumu değiştiğinde yönlendirme
   useEffect(() => {
     if (isLoading) return;
-    const inAuthGroup = segments[0] === '(auth)';
-    const inOnboardingGroup = segments[0] === '(onboarding)';
-    const inMainGroup = segments[0] === '(main)';
-    const inLanguageSelect = segments[0] === '(language-select)';
-
-    if (!user) {
-      if (inMainGroup) {
-        router.replace('/(onboarding)');
-      }
-    } else {
-      if (inAuthGroup || inOnboardingGroup || inLanguageSelect) {
-        router.replace('/(main)/you');
-      }
+    if (user && segments[0] !== '(main)') {
+      router.replace('/(main)/you');
     }
   }, [user, segments, isLoading]);
 
