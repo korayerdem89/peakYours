@@ -93,7 +93,8 @@ export function TaskInfo({ userData }: TaskInfoProps) {
       <Animated.View style={contentStyle} layout={Layout.springify()} className="overflow-hidden">
         <View className="px-4 pb-4">
           <View className="space-y-3 border-t border-gray-200 pt-3 dark:border-gray-700">
-            <InfoItem icon="stars" text={t('tasks.info.levelUp')} />
+            <InfoItem icon="stars" text={t('tasks.info.general')} />
+            <InfoItem icon="trending-up" text={t('tasks.info.levelUp')} />
             <InfoItem icon="update" text={t('tasks.info.dailyRefresh')} />
             <InfoItem icon="refresh" text={t('tasks.info.refreshLimit')} />
           </View>

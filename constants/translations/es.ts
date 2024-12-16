@@ -365,10 +365,11 @@ export default {
       title: 'Información de Tareas',
       completedTasks: '{{count}} tareas completadas',
       levelUp:
-        'Completa 5 tareas de un rasgo de personalidad específico para aumentar su puntuación en 1 punto.',
+        'Completa 5 tareas de un rasgo para aumentar los rasgos de personalidad buenos en 1 punto o disminuir los malos en 1 punto',
       dailyRefresh: 'Las tareas se actualizan cada 24 horas',
       refreshLimit:
         'Puedes actualizar las tareas hasta 10 veces al día si deseas diferentes desafíos.',
+      general: 'Completa las tareas y alcanza tu estado máximo',
     },
     debug: {
       clearCache: 'Limpiar Caché de Tareas',

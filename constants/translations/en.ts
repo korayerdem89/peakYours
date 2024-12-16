@@ -356,10 +356,12 @@ export default {
     info: {
       title: 'Task Information',
       completedTasks: '{{count}} tasks completed',
-      levelUp: 'Complete 5 tasks of a specific personality trait to increase its score by 1 point.',
+      levelUp:
+        'Complete 5 tasks of a trait to increase good personality traits by 1 point or decrease bad traits by 1 point',
       dailyRefresh: 'Tasks are refreshed every 24 hours',
       refreshLimit:
         'You can refresh tasks up to 10 times per day if you want different challenges.',
+      general: 'Complete tasks and reach your peak state',
     },
     debug: {
       clearCache: 'Clear Task Cache',

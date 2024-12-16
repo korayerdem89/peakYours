@@ -366,9 +366,10 @@ export default {
       title: 'Görev Bilgileri',
       completedTasks: '{{count}} görev tamamlandı',
       levelUp:
-        'Belirli bir kişilik özelliğinizi 1 puan arttırmak için, o özellikten 5 görev tamamlayın.',
+        'İyi kişilik özelliklerinizi 1 puan arttırmak, ya da kötü özelliklerinizi 1 puan azaltmak için o özellikten 5 görev yapın',
       dailyRefresh: 'Görevler her 24 saatte bir yenilenir',
       refreshLimit: 'Farklı görevler istiyorsanız günde 10 kez yenileme hakkınız var.',
+      general: 'Görevleri yapın ve peak halinize ulaşın',
     },
     debug: {
       clearCache: 'Görev Önbelleğini Temizle',

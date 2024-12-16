@@ -26,7 +26,6 @@ import { TaskList } from '@/components/tasks/TaskList';
 import { TaskProgress } from '@/components/tasks/TaskProgress';
 import { TaskInfo } from '@/components/tasks/TaskInfo';
 import { UserData } from '@/services/user';
-import { TaskMotivation } from '@/components/tasks/TaskMotivation';
 import { updateUserTaskDate } from '@/services/user';
 import { BannerAdSize, BannerAd, RequestOptions } from 'react-native-google-mobile-ads';
 import { useInterstitialAd } from '@/store/useInterstitialAd';
@@ -356,7 +355,6 @@ export default function TasksScreen() {
           />
         )}
         <TaskHeader />
-        <TaskMotivation />
 
         <TaskInfo userData={userData ?? ({} as UserData)} />
 
