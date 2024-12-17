@@ -8,11 +8,13 @@ import Animated, {
   interpolate,
   useAnimatedScrollHandler,
   Extrapolate,
+  withTiming,
 } from 'react-native-reanimated';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useAppUsage } from '@/hooks/useAppUsage';
 import { LANGUAGE_CHANGE_KEY } from '@/app/modal/language-select';
+import { useTranslation } from '@/providers/LanguageProvider';
 
 const AnimatedImage = Animated.createAnimatedComponent(Image);
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
@@ -22,40 +24,53 @@ const ONBOARDING_DATA = [
     id: '1',
     title: 'Track Your Progress',
     description: 'Monitor your fitness journey with detailed analytics',
-    image: 'https://picsum.photos/id/237/800/1200',
+    image: require('@/assets/onboarding/rate.webp'),
   },
   {
     id: '2',
     title: 'Join Challenges',
     description: 'Compete with friends and achieve your goals together',
-    image: 'https://picsum.photos/id/239/800/1200',
+    image: require('@/assets/onboarding/fortune.webp'),
   },
   {
     id: '3',
     title: 'Expert Guidance',
     description: 'Get personalized workout plans from professionals',
-    image: 'https://picsum.photos/id/240/800/1200',
+    image: require('@/assets/onboarding/tasks.webp'),
   },
 ];
-
-const AUTO_SCROLL_INTERVAL = 4000;
-const COUNTDOWN_DURATION = 1;
 
 export default function OnboardingScreen() {
   const scrollX = useSharedValue(0);
   const scrollViewRef = useRef<Animated.ScrollView>(null);
-  const currentIndex = useRef(0);
-  const [countdown, setCountdown] = useState(COUNTDOWN_DURATION);
-  const [isButtonEnabled, setIsButtonEnabled] = useState(false);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [isButtonDisabled, setIsButtonDisabled] = useState(true);
+  const [countdown, setCountdown] = useState<number | null>(3);
   const router = useRouter();
   const { isFirstTime } = useAppUsage();
+  const { t } = useTranslation();
+
+  const isLastSlide = currentIndex === ONBOARDING_DATA.length - 1;
+
+  useEffect(() => {
+    const countdownInterval = setInterval(() => {
+      setCountdown((prev: number | null) => {
+        if (!prev || prev <= 1) {
+          clearInterval(countdownInterval);
+          setIsButtonDisabled(false);
+          return null;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+
+    return () => clearInterval(countdownInterval);
+  }, []);
 
   useEffect(() => {
     async function checkLanguageSettings() {
       try {
         const lastLanguageChange = await AsyncStorage.getItem(LANGUAGE_CHANGE_KEY);
-
-        // Dil seçimi yapılmamış ve ilk kez giriş yapılıyorsa
         if (!lastLanguageChange && isFirstTime) {
           router.push('/modal/language-select');
         }
@@ -63,7 +78,6 @@ export default function OnboardingScreen() {
         console.error('Error checking language settings:', error);
       }
     }
-
     checkLanguageSettings();
   }, [isFirstTime]);
 
@@ -73,35 +87,41 @@ export default function OnboardingScreen() {
     },
   });
 
-  const autoScroll = useCallback(() => {
-    if (currentIndex.current < ONBOARDING_DATA.length - 1) {
-      currentIndex.current += 1;
+  const handleNext = useCallback(() => {
+    setIsButtonDisabled(true);
+    setCountdown(3);
+
+    if (currentIndex < ONBOARDING_DATA.length - 1) {
+      const nextIndex = currentIndex + 1;
+      scrollViewRef.current?.scrollTo({
+        x: nextIndex * SCREEN_WIDTH,
+        animated: true,
+      });
+      setCurrentIndex(nextIndex);
     } else {
-      currentIndex.current = 0;
+      router.push('/(auth)/sign-in');
     }
 
-    scrollViewRef.current?.scrollTo({
-      x: currentIndex.current * SCREEN_WIDTH,
-      animated: true,
-    });
-  }, []);
+    const countdownInterval = setInterval(() => {
+      setCountdown((prev: number | null) => {
+        if (!prev || prev <= 1) {
+          clearInterval(countdownInterval);
+          setIsButtonDisabled(false);
+          return null;
+        }
+        return prev - 1;
+      });
+    }, 1000);
 
-  useEffect(() => {
-    const interval = setInterval(autoScroll, AUTO_SCROLL_INTERVAL);
-    return () => clearInterval(interval);
-  }, [autoScroll]);
+    return () => clearInterval(countdownInterval);
+  }, [currentIndex]);
 
-  useEffect(() => {
-    if (countdown > 0) {
-      const timer = setInterval(() => {
-        setCountdown((prev) => prev - 1);
-      }, 1000);
-
-      return () => clearInterval(timer);
-    } else {
-      setIsButtonEnabled(true);
+  const getButtonTitle = useCallback(() => {
+    if (countdown !== null) {
+      return `${isLastSlide ? t('common.getStarted') : t('common.next')} (${countdown})`;
     }
-  }, [countdown]);
+    return isLastSlide ? t('common.getStarted') : t('common.next');
+  }, [isLastSlide, countdown, t]);
 
   return (
     <View className="flex-1 bg-accent-light dark:bg-background-dark">
@@ -112,6 +132,10 @@ export default function OnboardingScreen() {
         showsHorizontalScrollIndicator={false}
         onScroll={scrollHandler}
         scrollEventThrottle={16}
+        onMomentumScrollEnd={(event) => {
+          const newIndex = Math.round(event.nativeEvent.contentOffset.x / SCREEN_WIDTH);
+          setCurrentIndex(newIndex);
+        }}
         style={styles.scrollView}>
         {ONBOARDING_DATA.map((item, index) => {
           const inputRange = [
@@ -131,10 +155,7 @@ export default function OnboardingScreen() {
 
           return (
             <View key={item.id} style={styles.slide}>
-              <AnimatedImage
-                source={{ uri: item.image }}
-                style={[styles.image, imageAnimatedStyle]}
-              />
+              <AnimatedImage source={item.image} style={[styles.image, imageAnimatedStyle]} />
               <Text className="font-poppins-semibold mt-8 text-center text-2xl text-text-light dark:text-text-dark">
                 {item.title}
               </Text>
@@ -166,12 +187,13 @@ export default function OnboardingScreen() {
           })}
         </View>
         <Button
-          onPress={() => router.push('/(auth)/sign-in')}
+          onPress={handleNext}
           variant="primary"
           size="lg"
-          title={isButtonEnabled ? 'Get Started' : `Wait ${countdown}s`}
-          className={`w-full ${!isButtonEnabled && 'opacity-50'}`}
-          disabled={!isButtonEnabled}
+          title={getButtonTitle()}
+          disabled={isButtonDisabled}
+          isLoading={isButtonDisabled}
+          className="w-full"
         />
       </View>
     </View>

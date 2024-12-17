@@ -14,6 +14,8 @@ export default {
     or: 'or',
     analyzing: 'Analyzing...',
     confirm: 'Confirm',
+    next: 'Next',
+    getStarted: 'Get Started',
   },
   auth: {
     signIn: {

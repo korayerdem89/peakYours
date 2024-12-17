@@ -14,6 +14,8 @@ export default {
     quoteOfDay: 'Frase del Día',
     or: 'o',
     analyzing: 'Analizando...',
+    next: 'Siguiente',
+    getStarted: 'Empezar',
   },
   auth: {
     signIn: {

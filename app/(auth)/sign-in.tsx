@@ -79,9 +79,7 @@ export default function SignInScreen() {
     <SafeAreaView className="flex-1 bg-accent-light dark:bg-background-dark">
       <View className="flex-1 items-center justify-center gap-10 p-6">
         <Image
-          source={{
-            uri: `https://picsum.photos/${Math.floor(width)}/${Math.floor(BANNER_HEIGHT)}?random=${Date.now()}`,
-          }}
+          source={require('@/assets/sign-in/opendoor.webp')}
           className="w-full rounded-xl"
           style={{ height: BANNER_HEIGHT }}
           resizeMode="cover"

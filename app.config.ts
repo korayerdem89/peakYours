@@ -10,8 +10,8 @@ const config: ExpoConfig = {
   userInterfaceStyle: 'automatic',
   splash: {
     image: './assets/splash.png',
-    resizeMode: 'contain',
-    backgroundColor: '#ffffff',
+    resizeMode: 'cover',
+    backgroundColor: '#5C3DBF',
   },
   assetBundlePatterns: ['**/*'],
   ios: {
@@ -40,12 +40,12 @@ const config: ExpoConfig = {
       },
     ],
     [
-      "react-native-google-mobile-ads",
+      'react-native-google-mobile-ads',
       {
-        androidAppId: "ca-app-pub-6312844121446107~1320311407",
-        iosAppId: "ca-app-pub-6312844121446107/2492397048"
-      }
-    ]
+        androidAppId: 'ca-app-pub-6312844121446107~1320311407',
+        iosAppId: 'ca-app-pub-6312844121446107/2492397048',
+      },
+    ],
   ],
   extra: {
     OPENAI_API_KEY: process.env.EXPO_PUBLIC_OPENAI_API_KEY,

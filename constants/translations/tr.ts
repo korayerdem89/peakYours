@@ -14,6 +14,8 @@ export default {
     quoteOfDay: 'Günün Sözü',
     or: 'veya',
     analyzing: 'Analiz Ediliyor...',
+    next: 'İleri',
+    getStarted: 'Başla',
   },
   auth: {
     signIn: {
