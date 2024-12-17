@@ -24,7 +24,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
           console.log('User logged in:', firebaseUser.uid);
         } else {
           await setUser(null);
-          console.log('User is not logged in');
+          console.log('User is not logged inn');
         }
       } catch (error) {
         console.error('Auth state change error:', error);
