@@ -382,4 +382,21 @@ export default {
     refreshSuccess: 'Tarea actualizada con éxito',
     refreshInfo: 'Cargando nueva tarea...',
   },
+  onboarding: {
+    screen1: {
+      title: 'Descubre Tu Verdadero Yo',
+      description:
+        'Permite que otros evalúen tus rasgos de personalidad para revelar tus fortalezas y áreas de crecimiento',
+    },
+    screen2: {
+      title: 'Análisis Personalizado',
+      description:
+        'Obtén un análisis de personalidad basado en tu signo zodiacal y recibe consejos diarios para mejorar',
+    },
+    screen3: {
+      title: 'Alcanza Tu Máximo Potencial',
+      description:
+        'Completa tareas diarias para mejorar tu personalidad y convertirte en la mejor versión de ti mismo',
+    },
+  },
 };

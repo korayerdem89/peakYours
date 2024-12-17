@@ -382,4 +382,20 @@ export default {
     refreshSuccess: 'Görev başarıyla yenilendi',
     refreshInfo: 'Yeni görev yükleniyor...',
   },
+  onboarding: {
+    screen1: {
+      title: 'Gerçek Benliğini Keşfet',
+      description:
+        'Başkalarının kişilik özelliklerini değerlendirmesiyle güçlü ve gelişime açık yönlerini gör',
+    },
+    screen2: {
+      title: 'Kişiye Özel Analiz',
+      description:
+        'Burcun ve kişilik özelliklerine göre karakter analizi al ve günlük gelişim tavsiyeleri edin',
+    },
+    screen3: {
+      title: 'Zirvene Ulaş',
+      description: 'Günlük kişilik geliştirme görevlerini tamamlayarak en iyi versiyonuna dönüş',
+    },
+  },
 };

@@ -14,7 +14,7 @@ import { useAuth } from '@/store/useAuth';
 import { useLoadingStore } from '@/store/useLoadingStore';
 
 const { width, height } = Dimensions.get('window');
-const BANNER_HEIGHT = height / 3;
+const BANNER_HEIGHT = height / 4;
 
 // Google Sign-In konfigürasyonu
 GoogleSignin.configure({
@@ -77,12 +77,21 @@ export default function SignInScreen() {
 
   return (
     <SafeAreaView className="flex-1 bg-accent-light dark:bg-background-dark">
+      <View className="pt-6">
+        <Image
+          source={require('@/assets/banner.png')}
+          className="w-full rounded-xl"
+          style={{ width: width, height: height / 10 }}
+          resizeMode="contain"
+        />
+      </View>
+
       <View className="flex-1 items-center justify-center gap-10 p-6">
         <Image
-          source={require('@/assets/sign-in/opendoor.webp')}
+          source={require('@/assets/sign-in/signin.png')}
           className="w-full rounded-xl"
           style={{ height: BANNER_HEIGHT }}
-          resizeMode="cover"
+          resizeMode="contain"
         />
 
         <Text className="font-poppins-semibold mb-8 text-center text-3xl text-text-light dark:text-text-dark">

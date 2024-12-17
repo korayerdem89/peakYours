@@ -379,4 +379,21 @@ export default {
     subtitle: 'Top Performers This Week',
     you: 'You',
   },
+  onboarding: {
+    screen1: {
+      title: 'Discover Your True Self',
+      description:
+        'Let others rate your personality traits to reveal your strengths and areas for growth',
+    },
+    screen2: {
+      title: 'Personalized Analysis',
+      description:
+        'Get personality analysis based on your zodiac sign and receive daily advice for improvement',
+    },
+    screen3: {
+      title: 'Reach Your Peak',
+      description:
+        'Complete daily personality-enhancing tasks to become the best version of yourself',
+    },
+  },
 };

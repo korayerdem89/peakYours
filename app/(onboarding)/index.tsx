@@ -19,27 +19,6 @@ import { useTranslation } from '@/providers/LanguageProvider';
 const AnimatedImage = Animated.createAnimatedComponent(Image);
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
-const ONBOARDING_DATA = [
-  {
-    id: '1',
-    title: 'Track Your Progress',
-    description: 'Monitor your fitness journey with detailed analytics',
-    image: require('@/assets/onboarding/rate.webp'),
-  },
-  {
-    id: '2',
-    title: 'Join Challenges',
-    description: 'Compete with friends and achieve your goals together',
-    image: require('@/assets/onboarding/fortune.webp'),
-  },
-  {
-    id: '3',
-    title: 'Expert Guidance',
-    description: 'Get personalized workout plans from professionals',
-    image: require('@/assets/onboarding/tasks.webp'),
-  },
-];
-
 export default function OnboardingScreen() {
   const scrollX = useSharedValue(0);
   const scrollViewRef = useRef<Animated.ScrollView>(null);
@@ -49,6 +28,27 @@ export default function OnboardingScreen() {
   const router = useRouter();
   const { isFirstTime } = useAppUsage();
   const { t } = useTranslation();
+
+  const ONBOARDING_DATA = [
+    {
+      id: '1',
+      title: t('onboarding.screen1.title'),
+      description: t('onboarding.screen1.description'),
+      image: require('@/assets/onboarding/rate.png'),
+    },
+    {
+      id: '2',
+      title: t('onboarding.screen2.title'),
+      description: t('onboarding.screen2.description'),
+      image: require('@/assets/onboarding/fortune.png'),
+    },
+    {
+      id: '3',
+      title: t('onboarding.screen3.title'),
+      description: t('onboarding.screen3.description'),
+      image: require('@/assets/onboarding/tasks.png'),
+    },
+  ];
 
   const isLastSlide = currentIndex === ONBOARDING_DATA.length - 1;
 
