@@ -665,18 +665,6 @@ ${content.paragraphs.join('\n')}`;
 
   return (
     <SafeAreaView className="flex-1 bg-background-light dark:bg-background-dark">
-      {!bannerError && (
-        <BannerAd
-          unitId={'ca-app-pub-6312844121446107/2492397048'}
-          size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
-          requestOptions={requestOptions}
-          onAdFailedToLoad={handleBannerError}
-          onAdLoaded={() => {
-            setBannerError(false);
-            setRetryCount(0);
-          }}
-        />
-      )}
       <ScrollView
         className="flex-1 px-4"
         contentContainerStyle={{
