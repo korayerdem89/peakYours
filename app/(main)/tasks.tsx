@@ -28,7 +28,6 @@ import { TaskInfo } from '@/components/tasks/TaskInfo';
 import { UserData } from '@/services/user';
 import { updateUserTaskDate } from '@/services/user';
 import { BannerAdSize, BannerAd, RequestOptions } from 'react-native-google-mobile-ads';
-import { useInterstitialAd } from '@/store/useInterstitialAd';
 import { useLoadingStore } from '@/store/useLoadingStore';
 import NetInfo from '@react-native-community/netinfo';
 
@@ -61,8 +60,6 @@ export default function TasksScreen() {
   const bounceStyle = useAnimatedStyle(() => ({
     transform: [{ translateY: bounceValue.value }],
   }));
-
-  const { isLoaded, forceAd } = useInterstitialAd();
 
   const [bannerError, setBannerError] = useState(false);
   const [retryCount, setRetryCount] = useState(0);
@@ -289,17 +286,6 @@ export default function TasksScreen() {
       text1: t('tasks.refreshInfo'),
     });
     try {
-      // Her refresh'te reklam göster
-      setTimeout(async () => {
-        if (isLoaded) {
-          try {
-            await forceAd();
-          } catch (adError) {
-            console.error('Ad display error:', adError);
-          }
-        }
-      }, 2000);
-
       const newTask = getRandomTask(trait);
       if (newTask) {
         const newTasks = tasks.map((task) =>
