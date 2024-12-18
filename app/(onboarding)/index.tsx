@@ -131,6 +131,7 @@ export default function OnboardingScreen() {
         pagingEnabled
         showsHorizontalScrollIndicator={false}
         onScroll={scrollHandler}
+        scrollEnabled={false}
         scrollEventThrottle={16}
         onMomentumScrollEnd={(event) => {
           const newIndex = Math.round(event.nativeEvent.contentOffset.x / SCREEN_WIDTH);

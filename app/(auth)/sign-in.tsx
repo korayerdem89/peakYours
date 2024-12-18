@@ -77,36 +77,35 @@ export default function SignInScreen() {
 
   return (
     <SafeAreaView className="flex-1 bg-accent-light dark:bg-background-dark">
-      <View className="pt-6">
+      <View className="flex-1 items-center justify-center gap-10 p-6">
         <Image
           source={require('@/assets/banner.png')}
           className="w-full rounded-xl"
           style={{ width: width, height: height / 10 }}
           resizeMode="contain"
         />
-      </View>
-
-      <View className="flex-1 items-center justify-center gap-10 p-6">
         <Image
           source={require('@/assets/sign-in/signin.png')}
           className="w-full rounded-xl"
           style={{ height: BANNER_HEIGHT }}
           resizeMode="contain"
         />
-
-        <Text className="font-poppins-semibold mb-8 text-center text-3xl text-text-light dark:text-text-dark">
+        <Text className="text-center font-medium text-3xl text-primary dark:text-text-dark">
           {t('auth.signIn.welcomeTitle')}
         </Text>
-
-        <GoogleSigninButton
-          size={GoogleSigninButton.Size.Wide}
-          color={
-            colorScheme === 'dark' ? GoogleSigninButton.Color.Light : GoogleSigninButton.Color.Dark
-          }
-          onPress={signIn}
-          disabled={isLoading}
-          style={styles.googleButton}
-        />
+        <View className="w-full gap-5">
+          <GoogleSigninButton
+            size={GoogleSigninButton.Size.Wide}
+            color={
+              colorScheme === 'dark'
+                ? GoogleSigninButton.Color.Light
+                : GoogleSigninButton.Color.Dark
+            }
+            onPress={signIn}
+            disabled={isLoading}
+            style={styles.googleButton}
+          />
+        </View>
       </View>
     </SafeAreaView>
   );
