@@ -80,7 +80,7 @@ export default function SignInScreen() {
       <View className="flex-1 items-center justify-center gap-10 p-6">
         <Image
           source={require('@/assets/banner.png')}
-          className="w-full rounded-xl"
+          className="mb-10 w-full rounded-xl"
           style={{ width: width, height: height / 10 }}
           resizeMode="contain"
         />
