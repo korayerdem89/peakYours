@@ -23,8 +23,6 @@ export interface User {
 export interface UserProfile extends User {
   refCodes?: {
     en: string;
-    tr: string;
-    es: string;
   };
   traits?: {
     [key: string]: number;

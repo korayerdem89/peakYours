@@ -3,46 +3,19 @@ import { db } from '@/config/firebase';
 import { FirebaseAuthTypes } from '@react-native-firebase/auth';
 import { FirestoreService } from './firestore';
 import { generateRefCodes } from '@/utils/generateRefCode';
-
-export type MembershipType = 'free' | 'monthly' | 'annual';
-
-export interface UserData {
-  uid: string;
-  email: string | null;
-  displayName: string | null;
-  photoURL: string | null;
-  lastLoginAt: FirebaseFirestoreTypes.FieldValue | null;
-  createdAt: FirebaseFirestoreTypes.FieldValue | null;
-  zodiacSign?: string | null;
-  updatedAt?: FirebaseFirestoreTypes.FieldValue;
-  refCodes?: {
-    en: string;
-  };
-  traits?: {
-    [key: string]: number; // Her bir trait için sayısal değer
-  };
-  lastTasksDates?: {
-    [trait: string]: string; // { "empathic": "2024-03-20", "reliable": "2024-03-20" }
-  };
-  membership: {
-    type: MembershipType;
-    startDate: FirebaseFirestoreTypes.Timestamp;
-    endDate: FirebaseFirestoreTypes.Timestamp | null;
-    lastUpdated: FirebaseFirestoreTypes.Timestamp;
-  };
-}
+import {
+  MembershipType,
+  UserProfile as UserData,
+  Membership,
+  MembershipStatus,
+} from '@/types/user';
 
 export interface CreateUserData {
   uid: string;
   email: string;
   displayName?: string;
   photoURL?: string;
-  membership?: {
-    type: MembershipType;
-    startDate: FirebaseFirestoreTypes.Timestamp;
-    endDate: FirebaseFirestoreTypes.Timestamp | null;
-    lastUpdated: FirebaseFirestoreTypes.Timestamp;
-  };
+  membership?: Membership;
   createdAt: FirebaseFirestoreTypes.Timestamp;
   updatedAt: FirebaseFirestoreTypes.Timestamp;
 }
@@ -51,74 +24,32 @@ export class UserService {
   static async saveUserToFirestore(user: FirebaseAuthTypes.User) {
     try {
       console.log('Saving user to Firestore:', user.uid);
-
-      // Önce kullanıcının mevcut dökümanını kontrol et
       const existingUser = await FirestoreService.getDoc<UserData>('users', user.uid);
 
-      // Eğer kullanıcının zaten ref kodları varsa, onları kullan
-      if (existingUser?.refCodes) {
-        console.log('User already has ref codes:', existingUser.refCodes);
+      if (!existingUser) {
+        const now = FirebaseFirestoreTypes.Timestamp.now();
+        const defaultMembership: Membership = {
+          type: 'free',
+          startDate: now,
+          endDate: null,
+          lastUpdated: now,
+        };
 
-        // User dökümanını güncelle
-        const userData: Partial<UserData> = {
+        const refCodes = generateRefCodes(user.uid);
+        const userData: UserData = {
+          uid: user.uid,
           email: user.email,
           displayName: user.displayName,
           photoURL: user.photoURL,
-          lastLoginAt: firestore.FieldValue.serverTimestamp(),
-          updatedAt: firestore.FieldValue.serverTimestamp(),
+          membership: defaultMembership,
+          refCodes: {
+            en: refCodes.en,
+          },
+          createdAt: now,
+          updatedAt: now,
         };
 
-        await FirestoreService.updateDoc('users', user.uid, userData);
-        console.log('User data updated successfully');
-        return;
-      }
-
-      // Ref kodu yoksa yeni oluştur
-      const refCodes = generateRefCodes(user.uid);
-      console.log('Generated new ref codes:', refCodes);
-
-      // Batch işlemi başlat
-      const batch = firestore().batch();
-
-      // İngilizce ref code dökümanı
-      const enRefDoc = firestore().collection('refCodes').doc(refCodes.en);
-      const enData = {
-        userId: user.uid,
-        code: refCodes.en,
-        language: 'en',
-        createdAt: firestore.FieldValue.serverTimestamp(),
-      };
-      batch.set(enRefDoc, enData);
-      console.log('Adding EN ref code:', enData);
-
-      // User dökümanını oluştur
-      const userData: UserData = {
-        uid: user.uid,
-        email: user.email,
-        displayName: user.displayName,
-        photoURL: user.photoURL,
-        lastLoginAt: firestore.FieldValue.serverTimestamp(),
-        createdAt: firestore.FieldValue.serverTimestamp(),
-        refCodes,
-        traits: {}, // Boş traits objesi ile başlat
-        membership: {
-          type: 'free' as MembershipType,
-          startDate: FirebaseFirestoreTypes.Timestamp.now(),
-          endDate: null,
-          lastUpdated: FirebaseFirestoreTypes.Timestamp.now(),
-        },
-      };
-
-      const userDoc = firestore().collection('users').doc(user.uid);
-      batch.set(userDoc, userData, { merge: true });
-
-      try {
-        // Batch işlemini commit et
-        await batch.commit();
-        console.log('Batch commit successful');
-      } catch (batchError) {
-        console.error('Batch commit error:', batchError);
-        throw batchError;
+        await FirestoreService.setDoc('users', user.uid, userData);
       }
     } catch (error) {
       console.error('Save user error:', error);
@@ -132,15 +63,34 @@ export class UserService {
 
   static async updateUser(uid: string, data: Partial<UserData>): Promise<void> {
     try {
-      await FirestoreService.updateDoc('users', uid, {
+      const updateData = {
         ...data,
-        updatedAt: firestore.FieldValue.serverTimestamp(),
-      });
+        updatedAt: FirebaseFirestoreTypes.Timestamp.now(),
+      };
+      await FirestoreService.updateDoc('users', uid, updateData);
     } catch (error) {
       console.error('Update user error:', error);
       throw error;
     }
   }
+}
+
+export async function createUser(data: CreateUserData): Promise<void> {
+  const defaultMembership: Membership = {
+    type: 'free',
+    startDate: FirebaseFirestoreTypes.Timestamp.now(),
+    endDate: null,
+    lastUpdated: FirebaseFirestoreTypes.Timestamp.now(),
+  };
+
+  const userData: CreateUserData = {
+    ...data,
+    membership: data.membership || defaultMembership,
+    createdAt: FirebaseFirestoreTypes.Timestamp.now(),
+    updatedAt: FirebaseFirestoreTypes.Timestamp.now(),
+  };
+
+  await FirestoreService.setDoc('users', data.uid, userData);
 }
 
 // Günlük task kontrolü için yardımcı fonksiyon
@@ -165,24 +115,6 @@ export async function updateUserTaskDate(userId: string, trait: string, date: st
     console.error('Error updating task date:', error);
     throw error;
   }
-}
-
-export async function createUser(data: CreateUserData): Promise<void> {
-  const defaultMembership = {
-    type: 'free' as MembershipType,
-    startDate: FirebaseFirestoreTypes.Timestamp.now(),
-    endDate: null,
-    lastUpdated: FirebaseFirestoreTypes.Timestamp.now(),
-  };
-
-  const userData: CreateUserData = {
-    ...data,
-    membership: data.membership || defaultMembership,
-    createdAt: FirebaseFirestoreTypes.Timestamp.now(),
-    updatedAt: FirebaseFirestoreTypes.Timestamp.now(),
-  };
-
-  await FirestoreService.setDoc('users', data.uid, userData);
 }
 
 export async function updateUserMembership(
@@ -214,21 +146,42 @@ export async function updateUserMembership(
   await FirestoreService.updateDoc('users', userId, membershipData);
 }
 
-export async function checkMembershipStatus(userId: string): Promise<boolean> {
+export async function checkMembershipStatus(userId: string): Promise<MembershipStatus> {
   const userData = await FirestoreService.getDoc<UserData>('users', userId);
 
-  if (!userData) return false;
+  if (!userData) {
+    return {
+      isActive: false,
+      type: 'free',
+      expiresAt: null,
+    };
+  }
 
   const { membership } = userData;
   const now = FirebaseFirestoreTypes.Timestamp.now();
 
   // Free üyelik her zaman aktif
-  if (membership.type === 'free') return true;
+  if (membership.type === 'free') {
+    return {
+      isActive: true,
+      type: 'free',
+      expiresAt: null,
+    };
+  }
 
   // Ücretli üyeliklerin süre kontrolü
   if (membership.endDate) {
-    return now.toMillis() <= membership.endDate.toMillis();
+    const isActive = now.toMillis() <= membership.endDate.toMillis();
+    return {
+      isActive,
+      type: membership.type,
+      expiresAt: membership.endDate.toDate(),
+    };
   }
 
-  return false;
+  return {
+    isActive: false,
+    type: membership.type,
+    expiresAt: null,
+  };
 }
