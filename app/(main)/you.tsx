@@ -12,41 +12,8 @@ import { useAuth } from '@/store/useAuth';
 import { useFocusEffect } from '@react-navigation/native';
 import { useUpdateUser, useUserData } from '@/hooks/useUserQueries';
 import BadSidesRoute from '@/components/main/BadSidesRoute';
-import {
-  BannerAd,
-  BannerAdSize,
-  InterstitialAd,
-  AdEventType,
-  RequestOptions,
-} from 'react-native-google-mobile-ads';
-import { useInterstitialAd } from '@/store/useInterstitialAd';
+import { BannerAd, BannerAdSize, RequestOptions } from 'react-native-google-mobile-ads';
 import NetInfo from '@react-native-community/netinfo';
-
-const adUnitId = 'ca-app-pub-6312844121446107/7886655538';
-
-const interstitial = InterstitialAd.createForAdRequest(adUnitId, {
-  keywords: [
-    'zodiac',
-    'tarot',
-    'astrology',
-    'personality',
-    'psychology',
-    'psychic',
-    'personalgrowth',
-    'spiritual',
-    'spiritualgrowth',
-    'spiritualjourney',
-    'spiritualpath',
-    'spiritualpractice',
-    'spiritualteacher',
-    'spiritualteachertraining',
-    'fitness',
-    'health',
-    'wellness',
-    'mindfulness',
-    'meditation',
-  ],
-});
 
 export default function YouScreen() {
   const { t, locale } = useTranslation();
@@ -54,11 +21,8 @@ export default function YouScreen() {
   const { colorScheme } = useColorScheme();
   const [index, setIndex] = useState(0);
   const { user } = useAuth();
-  const [loaded, setLoaded] = useState(true);
   const { data: userData } = useUserData(user?.uid);
   const updateUser = useUpdateUser();
-  const showAd = useInterstitialAd((state) => state.showAd);
-  const isLoaded = useInterstitialAd((state) => state.isLoaded);
   const [bannerError, setBannerError] = useState(false);
   const [retryCount, setRetryCount] = useState(0);
   const MAX_RETRY = 3;
@@ -80,44 +44,6 @@ export default function YouScreen() {
     goodsides: GoodSidesRoute,
     badsides: BadSidesRoute,
   });
-
-  useFocusEffect(() => {
-    const unsubscribeLoaded = interstitial.addAdEventListener(AdEventType.LOADED, () => {
-      setLoaded(true);
-    });
-
-    const unsubscribeOpened = interstitial.addAdEventListener(AdEventType.OPENED, () => {
-      if (Platform.OS === 'ios') {
-        StatusBar.setHidden(true);
-      }
-    });
-
-    const unsubscribeClosed = interstitial.addAdEventListener(AdEventType.CLOSED, () => {
-      if (Platform.OS === 'ios') {
-        StatusBar.setHidden(false);
-      }
-      interstitial.load();
-    });
-
-    interstitial.load();
-
-    return () => {
-      unsubscribeLoaded();
-      unsubscribeOpened();
-      unsubscribeClosed();
-    };
-  });
-
-  useFocusEffect(
-    useCallback(() => {
-      if (!loaded && user?.zodiacSign) {
-        interstitial.load();
-      }
-      return () => {
-        // Cleanup
-      };
-    }, [loaded])
-  );
 
   useFocusEffect(
     useCallback(() => {
@@ -193,14 +119,9 @@ export default function YouScreen() {
         inactiveColor={colorScheme === 'dark' ? '#C5CEE0' : '#8F9BB3'}
         pressColor="transparent"
         scrollEnabled={false}
-        onTabPress={() => {
-          if (isLoaded) {
-            showAd();
-          }
-        }}
       />
     ),
-    [colorScheme, layout.width, isLoaded, showAd]
+    [colorScheme, layout.width]
   );
 
   return (

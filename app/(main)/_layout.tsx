@@ -2,14 +2,12 @@ import { Tabs } from 'expo-router';
 import { CustomTabBar } from '@/components/CustomTabBar';
 import { Alert, Platform } from 'react-native';
 import { useEffect, useState } from 'react';
-import { useInterstitialAd } from '@/store/useInterstitialAd';
 import { useTranslation } from '@/providers/LanguageProvider';
 import { useAuth } from '@/store/useAuth';
 import { useUpdateUser } from '@/hooks/useUserQueries';
 import { ZodiacModal } from '@/components/ZodiacModal';
 
 export default function MainLayout() {
-  const loadAd = useInterstitialAd((state) => state.loadAd);
   const { t } = useTranslation();
   const { user, updateUserData } = useAuth();
   const updateUser = useUpdateUser();
@@ -32,10 +30,6 @@ export default function MainLayout() {
       Alert.alert(t('common.error'), t('settings.zodiacCard.updateError'));
     }
   };
-
-  useEffect(() => {
-    loadAd();
-  }, []);
 
   return (
     <>

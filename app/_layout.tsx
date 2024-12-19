@@ -23,12 +23,8 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useOnlineManager } from '@/hooks/useOnlineManager';
 import { useAppState } from '@/hooks/useAppState';
 import { toastConfig } from '@/config/toast';
-import { useInterstitialAd } from '@/store/useInterstitialAd';
 import { LoadingModal } from '@/components/LoadingModal';
 import { useLoadingStore } from '@/store/useLoadingStore';
-import { useAppUsage } from '@/hooks/useAppUsage';
-import { ZodiacModal } from '@/components/ZodiacModal';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import {
   useFonts,
@@ -51,8 +47,6 @@ import {
   Poppins_800ExtraBold_Italic,
   Poppins_900Black_Italic,
 } from '@expo-google-fonts/poppins';
-
-const LANGUAGE_CHANGE_KEY = 'last_language_change';
 
 // Prevent splash screen from auto-hiding
 SplashScreen.preventAutoHideAsync();
