@@ -65,7 +65,7 @@ export function TaskInfo({ userData }: TaskInfoProps) {
   };
 
   return (
-    <View className="rounded-xl bg-gray-100 dark:bg-gray-800/50">
+    <View className="rounded-sm bg-gray-100 dark:bg-gray-800/50">
       <TouchableOpacity
         onPress={toggleExpand}
         className="flex-row items-center justify-between p-4">

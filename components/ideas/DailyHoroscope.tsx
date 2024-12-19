@@ -201,7 +201,7 @@ export function DailyHoroscope({ goodTraits, badTraits, zodiacSign }: DailyHoros
   return (
     <Animated.View
       entering={FadeIn.delay(400).duration(500)}
-      className="rounded-2xl bg-surface-light p-6 shadow-lg dark:bg-surface-dark">
+      className="rounded-sm bg-surface-light p-6 shadow-lg dark:bg-surface-dark">
       <View className="mb-4 flex-row items-center">
         <Text className="font-semibold text-xl text-primary-dark dark:text-primary-light">
           💡 {t('ideas.dailyHoroscope.title')}
@@ -270,14 +270,14 @@ function PaginationDot({
   return (
     <Animated.View
       style={[animatedDotStyle]}
-      className="h-2 rounded-full bg-primary-light dark:bg-primary-dark"
+      className="h-2 rounded-sm bg-primary-light dark:bg-primary-dark"
     />
   );
 }
 
 function HoroscopeCard({ tag, content, width }: { tag: string; content: string; width: number }) {
   return (
-    <View style={{ width }} className="rounded-xl bg-primary-light/10 p-4 dark:bg-primary-dark/10">
+    <View style={{ width }} className="rounded-lg bg-primary-light/10 p-4 dark:bg-primary-dark/10">
       <Text className="mb-3 font-medium text-sm text-primary-dark/70 dark:text-primary-light/70">
         #{tag}
       </Text>

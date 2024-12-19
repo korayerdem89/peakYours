@@ -114,7 +114,7 @@ export default function YouScreen() {
           textAlign: 'center',
         }}
         activeColor={
-          colorScheme === 'dark' ? theme.colors.primary.light : theme.colors.secondary.dark
+          colorScheme === 'dark' ? theme.colors.primary.light : theme.colors.primary.dark
         }
         inactiveColor={colorScheme === 'dark' ? '#C5CEE0' : '#8F9BB3'}
         pressColor="transparent"

@@ -259,7 +259,7 @@ export default function Ideas() {
           contentContainerStyle={{ flexGrow: 1 }}
           showsVerticalScrollIndicator={false}>
           <Animated.View entering={FadeIn.duration(1000)} className="flex-1 justify-center">
-            <View className="rounded-2xl bg-surface-light p-6 shadow-sm dark:bg-surface-dark">
+            <View className="rounded-sm bg-surface-light p-6 shadow-sm dark:bg-surface-dark">
               {/* İllüstrasyon Container */}
               <Animated.View style={bounceStyle} className="mb-8 items-center">
                 <Image
@@ -280,7 +280,7 @@ export default function Ideas() {
               </Text>
 
               {/* CTA Bölümü */}
-              <View className="mt-4 rounded-xl bg-primary-light/10 p-4 dark:bg-primary-dark/10">
+              <View className="mt-4 rounded-sm bg-primary-light/10 p-4 dark:bg-primary-dark/10">
                 <Text className="text-center font-semibold text-sm text-primary-dark dark:text-primary-light">
                   {t('ideas.noRatingsWarning.cta')}
                 </Text>
@@ -654,7 +654,7 @@ ${content.paragraphs.join('\n')}`;
         <View className="gap-4">
           <Animated.View
             entering={FadeIn.duration(500)}
-            className="dark:bg-accent-dark/20 rounded-2xl bg-accent-light/20 p-5">
+            className="dark:bg-accent-dark/20 rounded-sm bg-accent-light/20 p-5">
             <Text className="text-center font-medium text-sm text-secondary-dark/80 dark:text-secondary-light/80">
               ✨ {t('ideas.accuracyWarning')} ✨
             </Text>
@@ -665,14 +665,14 @@ ${content.paragraphs.join('\n')}`;
           {/* Spirit Animal Card - Daha canlı ve eğlenceli */}
           <Animated.View
             entering={FadeIn.delay(200).duration(500)}
-            className="rounded-2xl bg-surface-light p-6 shadow-lg dark:bg-surface-dark">
+            className="rounded-sm bg-surface-light p-6 shadow-lg dark:bg-surface-dark">
             <View className="flex-row items-center justify-between">
               {personalityAnimal && (
                 <View className="flex-row items-center gap-5">
                   {/* Zıplayan hayvan ikonu */}
                   <Animated.View
                     style={bounceStyle}
-                    className="items-center justify-center rounded-full bg-amber-50 p-4  shadow-sm shadow-gray-500 dark:bg-primary-dark/25">
+                    className="items-center justify-center rounded-sm bg-amber-50 p-4  shadow-sm shadow-gray-500 dark:bg-primary-dark/25">
                     <Image
                       source={personalityAnimal.image}
                       className="h-14 w-14 " // Biraz daha büyük
@@ -704,7 +704,7 @@ ${content.paragraphs.join('\n')}`;
           {/* Analysis Card - Daha yumuşak köşeler ve gölgeler */}
           <Animated.View
             entering={FadeIn.delay(400).duration(500)}
-            className="rounded-2xl bg-surface-light p-6 shadow-lg dark:bg-surface-dark">
+            className="rounded-sm bg-surface-light p-6 shadow-lg dark:bg-surface-dark">
             <Text className="mb-4 font-semibold text-xl text-primary-dark dark:text-primary-light">
               🔮 {t('ideas.analysis.title')}
             </Text>

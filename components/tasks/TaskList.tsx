@@ -29,7 +29,7 @@ export function TaskList({
 
   return (
     <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
-      <View className="rounded-lg bg-gray-50 p-4 dark:bg-gray-800">
+      <View className="rounded-sm bg-gray-50 p-4 dark:bg-gray-800">
         {tasks.map((task, index) => (
           <View key={task.id}>
             <View className="flex-row items-center justify-between py-3">
