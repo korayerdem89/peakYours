@@ -87,6 +87,7 @@ interface StoredAdvice {
   timestamp: number;
   locale: string;
   zodiacSign: string;
+  date: string;
 }
 
 export function DailyHoroscope({ goodTraits, badTraits, zodiacSign }: DailyHoroscopeProps) {
@@ -120,6 +121,7 @@ export function DailyHoroscope({ goodTraits, badTraits, zodiacSign }: DailyHoros
             timestamp: Date.now(),
             locale,
             zodiacSign,
+            date: new Date().toISOString().split('T')[0],
           };
           await AsyncStorage.setItem('dailyAdvice', JSON.stringify(adviceWithTimestamp));
           setStoredAdvice(adviceWithTimestamp);
@@ -141,13 +143,13 @@ export function DailyHoroscope({ goodTraits, badTraits, zodiacSign }: DailyHoros
   const checkAndLoadAdvice = async () => {
     try {
       const stored = await AsyncStorage.getItem('dailyAdvice');
+      const today = new Date().toISOString().split('T')[0];
+
       if (stored) {
         const parsedAdvice: StoredAdvice = JSON.parse(stored);
-        const now = Date.now();
-        const hoursSinceLastAdvice = (now - parsedAdvice.timestamp) / (1000 * 60 * 60);
 
         if (
-          hoursSinceLastAdvice < 24 &&
+          parsedAdvice.date === today &&
           parsedAdvice.locale === locale &&
           parsedAdvice.zodiacSign === zodiacSign
         ) {
@@ -162,6 +164,7 @@ export function DailyHoroscope({ goodTraits, badTraits, zodiacSign }: DailyHoros
         const adviceWithTimestamp: StoredAdvice = {
           ...newAdvice.data,
           timestamp: Date.now(),
+          date: today,
           locale,
           zodiacSign,
         };

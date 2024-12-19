@@ -26,16 +26,12 @@ export class DailyHoroscopeService {
         .slice(0, 3)
         .map((t) => ({ trait: t.trait, value: t.value }));
 
-      // Günlük tarihi al
-      const today = new Date().toISOString().split('T')[0];
-
       // AI'dan horoscope al
       const horoscope = await generateAIHoroscope({
         zodiacSign,
-        date: today,
         goodTraits: topGoodTraits,
         badTraits: topBadTraits,
-        language,
+        locale: language,
       });
 
       return horoscope;

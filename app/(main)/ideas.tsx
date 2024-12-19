@@ -609,23 +609,6 @@ ${content.paragraphs.join('\n')}`;
     }
   };
 
-  const handleBannerError = useCallback(
-    async (error: Error) => {
-      console.error('Banner ad failed to load:', error);
-      setBannerError(true);
-
-      const networkState = await NetInfo.fetch();
-
-      if (networkState.isConnected && retryCount < MAX_RETRY) {
-        setTimeout(() => {
-          setBannerError(false);
-          setRetryCount((prev) => prev + 1);
-        }, RETRY_DELAY);
-      }
-    },
-    [retryCount]
-  );
-
   useEffect(() => {
     const unsubscribe = NetInfo.addEventListener((state) => {
       if (state.isConnected && bannerError) {
@@ -638,11 +621,6 @@ ${content.paragraphs.join('\n')}`;
       unsubscribe();
     };
   }, [bannerError]);
-
-  const requestOptions: RequestOptions = {
-    requestNonPersonalizedAdsOnly: true,
-    keywords: ['personality', 'zodiac', 'astrology', 'analysis', 'horoscope'],
-  };
 
   if (!user?.zodiacSign) {
     return (

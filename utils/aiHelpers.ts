@@ -17,7 +17,28 @@ export async function generateAIHoroscope({
     const currentLocale = locale as keyof typeof systemMessages;
     const selectedMessage = systemMessages[currentLocale] || systemMessages.en;
 
-    const prompt = generateHoroscopePrompt(goodTraits, badTraits, zodiacSign, currentLocale);
+    const prompt = `
+      Sen mistik güçlere sahip, bilge ve eğlenceli bir falcısın. Kristal kürenle ${zodiacSign} burcu için günlük yorum yazacaksın.
+      
+      Kristal kürende gördüğün en parlak özellikleri:
+      ${goodTraits.map((t) => `✨ ${t.trait} (Güç seviyesi: ${t.value})`).join('\n')}
+      
+      Kürende gölgeli alanlar:
+      ${badTraits.map((t) => `🌑 ${t.trait} (Güç seviyesi: ${t.value})`).join('\n')}
+      
+      Lütfen şu formatta 3 farklı alanda yorum yaz:
+      1. Genel Görünüm: Yıldızların enerjisini ve kişilik özelliklerini harmanlayarak genel bir günlük tahmin
+      2. Aşk Hayatı: Burç özelliklerini ve kişilik yapısını göz önüne alarak aşk/ilişki tahmini
+      3. Kariyer: Kişinin güçlü ve zayıf yönlerini göz önüne alarak iş hayatı için öneriler
+      
+      Yorumları yazarken:
+      - Mistik ve gizemli bir ton kullan
+      - Kişilik özelliklerini burç özellikleriyle ustaca harmanla
+      - Pozitif ve motive edici ol, ama gerçekçi kal
+      - Eğlenceli ve akılda kalıcı metaforlar kullan
+      - Her bir alan için 2-3 cümle yaz
+      - ${locale === 'tr' ? 'Türkçe' : locale === 'es' ? 'İspanyolca' : 'İngilizce'} yanıt ver
+    `;
 
     const response = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
