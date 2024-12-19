@@ -27,9 +27,10 @@ import { TaskProgress } from '@/components/tasks/TaskProgress';
 import { TaskInfo } from '@/components/tasks/TaskInfo';
 import { UserData } from '@/services/user';
 import { updateUserTaskDate } from '@/services/user';
-import { BannerAdSize, BannerAd, RequestOptions } from 'react-native-google-mobile-ads';
+import { RequestOptions } from 'react-native-google-mobile-ads';
 import { useLoadingStore } from '@/store/useLoadingStore';
 import NetInfo from '@react-native-community/netinfo';
+import QuoteCard from '@/components/main/QuoteCard';
 
 interface Task {
   id: string;
@@ -328,18 +329,7 @@ export default function TasksScreen() {
   return (
     <SafeAreaView className="flex-1 bg-background-light dark:bg-background-dark">
       <View className="flex-1 gap-4 p-4 pb-10">
-        {!bannerError && (
-          <BannerAd
-            unitId={'ca-app-pub-6312844121446107/2492397048'}
-            size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
-            requestOptions={requestOptions}
-            onAdFailedToLoad={handleBannerError}
-            onAdLoaded={() => {
-              setBannerError(false);
-              setRetryCount(0);
-            }}
-          />
-        )}
+        <QuoteCard />
         <TaskHeader />
 
         <TaskInfo userData={userData ?? ({} as UserData)} />
