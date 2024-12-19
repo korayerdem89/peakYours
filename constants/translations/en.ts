@@ -396,4 +396,19 @@ export default {
         'Complete daily personality-enhancing tasks to become the best version of yourself',
     },
   },
+  subscription: {
+    unlockPro: 'Unlock Premium Features',
+    description: 'Access all features that will help you on your personal development journey',
+    monthly: 'Monthly',
+    annual: 'Annual',
+    subscribe: 'Get Started',
+    terms:
+      'Your subscription will automatically renew. You can cancel anytime. By purchasing, you agree to our Terms of Service.',
+    features: {
+      analysis: 'Detailed personality analysis & insights',
+      tasks: 'Daily personal development tasks',
+      ratings: 'Unlimited rating details',
+      updates: 'Priority access to new features',
+    },
+  },
 };

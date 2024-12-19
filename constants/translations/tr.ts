@@ -398,4 +398,19 @@ export default {
       description: 'Günlük kişilik geliştirme görevlerini tamamlayarak en iyi versiyonuna dönüş',
     },
   },
+  subscription: {
+    unlockPro: 'Premium Özellikleri Keşfet',
+    description: 'Kişisel gelişim yolculuğunuzda size yardımcı olacak tüm özelliklere erişin',
+    monthly: 'Aylık',
+    annual: 'Yıllık',
+    subscribe: 'Hemen Başla',
+    terms:
+      'Aboneliğiniz otomatik olarak yenilenir. İstediğiniz zaman iptal edebilirsiniz. Satın alma işleminizle birlikte Kullanım Koşullarını kabul etmiş olursunuz.',
+    features: {
+      analysis: 'Detaylı kişilik analizi ve öneriler',
+      tasks: 'Günlük kişisel gelişim görevleri',
+      ratings: 'Sınırsız değerlendirme detayları',
+      updates: 'Öncelikli yeni özellik erişimi',
+    },
+  },
 };

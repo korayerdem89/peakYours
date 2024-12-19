@@ -399,4 +399,19 @@ export default {
         'Completa tareas diarias para mejorar tu personalidad y convertirte en la mejor versión de ti mismo',
     },
   },
+  subscription: {
+    unlockPro: 'Desbloquea Funciones Premium',
+    description: 'Accede a todas las funciones que te ayudarán en tu viaje de desarrollo personal',
+    monthly: 'Mensual',
+    annual: 'Anual',
+    subscribe: 'Comenzar',
+    terms:
+      'Tu suscripción se renovará automáticamente. Puedes cancelar en cualquier momento. Al comprar, aceptas nuestros Términos de servicio.',
+    features: {
+      analysis: 'Análisis de personalidad detallado',
+      tasks: 'Tareas diarias de desarrollo personal',
+      ratings: 'Detalles de calificación ilimitados',
+      updates: 'Acceso prioritario a nuevas funciones',
+    },
+  },
 };
