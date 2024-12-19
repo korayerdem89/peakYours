@@ -1,41 +1,51 @@
 import { FirebaseFirestoreTypes } from '@react-native-firebase/firestore';
 
-export interface UserData {
+export type MembershipType = 'free' | 'monthly' | 'annual';
+
+export interface Membership {
+  type: MembershipType;
+  startDate: FirebaseFirestoreTypes.Timestamp;
+  endDate: FirebaseFirestoreTypes.Timestamp | null;
+  lastUpdated: FirebaseFirestoreTypes.Timestamp;
+}
+
+export interface User {
   uid: string;
   email: string | null;
   displayName: string | null;
   photoURL: string | null;
-  lastLoginAt: FirebaseFirestoreTypes.FieldValue | null;
-  createdAt: FirebaseFirestoreTypes.FieldValue | null;
   zodiacSign?: string | null;
-  updatedAt?: FirebaseFirestoreTypes.FieldValue;
+  membership: Membership;
+  createdAt: FirebaseFirestoreTypes.Timestamp;
+  updatedAt: FirebaseFirestoreTypes.Timestamp;
+}
+
+export interface UserProfile extends User {
   refCodes?: {
     en: string;
+    tr: string;
+    es: string;
   };
   traits?: {
-    [key: string]: number; // Her bir trait için sayısal değer
+    [key: string]: number;
+  };
+  lastTasksDates?: {
+    [trait: string]: string;
   };
 }
 
-export type AuthUser = Pick<
-  UserData,
-  'uid' | 'email' | 'displayName' | 'photoURL' | 'zodiacSign' | 'refCodes' | 'traits'
->;
-
-export type BasicUserInfo = Pick<UserData, 'uid' | 'email' | 'displayName' | 'photoURL'>;
-
-export type ZodiacUpdateData = Partial<Pick<UserData, 'zodiacSign'>>;
-
-export interface Trait {
-  trait: string;
-  points: number;
+export interface UpdateUserPayload {
+  userId: string;
+  data: Partial<UserProfile>;
 }
 
-export interface TraitAverage {
-  trait: string;
-  averagePoints: number;
+export interface MembershipUpdatePayload {
+  userId: string;
+  membershipType: MembershipType;
 }
 
-export interface UserTraits {
-  [key: string]: number;
+export interface MembershipStatus {
+  isActive: boolean;
+  type: MembershipType;
+  expiresAt: Date | null;
 }

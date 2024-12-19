@@ -4,6 +4,8 @@ import { FirebaseAuthTypes } from '@react-native-firebase/auth';
 import { FirestoreService } from './firestore';
 import { generateRefCodes } from '@/utils/generateRefCode';
 
+export type MembershipType = 'free' | 'monthly' | 'annual';
+
 export interface UserData {
   uid: string;
   email: string | null;
@@ -22,6 +24,27 @@ export interface UserData {
   lastTasksDates?: {
     [trait: string]: string; // { "empathic": "2024-03-20", "reliable": "2024-03-20" }
   };
+  membership: {
+    type: MembershipType;
+    startDate: FirebaseFirestoreTypes.Timestamp;
+    endDate: FirebaseFirestoreTypes.Timestamp | null;
+    lastUpdated: FirebaseFirestoreTypes.Timestamp;
+  };
+}
+
+export interface CreateUserData {
+  uid: string;
+  email: string;
+  displayName?: string;
+  photoURL?: string;
+  membership?: {
+    type: MembershipType;
+    startDate: FirebaseFirestoreTypes.Timestamp;
+    endDate: FirebaseFirestoreTypes.Timestamp | null;
+    lastUpdated: FirebaseFirestoreTypes.Timestamp;
+  };
+  createdAt: FirebaseFirestoreTypes.Timestamp;
+  updatedAt: FirebaseFirestoreTypes.Timestamp;
 }
 
 export class UserService {
@@ -78,6 +101,12 @@ export class UserService {
         createdAt: firestore.FieldValue.serverTimestamp(),
         refCodes,
         traits: {}, // Boş traits objesi ile başlat
+        membership: {
+          type: 'free' as MembershipType,
+          startDate: FirebaseFirestoreTypes.Timestamp.now(),
+          endDate: null,
+          lastUpdated: FirebaseFirestoreTypes.Timestamp.now(),
+        },
       };
 
       const userDoc = firestore().collection('users').doc(user.uid);
@@ -136,4 +165,70 @@ export async function updateUserTaskDate(userId: string, trait: string, date: st
     console.error('Error updating task date:', error);
     throw error;
   }
+}
+
+export async function createUser(data: CreateUserData): Promise<void> {
+  const defaultMembership = {
+    type: 'free' as MembershipType,
+    startDate: FirebaseFirestoreTypes.Timestamp.now(),
+    endDate: null,
+    lastUpdated: FirebaseFirestoreTypes.Timestamp.now(),
+  };
+
+  const userData: CreateUserData = {
+    ...data,
+    membership: data.membership || defaultMembership,
+    createdAt: FirebaseFirestoreTypes.Timestamp.now(),
+    updatedAt: FirebaseFirestoreTypes.Timestamp.now(),
+  };
+
+  await FirestoreService.setDoc('users', data.uid, userData);
+}
+
+export async function updateUserMembership(
+  userId: string,
+  membershipType: MembershipType
+): Promise<void> {
+  const now = FirebaseFirestoreTypes.Timestamp.now();
+  let endDate: FirebaseFirestoreTypes.Timestamp | null = null;
+
+  // Üyelik bitiş tarihini hesapla
+  if (membershipType === 'monthly') {
+    const endDateTime = new Date(now.toDate());
+    endDateTime.setMonth(endDateTime.getMonth() + 1);
+    endDate = FirebaseFirestoreTypes.Timestamp.fromDate(endDateTime);
+  } else if (membershipType === 'annual') {
+    const endDateTime = new Date(now.toDate());
+    endDateTime.setFullYear(endDateTime.getFullYear() + 1);
+    endDate = FirebaseFirestoreTypes.Timestamp.fromDate(endDateTime);
+  }
+
+  const membershipData = {
+    'membership.type': membershipType,
+    'membership.startDate': now,
+    'membership.endDate': endDate,
+    'membership.lastUpdated': now,
+    updatedAt: now,
+  };
+
+  await FirestoreService.updateDoc('users', userId, membershipData);
+}
+
+export async function checkMembershipStatus(userId: string): Promise<boolean> {
+  const userData = await FirestoreService.getDoc<UserData>('users', userId);
+
+  if (!userData) return false;
+
+  const { membership } = userData;
+  const now = FirebaseFirestoreTypes.Timestamp.now();
+
+  // Free üyelik her zaman aktif
+  if (membership.type === 'free') return true;
+
+  // Ücretli üyeliklerin süre kontrolü
+  if (membership.endDate) {
+    return now.toMillis() <= membership.endDate.toMillis();
+  }
+
+  return false;
 }
