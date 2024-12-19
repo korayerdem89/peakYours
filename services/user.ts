@@ -3,12 +3,9 @@ import { db } from '@/config/firebase';
 import { FirebaseAuthTypes } from '@react-native-firebase/auth';
 import { FirestoreService } from './firestore';
 import { generateRefCodes } from '@/utils/generateRefCode';
-import {
-  MembershipType,
-  UserProfile as UserData,
-  Membership,
-  MembershipStatus,
-} from '@/types/user';
+import { MembershipType, UserProfile, Membership, MembershipStatus } from '@/types/user';
+
+export type UserData = UserProfile;
 
 export interface CreateUserData {
   uid: string;

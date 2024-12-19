@@ -13,7 +13,7 @@ import { FirestoreService } from '@/services/firestore';
 import { AntDesign } from '@expo/vector-icons';
 import { router } from 'expo-router';
 import { RefCode } from '@/types/refCode';
-import { UserData } from '@/types/user';
+import { UserProfile } from '@/types/user';
 import { Image as RNImage } from 'react-native';
 import { GoodSidesRateRoute } from '@/components/rate/GoodSidesRateRoute';
 import { BadSidesRateRoute } from '@/components/rate/BadSidesRateRoute';
@@ -29,7 +29,7 @@ export default function RateScreen() {
   const [index, setIndex] = useState(0);
   const [userNotFound, setUserNotFound] = useState(false);
   const [foundUserId, setFoundUserId] = useState<string | null>(null);
-  const [userData, setUserData] = useState<UserData | null>(null);
+  const [userData, setUserData] = useState<UserProfile | null>(null);
 
   const routes = useMemo(
     () => [
@@ -123,7 +123,7 @@ export default function RateScreen() {
         if (!refCodeDoc) {
           setUserNotFound(true);
         } else {
-          const userDoc = await FirestoreService.getDoc<UserData>('users', refCodeDoc.userId);
+          const userDoc = await FirestoreService.getDoc<UserProfile>('users', refCodeDoc.userId);
           if (userDoc) {
             setFoundUserId(refCodeDoc.userId);
             setUserData(userDoc);

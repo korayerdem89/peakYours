@@ -47,3 +47,13 @@ export interface MembershipStatus {
   type: MembershipType;
   expiresAt: Date | null;
 }
+
+export interface UserTraits {
+  [key: string]: number;
+}
+
+export interface TraitAverage {
+  trait: string;
+  averagePoints: number;
+  totalRatings: number;
+}

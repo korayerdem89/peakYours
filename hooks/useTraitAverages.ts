@@ -4,12 +4,12 @@ import { TraitAverages } from '@/types/traits';
 import { calculateTraitValue } from '@/utils/numberHelpers';
 import { theme } from '@/constants/theme';
 import { useMemo } from 'react';
-import { UserData } from '@/types/user';
+import { UserProfile } from '@/types/user';
 
 export function useTraitAverages(
   referenceCode: string | undefined,
   type: 'goodsides' | 'badsides',
-  userData: UserData | null | undefined
+  userData: UserProfile | null | undefined
 ) {
   const { data: traitAverages } = useQuery<TraitAverages[]>({
     queryKey: ['traitAverages', referenceCode, type],

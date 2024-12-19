@@ -14,10 +14,10 @@ import Animated, {
 import { useState, useMemo } from 'react';
 import { useTranslation } from '@/providers/LanguageProvider';
 import { theme } from '@/constants/theme';
-import { UserData } from '@/types/user';
+import { UserProfile } from '@/types/user';
 
 interface TaskInfoProps {
-  userData: UserData;
+  userData: UserProfile;
 }
 
 export function TaskInfo({ userData }: TaskInfoProps) {
@@ -27,7 +27,7 @@ export function TaskInfo({ userData }: TaskInfoProps) {
 
   const totalTasksCompleted = useMemo(() => {
     if (!userData?.traits) return 0;
-    return Object.values(userData.traits).reduce((sum, value) => sum + value, 0);
+    return Object.values(userData.traits).reduce((sum: number, value: number) => sum + value, 0);
   }, [userData?.traits]);
 
   const rotateStyle = useAnimatedStyle(() => {
@@ -104,7 +104,7 @@ export function TaskInfo({ userData }: TaskInfoProps) {
   );
 }
 
-function InfoItem({ icon, text }: { icon: any; text: string }) {
+function InfoItem({ icon, text }: { icon: keyof typeof MaterialIcons.glyphMap; text: string }) {
   return (
     <View className="mb-1 flex-row items-start">
       <MaterialIcons name={icon} size={18} color={theme.colors.text.light} className="mr-3 mt-1" />
