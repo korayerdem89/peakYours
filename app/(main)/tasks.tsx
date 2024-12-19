@@ -23,11 +23,9 @@ import { TraitLevelUpAnimation } from '@/components/TraitLevelUpAnimation';
 import { TaskHeader } from '@/components/tasks/TaskHeader';
 import { TaskRefreshCounter } from '@/components/tasks/TaskRefreshCounter';
 import { TaskList } from '@/components/tasks/TaskList';
-import { TaskProgress } from '@/components/tasks/TaskProgress';
 import { TaskInfo } from '@/components/tasks/TaskInfo';
 import { UserData } from '@/services/user';
 import { updateUserTaskDate } from '@/services/user';
-import { RequestOptions } from 'react-native-google-mobile-ads';
 import { useLoadingStore } from '@/store/useLoadingStore';
 import NetInfo from '@react-native-community/netinfo';
 import QuoteCard from '@/components/main/QuoteCard';
@@ -64,34 +62,12 @@ export default function TasksScreen() {
   }));
 
   const [bannerError, setBannerError] = useState(false);
-  const [retryCount, setRetryCount] = useState(0);
-  const MAX_RETRY = 3;
-  const RETRY_DELAY = 5000; // 5 saniye
-
-  const handleBannerError = useCallback(
-    async (error: Error) => {
-      console.error('Banner ad failed to load:', error);
-      setBannerError(true);
-
-      // Network durumunu kontrol et
-      const networkState = await NetInfo.fetch();
-
-      if (networkState.isConnected && retryCount < MAX_RETRY) {
-        setTimeout(() => {
-          setBannerError(false);
-          setRetryCount((prev) => prev + 1);
-        }, RETRY_DELAY);
-      }
-    },
-    [retryCount]
-  );
 
   // Network değişikliklerini dinle
   useEffect(() => {
     const unsubscribe = NetInfo.addEventListener((state) => {
       if (state.isConnected && bannerError) {
         setBannerError(false);
-        setRetryCount(0);
       }
     });
 
@@ -99,11 +75,6 @@ export default function TasksScreen() {
       unsubscribe();
     };
   }, [bannerError]);
-
-  const requestOptions: RequestOptions = {
-    requestNonPersonalizedAdsOnly: true,
-    keywords: ['personality', 'zodiac', 'astrology', 'tasks', 'self-improvement'],
-  };
 
   if (!traitDetails?.totalRaters) {
     return (
@@ -330,7 +301,7 @@ export default function TasksScreen() {
 
   return (
     <SafeAreaView className="flex-1 bg-background-light dark:bg-background-dark">
-      <View className="flex-1 gap-4 p-4 pb-10">
+      <View className="flex-1 gap-4 p-4 pb-24">
         <TouchableOpacity onPress={() => setShowPaywall(true)}>
           <Text>Paywall</Text>
         </TouchableOpacity>
@@ -345,14 +316,13 @@ export default function TasksScreen() {
         <TaskRefreshCounter refreshesLeft={refreshLimit} />
         {/* <TaskDebug /> */}
         <TaskList
+          timeUntilRefresh={timeUntilRefresh()}
           tasks={tasks}
           completedTasks={completedTasks}
           refreshLimit={refreshLimit}
           onRefreshTask={handleRefreshTask}
           onCompleteTask={handleCompleteTask}
         />
-
-        <TaskProgress progress={timeUntilRefresh()} />
 
         {levelUpTrait && (
           <TraitLevelUpAnimation

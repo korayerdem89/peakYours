@@ -407,7 +407,7 @@ export default {
     features: {
       analysis: 'Detailed personality analysis & insights',
       tasks: 'Daily personal development tasks',
-      ratings: 'Unlimited rating details',
+      ratings: 'See who rated you and how they rated you',
       updates: 'Priority access to new features',
     },
   },

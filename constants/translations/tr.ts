@@ -409,7 +409,7 @@ export default {
     features: {
       analysis: 'Detaylı kişilik analizi ve öneriler',
       tasks: 'Günlük kişisel gelişim görevleri',
-      ratings: 'Sınırsız değerlendirme detayları',
+      ratings: 'Kimlerin sizi nasıl değerlendirdiğini görün',
       updates: 'Öncelikli yeni özellik erişimi',
     },
   },

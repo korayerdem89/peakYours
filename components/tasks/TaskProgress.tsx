@@ -11,7 +11,7 @@ export function TaskProgress({ progress }: TaskProgressProps) {
   const { t } = useTranslation();
 
   return (
-    <View className="mt-4 space-y-4">
+    <View className="gap-4">
       <View className="items-center space-y-2">
         <Progress.Bar
           progress={progress}

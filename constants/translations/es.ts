@@ -410,7 +410,7 @@ export default {
     features: {
       analysis: 'Análisis de personalidad detallado',
       tasks: 'Tareas diarias de desarrollo personal',
-      ratings: 'Detalles de calificación ilimitados',
+      ratings: 'Vea quién y cómo lo calificaron',
       updates: 'Acceso prioritario a nuevas funciones',
     },
   },
