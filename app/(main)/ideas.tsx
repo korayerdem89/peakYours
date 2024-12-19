@@ -1,5 +1,5 @@
 import { View, Image, Text, ScrollView, ActivityIndicator } from 'react-native';
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useLayoutEffect } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useAuth } from '@/store/useAuth';
 import { ZodiacModal } from '@/components/ZodiacModal';
@@ -550,7 +550,7 @@ ${content.paragraphs.join('\n')}`;
     }
   };
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const loadAnalysis = async () => {
       if (!goodTraits || !badTraits || !user?.zodiacSign || !traitDetails) return;
 
