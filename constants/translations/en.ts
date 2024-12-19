@@ -356,7 +356,7 @@ export default {
     points: 'points',
     leaderboard: 'Leaderboard',
     info: {
-      title: 'Task Information',
+      title: 'Instructions',
       completedTasks: '{{count}} tasks completed',
       levelUp:
         'Complete 5 tasks of a trait to increase good personality traits by 1 point or decrease bad traits by 1 point',

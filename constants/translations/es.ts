@@ -364,7 +364,7 @@ export default {
     },
     refreshes: 'Actualizaciones Diarias Restantes',
     info: {
-      title: 'Información de Tareas',
+      title: 'Instrucciones',
       completedTasks: '{{count}} tareas completadas',
       levelUp:
         'Completa 5 tareas de un rasgo para aumentar los rasgos de personalidad buenos en 1 punto o disminuir los malos en 1 punto',

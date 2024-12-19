@@ -365,7 +365,7 @@ export default {
     remainingRefreshes: 'Kalan yenileme hakkı',
     refreshes: 'Günlük Yenileme Hakkı',
     info: {
-      title: 'Görev Bilgileri',
+      title: 'Talimatlar',
       completedTasks: '{{count}} görev tamamlandı',
       levelUp:
         'İyi kişilik özelliklerinizi 1 puan arttırmak, ya da kötü özelliklerinizi 1 puan azaltmak için o özellikten 5 görev yapın',
