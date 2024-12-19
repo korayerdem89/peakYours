@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { View, Text, ScrollView, Image, ActivityIndicator } from 'react-native';
+import { View, Text, ScrollView, Image, ActivityIndicator, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTranslation } from '@/providers/LanguageProvider';
 import { useAuth } from '@/store/useAuth';
@@ -31,6 +31,7 @@ import { RequestOptions } from 'react-native-google-mobile-ads';
 import { useLoadingStore } from '@/store/useLoadingStore';
 import NetInfo from '@react-native-community/netinfo';
 import QuoteCard from '@/components/main/QuoteCard';
+import PaywallModal from '@/components/modals/PaywallModal';
 
 interface Task {
   id: string;
@@ -153,6 +154,7 @@ export default function TasksScreen() {
   const [refreshLimit, setRefreshLimit] = useState(taskData?.refreshesLeft ?? 0);
   const [tasks, setTasks] = useState<Task[]>([]);
   const [completedTasks, setCompletedTasks] = useState<string[]>([]);
+  const [showPaywall, setShowPaywall] = useState(false);
   const { setIsLoading } = useLoadingStore();
 
   // Refresh sayacını taskData ile senkronize et
@@ -329,11 +331,17 @@ export default function TasksScreen() {
   return (
     <SafeAreaView className="flex-1 bg-background-light dark:bg-background-dark">
       <View className="flex-1 gap-4 p-4 pb-10">
+        <TouchableOpacity onPress={() => setShowPaywall(true)}>
+          <Text>Paywall</Text>
+        </TouchableOpacity>
         <QuoteCard />
         <TaskHeader />
-
+        <PaywallModal
+          visible={showPaywall}
+          onClose={() => setShowPaywall(false)}
+          onSubscribe={() => {}}
+        />
         <TaskInfo userData={userData ?? ({} as UserData)} />
-
         <TaskRefreshCounter refreshesLeft={refreshLimit} />
         {/* <TaskDebug /> */}
         <TaskList

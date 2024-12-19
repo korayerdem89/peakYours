@@ -1,4 +1,4 @@
-import { View, Text, Modal, Pressable, Image } from 'react-native';
+import { View, Text, Modal, Pressable, Image, TouchableOpacity } from 'react-native';
 import { useState } from 'react';
 import { useTranslation } from '@/providers/LanguageProvider';
 import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
@@ -18,15 +18,15 @@ export default function PaywallModal({ visible, onClose, onSubscribe }: PaywallM
 
   const plans = {
     monthly: {
-      price: 4.99,
+      price: 5.99,
       savings: 0,
       period: t('subscription.monthly'),
     },
     annual: {
-      price: 39.99,
-      savings: 20,
+      price: 35.99,
+      savings: 50,
       period: t('subscription.annual'),
-      monthlyPrice: 3.33,
+      monthlyPrice: 2.99,
     },
   };
 
@@ -81,9 +81,9 @@ export default function PaywallModal({ visible, onClose, onSubscribe }: PaywallM
               </View>
 
               {/* Plan Selection */}
-              <View className="mb-6 space-y-3">
+              <View className="mb-6 gap-3">
                 {/* Annual Plan */}
-                <Pressable
+                <TouchableOpacity
                   onPress={() => setSelectedPlan('annual')}
                   className={`rounded-xl border-2 p-4 ${
                     selectedPlan === 'annual'
@@ -105,10 +105,10 @@ export default function PaywallModal({ visible, onClose, onSubscribe }: PaywallM
                       </Text>
                     </View>
                   </View>
-                </Pressable>
+                </TouchableOpacity>
 
                 {/* Monthly Plan */}
-                <Pressable
+                <TouchableOpacity
                   onPress={() => setSelectedPlan('monthly')}
                   className={`rounded-xl border-2 p-4 ${
                     selectedPlan === 'monthly'
@@ -125,7 +125,7 @@ export default function PaywallModal({ visible, onClose, onSubscribe }: PaywallM
                       </Text>
                     </View>
                   </View>
-                </Pressable>
+                </TouchableOpacity>
               </View>
 
               {/* Subscribe Button */}

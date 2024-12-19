@@ -18,15 +18,15 @@ export default function PaywallModal({ visible, onClose, onSubscribe }: PaywallM
 
   const plans = {
     monthly: {
-      price: 4.99,
+      price: 5.99,
       savings: 0,
       period: t('subscription.monthly'),
     },
     annual: {
-      price: 39.99,
-      savings: 20,
+      price: 35.99,
+      savings: 50,
       period: t('subscription.annual'),
-      monthlyPrice: 3.33,
+      monthlyPrice: 2.99,
     },
   };
 
