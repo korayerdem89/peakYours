@@ -83,6 +83,9 @@ Error Handling and Validation
   - Implement global error boundaries to catch and handle unexpected errors.
 - Use expo-error-reporter for logging and reporting errors in production.
 
+Subscription System:
+The app implements a tiered subscription model with three levels: Free, Monthly ($4.99), and Annual ($39.99). Free users can only rate other users and view their own trait scores in the You screen's GoodSidesRoute and BadSidesRoute tabs. When free users attempt to access premium features like viewing detailed ratings, accessing the Ideas screen, or using the Tasks screen, they are presented with a PaywallModal. Monthly and Annual Pro subscribers gain full access to all features, including AI personality analysis, daily tasks, detailed rating insights, and ad-free experience. The Annual plan offers a 20% discount compared to the monthly option. The subscription status is managed through the user.membership object in Firestore, and protected routes/features check this status before granting access.
+
 Testing
 
 - Write unit tests using Jest and React Native Testing Library.
