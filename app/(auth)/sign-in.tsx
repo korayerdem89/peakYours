@@ -1,4 +1,4 @@
-import { View, Text, Alert, Image, Dimensions, StyleSheet } from 'react-native';
+import { View, Text, Alert, Image, Dimensions, StyleSheet, TouchableOpacity } from 'react-native';
 import {
   GoogleSignin,
   statusCodes,
@@ -11,6 +11,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useColorScheme } from 'nativewind';
 import { useAuth } from '@/store/useAuth';
 import { useLoadingStore } from '@/store/useLoadingStore';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const { width, height } = Dimensions.get('window');
 const BANNER_HEIGHT = height / 4;
@@ -81,6 +82,21 @@ export default function SignInScreen() {
     }
   };
 
+  const clearCache = async () => {
+    try {
+      setIsLoading(true);
+      await AsyncStorage.clear();
+      await setUser(null);
+      console.log('Cache cleared successfully');
+      Alert.alert('Success', 'Cache cleared successfully');
+    } catch (error) {
+      console.error('Clear cache error:', error);
+      Alert.alert('Error', 'Failed to clear cache');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <SafeAreaView className="flex-1 bg-accent-light dark:bg-background-dark">
       <View className="flex-1 items-center justify-center gap-10 p-6">
@@ -109,8 +125,15 @@ export default function SignInScreen() {
             }
             onPress={signIn}
             disabled={isLoading}
-            style={styles.googleButton}
+            style={{ width: '100%', height: 48 }}
           />
+
+          <TouchableOpacity
+            onPress={clearCache}
+            disabled={isLoading}
+            className="mt-4 h-12 w-full items-center justify-center rounded-xl bg-red-500 dark:bg-red-700">
+            <Text className="font-medium text-base text-white">Clear Cache (Test)</Text>
+          </TouchableOpacity>
         </View>
       </View>
     </SafeAreaView>
