@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { AuthUser } from '@/types';
+import { UserProfile } from '@/types';
 import { useQueryClient } from '@tanstack/react-query';
 import { UserService } from '@/services/user';
 import { registerClearAuthStates } from '@/config/firebase';
@@ -7,12 +7,12 @@ import { registerClearAuthStates } from '@/config/firebase';
 let queryClient: ReturnType<typeof useQueryClient> | null = null;
 
 interface AuthState {
-  user: AuthUser | null;
+  user: UserProfile | null;
   isLoading: boolean;
   setUser: (userId: string | null) => Promise<void>;
   setLoading: (loading: boolean) => void;
   setQueryClient: (client: ReturnType<typeof useQueryClient>) => void;
-  updateUserData: (data: Partial<AuthUser>) => void;
+  updateUserData: (data: Partial<UserProfile>) => void;
   clearAuth: () => Promise<void>;
 }
 

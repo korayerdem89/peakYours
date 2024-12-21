@@ -32,6 +32,7 @@ export default function SignInScreen() {
   const { colorScheme } = useColorScheme();
   const { t } = useTranslation();
   const { isLoading, setIsLoading } = useLoadingStore();
+
   const signIn = async () => {
     try {
       setIsLoading(true);
@@ -43,19 +44,28 @@ export default function SignInScreen() {
         throw new Error('No ID token received');
       }
 
+      // Firebase credential ve auth
       const credential = auth.GoogleAuthProvider.credential(data.idToken);
       const { user: firebaseUser } = await auth().signInWithCredential(credential);
 
-      // Firestore'a kaydet
+      // Önce Firestore'a kaydet
       await UserService.saveUserToFirestore(firebaseUser);
       console.log('User saved to Firestore:', firebaseUser.uid);
 
-      // User verilerini set et
+      // Kısa bir gecikme ekle
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+
+      // Sonra global state'i güncelle
       await setUser(firebaseUser.uid);
       console.log('Sign-in complete, user set');
+
+      router.replace('/(main)');
     } catch (error) {
       if (isErrorWithCode(error)) {
         switch (error.code) {
+          case statusCodes.SIGN_IN_CANCELLED:
+            Alert.alert(t('common.error'), t('auth.errors.cancelled'));
+            break;
           case statusCodes.IN_PROGRESS:
             Alert.alert(t('common.error'), t('auth.errors.inProgress'));
             break;
