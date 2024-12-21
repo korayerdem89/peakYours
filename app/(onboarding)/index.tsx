@@ -24,7 +24,7 @@ export default function OnboardingScreen() {
   const scrollViewRef = useRef<Animated.ScrollView>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
-  const [countdown, setCountdown] = useState<number | null>(3);
+  const [countdown, setCountdown] = useState<number | null>(1);
   const router = useRouter();
   const { isFirstTime } = useAppUsage();
   const { t } = useTranslation();
@@ -89,7 +89,7 @@ export default function OnboardingScreen() {
 
   const handleNext = useCallback(() => {
     setIsButtonDisabled(true);
-    setCountdown(3);
+    setCountdown(1);
 
     if (currentIndex < ONBOARDING_DATA.length - 1) {
       const nextIndex = currentIndex + 1;

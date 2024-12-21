@@ -50,8 +50,7 @@ export default function SignInScreen() {
 
       // Önce Firestore'a kaydet
       await UserService.saveUserToFirestore(firebaseUser);
-      console.log('User saved to Firestore:', firebaseUser.uid);
-
+      console.log('User saved to Firestore:', firebaseUser);
       // Kısa bir gecikme ekle
       await new Promise((resolve) => setTimeout(resolve, 1000));
 
