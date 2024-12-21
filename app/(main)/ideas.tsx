@@ -288,15 +288,10 @@ export default function Ideas() {
   ////traitdetails.totalRaters varsa alttaki dataları da çek
   const goodTraits = useTraitAverages(userData?.refCodes?.en, 'goodsides', userData);
   const badTraits = useTraitAverages(userData?.refCodes?.en, 'badsides', userData);
-  const updateUser = useUpdateUser();
-  const [showZodiacModal, setShowZodiacModal] = useState(!user?.zodiacSign);
   const [personalityAnimal, setPersonalityAnimal] = useState<PersonalityAnimal | null>(null);
   const [analysis, setAnalysis] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [bannerError, setBannerError] = useState(false);
-  const [retryCount, setRetryCount] = useState(0);
-  const MAX_RETRY = 3;
-  const RETRY_DELAY = 5000;
 
   const systemMessages = {
     en: `You are a friendly and witty personality analyst who loves combining astrology with personality traits! 
@@ -584,29 +579,10 @@ ${content.paragraphs.join('\n')}`;
     loadAnalysis();
   }, [goodTraits, badTraits, user?.zodiacSign, traitDetails?.totalRaters, locale]);
 
-  const handleZodiacSubmit = async (zodiacId: string) => {
-    if (!user?.uid) return;
-
-    try {
-      await updateUser.mutateAsync({
-        userId: user.uid,
-        data: {
-          zodiacSign: zodiacId,
-        },
-      });
-      updateUserData({ zodiacSign: zodiacId });
-      setShowZodiacModal(false);
-    } catch (error) {
-      console.error('Error updating zodiac sign:', error);
-      Alert.alert(t('common.error'), t('settings.zodiacCard.updateError'));
-    }
-  };
-
   useEffect(() => {
     const unsubscribe = NetInfo.addEventListener((state) => {
       if (state.isConnected && bannerError) {
         setBannerError(false);
-        setRetryCount(0);
       }
     });
 
