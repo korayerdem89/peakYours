@@ -22,7 +22,6 @@ export class UserService {
   static async saveUserToFirestore(user: FirebaseAuthTypes.User) {
     try {
       console.log('Saving user to Firestore:', user.uid);
-      console.log('before');
       const existingUser = await FirestoreService.getDoc<UserData>('users', user.uid);
 
       if (!existingUser) {
@@ -34,7 +33,8 @@ export class UserService {
           lastUpdated: now,
         };
 
-        const refCodes = generateRefCodes(user.uid);
+        const refCode = generateRefCodes(user.uid);
+
         const userData: UserData = {
           uid: user.uid,
           email: user.email,
@@ -42,14 +42,36 @@ export class UserService {
           photoURL: user.photoURL,
           membership: defaultMembership,
           refCodes: {
-            en: refCodes.en,
+            en: refCode.en,
           },
           createdAt: now,
           updatedAt: now,
+          zodiacSign: null,
         };
 
-        await FirestoreService.setDoc('users', user.uid, userData);
+        const refCodeData = {
+          userId: user.uid,
+          createdAt: now,
+          updatedAt: now,
+          language: 'en' as const,
+        };
+
+        const batch = firestore().batch();
+
+        const userRef = firestore().collection('users').doc(user.uid);
+        batch.set(userRef, userData);
+
+        const refCodeRef = firestore().collection('refCodes').doc(refCode.en);
+        batch.set(refCodeRef, refCodeData);
+
+        await batch.commit();
+        console.log('User and refCode data saved successfully');
+
+        return userData;
       }
+
+      console.log('User already exists');
+      return existingUser;
     } catch (error) {
       console.error('Save user error:', error);
       throw error;

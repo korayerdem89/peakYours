@@ -27,6 +27,9 @@ interface FirestoreSchema {
   refCodes: {
     [code: string]: {
       userId: string;
+      createdAt: Timestamp;
+      updatedAt: Timestamp;
+      language: 'en' | 'tr' | 'es';
       goodsides: {
         [ratedByUserId: string]: {
           traits: Array<{
