@@ -22,6 +22,7 @@ import { BannerAd, BannerAdSize } from 'react-native-google-mobile-ads';
 import { DailyHoroscope } from '@/components/ideas/DailyHoroscope';
 import NetInfo from '@react-native-community/netinfo';
 import Toast from 'react-native-toast-message';
+import { router } from 'expo-router';
 
 // Types
 interface PersonalityAnimal {
@@ -221,7 +222,7 @@ const PERSONALITY_ANIMALS: Record<string, PersonalityAnimal> = {
 };
 
 export default function Ideas() {
-  const { user, updateUserData } = useAuth();
+  const { user } = useAuth();
   const { data: userData } = useUserData(user?.uid);
   const { data: traitDetails } = useTraitDetails(userData?.refCodes?.en, 'goodsides');
   const { t, locale } = useTranslation();
