@@ -1,23 +1,14 @@
 import '@/global.css';
 import { Stack, useRouter, useSegments } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
-import {
-  View,
-  ActivityIndicator,
-  StyleSheet,
-  Platform,
-  AppState,
-  AppStateStatus,
-  Alert,
-} from 'react-native';
-import { useEffect, useRef, useState } from 'react';
+import { View, ActivityIndicator, StyleSheet, Platform } from 'react-native';
+import { useEffect } from 'react';
 import { useDarkMode } from '@/store/useDarkMode';
-import { useColorScheme } from 'react-native';
 import { ThemeProvider } from '@/providers/ThemeProvider';
 import { AuthProvider } from '@/providers/AuthProvider';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { useAuth } from '@/store/useAuth';
-import { LanguageProvider, useTranslation } from '@/providers/LanguageProvider';
+import { LanguageProvider } from '@/providers/LanguageProvider';
 import Toast from 'react-native-toast-message';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useOnlineManager } from '@/hooks/useOnlineManager';
