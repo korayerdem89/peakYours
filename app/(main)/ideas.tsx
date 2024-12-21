@@ -2,7 +2,6 @@ import { View, Image, Text, ScrollView, ActivityIndicator } from 'react-native';
 import { useState, useEffect, useCallback, useLayoutEffect } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useAuth } from '@/store/useAuth';
-import { ZodiacModal } from '@/components/ZodiacModal';
 import { useTranslation } from '@/providers/LanguageProvider';
 import { Alert } from 'react-native';
 import { useUpdateUser } from '@/hooks/useUserQueries';
@@ -17,15 +16,9 @@ import Animated, {
   withDelay,
 } from 'react-native-reanimated';
 import { theme } from '@/constants/theme';
-import { ZODIAC_SIGNS } from '@/constants/zodiac';
 import { useTraitDetails } from '@/hooks/useTraitDetails';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {
-  BannerAd,
-  BannerAdSize,
-  AdEventType,
-  RequestOptions,
-} from 'react-native-google-mobile-ads';
+import { BannerAd, BannerAdSize } from 'react-native-google-mobile-ads';
 import { DailyHoroscope } from '@/components/ideas/DailyHoroscope';
 import NetInfo from '@react-native-community/netinfo';
 import Toast from 'react-native-toast-message';
@@ -622,14 +615,6 @@ ${content.paragraphs.join('\n')}`;
     };
   }, [bannerError]);
 
-  if (!user?.zodiacSign) {
-    return (
-      <View className="flex-1 bg-background-light dark:bg-background-dark">
-        <ZodiacModal visible={showZodiacModal} onClose={() => {}} onSubmit={handleZodiacSubmit} />
-      </View>
-    );
-  }
-
   if (isLoading) {
     return (
       <View className="flex-1 items-center justify-center gap-3 bg-background-light dark:bg-background-dark">
@@ -696,11 +681,13 @@ ${content.paragraphs.join('\n')}`;
               )}
             </View>
           </Animated.View>
-          <DailyHoroscope
-            goodTraits={goodTraits}
-            badTraits={badTraits}
-            zodiacSign={user?.zodiacSign}
-          />
+          {user?.zodiacSign && (
+            <DailyHoroscope
+              goodTraits={goodTraits}
+              badTraits={badTraits}
+              zodiacSign={user?.zodiacSign}
+            />
+          )}
           {/* Analysis Card - Daha yumuşak köşeler ve gölgeler */}
           <Animated.View
             entering={FadeIn.delay(400).duration(500)}
