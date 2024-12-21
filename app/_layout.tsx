@@ -75,9 +75,10 @@ function InitialLayout() {
         setIsLoading(true);
         await SplashScreen.hideAsync();
 
-        if (!user) {
+        // Kullanıcı durumuna göre tek seferlik yönlendirme
+        if (!user && segments[0] !== '(onboarding)') {
           router.replace('/(onboarding)');
-        } else {
+        } else if (user && segments[0] !== '(main)') {
           router.replace('/(main)/you');
         }
       } catch (error) {
@@ -90,14 +91,6 @@ function InitialLayout() {
 
     initialNavigation();
   }, [user]);
-
-  // Kullanıcı durumu değiştiğinde yönlendirme
-  useEffect(() => {
-    if (isLoading) return;
-    if (user && segments[0] !== '(main)') {
-      router.replace('/(main)/you');
-    }
-  }, [user, segments, isLoading]);
 
   return <Stack screenOptions={{ headerShown: false }} />;
 }

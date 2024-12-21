@@ -1,5 +1,4 @@
 import { View, Text, Alert, Image, Dimensions, StyleSheet } from 'react-native';
-import { router } from 'expo-router';
 import {
   GoogleSignin,
   statusCodes,
@@ -57,8 +56,6 @@ export default function SignInScreen() {
       // Sonra global state'i güncelle
       await setUser(firebaseUser.uid);
       console.log('Sign-in complete, user set');
-
-      router.replace('/(main)');
     } catch (error) {
       if (isErrorWithCode(error)) {
         switch (error.code) {
