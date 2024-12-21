@@ -1,9 +1,10 @@
-import firestore, { FirebaseFirestoreTypes } from '@react-native-firebase/firestore';
-import { db } from '@/config/firebase';
-import { FirebaseAuthTypes } from '@react-native-firebase/auth';
+import { FirebaseFirestoreTypes } from '@react-native-firebase/firestore';
+import firestore from '@react-native-firebase/firestore';
 import { FirestoreService } from './firestore';
 import { generateRefCodes } from '@/utils/generateRefCode';
 import { MembershipType, UserProfile, Membership, MembershipStatus } from '@/types/user';
+import { FirebaseAuthTypes } from '@react-native-firebase/auth';
+import { db } from '@/config/firebase';
 
 export type UserData = UserProfile;
 
@@ -24,7 +25,7 @@ export class UserService {
       const existingUser = await FirestoreService.getDoc<UserData>('users', user.uid);
 
       if (!existingUser) {
-        const now = FirebaseFirestoreTypes.Timestamp.now();
+        const now = firestore.Timestamp.now();
         const defaultMembership: Membership = {
           type: 'free',
           startDate: now,
@@ -62,7 +63,7 @@ export class UserService {
     try {
       const updateData = {
         ...data,
-        updatedAt: FirebaseFirestoreTypes.Timestamp.now(),
+        updatedAt: firestore.Timestamp.now(),
       };
       await FirestoreService.updateDoc('users', uid, updateData);
     } catch (error) {
