@@ -22,6 +22,7 @@ export class UserService {
   static async saveUserToFirestore(user: FirebaseAuthTypes.User) {
     try {
       console.log('Saving user to Firestore:', user.uid);
+      console.log('before');
       const existingUser = await FirestoreService.getDoc<UserData>('users', user.uid);
 
       if (!existingUser) {

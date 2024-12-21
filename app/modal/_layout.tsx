@@ -5,7 +5,7 @@ export default function ModalLayout() {
     <Stack
       screenOptions={{
         headerShown: false,
-        presentation: 'modal',
+        presentation: 'fullScreenModal',
         animation: 'slide_from_bottom',
         headerStyle: {
           backgroundColor: 'transparent',
