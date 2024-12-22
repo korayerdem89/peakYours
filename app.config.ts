@@ -3,7 +3,7 @@ import { ExpoConfig } from '@expo/config';
 const config: ExpoConfig = {
   name: 'peakYours',
   slug: 'peakyours',
-  version: '1.0.3',
+  version: '1.0.4',
   scheme: 'com.peakyours.app',
   orientation: 'portrait',
   icon: './assets/icon.png',
@@ -18,7 +18,7 @@ const config: ExpoConfig = {
     supportsTablet: true,
     bundleIdentifier: 'com.peakyours.app',
     googleServicesFile: './GoogleService-Info.plist',
-    buildNumber: '1.0.3',
+    buildNumber: '1.0.4',
   },
   android: {
     adaptiveIcon: {
