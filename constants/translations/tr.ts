@@ -357,6 +357,13 @@ export default {
       description:
         'Ruh hayvanını keşfet, kişilik özelliklerini derinlemesine anla ve kişiselleştirilmiş gelişim önerileri al! Yapay zekamız, burcunu ve kişilik değerlendirmelerini harmanlayarak sadece sana özel bir analiz oluşturuyor. Potansiyelini keşfeden binlerce kullanıcıya sen de katıl!',
       cta: '✨ Hemen yükselt ve ruh hayvanını öğrenerek günlük kişisel içgörüler kazan!',
+      features: [
+        '🔮 Benzersiz ruh hayvanını keşfet',
+        '🌟 Günlük kişisel içgörüler al',
+        '📊 Detaylı kişilik analizine eriş',
+        '🎯 Yapay zeka destekli gelişim önerileri',
+        '🌙 Burç uyumunu öğren',
+      ],
     },
   },
   tasks: {

@@ -350,6 +350,13 @@ export default {
       description:
         '¡Descubre tu animal espiritual, comprende profundamente tus rasgos de personalidad y obtén consejos de crecimiento personalizados! Nuestra IA combina tu signo zodiacal con evaluaciones de personalidad para crear un análisis único para ti. ¡Únete a miles de usuarios que ya han descubierto su verdadero potencial!',
       cta: '✨ ¡Actualiza ahora para revelar tu animal espiritual y obtener ideas personalizadas diarias!',
+      features: [
+        '🔮 Descubre tu animal espiritual único',
+        '🌟 Obtén ideas personalizadas diarias',
+        '📊 Accede a análisis detallado de personalidad',
+        '🎯 Recibe consejos de desarrollo con IA',
+        '🌙 Explora tu compatibilidad zodiacal',
+      ],
     },
   },
   tasks: {

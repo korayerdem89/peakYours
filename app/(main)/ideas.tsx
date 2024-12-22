@@ -22,7 +22,7 @@ import { BannerAd, BannerAdSize } from 'react-native-google-mobile-ads';
 import { DailyHoroscope } from '@/components/ideas/DailyHoroscope';
 import NetInfo from '@react-native-community/netinfo';
 import Toast from 'react-native-toast-message';
-import { router } from 'expo-router';
+import { UpgradeButton } from '@/components/buttons/UpgradeButton';
 
 // Types
 interface PersonalityAnimal {
@@ -246,15 +246,19 @@ export default function Ideas() {
   }));
 
   if (userData?.membership.type === 'free') {
+    const features = t('ideas.freemember.features', {
+      returnObjects: 'true' as const,
+      defaultValue: '',
+    }) as unknown as string[];
+
     return (
-      <SafeAreaView className="flex-1 bg-accent-light dark:bg-background-dark">
+      <SafeAreaView className="flex-1 bg-accent-light pt-20 dark:bg-background-dark">
         <ScrollView
           className="flex-1 p-4"
           contentContainerStyle={{ flexGrow: 1 }}
           showsVerticalScrollIndicator={false}>
           <Animated.View entering={FadeIn.duration(1000)} className="mt-6 flex-1">
             <View className="rounded-sm bg-surface-light p-6 shadow-sm dark:bg-surface-dark">
-              {/* İllüstrasyon Container */}
               <Animated.View style={bounceStyle} className="mb-8 items-center">
                 <Image
                   source={{ uri: 'https://picsum.photos/800/200' }}
@@ -263,22 +267,21 @@ export default function Ideas() {
                 />
               </Animated.View>
 
-              {/* Başlık */}
               <Text className="text-primary-default mb-4 text-center font-bold text-2xl dark:text-primary-light">
                 {t('ideas.freemember.title')}
               </Text>
 
-              {/* Açıklama */}
-              <Text className="mb-6 text-center font-medium text-base text-text-light-secondary dark:text-text-dark-secondary">
-                {t('ideas.freemember.description')}
-              </Text>
-
-              {/* CTA Bölümü */}
-              <View className="mt-4 rounded-sm bg-primary-light/10 p-4 dark:bg-primary-dark/10">
-                <Text className="text-center font-semibold text-sm text-primary-dark dark:text-primary-light">
-                  {t('ideas.freemember.cta')}
-                </Text>
+              <View className="mb-6 space-y-3">
+                {features.map((feature: string, index: number) => (
+                  <Text
+                    key={index}
+                    className="text-base text-text-light-secondary dark:text-text-dark-secondary">
+                    {feature}
+                  </Text>
+                ))}
               </View>
+
+              <UpgradeButton />
             </View>
           </Animated.View>
         </ScrollView>
