@@ -355,7 +355,6 @@ export default {
         '🌟 Obtén ideas personalizadas diarias',
         '📊 Accede a análisis detallado de personalidad',
         '🎯 Recibe consejos de desarrollo con IA',
-        '🌙 Explora tu compatibilidad zodiacal',
       ],
     },
   },

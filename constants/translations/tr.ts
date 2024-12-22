@@ -362,7 +362,6 @@ export default {
         '🌟 Günlük kişisel içgörüler al',
         '📊 Detaylı kişilik analizine eriş',
         '🎯 Yapay zeka destekli gelişim önerileri',
-        '🌙 Burç uyumunu öğren',
       ],
     },
   },
