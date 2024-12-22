@@ -32,7 +32,7 @@ export function UpgradeButton({ onPress, className = '' }: UpgradeButtonProps) {
     if (onPress) {
       onPress();
     } else {
-      router.push('/modal/ideasPaywall');
+      router.push('/modal/paywall');
     }
   };
 

@@ -439,7 +439,7 @@ export default function SettingsScreen() {
               <View className="flex-1">
                 {userData?.membership.type === 'free' && (
                   <TouchableOpacity
-                    onPress={() => router.push('/modal/ideasPaywall')}
+                    onPress={() => router.push('/modal/paywall')}
                     className="active:opacity-60">
                     <Text className="pt-1 font-semibold text-sm text-primary underline">
                       {t('settings.upgrade')}
