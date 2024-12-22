@@ -245,6 +245,47 @@ export default function Ideas() {
     transform: [{ translateY: bounceValue.value }],
   }));
 
+  if (userData?.membership.type === 'free') {
+    return (
+      <SafeAreaView className="flex-1 bg-accent-light dark:bg-background-dark">
+        <ScrollView
+          className="flex-1 p-4"
+          contentContainerStyle={{ flexGrow: 1 }}
+          showsVerticalScrollIndicator={false}>
+          <Animated.View entering={FadeIn.duration(1000)} className="mt-6 flex-1">
+            <View className="rounded-sm bg-surface-light p-6 shadow-sm dark:bg-surface-dark">
+              {/* İllüstrasyon Container */}
+              <Animated.View style={bounceStyle} className="mb-8 items-center">
+                <Image
+                  source={{ uri: 'https://picsum.photos/800/200' }}
+                  className="h-24 w-full"
+                  resizeMode="contain"
+                />
+              </Animated.View>
+
+              {/* Başlık */}
+              <Text className="text-primary-default mb-4 text-center font-bold text-2xl dark:text-primary-light">
+                {t('ideas.freemember.title')}
+              </Text>
+
+              {/* Açıklama */}
+              <Text className="mb-6 text-center font-medium text-base text-text-light-secondary dark:text-text-dark-secondary">
+                {t('ideas.freemember.description')}
+              </Text>
+
+              {/* CTA Bölümü */}
+              <View className="mt-4 rounded-sm bg-primary-light/10 p-4 dark:bg-primary-dark/10">
+                <Text className="text-center font-semibold text-sm text-primary-dark dark:text-primary-light">
+                  {t('ideas.freemember.cta')}
+                </Text>
+              </View>
+            </View>
+          </Animated.View>
+        </ScrollView>
+      </SafeAreaView>
+    );
+  }
+
   if (!traitDetails?.totalRaters) {
     return (
       <SafeAreaView className="flex-1 bg-accent-light dark:bg-background-dark">

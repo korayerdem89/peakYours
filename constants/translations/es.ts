@@ -345,6 +345,12 @@ export default {
       cta: 'Comparte tu perfil y comienza a recolectar calificaciones',
     },
     updateFrequency: 'Nuevo análisis cada 5 calificaciones',
+    freemember: {
+      title: 'Descubre Tu Potencial con Análisis de IA',
+      description:
+        '¡Descubre tu animal espiritual, comprende profundamente tus rasgos de personalidad y obtén consejos de crecimiento personalizados! Nuestra IA combina tu signo zodiacal con evaluaciones de personalidad para crear un análisis único para ti. ¡Únete a miles de usuarios que ya han descubierto su verdadero potencial!',
+      cta: '✨ ¡Actualiza ahora para revelar tu animal espiritual y obtener ideas personalizadas diarias!',
+    },
   },
   tasks: {
     refreshTask: 'Actualizar tarea',

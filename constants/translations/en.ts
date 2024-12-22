@@ -333,6 +333,12 @@ export default {
       cta: 'Share your profile and start collecting ratings',
     },
     updateFrequency: 'New analysis after every 3 ratings',
+    freemember: {
+      title: 'Unlock Your True Potential with AI Analysis',
+      description:
+        "Discover your spirit animal, understand your personality traits deeply, and get personalized growth insights! Our AI combines your zodiac sign with personality ratings to create a unique analysis just for you. Join thousands of users who've already unlocked their true potential!",
+      cta: '✨ Upgrade now to reveal your spirit animal and get daily personalized insights!',
+    },
   },
   tasks: {
     refreshTask: 'Refresh task',

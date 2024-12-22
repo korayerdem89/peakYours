@@ -352,6 +352,12 @@ export default {
         'Günlük görevleri tamamlayarak kişilik özelliklerinizi geliştirebilirsiniz. Ama önce, başlamak için arkadaşlarınızdan birkaç değerlendirmeye ihtiyacınız var!',
       cta: 'Görevleri açmak için profilinizi paylaşın ve puanları toplamaya başlayın',
     },
+    freemember: {
+      title: 'Yapay Zeka Analizi ile Potansiyelini Keşfet',
+      description:
+        'Ruh hayvanını keşfet, kişilik özelliklerini derinlemesine anla ve kişiselleştirilmiş gelişim önerileri al! Yapay zekamız, burcunu ve kişilik değerlendirmelerini harmanlayarak sadece sana özel bir analiz oluşturuyor. Potansiyelini keşfeden binlerce kullanıcıya sen de katıl!',
+      cta: '✨ Hemen yükselt ve ruh hayvanını öğrenerek günlük kişisel içgörüler kazan!',
+    },
   },
   tasks: {
     completionInfo:
