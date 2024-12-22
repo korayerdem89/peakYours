@@ -209,7 +209,7 @@ export default {
   },
   zodiac: {
     modalTitle: 'Burcunuzu Seçin',
-    modalDescription: 'Kapsamlı kişilik analiziniz için lütfen burcunuzu seçin.',
+    modalDescription: 'Kapsamlı ki��ilik analiziniz için lütfen burcunuzu seçin.',
     select: 'Burç seçin',
     aries: 'Koç',
     taurus: 'Boğa',
@@ -262,7 +262,7 @@ export default {
       },
       fox: {
         name: 'Kurnaz Tilki',
-        trait: 'Sorunlar zekas�� ve bilgeliğiyle çözer',
+        trait: 'Sorunlar zekası ve bilgeliğiyle çözer',
       },
       goat: {
         name: 'Kararlı Keçi',
@@ -358,12 +358,14 @@ export default {
       title: 'Yapay Zeka Analizi ile Potansiyelini Keşfet',
       description:
         'Ruh hayvanını keşfet, kişilik özelliklerini derinlemesine anla ve kişiselleştirilmiş gelişim önerileri al! Yapay zekamız, burcunu ve kişilik değerlendirmelerini harmanlayarak sadece sana özel bir analiz oluşturuyor. Potansiyelini keşfeden binlerce kullanıcıya sen de katıl!',
-      cta: '✨ Hemen yükselt ve ruh hayvanını öğrenerek günlük kişisel içgörüler kazan!',
+      cta: '✨ Hemen yükselt ve ruh hayvanını öğren!',
       features: [
         '🔮 Benzersiz ruh hayvanını keşfet',
         '🌟 Günlük kişisel içgörüler al',
         '📊 Detaylı kişilik analizine eriş',
         '🎯 Yapay zeka destekli gelişim önerileri',
+        '🌙 Burç uyumunu öğren',
+        '✨ Burcun ve kişilik özelliklerinin harmanlandığı eşsiz analizler al',
       ],
     },
   },

@@ -428,7 +428,12 @@ export default function SettingsScreen() {
             </Text>
             <View className="flex-row items-center justify-between px-4">
               <View className="flex-1" />
-              <Text className="pr-2 text-center font-bold text-lg tracking-tight text-text-light dark:text-text-dark">
+              <Text
+                className={`pr-2 text-center font-bold text-lg tracking-tight ${
+                  userData?.membership.type === 'free'
+                    ? 'text-text-light dark:text-text-dark'
+                    : 'text-secondary dark:text-secondary-dark'
+                }`}>
                 {userData?.membership.type === 'free' ? 'Free' : 'Pro'}
               </Text>
               <View className="flex-1">
@@ -463,44 +468,56 @@ export default function SettingsScreen() {
           />
         </Animated.View> */}
 
-        {/* Account Settings Accordion */}
-        <View className="mt-4">
+        {/* Account Settings Section with Accordion */}
+        <View className="mt-4 overflow-hidden rounded-2xl bg-background-light dark:bg-surface-dark">
           <Accordion title={t('settings.accountSettings')}>
-            <View className="space-y-4 border-t border-gray-100 dark:border-gray-800">
+            <View className="border-t border-gray-100 dark:border-gray-800">
+              {/* Reset Traits Button */}
               <TouchableOpacity
                 onPress={handleResetTraits}
-                className="p-4 active:bg-gray-50 dark:active:bg-gray-800">
-                <Text className="text-center font-medium text-warning-light dark:text-warning-dark">
-                  {t('settings.resetTraits.button')}
-                </Text>
+                className="flex-row items-center justify-between px-4 py-4 active:bg-gray-50 dark:active:bg-gray-800">
+                <View className="flex-row items-center space-x-3">
+                  <Text className="font-medium text-gray-500 dark:text-gray-600">
+                    {t('settings.resetTraits.button')}
+                  </Text>
+                </View>
+                <Text className="text-text-light-secondary dark:text-text-dark-secondary">›</Text>
               </TouchableOpacity>
+
+              {/* Delete Account Button */}
               <TouchableOpacity
                 onPress={handleDeleteAccount}
-                className="p-4 active:bg-gray-50 dark:active:bg-gray-800">
-                <Text className="text-center font-medium text-error-light dark:text-error-dark">
-                  {t('settings.deleteAccount.button')}
-                </Text>
+                className="flex-row items-center justify-between border-t border-gray-100 px-4 py-4 active:bg-gray-50 dark:border-gray-800 dark:active:bg-gray-800">
+                <View className="flex-row items-center space-x-3">
+                  <Text className="font-medium text-gray-400 dark:text-gray-500">
+                    {t('settings.deleteAccount.button')}
+                  </Text>
+                </View>
+                <Text className="text-text-light-secondary dark:text-text-dark-secondary">›</Text>
+              </TouchableOpacity>
+
+              {/* Sign Out Button */}
+              <TouchableOpacity
+                onPress={handleSignOut}
+                className="flex-row items-center justify-between border-t border-gray-100 px-4 py-4 active:bg-gray-50 dark:border-gray-800 dark:active:bg-gray-800">
+                <View className="flex-row items-center space-x-3">
+                  <Text className="font-medium text-error-light dark:text-error-dark">
+                    {t('settings.signOut')}
+                  </Text>
+                </View>
+                <Text className="text-text-light-secondary dark:text-text-dark-secondary">›</Text>
               </TouchableOpacity>
             </View>
           </Accordion>
         </View>
 
-        {/* Sign Out Button */}
-        <TouchableOpacity
-          onPress={handleSignOut}
-          className="mb-4 mt-4 rounded-lg bg-error-light p-4 dark:bg-error-dark">
-          <Text className="text-center font-semibold text-[16px] text-white">
-            {t('settings.signOut')}
-          </Text>
-        </TouchableOpacity>
+        {/* Zodiac Modal */}
+        <ZodiacModal
+          visible={isZodiacModalVisible}
+          onClose={() => setIsZodiacModalVisible(false)}
+          onSubmit={handleZodiacSubmit}
+        />
       </ScrollView>
-
-      {/* Zodiac Modal */}
-      <ZodiacModal
-        visible={isZodiacModalVisible}
-        onClose={() => setIsZodiacModalVisible(false)}
-        onSubmit={handleZodiacSubmit}
-      />
     </SafeAreaView>
   );
 }

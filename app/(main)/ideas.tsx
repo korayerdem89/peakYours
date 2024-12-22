@@ -271,7 +271,7 @@ export default function Ideas() {
                 {t('ideas.freemember.title')}
               </Text>
 
-              <View className="mb-6 space-y-3">
+              <View className="mb-6 gap-1">
                 {features.map((feature: string, index: number) => (
                   <Text
                     key={index}
