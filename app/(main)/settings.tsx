@@ -21,12 +21,13 @@ import Animated, { FadeIn } from 'react-native-reanimated';
 import { useTranslation } from '@/providers/LanguageProvider';
 import { theme } from '@/constants/theme';
 import { ZodiacModal } from '@/components/ZodiacModal';
-import { useUpdateUser } from '@/hooks/useUserQueries';
+import { useUpdateUser, useUserData } from '@/hooks/useUserQueries';
 import { ZODIAC_SIGNS, type ZodiacSign } from '@/constants/zodiac';
 import { signOut } from '@/config/firebase';
 import { deleteUser, resetUserTraits } from '@/services/userService';
 import Toast from 'react-native-toast-message';
 import { useLoadingStore } from '@/store/useLoadingStore';
+import { useRouter } from 'expo-router';
 
 const LANGUAGES = [
   { code: 'en', label: 'EN' },
@@ -52,7 +53,8 @@ export default function SettingsScreen() {
   const [isTogglingTheme, setIsTogglingTheme] = useState(false);
   const [isZodiacModalVisible, setIsZodiacModalVisible] = useState(false);
   const { setIsLoading } = useLoadingStore();
-
+  const router = useRouter();
+  const { data: userData } = useUserData(user?.uid) || null;
   const updateUser = useUpdateUser();
 
   // const toggleColorScheme = useCallback(() => {
@@ -419,14 +421,28 @@ export default function SettingsScreen() {
             )}
           </TouchableOpacity>
 
-          {/* Credit Score Card */}
+          {/* Membership Type Card */}
           <View className="mt-4 w-full rounded-lg bg-background-light p-4 dark:bg-surface-dark">
             <Text className="pb-1 text-center font-medium text-[15px] text-text-light-secondary dark:text-text-dark-secondary">
-              {t('settings.creditScore')}
+              {t('settings.membershipType')}
             </Text>
-            <Text className="text-center font-bold text-3xl tracking-tight text-secondary-dark dark:text-accent-light">
-              1000
-            </Text>
+            <View className="flex-row items-center justify-between px-4">
+              <View className="flex-1" />
+              <Text className="pr-2 text-center font-bold text-lg tracking-tight text-text-light dark:text-text-dark">
+                {userData?.membership.type === 'free' ? 'Free' : 'Pro'}
+              </Text>
+              <View className="flex-1">
+                {userData?.membership.type === 'free' && (
+                  <TouchableOpacity
+                    onPress={() => router.push('/modal/ideasPaywall')}
+                    className="active:opacity-60">
+                    <Text className="pt-1 font-semibold text-sm text-primary underline">
+                      {t('settings.upgrade')}
+                    </Text>
+                  </TouchableOpacity>
+                )}
+              </View>
+            </View>
           </View>
         </Animated.View>
 

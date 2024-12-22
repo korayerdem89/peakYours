@@ -95,6 +95,8 @@ export default {
         proceed: 'Proceed',
       },
     },
+    membershipType: 'Membership Type',
+    upgrade: 'Upgrade to Pro',
   },
   tabs: {
     you: 'You',

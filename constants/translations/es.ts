@@ -96,6 +96,8 @@ export default {
         proceed: 'Continuar',
       },
     },
+    membershipType: 'Tipo de Membresía',
+    upgrade: 'Actualizar a Pro',
   },
   tabs: {
     you: 'Tú',

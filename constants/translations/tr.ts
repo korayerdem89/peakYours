@@ -110,6 +110,8 @@ export default {
         proceed: 'Tamam',
       },
     },
+    membershipType: 'Üyelik Tipi',
+    upgrade: "Pro'ya Yükselt",
   },
   tabs: {
     you: 'Sen',
@@ -260,7 +262,7 @@ export default {
       },
       fox: {
         name: 'Kurnaz Tilki',
-        trait: 'Sorunlar zekası ve bilgeliğiyle çözer',
+        trait: 'Sorunlar zekas�� ve bilgeliğiyle çözer',
       },
       goat: {
         name: 'Kararlı Keçi',
