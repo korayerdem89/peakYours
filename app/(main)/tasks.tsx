@@ -30,6 +30,7 @@ import { useLoadingStore } from '@/store/useLoadingStore';
 import NetInfo from '@react-native-community/netinfo';
 import QuoteCard from '@/components/main/QuoteCard';
 import PaywallModal from '@/components/modals/PaywallModal';
+import { UpgradeButton } from '@/components/buttons/UpgradeButton';
 
 interface Task {
   id: string;
@@ -60,6 +61,50 @@ export default function TasksScreen() {
   const bounceStyle = useAnimatedStyle(() => ({
     transform: [{ translateY: bounceValue.value }],
   }));
+
+  if (userData?.membership.type === 'free') {
+    const features = t('tasks.freemember.features', {
+      returnObjects: 'true' as const,
+      defaultValue: '',
+    }) as unknown as string[];
+
+    return (
+      <SafeAreaView className="flex-1 bg-accent-light   dark:bg-background-dark">
+        <ScrollView
+          className="flex-1 p-4"
+          contentContainerStyle={{ flexGrow: 1 }}
+          showsVerticalScrollIndicator={false}>
+          <Animated.View entering={FadeIn.duration(1000)} className="mt-6 flex-1">
+            <View className="rounded-sm bg-surface-light p-6 shadow-sm dark:bg-surface-dark">
+              <Animated.View style={bounceStyle} className="mb-8 items-center">
+                <Image
+                  source={{ uri: 'https://picsum.photos/800/200' }}
+                  className="h-24 w-full"
+                  resizeMode="contain"
+                />
+              </Animated.View>
+
+              <Text className="text-primary-default mb-4 text-center font-bold text-2xl dark:text-primary-light">
+                {t('tasks.freemember.title')}
+              </Text>
+
+              <View className="mb-6 space-y-3">
+                {features.map((feature: string, index: number) => (
+                  <Text
+                    key={index}
+                    className="text-base text-text-light-secondary dark:text-text-dark-secondary">
+                    {feature}
+                  </Text>
+                ))}
+              </View>
+
+              <UpgradeButton />
+            </View>
+          </Animated.View>
+        </ScrollView>
+      </SafeAreaView>
+    );
+  }
 
   const [bannerError, setBannerError] = useState(false);
 

@@ -393,6 +393,18 @@ export default {
     motivation: 'Mejora tus rasgos de personalidad completando tareas diarias',
     refreshSuccess: 'Tarea actualizada con éxito',
     refreshInfo: 'Cargando nueva tarea...',
+    freemember: {
+      title: 'Mejora Tu Personalidad con Tareas Diarias',
+      features: [
+        '🎯 Completa tareas personalizadas para mejorar tus rasgos',
+        '📈 Sigue tu progreso con actualizaciones en tiempo real',
+        '🔄 Actualiza tareas para encontrar las más adecuadas',
+        '⭐️ Gana puntos extra por completar constantemente',
+        '🏆 Desbloquea logros y sube de nivel tus rasgos',
+        '💫 Recibe recomendaciones de tareas con IA',
+      ],
+      cta: '✨ ¡Actualiza ahora para comenzar tu viaje!',
+    },
   },
   onboarding: {
     screen1: {

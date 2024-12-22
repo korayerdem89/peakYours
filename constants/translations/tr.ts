@@ -393,6 +393,18 @@ export default {
     motivation: 'Günlük görevleri yaparak kişilik özelliklerinizi geliştirin',
     refreshSuccess: 'Görev başarıyla yenilendi',
     refreshInfo: 'Yeni görev yükleniyor...',
+    freemember: {
+      title: 'Günlük Görevlerle Kişiliğini Geliştir',
+      features: [
+        '🎯 Kişiselleştirilmiş günlük görevlerle özelliklerini geliştir',
+        '📈 Anlık puan güncellemeleriyle gelişimini takip et',
+        '🔄 Sana daha uygun görevler için yenileme hakkı kazan',
+        '⭐️ Düzenli tamamlama ile bonus puanlar topla',
+        '🏆 Başarımlar kazanarak özelliklerini seviye atlat',
+        '💫 Yapay zeka destekli görev önerileri al',
+      ],
+      cta: '✨ Hemen yükselt ve yolculuğuna başla!',
+    },
   },
   onboarding: {
     screen1: {
