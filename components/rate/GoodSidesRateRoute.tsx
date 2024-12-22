@@ -27,6 +27,7 @@ export const GoodSidesRateRoute = memo(
   ({ referenceCode, onTabChange }: GoodSidesRateRouteProps) => {
     const { t } = useTranslation();
     const { user } = useAuth();
+    const queryClient = useQueryClient();
     const [isSubmitted, setIsSubmitted] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [hasExistingRating, setHasExistingRating] = useState(false);
@@ -57,9 +58,9 @@ export const GoodSidesRateRoute = memo(
     }, []);
 
     useEffect(() => {
-      const checkExistingRating = async () => {
-        if (!user?.uid) return;
+      if (!user?.uid) return;
 
+      const checkExistingRating = async () => {
         try {
           const exists = await RatingService.checkExistingRating(
             referenceCode,
@@ -82,13 +83,6 @@ export const GoodSidesRateRoute = memo(
             }
             setIsSubmitted(true);
             setHasExistingRating(true);
-            Toast.show({
-              type: 'info',
-              text1: t('personality.rating.alreadyRated'),
-              position: 'bottom',
-              visibilityTime: 3000,
-              onHide: () => onTabChange(),
-            });
           }
         } catch (error) {
           console.error('Error checking existing rating:', error);
@@ -96,11 +90,23 @@ export const GoodSidesRateRoute = memo(
       };
 
       checkExistingRating();
-    }, [referenceCode, user?.uid, t]);
+    }, [referenceCode, user?.uid]);
 
-    const queryClient = useQueryClient();
+    const handleReset = useCallback(async () => {
+      await Promise.all([
+        queryClient.invalidateQueries({
+          queryKey: ['traitDetails', referenceCode],
+        }),
+        queryClient.invalidateQueries({
+          queryKey: ['traitAverages', referenceCode, 'goodsides'],
+        }),
+      ]);
+      setIsSubmitted(false);
+      setHasExistingRating(false);
+      setTraits(traits.map((trait) => ({ ...trait, points: 0 })));
+    }, [queryClient, referenceCode]);
 
-    const handleSubmit = async () => {
+    const handleSubmit = useCallback(async () => {
       if (!user?.uid || remainingPoints !== 0) return;
 
       try {
@@ -143,21 +149,7 @@ export const GoodSidesRateRoute = memo(
       } finally {
         setIsLoading(false);
       }
-    };
-
-    const handleReset = useCallback(async () => {
-      await Promise.all([
-        queryClient.invalidateQueries({
-          queryKey: ['traitDetails', referenceCode],
-        }),
-        queryClient.invalidateQueries({
-          queryKey: ['traitAverages', referenceCode, 'goodsides'],
-        }),
-      ]);
-      setIsSubmitted(false);
-      setHasExistingRating(false);
-      setTraits(traits.map((trait) => ({ ...trait, points: 0 })));
-    }, []);
+    }, [user, remainingPoints, traits, referenceCode, queryClient, onTabChange, t]);
 
     const handleTestSubmit = async () => {
       if (!user?.uid) return;
