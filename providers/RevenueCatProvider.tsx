@@ -1,4 +1,3 @@
-import { useAuth } from '@/store/useAuth';
 import { useLoadingStore } from '@/store/useLoadingStore';
 import { createContext, useContext, useEffect, useState } from 'react';
 import { Platform } from 'react-native';
@@ -19,11 +18,10 @@ const APIKeys = {
   google: 'goog_zaEtRXMlJRtXuHczQqPFVyrnYoP',
 };
 
-// MembershipType enum'u burada tanımlayalım
-enum MembershipType {
-  FREE = 'FREE',
-  PRO = 'PRO',
-}
+const ENTITLEMENT_ID = 'entla24afb26a4';
+const PRODUCT_ID = 'prod22e383a563';
+const DEFAULT_OFFERING_ID = 'ofrng3e1af3d574';
+const DISCOUNTED_OFFERING_ID = 'ofrngf5a0d7f587';
 
 interface RevenueCatProps {
   subscribeUser: (type: PurchasesPackage) => Promise<CustomerInfo | undefined>;
@@ -34,7 +32,7 @@ interface RevenueCatProps {
 }
 
 const RevenueCatContext = createContext<RevenueCatProps | null>(null);
-const ENTITLEMENT_ID = 'pro_access'; // RevenueCat dashboard'da tanımladığınız entitlement ID
+
 export const RevenueCatProvider = ({ children }: { children: React.ReactNode }) => {
   const [customerInfoListener, setCustomerInfoListener] = useState<(() => void) | null>(null);
   const [packages, setPackages] = useState<PurchasesPackage[]>([]);
@@ -43,58 +41,6 @@ export const RevenueCatProvider = ({ children }: { children: React.ReactNode }) 
   const { setIsLoading } = useLoadingStore();
   const queryClient = useQueryClient();
   const { mutateAsync: updateUser } = useUpdateUser();
-  const { user } = useAuth();
-
-  console.log(allPackages, 'allPackages');
-  useEffect(() => {
-    const init = async () => {
-      try {
-        setIsLoading(true);
-
-        // Configure RevenueCat
-        if (Platform.OS === 'android') {
-          await Purchases.configure({ apiKey: APIKeys.google });
-        } else {
-          await Purchases.configure({ apiKey: APIKeys.apple });
-        }
-
-        Purchases.setLogLevel(LOG_LEVEL.DEBUG);
-
-        // İlk subscription kontrolü
-        await checkSubscriptionStatus();
-
-        // Subscription değişiklik listener'ı
-        const listener = Purchases.addCustomerInfoUpdateListener(async (info) => {
-          await checkSubscriptionStatus();
-        });
-        setCustomerInfoListener(() => listener);
-
-        await loadOfferings();
-      } catch (error) {
-        console.error('RevenueCat initialization error:', error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    init();
-
-    // Saatlik kontrol
-    const interval = setInterval(
-      () => {
-        checkSubscriptionStatus();
-      },
-      60 * 60 * 1000
-    );
-
-    // Cleanup
-    return () => {
-      clearInterval(interval);
-      if (customerInfoListener) {
-        customerInfoListener(); // Listener'ı temizle
-      }
-    };
-  }, []);
 
   const loadOfferings = async () => {
     try {
@@ -115,25 +61,37 @@ export const RevenueCatProvider = ({ children }: { children: React.ReactNode }) 
   const checkSubscriptionStatus = async () => {
     try {
       const customerInfo = await Purchases.getCustomerInfo();
-      const hasProAccess = customerInfo.entitlements.active[ENTITLEMENT_ID] !== undefined;
+
+      // Aktif abonelikleri kontrol et
+      const activeSubscriptions = customerInfo.activeSubscriptions || [];
+
+      // Entitlement ve aktif abonelik kontrolü
+      const hasProAccess =
+        customerInfo.entitlements.active[ENTITLEMENT_ID] !== undefined ||
+        activeSubscriptions.includes('pro_monthly:basicplan');
+
+      console.log('Has Pro Access:', hasProAccess);
 
       const user = getCurrentUser();
-      if (!user?.uid) return;
+      if (!user?.uid) {
+        console.log('No user found');
+        return;
+      }
 
       if (hasProAccess) {
+        // Aktif abonelik bilgilerini al
         const proEntitlement = customerInfo.entitlements.active[ENTITLEMENT_ID];
-        const expirationDate = proEntitlement.expirationDate
-          ? new Date(proEntitlement.expirationDate)
+        const latestTransaction = customerInfo.latestExpirationDate
+          ? new Date(customerInfo.latestExpirationDate)
           : null;
-        const willRenew = proEntitlement.willRenew;
 
         const membership: Membership = {
           type: 'pro',
           startDate: Timestamp.now(),
-          endDate: expirationDate ? Timestamp.fromDate(expirationDate) : null,
+          endDate: latestTransaction ? Timestamp.fromDate(latestTransaction) : null,
           lastUpdated: Timestamp.now(),
-          willRenew,
-          productId: proEntitlement.productIdentifier,
+          willRenew: customerInfo.originalPurchaseDate !== null,
+          productId: PRODUCT_ID,
           identifier: user.uid,
         };
 
@@ -160,6 +118,7 @@ export const RevenueCatProvider = ({ children }: { children: React.ReactNode }) 
       queryClient.invalidateQueries({ queryKey: ['user'] });
     } catch (error) {
       console.error('Subscription status check failed:', error);
+      console.error('Error details:', JSON.stringify(error, null, 2));
     }
   };
 
@@ -167,14 +126,13 @@ export const RevenueCatProvider = ({ children }: { children: React.ReactNode }) 
     try {
       setIsLoading(true);
 
-      const { customerInfo, productIdentifier } =
-        await Purchases.purchasePackage(packageToPurchase);
-
-      // Subscription kontrolü Firestore güncellemesini yapacak
+      const { customerInfo } = await Purchases.purchasePackage(packageToPurchase);
+      // Double check subscription status
       await checkSubscriptionStatus();
 
       return customerInfo;
     } catch (error) {
+      console.error('Subscribe user error:', error);
       const purchaseError = error as PurchasesError;
       if (!purchaseError.userCancelled) {
         throw error;
@@ -198,6 +156,48 @@ export const RevenueCatProvider = ({ children }: { children: React.ReactNode }) 
       setIsLoading(false);
     }
   };
+
+  useEffect(() => {
+    const init = async () => {
+      try {
+        setIsLoading(true);
+
+        if (Platform.OS === 'android') {
+          await Purchases.configure({ apiKey: APIKeys.google });
+        } else {
+          await Purchases.configure({ apiKey: APIKeys.apple });
+        }
+
+        Purchases.setLogLevel(LOG_LEVEL.DEBUG);
+
+        await checkSubscriptionStatus();
+
+        const listener = Purchases.addCustomerInfoUpdateListener(async (info) => {
+          await checkSubscriptionStatus();
+        });
+        setCustomerInfoListener(() => listener);
+
+        await loadOfferings();
+      } catch (error) {
+        console.error('RevenueCat initialization error:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    init();
+
+    const interval = setInterval(() => {
+      checkSubscriptionStatus();
+    }, 6000 * 1000);
+
+    return () => {
+      clearInterval(interval);
+      if (customerInfoListener) {
+        customerInfoListener();
+      }
+    };
+  }, []);
 
   const value = {
     restorePermissions,

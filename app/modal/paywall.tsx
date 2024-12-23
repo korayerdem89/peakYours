@@ -14,7 +14,7 @@ export default function Paywall() {
   const { t } = useTranslation();
   const { colorScheme } = useColorScheme();
   const isDark = colorScheme === 'dark';
-  const { packages, subscribeUser, allPackages } = useRevenueCat();
+  const { packages, subscribeUser } = useRevenueCat();
 
   const features = [
     {
@@ -55,7 +55,6 @@ export default function Paywall() {
           </Text>
           <View style={{ width: 40 }} />
         </View>
-
         <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
           {/* Hero Section */}
           <View className="items-center justify-center p-6">
@@ -93,7 +92,6 @@ export default function Paywall() {
               const selectedPlan = packages.find(
                 (p) => p.packageType === plan.packageType
               ) as PurchasesPackage;
-              console.log(selectedPlan, 'selectedPlan');
               return (
                 <TouchableOpacity
                   onPress={() => subscribeUser(selectedPlan)}
