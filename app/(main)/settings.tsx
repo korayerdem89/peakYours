@@ -430,14 +430,14 @@ export default function SettingsScreen() {
               <View className="flex-1" />
               <Text
                 className={`pr-2 text-center font-bold text-lg tracking-tight ${
-                  userData?.membership.type === 'free'
+                  userData?.membership?.type === 'pro'
                     ? 'text-text-light dark:text-text-dark'
                     : 'text-secondary dark:text-secondary-dark'
                 }`}>
-                {userData?.membership.type === 'free' ? 'Free' : 'Pro'}
+                {userData?.membership?.type === 'pro' ? 'Pro' : 'Free'}
               </Text>
               <View className="flex-1">
-                {userData?.membership.type === 'free' && (
+                {userData?.membership?.type === 'pro' && (
                   <TouchableOpacity
                     onPress={() => router.push('/modal/paywall')}
                     className="active:opacity-60">

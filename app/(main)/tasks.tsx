@@ -62,7 +62,7 @@ export default function TasksScreen() {
     transform: [{ translateY: bounceValue.value }],
   }));
 
-  if (userData?.membership.type === 'free') {
+  if (userData?.membership?.type !== 'pro') {
     const features = t('tasks.freemember.features', {
       returnObjects: 'true' as const,
       defaultValue: '',

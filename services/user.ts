@@ -31,6 +31,7 @@ export class UserService {
           startDate: now,
           endDate: null,
           lastUpdated: now,
+          identifier: 'free',
         };
 
         const refCode = generateRefCodes(user.uid);
@@ -102,6 +103,7 @@ export async function createUser(data: CreateUserData): Promise<void> {
     startDate: FirebaseFirestoreTypes.Timestamp.now(),
     endDate: null,
     lastUpdated: FirebaseFirestoreTypes.Timestamp.now(),
+    identifier: 'free',
   };
 
   const userData: CreateUserData = {
@@ -145,17 +147,6 @@ export async function updateUserMembership(
   const now = FirebaseFirestoreTypes.Timestamp.now();
   let endDate: FirebaseFirestoreTypes.Timestamp | null = null;
 
-  // Üyelik bitiş tarihini hesapla
-  if (membershipType === 'monthly') {
-    const endDateTime = new Date(now.toDate());
-    endDateTime.setMonth(endDateTime.getMonth() + 1);
-    endDate = FirebaseFirestoreTypes.Timestamp.fromDate(endDateTime);
-  } else if (membershipType === 'annual') {
-    const endDateTime = new Date(now.toDate());
-    endDateTime.setFullYear(endDateTime.getFullYear() + 1);
-    endDate = FirebaseFirestoreTypes.Timestamp.fromDate(endDateTime);
-  }
-
   const membershipData = {
     'membership.type': membershipType,
     'membership.startDate': now,
@@ -182,7 +173,7 @@ export async function checkMembershipStatus(userId: string): Promise<MembershipS
   const now = FirebaseFirestoreTypes.Timestamp.now();
 
   // Free üyelik her zaman aktif
-  if (membership.type === 'free') {
+  if (membership?.type === 'free') {
     return {
       isActive: true,
       type: 'free',
@@ -191,7 +182,7 @@ export async function checkMembershipStatus(userId: string): Promise<MembershipS
   }
 
   // Ücretli üyeliklerin süre kontrolü
-  if (membership.endDate) {
+  if (membership?.endDate) {
     const isActive = now.toMillis() <= membership.endDate.toMillis();
     return {
       isActive,
@@ -202,7 +193,7 @@ export async function checkMembershipStatus(userId: string): Promise<MembershipS
 
   return {
     isActive: false,
-    type: membership.type,
+    type: membership?.type || 'free',
     expiresAt: null,
   };
 }

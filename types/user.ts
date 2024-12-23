@@ -16,7 +16,7 @@ export interface User {
   displayName: string | null;
   photoURL: string | null;
   zodiacSign?: string | null;
-  membership: Membership;
+  membership?: Membership;
   createdAt: FirebaseFirestoreTypes.Timestamp;
   updatedAt: FirebaseFirestoreTypes.Timestamp;
 }
