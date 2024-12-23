@@ -94,7 +94,10 @@ export default function Paywall() {
               ) as PurchasesPackage;
               return (
                 <TouchableOpacity
-                  onPress={() => subscribeUser(selectedPlan)}
+                  onPress={() => {
+                    subscribeUser(selectedPlan);
+                    router.back();
+                  }}
                   key={index}
                   className={`mb-4 rounded-xl border-2 p-4 ${
                     plan.isPopular

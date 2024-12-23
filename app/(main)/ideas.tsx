@@ -223,29 +223,34 @@ const PERSONALITY_ANIMALS: Record<string, PersonalityAnimal> = {
 
 export default function Ideas() {
   const { user } = useAuth();
-  const { data: userData } = useUserData(user?.uid);
-  const { data: traitDetails } = useTraitDetails(userData?.refCodes?.en, 'goodsides');
   const { t, locale } = useTranslation();
+  const { data: userData } = useUserData(user?.uid);
 
-  // Bounce animasyonu için shared value
+  // useTraitDetails hook'unu koşullu çağırmayı engelleyelim
+  const refCode = userData?.refCodes?.en;
+  const { data: traitDetails } = useTraitDetails(refCode, 'goodsides');
+
+  // Animation hook'larını en üste alalım
   const bounceValue = useSharedValue(0);
-  // 5 saniyede bir tekrarlanan bounce efekti
+  const bounceStyle = useAnimatedStyle(() => ({
+    transform: [{ translateY: bounceValue.value }],
+  }));
+
+  // Bounce animasyonu için useEffect
   useEffect(() => {
     const interval = setInterval(() => {
-      bounceValue.value = withSequence(
-        withSpring(-10), // Yukarı zıpla
-        withDelay(100, withSpring(0)) // Aşağı in
-      );
+      bounceValue.value = withSequence(withSpring(-10), withDelay(100, withSpring(0)));
     }, 5000);
 
     return () => clearInterval(interval);
   }, []);
 
-  const bounceStyle = useAnimatedStyle(() => ({
-    transform: [{ translateY: bounceValue.value }],
-  }));
+  // Membership kontrolü
+  if (!userData) {
+    return <ActivityIndicator />;
+  }
 
-  if (userData?.membership?.type !== 'pro') {
+  if (userData.membership?.type !== 'pro') {
     const features = t('ideas.freemember.features', {
       returnObjects: 'true' as const,
       defaultValue: '',

@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { View, Text, ScrollView, Image, TouchableOpacity } from 'react-native';
+import { View, Text, ScrollView, Image, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTranslation } from '@/providers/LanguageProvider';
 import { useAuth } from '@/store/useAuth';
@@ -45,10 +45,52 @@ interface Task {
 }
 
 export default function TasksScreen() {
-  const { t } = useTranslation();
   const { user } = useAuth();
-  const { data: userData } = useUserData(user?.uid) || null;
-  const { data: traitDetails } = useTraitDetails(userData?.refCodes?.en, 'goodsides');
+  const { t } = useTranslation();
+  const { setIsLoading } = useLoadingStore();
+
+  // State hook'larını en üste alalım
+  const [levelUpTrait, setLevelUpTrait] = useState<{
+    trait: string;
+    type: 'goodsides' | 'badsides';
+  } | null>(null);
+  const [tasks, setTasks] = useState<Task[]>([]);
+  const [completedTasks, setCompletedTasks] = useState<string[]>([]);
+  const [showPaywall, setShowPaywall] = useState(false);
+
+  // Query hook'larını sıralı kullanalım
+  const { data: userData } = useUserData(user?.uid);
+  const refCode = userData?.refCodes?.en;
+
+  // TraitDetails ve Averages hook'larını koşullu çağırmayı engelleyelim
+  const { data: traitDetails } = useTraitDetails(refCode, 'goodsides');
+  const goodTraits = useTraitAverages(refCode, 'goodsides', userData);
+  const badTraits = useTraitAverages(refCode, 'badsides', userData);
+
+  const { taskData, refreshTasks, decrementRefreshes } = useTasks(user?.uid);
+  const [refreshLimit, setRefreshLimit] = useState(taskData?.refreshesLeft ?? 0);
+
+  // Refresh sayacını taskData ile senkronize et
+  useEffect(() => {
+    if (taskData?.refreshesLeft !== undefined) {
+      setRefreshLimit(taskData.refreshesLeft);
+    }
+  }, [taskData?.refreshesLeft]);
+
+  // Loading state kontrolü
+  if (!userData || !traitDetails) {
+    return (
+      <View className="flex-1 items-center justify-center">
+        <ActivityIndicator size="large" color="#7C4DFF" />
+      </View>
+    );
+  }
+
+  // Membership kontrolü
+  if (userData.membership?.type !== 'pro') {
+    setShowPaywall(true);
+    return null;
+  }
 
   const bounceValue = useSharedValue(0);
   useEffect(() => {
@@ -158,27 +200,7 @@ export default function TasksScreen() {
     );
   }
 
-  ////traitdetails.totalRaters varsa alttaki dataları da çek
-  const [levelUpTrait, setLevelUpTrait] = useState<{
-    trait: string;
-    type: 'goodsides' | 'badsides';
-  } | null>(null);
-  const goodTraits = useTraitAverages(userData?.refCodes?.en, 'goodsides', userData);
-  const badTraits = useTraitAverages(userData?.refCodes?.en, 'badsides', userData);
   const updateTaskTrait = useUpdateTaskTrait();
-  const { taskData, refreshTasks, decrementRefreshes } = useTasks(user?.uid);
-  const [refreshLimit, setRefreshLimit] = useState(taskData?.refreshesLeft ?? 0);
-  const [tasks, setTasks] = useState<Task[]>([]);
-  const [completedTasks, setCompletedTasks] = useState<string[]>([]);
-  const [showPaywall, setShowPaywall] = useState(false);
-  const { setIsLoading } = useLoadingStore();
-
-  // Refresh sayacını taskData ile senkronize et
-  useEffect(() => {
-    if (taskData?.refreshesLeft !== undefined) {
-      setRefreshLimit(taskData.refreshesLeft);
-    }
-  }, [taskData?.refreshesLeft]);
 
   // Load initial tasks and completed tasks
   useEffect(() => {
