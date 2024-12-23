@@ -8,6 +8,8 @@ export interface Membership {
   endDate: FirebaseFirestoreTypes.Timestamp | null;
   lastUpdated: FirebaseFirestoreTypes.Timestamp;
   identifier: string;
+  productId?: string;
+  willRenew?: boolean;
 }
 
 export interface User {

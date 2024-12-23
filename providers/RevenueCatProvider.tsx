@@ -8,17 +8,22 @@ import Purchases, {
   CustomerInfo,
   PurchasesError,
 } from 'react-native-purchases';
-import { collections } from '@/config/firebase';
 import { useQueryClient } from '@tanstack/react-query';
 import { getCurrentUser } from '@/config/firebase';
-import { useUpdateUser, useUserData } from '@/hooks/useUserQueries';
-import { MembershipType } from '@/types/user';
+import { useUpdateUser } from '@/hooks/useUserQueries';
 import { Timestamp } from '@react-native-firebase/firestore';
+import { Membership } from '@/types/user';
 
 const APIKeys = {
   apple: 'appl_vsVDjUeKsRUioneAWHaZzOGebRZ',
   google: 'goog_zaEtRXMlJRtXuHczQqPFVyrnYoP',
 };
+
+// MembershipType enum'u burada tanımlayalım
+enum MembershipType {
+  FREE = 'FREE',
+  PRO = 'PRO',
+}
 
 interface RevenueCatProps {
   subscribeUser: (type: PurchasesPackage) => Promise<CustomerInfo | undefined>;
@@ -29,8 +34,9 @@ interface RevenueCatProps {
 }
 
 const RevenueCatContext = createContext<RevenueCatProps | null>(null);
-
+const ENTITLEMENT_ID = 'pro_access'; // RevenueCat dashboard'da tanımladığınız entitlement ID
 export const RevenueCatProvider = ({ children }: { children: React.ReactNode }) => {
+  const [customerInfoListener, setCustomerInfoListener] = useState<(() => void) | null>(null);
   const [packages, setPackages] = useState<PurchasesPackage[]>([]);
   const [allPackages, setAllPackages] = useState<PurchasesPackage[]>([]);
   const [currentOffering, setCurrentOffering] = useState<string | null>(null);
@@ -38,6 +44,7 @@ export const RevenueCatProvider = ({ children }: { children: React.ReactNode }) 
   const queryClient = useQueryClient();
   const { mutateAsync: updateUser } = useUpdateUser();
   const { user } = useAuth();
+
   console.log(allPackages, 'allPackages');
   useEffect(() => {
     const init = async () => {
@@ -53,12 +60,15 @@ export const RevenueCatProvider = ({ children }: { children: React.ReactNode }) 
 
         Purchases.setLogLevel(LOG_LEVEL.DEBUG);
 
-        // Listen for customer updates
-        Purchases.addCustomerInfoUpdateListener(async (info) => {
-          await updateCustomerInformation(info);
-        });
+        // İlk subscription kontrolü
+        await checkSubscriptionStatus();
 
-        // Load initial offerings
+        // Subscription değişiklik listener'ı
+        const listener = Purchases.addCustomerInfoUpdateListener(async (info) => {
+          await checkSubscriptionStatus();
+        });
+        setCustomerInfoListener(() => listener);
+
         await loadOfferings();
       } catch (error) {
         console.error('RevenueCat initialization error:', error);
@@ -68,6 +78,22 @@ export const RevenueCatProvider = ({ children }: { children: React.ReactNode }) 
     };
 
     init();
+
+    // Saatlik kontrol
+    const interval = setInterval(
+      () => {
+        checkSubscriptionStatus();
+      },
+      60 * 60 * 1000
+    );
+
+    // Cleanup
+    return () => {
+      clearInterval(interval);
+      if (customerInfoListener) {
+        customerInfoListener(); // Listener'ı temizle
+      }
+    };
   }, []);
 
   const loadOfferings = async () => {
@@ -86,31 +112,54 @@ export const RevenueCatProvider = ({ children }: { children: React.ReactNode }) 
     }
   };
 
-  const updateCustomerInformation = async (customerInfo: CustomerInfo) => {
+  const checkSubscriptionStatus = async () => {
     try {
+      const customerInfo = await Purchases.getCustomerInfo();
+      const hasProAccess = customerInfo.entitlements.active[ENTITLEMENT_ID] !== undefined;
+
+      const user = getCurrentUser();
       if (!user?.uid) return;
 
-      const hasProEntitlement = customerInfo?.entitlements.active['PRO Features'] !== undefined;
-      const membershipType = hasProEntitlement ? 'pro' : 'free';
+      if (hasProAccess) {
+        const proEntitlement = customerInfo.entitlements.active[ENTITLEMENT_ID];
+        const expirationDate = proEntitlement.expirationDate
+          ? new Date(proEntitlement.expirationDate)
+          : null;
+        const willRenew = proEntitlement.willRenew;
 
-      const now = Timestamp.now();
+        const membership: Membership = {
+          type: 'pro',
+          startDate: Timestamp.now(),
+          endDate: expirationDate ? Timestamp.fromDate(expirationDate) : null,
+          lastUpdated: Timestamp.now(),
+          willRenew,
+          productId: proEntitlement.productIdentifier,
+          identifier: user.uid,
+        };
 
-      await updateUser({
-        userId: user.uid,
-        data: {
-          membership: {
-            type: membershipType,
-            startDate: now,
-            endDate: null,
-            lastUpdated: now,
-            identifier: customerInfo.entitlements.active['PRO Features']?.productIdentifier,
-          },
-        },
-      });
+        await updateUser({
+          userId: user.uid,
+          data: { membership },
+        });
+      } else {
+        const membership: Membership = {
+          type: 'free',
+          startDate: Timestamp.now(),
+          endDate: null,
+          lastUpdated: Timestamp.now(),
+          willRenew: false,
+          identifier: user.uid,
+        };
+
+        await updateUser({
+          userId: user.uid,
+          data: { membership },
+        });
+      }
 
       queryClient.invalidateQueries({ queryKey: ['user'] });
     } catch (error) {
-      console.error('Error updating customer information:', error);
+      console.error('Subscription status check failed:', error);
     }
   };
 
@@ -121,25 +170,8 @@ export const RevenueCatProvider = ({ children }: { children: React.ReactNode }) 
       const { customerInfo, productIdentifier } =
         await Purchases.purchasePackage(packageToPurchase);
 
-      const user = getCurrentUser();
-      if (user?.uid) {
-        const now = Timestamp.now();
-
-        await updateUser({
-          userId: user.uid,
-          data: {
-            membership: {
-              type: 'pro',
-              startDate: now,
-              endDate: null,
-              lastUpdated: now,
-              identifier: productIdentifier,
-            },
-          },
-        });
-
-        queryClient.invalidateQueries({ queryKey: ['user'] });
-      }
+      // Subscription kontrolü Firestore güncellemesini yapacak
+      await checkSubscriptionStatus();
 
       return customerInfo;
     } catch (error) {
@@ -157,6 +189,7 @@ export const RevenueCatProvider = ({ children }: { children: React.ReactNode }) 
     try {
       setIsLoading(true);
       const customerInfo = await Purchases.restorePurchases();
+      await checkSubscriptionStatus();
       return customerInfo;
     } catch (error) {
       console.error('Error restoring purchases:', error);
