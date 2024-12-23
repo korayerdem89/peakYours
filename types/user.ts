@@ -1,12 +1,13 @@
 import { FirebaseFirestoreTypes } from '@react-native-firebase/firestore';
 
-export type MembershipType = 'free' | 'monthly' | 'annual';
+export type MembershipType = 'free' | 'pro';
 
 export interface Membership {
   type: MembershipType;
   startDate: FirebaseFirestoreTypes.Timestamp;
   endDate: FirebaseFirestoreTypes.Timestamp | null;
   lastUpdated: FirebaseFirestoreTypes.Timestamp;
+  identifier: string;
 }
 
 export interface User {

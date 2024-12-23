@@ -3,10 +3,11 @@ import { FirebaseFirestoreTypes } from '@react-native-firebase/firestore';
 import { useAuth } from '@/store/useAuth';
 import { FirestoreService } from '@/services/firestore';
 import { UserData } from '@/services/user';
-
+import { Membership } from '@/types/user';
 interface UpdateUserData {
   zodiacSign?: string;
   updatedAt?: FirebaseFirestoreTypes.FieldValue;
+  membership?: Membership;
 }
 
 export function useUserData(userId: string | undefined) {
