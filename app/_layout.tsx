@@ -38,6 +38,7 @@ import {
   Poppins_800ExtraBold_Italic,
   Poppins_900Black_Italic,
 } from '@expo-google-fonts/poppins';
+import { RevenueCatProvider } from '@/providers/RevenueCatProvider';
 
 // Prevent splash screen from auto-hiding
 SplashScreen.preventAutoHideAsync();
@@ -165,19 +166,21 @@ export default function RootLayout() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <GestureHandlerRootView style={{ flex: 1 }}>
-        <LanguageProvider>
-          <ThemeProvider>
-            <View className="flex-1 bg-background-light dark:bg-background-dark">
-              <AuthProvider>
-                <InitialLayout />
-              </AuthProvider>
-              <LoadingModal visible={isLoading} />
-              <Toast config={toastConfig} />
-            </View>
-          </ThemeProvider>
-        </LanguageProvider>
-      </GestureHandlerRootView>
+      <RevenueCatProvider>
+        <GestureHandlerRootView style={{ flex: 1 }}>
+          <LanguageProvider>
+            <ThemeProvider>
+              <View className="flex-1 bg-background-light dark:bg-background-dark">
+                <AuthProvider>
+                  <InitialLayout />
+                </AuthProvider>
+                <LoadingModal visible={isLoading} />
+                <Toast config={toastConfig} />
+              </View>
+            </ThemeProvider>
+          </LanguageProvider>
+        </GestureHandlerRootView>
+      </RevenueCatProvider>
     </QueryClientProvider>
   );
 }

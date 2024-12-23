@@ -75,7 +75,7 @@ export const RevenueCatProvider = ({ children }: { children: React.ReactNode }) 
       if (offerings.current) {
         setPackages(offerings.current.availablePackages);
         setCurrentOffering(offerings.current.identifier);
-        console.log(offerings, 'offerings');
+        console.log(offerings.current.availablePackages, 'offerings');
       }
     } catch (error) {
       console.error('Error loading offerings:', error);
