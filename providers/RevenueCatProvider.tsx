@@ -25,18 +25,20 @@ interface RevenueCatProps {
   restorePermissions: () => Promise<CustomerInfo>;
   packages: PurchasesPackage[];
   currentOffering: string | null;
+  allPackages: PurchasesPackage[];
 }
 
 const RevenueCatContext = createContext<RevenueCatProps | null>(null);
 
 export const RevenueCatProvider = ({ children }: { children: React.ReactNode }) => {
   const [packages, setPackages] = useState<PurchasesPackage[]>([]);
+  const [allPackages, setAllPackages] = useState<PurchasesPackage[]>([]);
   const [currentOffering, setCurrentOffering] = useState<string | null>(null);
   const { setIsLoading } = useLoadingStore();
   const queryClient = useQueryClient();
   const { mutateAsync: updateUser } = useUpdateUser();
   const { user } = useAuth();
-
+  console.log(allPackages, 'allPackages');
   useEffect(() => {
     const init = async () => {
       try {
@@ -75,7 +77,9 @@ export const RevenueCatProvider = ({ children }: { children: React.ReactNode }) 
       if (offerings.current) {
         setPackages(offerings.current.availablePackages);
         setCurrentOffering(offerings.current.identifier);
-        console.log(offerings.current.availablePackages, 'offerings');
+        setAllPackages(
+          Object.values(offerings.all).flatMap((offering) => offering.availablePackages)
+        );
       }
     } catch (error) {
       console.error('Error loading offerings:', error);
@@ -167,6 +171,7 @@ export const RevenueCatProvider = ({ children }: { children: React.ReactNode }) 
     packages,
     subscribeUser,
     currentOffering,
+    allPackages,
   };
 
   return <RevenueCatContext.Provider value={value}>{children}</RevenueCatContext.Provider>;

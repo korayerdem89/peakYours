@@ -7,11 +7,14 @@ import { useColorScheme } from 'nativewind';
 import { theme } from '@/constants/theme';
 import { Ionicons } from '@expo/vector-icons';
 import { SUBSCRIPTION_PLANS as plans } from '@/constants/plans';
+import { useRevenueCat } from '@/providers/RevenueCatProvider';
+import { PurchasesPackage } from 'react-native-purchases';
 
 export default function Paywall() {
   const { t } = useTranslation();
   const { colorScheme } = useColorScheme();
   const isDark = colorScheme === 'dark';
+  const { packages, subscribeUser, allPackages } = useRevenueCat();
 
   const features = [
     {
@@ -86,41 +89,48 @@ export default function Paywall() {
 
           {/* Plans */}
           <View className="mb-6 px-6">
-            {plans.map((plan, index) => (
-              <TouchableOpacity
-                key={index}
-                className={`mb-4 rounded-xl border-2 p-4 ${
-                  plan.isPopular
-                    ? 'border-primary-light dark:border-primary-dark'
-                    : 'border-border-light dark:border-border-dark'
-                }`}>
-                <View className="mb-2 flex-row items-center justify-between">
-                  <Text className="font-semibold text-lg capitalize text-text-light dark:text-text-dark">
-                    {t(`paywall.ideas.plans.${plan.type}.title`)}
-                  </Text>
-                  {plan.isPopular && (
-                    <View className="rounded-full bg-primary-light/20 px-3 py-1 dark:bg-primary-dark/20">
-                      <Text className="font-medium text-xs text-primary-dark dark:text-primary-light">
-                        {t('paywall.ideas.popular')}
-                      </Text>
-                    </View>
+            {plans.map((plan, index) => {
+              const selectedPlan = packages.find(
+                (p) => p.packageType === plan.packageType
+              ) as PurchasesPackage;
+              console.log(selectedPlan, 'selectedPlan');
+              return (
+                <TouchableOpacity
+                  onPress={() => subscribeUser(selectedPlan)}
+                  key={index}
+                  className={`mb-4 rounded-xl border-2 p-4 ${
+                    plan.isPopular
+                      ? 'border-primary-light dark:border-primary-dark'
+                      : 'border-border-light dark:border-border-dark'
+                  }`}>
+                  <View className="mb-2 flex-row items-center justify-between">
+                    <Text className="font-semibold text-lg capitalize text-text-light dark:text-text-dark">
+                      {t(`paywall.ideas.plans.${plan.type}.title`)}
+                    </Text>
+                    {plan.isPopular && (
+                      <View className="rounded-full bg-primary-light/20 px-3 py-1 dark:bg-primary-dark/20">
+                        <Text className="font-medium text-xs text-primary-dark dark:text-primary-light">
+                          {t('paywall.ideas.popular')}
+                        </Text>
+                      </View>
+                    )}
+                  </View>
+                  <View className="flex-row items-baseline">
+                    <Text className="font-bold text-2xl text-primary-dark dark:text-primary-light">
+                      {selectedPlan.product.priceString}
+                    </Text>
+                    <Text className="ml-1 text-sm text-text-light-secondary dark:text-text-dark-secondary">
+                      {t(`paywall.ideas.plans.${plan.type}.period`)}
+                    </Text>
+                  </View>
+                  {plan.savings && (
+                    <Text className="mt-1 text-sm text-success-dark dark:text-success-light">
+                      {t('paywall.ideas.savings', { amount: plan.savings })}
+                    </Text>
                   )}
-                </View>
-                <View className="flex-row items-baseline">
-                  <Text className="font-bold text-2xl text-primary-dark dark:text-primary-light">
-                    {plan.price}
-                  </Text>
-                  <Text className="ml-1 text-sm text-text-light-secondary dark:text-text-dark-secondary">
-                    {t(`paywall.ideas.plans.${plan.type}.period`)}
-                  </Text>
-                </View>
-                {plan.savings && (
-                  <Text className="mt-1 text-sm text-success-dark dark:text-success-light">
-                    {t('paywall.ideas.savings', { amount: plan.savings })}
-                  </Text>
-                )}
-              </TouchableOpacity>
-            ))}
+                </TouchableOpacity>
+              );
+            })}
           </View>
 
           {/* Terms */}

@@ -1,19 +1,19 @@
 export interface PlanProps {
-  type: 'monthly' | 'annually';
-  price: string;
+  type: 'monthly' | 'annual';
   savings?: string;
   isPopular?: boolean;
+  packageType: 'MONTHLY' | 'ANNUAL';
 }
 
 export const SUBSCRIPTION_PLANS: PlanProps[] = [
   {
     type: 'monthly',
-    price: '$4.99',
+    packageType: 'MONTHLY',
   },
   {
-    type: 'annually',
-    price: '$39.99',
-    savings: '20%',
+    type: 'annual',
+    savings: '50%',
     isPopular: true,
+    packageType: 'ANNUAL',
   },
 ];

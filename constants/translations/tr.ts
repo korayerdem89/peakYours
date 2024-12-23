@@ -441,4 +441,45 @@ export default {
       updates: 'Öncelikli yeni özellik erişimi',
     },
   },
+  paywall: {
+    ideas: {
+      title: "Pro'ya Yükselt",
+      hero: {
+        title: 'Tam Potansiyelini Aç',
+        subtitle:
+          'Kişiselleştirilmiş yapay zeka içgörüleri, günlük görevler ve detaylı kişilik analizlerine eriş',
+      },
+      features: {
+        ai: {
+          title: 'Yapay Zeka Kişilik Analizi',
+          description:
+            'Gelişmiş yapay zeka analizi ile kişilik özellikleriniz hakkında derin içgörüler edinin',
+        },
+        tasks: {
+          title: 'Günlük Gelişim Görevleri',
+          description:
+            'Kişilik özelliklerinizi geliştirmek için kişiselleştirilmiş günlük görevler alın',
+        },
+        insights: {
+          title: 'Detaylı Analitikler',
+          description:
+            'İlerlemenizi takip edin ve başkalarının kişiliğinizi nasıl algıladığını görün',
+        },
+      },
+      plans: {
+        monthly: {
+          title: 'Aylık',
+          period: '/ay',
+        },
+        annual: {
+          title: 'Yıllık',
+          period: '/yıl',
+        },
+      },
+      popular: 'En Popüler',
+      savings: '{{amount}} tasarruf',
+      terms:
+        'Abone olarak Kullanım Koşulları ve Gizlilik Politikasını kabul etmiş olursunuz. Abonelikler otomatik olarak yenilenir.',
+    },
+  },
 };

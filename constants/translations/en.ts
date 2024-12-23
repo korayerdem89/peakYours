@@ -463,8 +463,8 @@ export default {
           title: 'Monthly',
           period: '/month',
         },
-        annually: {
-          title: 'Annually',
+        annual: {
+          title: 'Annual',
           period: '/year',
         },
       },
