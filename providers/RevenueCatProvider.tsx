@@ -12,6 +12,7 @@ import { getCurrentUser } from '@/config/firebase';
 import { useUpdateUser } from '@/hooks/useUserQueries';
 import { Timestamp } from '@react-native-firebase/firestore';
 import { Membership } from '@/types/user';
+import { router } from 'expo-router';
 
 const APIKeys = {
   apple: 'appl_vsVDjUeKsRUioneAWHaZzOGebRZ',
@@ -128,6 +129,7 @@ export const RevenueCatProvider = ({ children }: { children: React.ReactNode }) 
 
       const { customerInfo } = await Purchases.purchasePackage(packageToPurchase);
       // Double check subscription status
+
       await checkSubscriptionStatus();
 
       return customerInfo;

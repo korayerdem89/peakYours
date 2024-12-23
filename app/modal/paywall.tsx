@@ -96,7 +96,6 @@ export default function Paywall() {
                 <TouchableOpacity
                   onPress={() => {
                     subscribeUser(selectedPlan);
-                    router.back();
                   }}
                   key={index}
                   className={`mb-4 rounded-xl border-2 p-4 ${
