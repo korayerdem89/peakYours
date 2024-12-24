@@ -20,6 +20,7 @@ const APIKeys = {
 };
 
 const ENTITLEMENT_ID = 'entla24afb26a4';
+const ENTITLEMENT_ID_DISCOUNTED_ID = 'entl5013750d15';
 const PRODUCT_ID = 'prod22e383a563';
 const DEFAULT_OFFERING_ID = 'ofrng3e1af3d574';
 const DISCOUNTED_OFFERING_ID = 'ofrngf5a0d7f587';
@@ -69,7 +70,19 @@ export const RevenueCatProvider = ({ children }: { children: React.ReactNode }) 
       // Entitlement ve aktif abonelik kontrolü
       const hasProAccess =
         customerInfo.entitlements.active[ENTITLEMENT_ID] !== undefined ||
-        activeSubscriptions.includes('pro_monthly:basicplan');
+        activeSubscriptions.some((subscription) =>
+          [
+            'pro_monthly:basicplan',
+            'pro_annual1:annualbasic2',
+            'pro_monthly',
+            'pro_annual',
+            'pro_monthly_discounted:basicplan-discounted',
+            'pro_monthly_discounted',
+            'pro_annual_discounted:annual-discounted2',
+            'pro_annual_discounted',
+          ].includes(subscription)
+        ) ||
+        customerInfo.entitlements.active[ENTITLEMENT_ID_DISCOUNTED_ID] !== undefined;
 
       console.log('Has Pro Access:', hasProAccess);
 
