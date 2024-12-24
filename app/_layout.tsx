@@ -39,6 +39,7 @@ import {
   Poppins_900Black_Italic,
 } from '@expo-google-fonts/poppins';
 import { RevenueCatProvider } from '@/providers/RevenueCatProvider';
+import { TraitProvider } from '@/providers/TraitProvider';
 
 // Prevent splash screen from auto-hiding
 SplashScreen.preventAutoHideAsync();
@@ -172,7 +173,9 @@ export default function RootLayout() {
             <ThemeProvider>
               <View className="flex-1 bg-background-light dark:bg-background-dark">
                 <AuthProvider>
-                  <InitialLayout />
+                  <TraitProvider>
+                    <InitialLayout />
+                  </TraitProvider>
                 </AuthProvider>
                 <LoadingModal visible={isLoading} />
                 <Toast config={toastConfig} />

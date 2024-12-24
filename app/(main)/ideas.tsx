@@ -23,6 +23,7 @@ import { DailyHoroscope } from '@/components/ideas/DailyHoroscope';
 import NetInfo from '@react-native-community/netinfo';
 import Toast from 'react-native-toast-message';
 import { UpgradeButton } from '@/components/buttons/UpgradeButton';
+import { useTraits } from '@/providers/TraitProvider';
 
 // Types
 interface PersonalityAnimal {
@@ -224,11 +225,7 @@ const PERSONALITY_ANIMALS: Record<string, PersonalityAnimal> = {
 export default function Ideas() {
   const { user } = useAuth();
   const { t, locale } = useTranslation();
-  const { data: userData } = useUserData(user?.uid);
-
-  // useTraitDetails hook'unu koşullu çağırmayı engelleyelim
-  const refCode = userData?.refCodes?.en;
-  const { data: traitDetails } = useTraitDetails(refCode, 'goodsides');
+  const { userData, traitDetails, goodTraits, badTraits } = useTraits();
 
   // Animation hook'larını en üste alalım
   const bounceValue = useSharedValue(0);
@@ -336,8 +333,6 @@ export default function Ideas() {
   }
 
   ////traitdetails.totalRaters varsa alttaki dataları da çek
-  const goodTraits = useTraitAverages(userData?.refCodes?.en, 'goodsides', userData);
-  const badTraits = useTraitAverages(userData?.refCodes?.en, 'badsides', userData);
   const [personalityAnimal, setPersonalityAnimal] = useState<PersonalityAnimal | null>(null);
   const [analysis, setAnalysis] = useState('');
   const [isLoading, setIsLoading] = useState(false);

@@ -31,6 +31,7 @@ import NetInfo from '@react-native-community/netinfo';
 import QuoteCard from '@/components/main/QuoteCard';
 import PaywallModal from '@/components/modals/PaywallModal';
 import { UpgradeButton } from '@/components/buttons/UpgradeButton';
+import { useTraits } from '@/providers/TraitProvider';
 
 interface Task {
   id: string;
@@ -48,8 +49,9 @@ export default function TasksScreen() {
   const { user } = useAuth();
   const { t } = useTranslation();
   const { setIsLoading } = useLoadingStore();
+  const { userData, traitDetails, goodTraits, badTraits } = useTraits();
 
-  // State hook'larını en üste alalım
+  // State hook'ları
   const [levelUpTrait, setLevelUpTrait] = useState<{
     trait: string;
     type: 'goodsides' | 'badsides';
@@ -57,15 +59,7 @@ export default function TasksScreen() {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [completedTasks, setCompletedTasks] = useState<string[]>([]);
   const [showPaywall, setShowPaywall] = useState(false);
-
-  // Query hook'larını sıralı kullanalım
-  const { data: userData } = useUserData(user?.uid);
-  const refCode = userData?.refCodes?.en;
-
-  // TraitDetails ve Averages hook'larını koşullu çağırmayı engelleyelim
-  const { data: traitDetails } = useTraitDetails(refCode, 'goodsides');
-  const goodTraits = useTraitAverages(refCode, 'goodsides', userData);
-  const badTraits = useTraitAverages(refCode, 'badsides', userData);
+  const [bannerError, setBannerError] = useState(false);
 
   const { taskData, refreshTasks, decrementRefreshes } = useTasks(user?.uid);
   const [refreshLimit, setRefreshLimit] = useState(taskData?.refreshesLeft ?? 0);
@@ -141,8 +135,6 @@ export default function TasksScreen() {
       </SafeAreaView>
     );
   }
-
-  const [bannerError, setBannerError] = useState(false);
 
   // Network değişikliklerini dinle
   useEffect(() => {
