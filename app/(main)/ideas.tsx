@@ -14,18 +14,11 @@ import Animated, {
 import { theme } from '@/constants/theme';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { DailyHoroscope } from '@/components/ideas/DailyHoroscope';
-import NetInfo from '@react-native-community/netinfo';
 import Toast from 'react-native-toast-message';
 import { UpgradeButton } from '@/components/buttons/UpgradeButton';
 import { useTraits } from '@/providers/TraitProvider';
-import {
-  PersonalityAnimal,
-  AnalysisResponse,
-  StoredAnalysis,
-  languageSpecificContent,
-  PERSONALITY_ANIMALS,
-} from '@/types/ideas';
-import { systemMessages, generatePrompt } from '@/constants/ideas/prompts';
+import { PersonalityAnimal, StoredAnalysis, PERSONALITY_ANIMALS } from '@/types/ideas';
+import { generateAIAnalysis } from '@/constants/ideas/prompts';
 
 export default function Ideas() {
   // Core hooks
@@ -43,7 +36,6 @@ export default function Ideas() {
   const [personalityAnimal, setPersonalityAnimal] = useState<PersonalityAnimal | null>(null);
   const [analysis, setAnalysis] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [bannerError, setBannerError] = useState(false);
 
   // Analysis generation
   const generateAnalysis = async () => {
@@ -54,44 +46,7 @@ export default function Ideas() {
         throw new Error('Missing required data');
       }
 
-      const prompt = generatePrompt(
-        goodTraits,
-        badTraits,
-        user.zodiacSign,
-        locale as keyof typeof languageSpecificContent
-      );
-
-      const response = await fetch('https://api.openai.com/v1/chat/completions', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${process.env.EXPO_PUBLIC_OPENAI_API_KEY}`,
-        },
-        body: JSON.stringify({
-          model: 'gpt-4-turbo-preview',
-          messages: [
-            {
-              role: 'system',
-              content: systemMessages[locale as keyof typeof systemMessages],
-            },
-            {
-              role: 'user',
-              content: prompt,
-            },
-          ],
-          temperature: 0.8,
-          max_tokens: 1500,
-          response_format: { type: 'json_object' },
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error(`API error: ${response.status}`);
-      }
-
-      const data = await response.json();
-      const result: AnalysisResponse = JSON.parse(data.choices[0].message.content);
-
+      const result = await generateAIAnalysis(goodTraits, badTraits, user.zodiacSign, locale);
       const animalKey = Object.keys(PERSONALITY_ANIMALS).find((key) => key === result.spiritAnimal);
 
       if (!animalKey || !PERSONALITY_ANIMALS[animalKey]) {
@@ -203,7 +158,7 @@ export default function Ideas() {
     loadAnalysis();
   }, [goodTraits, badTraits, user?.zodiacSign, traitDetails?.totalRaters, locale]);
 
-  // Loading state check
+  // Render functions
   if (isLoading) {
     return (
       <View className="flex-1 items-center justify-center gap-3 bg-background-light dark:bg-background-dark">
@@ -215,7 +170,6 @@ export default function Ideas() {
     );
   }
 
-  // Membership check
   if (userData?.membership?.type !== 'pro') {
     const features = t('ideas.freemember.features', {
       returnObjects: 'true' as const,

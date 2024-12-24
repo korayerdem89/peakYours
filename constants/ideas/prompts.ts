@@ -1,4 +1,6 @@
+import { AnalysisResponse } from '@/types/ideas';
 import { languageSpecificContent, PERSONALITY_ANIMALS } from '@/types/ideas';
+
 export const systemMessages = {
   en: `You are a friendly and witty personality analyst who loves combining astrology with personality traits! 
   While you're an expert in both fields, you prefer explaining things in a warm, casual tone with occasional humor.
@@ -67,7 +69,47 @@ export const systemMessages = {
   }`,
 };
 
-export function generatePrompt(
+export async function generateAIAnalysis(
+  goodTraits: { trait: string; value: number }[],
+  badTraits: { trait: string; value: number }[],
+  zodiacSign: string,
+  locale: string
+): Promise<AnalysisResponse> {
+  const prompt = generatePrompt(goodTraits, badTraits, zodiacSign, locale);
+
+  const response = await fetch('https://api.openai.com/v1/chat/completions', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${process.env.EXPO_PUBLIC_OPENAI_API_KEY}`,
+    },
+    body: JSON.stringify({
+      model: 'gpt-4-turbo-preview',
+      messages: [
+        {
+          role: 'system',
+          content: systemMessages[locale as keyof typeof systemMessages],
+        },
+        {
+          role: 'user',
+          content: prompt,
+        },
+      ],
+      temperature: 0.8,
+      max_tokens: 1500,
+      response_format: { type: 'json_object' },
+    }),
+  });
+
+  if (!response.ok) {
+    throw new Error(`API error: ${response.status}`);
+  }
+
+  const data = await response.json();
+  return JSON.parse(data.choices[0].message.content);
+}
+
+function generatePrompt(
   goodTraits: { trait: string; value: number }[],
   badTraits: { trait: string; value: number }[],
   zodiacSign: string,
