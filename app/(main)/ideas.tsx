@@ -3,7 +3,6 @@ import { useState, useEffect, useLayoutEffect } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useAuth } from '@/store/useAuth';
 import { useTranslation } from '@/providers/LanguageProvider';
-import { Alert } from 'react-native';
 import Animated, {
   FadeIn,
   useAnimatedStyle,
@@ -14,7 +13,6 @@ import Animated, {
 } from 'react-native-reanimated';
 import { theme } from '@/constants/theme';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { BannerAd, BannerAdSize } from 'react-native-google-mobile-ads';
 import { DailyHoroscope } from '@/components/ideas/DailyHoroscope';
 import NetInfo from '@react-native-community/netinfo';
 import Toast from 'react-native-toast-message';
@@ -29,121 +27,22 @@ import {
 } from '@/types/ideas';
 
 export default function Ideas() {
+  // Core hooks
   const { user } = useAuth();
   const { t, locale } = useTranslation();
   const { userData, traitDetails, goodTraits, badTraits } = useTraits();
 
-  // Animation hook'larını en üste alalım
+  // Animation values
   const bounceValue = useSharedValue(0);
   const bounceStyle = useAnimatedStyle(() => ({
     transform: [{ translateY: bounceValue.value }],
   }));
 
-  // Bounce animasyonu için useEffect
-  useEffect(() => {
-    const interval = setInterval(() => {
-      bounceValue.value = withSequence(withSpring(-10), withDelay(100, withSpring(0)));
-    }, 5000);
-
-    return () => clearInterval(interval);
-  }, []);
-
-  // Membership kontrolü
-  if (!userData) {
-    return <ActivityIndicator />;
-  }
-
-  if (userData.membership?.type !== 'pro') {
-    const features = t('ideas.freemember.features', {
-      returnObjects: 'true' as const,
-      defaultValue: '',
-    }) as unknown as string[];
-
-    return (
-      <SafeAreaView className="flex-1 bg-accent-light pt-20 dark:bg-background-dark">
-        <ScrollView
-          className="flex-1 p-4"
-          contentContainerStyle={{ flexGrow: 1 }}
-          showsVerticalScrollIndicator={false}>
-          <Animated.View entering={FadeIn.duration(1000)} className="mt-6 flex-1">
-            <View className="rounded-sm bg-surface-light p-6 shadow-sm dark:bg-surface-dark">
-              <Animated.View style={bounceStyle} className="mb-8 items-center">
-                <Image
-                  source={{ uri: 'https://picsum.photos/800/200' }}
-                  className="h-24 w-full"
-                  resizeMode="contain"
-                />
-              </Animated.View>
-
-              <Text className="text-primary-default mb-4 text-center font-bold text-2xl dark:text-primary-light">
-                {t('ideas.freemember.title')}
-              </Text>
-
-              <View className="mb-6 gap-1">
-                {features.map((feature: string, index: number) => (
-                  <Text
-                    key={index}
-                    className="text-base text-text-light-secondary dark:text-text-dark-secondary">
-                    {feature}
-                  </Text>
-                ))}
-              </View>
-
-              <UpgradeButton />
-            </View>
-          </Animated.View>
-        </ScrollView>
-      </SafeAreaView>
-    );
-  }
-
-  if (!traitDetails?.totalRaters) {
-    return (
-      <SafeAreaView className="flex-1 bg-accent-light dark:bg-background-dark">
-        <ScrollView
-          className="flex-1 p-4"
-          contentContainerStyle={{ flexGrow: 1 }}
-          showsVerticalScrollIndicator={false}>
-          <Animated.View entering={FadeIn.duration(1000)} className="flex-1 justify-center">
-            <View className="rounded-sm bg-surface-light p-6 shadow-sm dark:bg-surface-dark">
-              {/* İllüstrasyon Container */}
-              <Animated.View style={bounceStyle} className="mb-8 items-center">
-                <Image
-                  source={{ uri: 'https://picsum.photos/200/300' }}
-                  className="h-48 w-48"
-                  resizeMode="contain"
-                />
-              </Animated.View>
-
-              {/* Başlık */}
-              <Text className="text-primary-default mb-4 text-center font-bold text-2xl dark:text-primary-light">
-                {t('ideas.noRatingsWarning.title')}
-              </Text>
-
-              {/* Açıklama */}
-              <Text className="mb-6 text-center font-medium text-base text-text-light-secondary dark:text-text-dark-secondary">
-                {t('ideas.noRatingsWarning.description')}
-              </Text>
-
-              {/* CTA Bölümü */}
-              <View className="mt-4 rounded-sm bg-primary-light/10 p-4 dark:bg-primary-dark/10">
-                <Text className="text-center font-semibold text-sm text-primary-dark dark:text-primary-light">
-                  {t('ideas.noRatingsWarning.cta')}
-                </Text>
-              </View>
-            </View>
-          </Animated.View>
-        </ScrollView>
-      </SafeAreaView>
-    );
-  }
-
-  ////traitdetails.totalRaters varsa alttaki dataları da çek
+  // State management
   const [personalityAnimal, setPersonalityAnimal] = useState<PersonalityAnimal | null>(null);
   const [analysis, setAnalysis] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [bannerError, setBannerError] = useState(false);
-
   const systemMessages = {
     en: `You are a friendly and witty personality analyst who loves combining astrology with personality traits! 
     While you're an expert in both fields, you prefer explaining things in a warm, casual tone with occasional humor.
@@ -241,6 +140,7 @@ ${content.storyTitle}
 ${content.paragraphs.join('\n')}`;
   }
 
+  // Analysis generation
   const generateAnalysis = async () => {
     try {
       setIsLoading(true);
@@ -249,25 +149,11 @@ ${content.paragraphs.join('\n')}`;
         throw new Error('Missing required data');
       }
 
-      // useTraitAverages'dan gelen veriyi doğru şekilde formatlayalım
-      const personalityData = {
-        zodiacSign: user.zodiacSign,
-        goodTraits: goodTraits.map((trait) => ({
-          name: trait.trait,
-          score: trait.value, // averagePoints yerine value kullanılmalı
-        })),
-        badTraits: badTraits.map((trait) => ({
-          name: trait.trait,
-          score: trait.value, // averagePoints yerine value kullanılmalı
-        })),
-      };
-
-      // API'ye gönderilecek prompt
       const prompt = generatePrompt(
         goodTraits,
         badTraits,
         user.zodiacSign,
-        locale as keyof typeof systemMessages
+        locale as keyof typeof languageSpecificContent
       );
 
       const response = await fetch('https://api.openai.com/v1/chat/completions', {
@@ -301,7 +187,6 @@ ${content.paragraphs.join('\n')}`;
       const data = await response.json();
       const result: AnalysisResponse = JSON.parse(data.choices[0].message.content);
 
-      // Gelen spirit animal'ı kontrol et ve set et
       const animalKey = Object.keys(PERSONALITY_ANIMALS).find((key) => key === result.spiritAnimal);
 
       if (!animalKey || !PERSONALITY_ANIMALS[animalKey]) {
@@ -309,15 +194,14 @@ ${content.paragraphs.join('\n')}`;
       }
 
       setPersonalityAnimal(PERSONALITY_ANIMALS[animalKey]);
-      setAnalysis(typeof result.analysis === 'string' ? result.analysis : '');
+      setAnalysis(result.analysis);
 
-      // Analizi cache'le
       await storeAnalysis(
         animalKey,
         result.analysis,
         traitDetails?.totalRaters || 0,
         user.zodiacSign,
-        locale as string
+        locale
       );
     } catch (error) {
       console.error('Analysis generation error:', error);
@@ -331,32 +215,7 @@ ${content.paragraphs.join('\n')}`;
     }
   };
 
-  const shouldUpdateAnalysis = async (
-    currentRaters: number,
-    lastStoredRaters: number,
-    currentZodiacSign: string,
-    currentLocale: string
-  ): Promise<boolean> => {
-    try {
-      const stored = await AsyncStorage.getItem(`personality_analysis_${user?.uid}`);
-      const storedData = stored ? JSON.parse(stored) : null;
-
-      if (!storedData) return true;
-
-      if (storedData.zodiacSign !== currentZodiacSign) return true;
-
-      if (storedData.locale !== currentLocale) return true;
-
-      if (lastStoredRaters === 0) return true;
-
-      const raterDifference = currentRaters - lastStoredRaters;
-      return raterDifference >= 3;
-    } catch (error) {
-      console.error('Error in shouldUpdateAnalysis:', error);
-      return true;
-    }
-  };
-
+  // Storage functions
   const getStoredAnalysis = async (): Promise<StoredAnalysis | null> => {
     try {
       const stored = await AsyncStorage.getItem(`personality_analysis_${user?.uid}`);
@@ -389,27 +248,32 @@ ${content.paragraphs.join('\n')}`;
     }
   };
 
+  // Effects
+  useEffect(() => {
+    const interval = setInterval(() => {
+      bounceValue.value = withSequence(withSpring(-10), withDelay(100, withSpring(0)));
+    }, 5000);
+    return () => clearInterval(interval);
+  }, []);
+
   useLayoutEffect(() => {
     const loadAnalysis = async () => {
       if (!goodTraits || !badTraits || !user?.zodiacSign || !traitDetails) return;
 
       try {
         setIsLoading(true);
-        const currentRaters = traitDetails.totalRaters || 0;
         const storedData = await getStoredAnalysis();
 
-        const needsUpdate = await shouldUpdateAnalysis(
-          currentRaters,
-          storedData?.lastRaterCount || 0,
-          user.zodiacSign,
-          locale
-        );
-
-        if (!storedData || storedData.zodiacSign !== user.zodiacSign || needsUpdate) {
+        if (
+          !storedData ||
+          storedData.zodiacSign !== user.zodiacSign ||
+          storedData.locale !== locale ||
+          !storedData.analysis
+        ) {
           await generateAnalysis();
         } else {
-          const animalKey = Object.keys(PERSONALITY_ANIMALS).find((key) =>
-            key.includes(storedData.spiritAnimal.toUpperCase())
+          const animalKey = Object.keys(PERSONALITY_ANIMALS).find(
+            (key) => key === storedData.spiritAnimal
           );
 
           if (animalKey && PERSONALITY_ANIMALS[animalKey]) {
@@ -421,7 +285,11 @@ ${content.paragraphs.join('\n')}`;
         }
       } catch (error) {
         console.error('Error in loadAnalysis:', error);
-        Alert.alert(t('common.error'), t('ideas.analysisError'));
+        Toast.show({
+          type: 'error',
+          text1: t('ideas.analysisError'),
+          position: 'bottom',
+        });
       } finally {
         setIsLoading(false);
       }
@@ -430,18 +298,7 @@ ${content.paragraphs.join('\n')}`;
     loadAnalysis();
   }, [goodTraits, badTraits, user?.zodiacSign, traitDetails?.totalRaters, locale]);
 
-  useEffect(() => {
-    const unsubscribe = NetInfo.addEventListener((state) => {
-      if (state.isConnected && bannerError) {
-        setBannerError(false);
-      }
-    });
-
-    return () => {
-      unsubscribe();
-    };
-  }, [bannerError]);
-
+  // Loading state check
   if (isLoading) {
     return (
       <View className="flex-1 items-center justify-center gap-3 bg-background-light dark:bg-background-dark">
@@ -453,17 +310,59 @@ ${content.paragraphs.join('\n')}`;
     );
   }
 
+  // Membership check
+  if (userData?.membership?.type !== 'pro') {
+    const features = t('ideas.freemember.features', {
+      returnObjects: 'true' as const,
+      defaultValue: '',
+    }) as unknown as string[];
+
+    return (
+      <SafeAreaView className="flex-1 bg-accent-light pt-20 dark:bg-background-dark">
+        <ScrollView
+          className="flex-1 p-4"
+          contentContainerStyle={{ flexGrow: 1 }}
+          showsVerticalScrollIndicator={false}>
+          <Animated.View entering={FadeIn.duration(1000)} className="mt-6 flex-1">
+            <View className="rounded-sm bg-surface-light p-6 shadow-sm dark:bg-surface-dark">
+              <Animated.View style={bounceStyle} className="mb-8 items-center">
+                <Image
+                  source={{ uri: 'https://picsum.photos/800/200' }}
+                  className="h-24 w-full"
+                  resizeMode="contain"
+                />
+              </Animated.View>
+
+              <Text className="text-primary-default mb-4 text-center font-bold text-2xl dark:text-primary-light">
+                {t('ideas.freemember.title')}
+              </Text>
+
+              <View className="mb-6 gap-1">
+                {features.map((feature: string, index: number) => (
+                  <Text
+                    key={index}
+                    className="text-base text-text-light-secondary dark:text-text-dark-secondary">
+                    {feature}
+                  </Text>
+                ))}
+              </View>
+
+              <UpgradeButton />
+            </View>
+          </Animated.View>
+        </ScrollView>
+      </SafeAreaView>
+    );
+  }
+
+  // Main render
   return (
     <SafeAreaView className="flex-1 bg-background-light dark:bg-background-dark">
       <ScrollView
-        className="flex-1 px-4"
-        contentContainerStyle={{
-          paddingTop: 16,
-          paddingBottom: 96,
-        }}
+        className="flex-1 p-4"
+        contentContainerStyle={{ flexGrow: 1 }}
         showsVerticalScrollIndicator={false}>
-        {/* Header Warning - Daha yumuşak bir görünüm */}
-        <View className="gap-4">
+        <View className="flex-1 gap-4">
           <Animated.View
             entering={FadeIn.duration(500)}
             className="dark:bg-accent-dark/20 rounded-sm bg-accent-light/20 p-5">
@@ -474,40 +373,33 @@ ${content.paragraphs.join('\n')}`;
               {t('ideas.updateFrequency')}
             </Text>
           </Animated.View>
-          {/* Spirit Animal Card - Daha canlı ve eğlenceli */}
-          <Animated.View
-            entering={FadeIn.delay(200).duration(500)}
-            className="rounded-sm bg-surface-light p-6 shadow-lg dark:bg-surface-dark">
-            <View className="flex-row items-center justify-between">
-              {personalityAnimal && (
-                <View className="flex-row items-center gap-5">
-                  {/* Zıplayan hayvan ikonu */}
-                  <Animated.View
-                    style={bounceStyle}
-                    className="items-center justify-center rounded-sm bg-amber-50 p-4  shadow-sm shadow-gray-500 dark:bg-primary-dark/25">
-                    <Image
-                      source={personalityAnimal.image}
-                      className="h-14 w-14 " // Biraz daha büyük
-                      resizeMode="contain"
-                    />
-                  </Animated.View>
+          {personalityAnimal && (
+            <View className="flex-row items-center gap-5">
+              {/* Zıplayan hayvan ikonu */}
+              <Animated.View
+                style={bounceStyle}
+                className="items-center justify-center rounded-sm bg-amber-50 p-4  shadow-sm shadow-gray-500 dark:bg-primary-dark/25">
+                <Image
+                  source={personalityAnimal.image}
+                  className="h-14 w-14 " // Biraz daha büyük
+                  resizeMode="contain"
+                />
+              </Animated.View>
 
-                  {/* Text Content - Daha canlı renkler ve spacing */}
-                  <View className="flex-1">
-                    <Text className="mb-2 font-medium text-sm text-amber-500 dark:text-primary-light/70">
-                      ⭐ {t('ideas.spiritAnimal.title')}
-                    </Text>
-                    <Text className="font-bold text-2xl text-amber-600 dark:text-primary-light">
-                      {t(`ideas.animals.${personalityAnimal.id}.name`)}
-                    </Text>
-                    <Text className="mt-2 font-medium text-sm text-gray-400 dark:text-text-dark-secondary/80">
-                      {t(`ideas.animals.${personalityAnimal.id}.trait`)}
-                    </Text>
-                  </View>
-                </View>
-              )}
+              {/* Text Content - Daha canlı renkler ve spacing */}
+              <View className="flex-1">
+                <Text className="mb-2 font-medium text-sm text-amber-500 dark:text-primary-light/70">
+                  ⭐ {t('ideas.spiritAnimal.title')}
+                </Text>
+                <Text className="font-bold text-2xl text-amber-600 dark:text-primary-light">
+                  {t(`ideas.animals.${personalityAnimal.id}.name`)}
+                </Text>
+                <Text className="mt-2 font-medium text-sm text-gray-400 dark:text-text-dark-secondary/80">
+                  {t(`ideas.animals.${personalityAnimal.id}.trait`)}
+                </Text>
+              </View>
             </View>
-          </Animated.View>
+          )}
           {user?.zodiacSign && (
             <DailyHoroscope
               goodTraits={goodTraits}
@@ -515,29 +407,20 @@ ${content.paragraphs.join('\n')}`;
               zodiacSign={user?.zodiacSign}
             />
           )}
-          {/* Analysis Card - Daha yumuşak köşeler ve gölgeler */}
-          <Animated.View
-            entering={FadeIn.delay(400).duration(500)}
-            className="rounded-sm bg-surface-light p-6 shadow-lg dark:bg-surface-dark">
-            <Text className="mb-4 font-semibold text-xl text-primary-dark dark:text-primary-light">
-              🔮 {t('ideas.analysis.title')}
-            </Text>
-            <Text
-              className="text-base leading-relaxed text-text-light dark:text-text-dark-secondary"
-              style={{ paddingBottom: 12 }}>
-              {analysis || t('ideas.analysisError')}
-            </Text>
-          </Animated.View>
-          <BannerAd
-            unitId={'ca-app-pub-6312844121446107/2492397048'}
-            size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
-            requestOptions={{
-              requestNonPersonalizedAdsOnly: true,
-            }}
-            onAdFailedToLoad={(error: Error) => {
-              console.error('Banner ad failed to load:', error);
-            }}
-          />
+          {analysis && (
+            <Animated.View
+              entering={FadeIn.delay(400).duration(500)}
+              className="rounded-sm bg-surface-light p-6 shadow-lg dark:bg-surface-dark">
+              <Text className="mb-4 font-semibold text-xl text-primary-dark dark:text-primary-light">
+                🔮 {t('ideas.analysis.title')}
+              </Text>
+              <Text
+                className="text-base leading-relaxed text-text-light dark:text-text-dark-secondary"
+                style={{ paddingBottom: 12 }}>
+                {analysis || t('ideas.analysisError')}
+              </Text>
+            </Animated.View>
+          )}
         </View>
       </ScrollView>
     </SafeAreaView>
