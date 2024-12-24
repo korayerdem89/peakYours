@@ -12,7 +12,6 @@ import { getCurrentUser } from '@/config/firebase';
 import { useUpdateUser } from '@/hooks/useUserQueries';
 import { Timestamp } from '@react-native-firebase/firestore';
 import { Membership } from '@/types/user';
-import { router } from 'expo-router';
 
 const APIKeys = {
   apple: 'appl_vsVDjUeKsRUioneAWHaZzOGebRZ',
@@ -22,9 +21,16 @@ const APIKeys = {
 const ENTITLEMENT_ID = 'entla24afb26a4';
 const ENTITLEMENT_ID_DISCOUNTED_ID = 'entl5013750d15';
 const PRODUCT_ID = 'prod22e383a563';
-const DEFAULT_OFFERING_ID = 'ofrng3e1af3d574';
-const DISCOUNTED_OFFERING_ID = 'ofrngf5a0d7f587';
-
+const PRODUCTS = [
+  'pro_monthly:basicplan',
+  'pro_annual1:annualbasic2',
+  'pro_monthly',
+  'pro_annual',
+  'pro_monthly_discounted:basicplan-discounted',
+  'pro_monthly_discounted',
+  'pro_annual_discounted:annual-discounted2',
+  'pro_annual_discounted',
+];
 interface RevenueCatProps {
   subscribeUser: (type: PurchasesPackage) => Promise<CustomerInfo | undefined>;
   restorePermissions: () => Promise<CustomerInfo>;
@@ -34,7 +40,6 @@ interface RevenueCatProps {
 }
 
 const RevenueCatContext = createContext<RevenueCatProps | null>(null);
-
 export const RevenueCatProvider = ({ children }: { children: React.ReactNode }) => {
   const [customerInfoListener, setCustomerInfoListener] = useState<(() => void) | null>(null);
   const [packages, setPackages] = useState<PurchasesPackage[]>([]);
@@ -70,18 +75,7 @@ export const RevenueCatProvider = ({ children }: { children: React.ReactNode }) 
       // Entitlement ve aktif abonelik kontrolü
       const hasProAccess =
         customerInfo.entitlements.active[ENTITLEMENT_ID] !== undefined ||
-        activeSubscriptions.some((subscription) =>
-          [
-            'pro_monthly:basicplan',
-            'pro_annual1:annualbasic2',
-            'pro_monthly',
-            'pro_annual',
-            'pro_monthly_discounted:basicplan-discounted',
-            'pro_monthly_discounted',
-            'pro_annual_discounted:annual-discounted2',
-            'pro_annual_discounted',
-          ].includes(subscription)
-        ) ||
+        activeSubscriptions.some((subscription) => PRODUCTS.includes(subscription)) ||
         customerInfo.entitlements.active[ENTITLEMENT_ID_DISCOUNTED_ID] !== undefined;
 
       console.log('Has Pro Access:', hasProAccess);
@@ -94,7 +88,6 @@ export const RevenueCatProvider = ({ children }: { children: React.ReactNode }) 
 
       if (hasProAccess) {
         // Aktif abonelik bilgilerini al
-        const proEntitlement = customerInfo.entitlements.active[ENTITLEMENT_ID];
         const latestTransaction = customerInfo.latestExpirationDate
           ? new Date(customerInfo.latestExpirationDate)
           : null;
