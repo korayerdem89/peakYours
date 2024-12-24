@@ -86,12 +86,6 @@ export default function TasksScreen() {
     );
   }
 
-  // Membership kontrolü
-  if (userData.membership?.type !== 'pro') {
-    setShowPaywall(true);
-    return null;
-  }
-
   const bounceValue = useSharedValue(0);
   useEffect(() => {
     const interval = setInterval(() => {
@@ -369,9 +363,6 @@ export default function TasksScreen() {
   return (
     <SafeAreaView className="flex-1 bg-background-light dark:bg-background-dark">
       <View className="flex-1 gap-4 p-4 pb-24">
-        <TouchableOpacity onPress={() => setShowPaywall(true)}>
-          <Text>Paywall</Text>
-        </TouchableOpacity>
         <QuoteCard />
         <TaskHeader />
         <PaywallModal
