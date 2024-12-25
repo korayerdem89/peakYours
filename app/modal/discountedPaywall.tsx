@@ -90,10 +90,10 @@ export default function Paywall() {
                     subscribeUser(selectedPlan);
                   }}
                   key={index}
-                  className={`mb-4 rounded-xl border-2 p-4 ${
+                  className={`mb-4 rounded-xl border-2 bg-surface-light/40 p-4 ${
                     plan.isPopular
-                      ? 'border-primary-light dark:border-primary-dark '
-                      : 'border-border-light dark:border-border-dark'
+                      ? 'border-primary-light '
+                      : 'border-border-light/60 bg-surface-light/50'
                   }`}>
                   <View className="mb-2 flex-row items-center justify-between">
                     <Text className="font-semibold text-lg capitalize text-text-light dark:text-text-dark">
@@ -109,7 +109,7 @@ export default function Paywall() {
                   </View>
                   <View className="flex-row items-baseline">
                     <Text className="font-bold text-2xl text-primary-dark dark:text-primary-light">
-                      {selectedPlan?.product.priceString}
+                      {selectedPlan ? selectedPlan.product.priceString : '...'}
                     </Text>
                     <Text className="ml-1 font-medium text-sm text-text-light dark:text-text-dark">
                       {t(`paywall.ideas.plans.${plan.type}.period`)}
