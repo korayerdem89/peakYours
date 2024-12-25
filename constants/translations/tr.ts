@@ -209,7 +209,7 @@ export default {
   },
   zodiac: {
     modalTitle: 'Burcunuzu Seçin',
-    modalDescription: 'Kapsamlı ki��ilik analiziniz için lütfen burcunuzu seçin.',
+    modalDescription: 'Kapsamlı kişilik analiziniz için lütfen burcunuzu seçin.',
     select: 'Burç seçin',
     aries: 'Koç',
     taurus: 'Boğa',
@@ -229,8 +229,9 @@ export default {
     },
   },
   ideas: {
-    accuracyWarning: 'Ne kadar çok kişi sizi puanlarsa, analiz o kadar doğru olur!',
-    updateFrequency: 'Her 3 kişi sizi puanladığında yeni analiz',
+    accuracyRate: 'Doğruluk Oranı',
+    accuracyWarning: 'Ne kadar çok puan alırsan, analizin o kadar doğru olur!',
+    updateFrequency: 'Analizin her 3 yeni puan aldığında güncellenir.',
     spiritAnimal: {
       title: 'Ruh Hayvanınız',
     },

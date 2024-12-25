@@ -213,7 +213,7 @@ export default function Ideas() {
       </SafeAreaView>
     );
   }
-
+  const accuracyRate = Math.min(100, 60 + Math.floor(3 * (traitDetails?.totalRaters || 0)));
   // Main render
   return (
     <SafeAreaView className="flex-1 bg-background-light dark:bg-background-dark">
@@ -224,16 +224,22 @@ export default function Ideas() {
         <View className="flex-1 gap-4">
           <Animated.View
             entering={FadeIn.duration(500)}
-            className="dark:bg-accent-dark/20 rounded-sm bg-accent-light/20 p-5">
-            <Text className="text-center font-medium text-sm text-secondary-dark/80 dark:text-secondary-light/80">
-              ✨ {t('ideas.accuracyWarning')} ✨
-            </Text>
-            <Text className="mt-2 text-center font-regular text-xs text-text-light dark:text-text-dark-secondary/60">
-              {t('ideas.updateFrequency')}
-            </Text>
+            className="dark:bg-accent-dark/20   items-center rounded-sm bg-accent-light/20 p-5">
+            <View className="flex-row items-center  gap-2">
+              <Text className=" flex-row font-bold text-2xl text-text-light">{accuracyRate}%</Text>
+              <Text className="font-medium text-sm text-text-light">{t('ideas.accuracyRate')}</Text>
+            </View>
+            <View>
+              <Text className="  font-medium text-sm text-secondary-dark/80 dark:text-secondary-light/80">
+                ✨ {t('ideas.accuracyWarning')} ✨
+              </Text>
+              <Text className="mt-2   font-regular text-xs text-text-light dark:text-text-dark-secondary/60">
+                {t('ideas.updateFrequency')}
+              </Text>
+            </View>
           </Animated.View>
           {personalityAnimal && (
-            <View className="flex-row items-center gap-5">
+            <View className="flex-row items-center gap-5 rounded-sm bg-surface-light p-6 shadow-lg dark:bg-surface-dark">
               {/* Zıplayan hayvan ikonu */}
               <Animated.View
                 style={bounceStyle}

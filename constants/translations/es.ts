@@ -223,7 +223,8 @@ export default {
     },
   },
   ideas: {
-    accuracyWarning: '¡Cuantas más personas te califiquen, más preciso será tu análisis!',
+    accuracyRate: 'Tasa de Precisión',
+    accuracyWarning: '¡Cuantas más calificaciones recibas, más preciso será tu análisis!',
     spiritAnimal: {
       title: 'Tu Animal Espiritual',
     },
@@ -346,7 +347,7 @@ export default {
         'Descubre tu análisis de personalidad ��nico donde combinamos la energía cósmica de tu signo zodiacal con las percepciones de IA basadas en las calificaciones de tus amigos. ¡Prepárate para un viaje personalizado de autodescubrimiento!',
       cta: 'Comparte tu perfil y comienza a recolectar calificaciones',
     },
-    updateFrequency: 'Nuevo análisis cada 5 calificaciones',
+    updateFrequency: 'Tu análisis se actualiza cada vez que recibes 3 nuevas calificaciones.',
     freemember: {
       title: 'Descubre Tu Potencial con Análisis de IA',
       description:

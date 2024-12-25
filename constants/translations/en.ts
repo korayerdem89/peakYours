@@ -213,7 +213,8 @@ export default {
     },
   },
   ideas: {
-    accuracyWarning: 'The more people rate you, the more accurate your analysis will be!',
+    accuracyRate: 'Accuracy Rate',
+    accuracyWarning: 'The more ratings you receive, the more accurate your analysis becomes!',
     spiritAnimal: {
       title: 'Your Spirit Animal',
     },
@@ -334,7 +335,7 @@ export default {
         "Discover your unique personality analysis where we blend your zodiac sign's cosmic energy with AI-powered insights from your friends' ratings. Get ready for a personalized journey of self-discovery!",
       cta: 'Share your profile and start collecting ratings',
     },
-    updateFrequency: 'New analysis after every 3 ratings',
+    updateFrequency: 'Your analysis updates every time you receive 3 new ratings.',
     freemember: {
       title: 'Unlock Your True Potential with AI Analysis',
       features: [
