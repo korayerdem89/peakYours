@@ -477,5 +477,7 @@ export default {
       cancelAnytime: 'Cancel anytime. Subscription auto-renews unless cancelled.',
       discountBadge: 'Best Deal of the Year!',
     },
+    success: 'Purchase Successful!',
+    successDescription: 'Welcome to premium features! Enjoy your journey.',
   },
 };

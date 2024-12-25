@@ -209,7 +209,7 @@ export default {
   },
   zodiac: {
     modalTitle: 'Burcunuzu Seçin',
-    modalDescription: 'Kapsamlı ki��ilik analiziniz için lütfen burcunuzu seçin.',
+    modalDescription: 'Kapsamlı kişilik analiziniz için lütfen burcunuzu seçin.',
     select: 'Burç seçin',
     aries: 'Koç',
     taurus: 'Boğa',
@@ -385,7 +385,7 @@ export default {
       title: 'Talimatlar',
       completedTasks: '{{count}} görev tamamlandı',
       levelUp:
-        'İyi kişilik özelliklerinizi 1 puan arttırmak, ya da köt�� özelliklerinizi 1 puan azaltmak için o özellikten 5 görev yapın',
+        'İyi kişilik özelliklerinizi 1 puan arttırmak, ya da kötü özelliklerinizi 1 puan azaltmak için o özellikten 5 görev yapın',
       dailyRefresh: 'Görevler her 24 saatte bir yenilenir',
       refreshLimit: 'Farklı görevler istiyorsanız günde 10 kez yenileme hakkınız var.',
       general: 'Görevleri yapın ve peak halinize ulaşın',
@@ -477,5 +477,7 @@ export default {
         'İstediğiniz zaman iptal edebilirsiniz. Abonelik iptal edilmediği sürece otomatik yenilenir.',
       discountBadge: 'Yılın En İyi Fırsatı!',
     },
+    success: 'Satın Alma Başarılı!',
+    successDescription: 'Premium özelliklere hoş geldiniz! İyi yolculuklar.',
   },
 };

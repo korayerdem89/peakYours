@@ -387,7 +387,7 @@ export default {
         'Completa 5 tareas de un rasgo para aumentar los rasgos de personalidad buenos en 1 punto o disminuir los malos en 1 punto',
       dailyRefresh: 'Las tareas se actualizan cada 24 horas',
       refreshLimit:
-        'Puedes actualizar las tareas hasta 10 veces al día si deseas diferentes desafíos.',
+        'Puedes actualizar las tareas hasta 10 veces al d��a si deseas diferentes desafíos.',
       general: 'Completa las tareas y alcanza tu estado máximo',
     },
     debug: {
@@ -420,7 +420,7 @@ export default {
     screen2: {
       title: 'Análisis Personalizado',
       description:
-        'Obtén un análisis de personalidad basado en tu signo zodiacal y recibe consejos diarios para mejorar',
+        'Obt��n un análisis de personalidad basado en tu signo zodiacal y recibe consejos diarios para mejorar',
     },
     screen3: {
       title: 'Alcanza Tu Máximo Potencial',
@@ -478,5 +478,7 @@ export default {
         'Cancela cuando quieras. La suscripción se renueva automáticamente a menos que se cancele.',
       discountBadge: '¡La Mejor Oferta del Año!',
     },
+    success: '¡Compra Exitosa!',
+    successDescription: '¡Bienvenido a las funciones premium! Disfruta tu viaje.',
   },
 };

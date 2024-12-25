@@ -12,6 +12,9 @@ import { getCurrentUser } from '@/config/firebase';
 import { useUpdateUser } from '@/hooks/useUserQueries';
 import { Timestamp } from '@react-native-firebase/firestore';
 import { Membership } from '@/types/user';
+import Toast from 'react-native-toast-message';
+
+import { router } from 'expo-router';
 
 const APIKeys = {
   apple: 'appl_vsVDjUeKsRUioneAWHaZzOGebRZ',
@@ -32,7 +35,7 @@ const PRODUCTS = [
   'pro_annual_discounted',
 ];
 interface RevenueCatProps {
-  subscribeUser: (type: PurchasesPackage) => Promise<CustomerInfo | undefined>;
+  subscribeUser: (type: PurchasesPackage, locale: string) => Promise<CustomerInfo | undefined>;
   restorePermissions: () => Promise<CustomerInfo>;
   packages: PurchasesPackage[];
   currentOffering: string | null;
@@ -129,7 +132,7 @@ export const RevenueCatProvider = ({ children }: { children: React.ReactNode }) 
     }
   };
 
-  const subscribeUser = async (packageToPurchase: PurchasesPackage) => {
+  const subscribeUser = async (packageToPurchase: PurchasesPackage, locale: string) => {
     try {
       setIsLoading(true);
 
@@ -137,10 +140,30 @@ export const RevenueCatProvider = ({ children }: { children: React.ReactNode }) 
       // Double check subscription status
 
       await checkSubscriptionStatus();
+      const successMessage =
+        locale === 'es'
+          ? '¡Compra Exitosa!'
+          : locale === 'tr'
+            ? 'Satın Alma Başarılı!'
+            : 'Purchase Succesful';
+      const successDescription =
+        locale === 'es'
+          ? '¡Bienvenido a las funciones premium! Disfruta tu viaje.'
+          : locale === 'tr'
+            ? 'Premium özelliklere hoş geldiniz'
+            : 'Welcome to premium features!';
+
+      router.back();
+      Toast.show({
+        type: 'success',
+        text1: successMessage,
+        position: 'top',
+        text2: successDescription,
+      });
 
       return customerInfo;
     } catch (error) {
-      console.info('Subscribe user error:', error);
+      console.log('Subscribe user error:', error);
       const purchaseError = error as PurchasesError;
       if (!purchaseError.userCancelled) {
         throw error;

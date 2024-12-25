@@ -18,7 +18,7 @@ import { PurchasesPackage } from 'react-native-purchases';
 import LinearGradient from 'react-native-linear-gradient';
 
 export default function DiscountedPaywall() {
-  const { t } = useTranslation();
+  const { t, locale } = useTranslation();
   const { colorScheme } = useColorScheme();
   const isDark = colorScheme === 'dark';
   const { allPackages, subscribeUser } = useRevenueCat();
@@ -118,7 +118,7 @@ export default function DiscountedPaywall() {
               return (
                 <TouchableOpacity
                   onPress={() => {
-                    subscribeUser(selectedPlan);
+                    subscribeUser(selectedPlan, locale);
                   }}
                   key={index}
                   className={`mb-4 rounded-xl border-2 bg-surface-light/40 p-4 ${
