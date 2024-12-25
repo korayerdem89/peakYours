@@ -1,8 +1,7 @@
-import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity, ImageBackground } from 'react-native';
 import { useTranslation } from '@/providers/LanguageProvider';
 import { router } from 'expo-router';
 import Animated, { FadeIn, SlideInDown } from 'react-native-reanimated';
-import { BlurView } from 'expo-blur';
 import { useColorScheme } from 'nativewind';
 import { theme } from '@/constants/theme';
 import { Ionicons } from '@expo/vector-icons';
@@ -16,30 +15,30 @@ export default function Paywall() {
   const isDark = colorScheme === 'dark';
   const { packages, subscribeUser } = useRevenueCat();
 
-  const features = [
+  const benefits = [
     {
-      icon: '🧠',
-      title: t('paywall.ideas.features.ai.title'),
-      description: t('paywall.ideas.features.ai.description'),
+      icon: '🚀',
+      title: t('paywall.ideas.benefits.growth.title'),
+      description: t('paywall.ideas.benefits.growth.description'),
     },
     {
-      icon: '🎯',
-      title: t('paywall.ideas.features.tasks.title'),
-      description: t('paywall.ideas.features.tasks.description'),
+      icon: '💪',
+      title: t('paywall.ideas.benefits.confidence.title'),
+      description: t('paywall.ideas.benefits.confidence.description'),
     },
     {
-      icon: '📊',
-      title: t('paywall.ideas.features.insights.title'),
-      description: t('paywall.ideas.features.insights.description'),
+      icon: '🤝',
+      title: t('paywall.ideas.benefits.relationships.title'),
+      description: t('paywall.ideas.benefits.relationships.description'),
     },
   ];
 
   return (
-    <BlurView intensity={90} tint={isDark ? 'dark' : 'light'} className="absolute h-full w-full">
-      <Animated.View
-        entering={FadeIn}
-        className="flex-1 bg-background-light/90 dark:bg-background-dark/90">
-        {/* Header */}
+    <Animated.View entering={FadeIn} className="flex-1 bg-accent">
+      <ImageBackground
+        className="flex-1"
+        resizeMode="cover"
+        source={require('@/assets/paywall/paywallBackground.png')}>
         <View className="flex-row items-center justify-between p-4">
           <TouchableOpacity
             onPress={() => router.back()}
@@ -50,37 +49,32 @@ export default function Paywall() {
               color={isDark ? theme.colors.text.dark : theme.colors.text.light}
             />
           </TouchableOpacity>
-          <Text className="font-medium text-base text-text-light dark:text-text-dark">
-            {t('paywall.ideas.title')}
-          </Text>
-          <Text>DISCOUNTED</Text>
-          <View style={{ width: 40 }} />
         </View>
         <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
           {/* Hero Section */}
           <View className="items-center justify-center p-6">
             <Text className="mb-2 text-center font-bold text-3xl text-primary-dark dark:text-primary-light">
-              {t('paywall.ideas.hero.title')}
+              {t('paywall.ideas.title')}
             </Text>
             <Text className="text-center font-medium text-base text-text-light-secondary dark:text-text-dark-secondary">
-              {t('paywall.ideas.hero.subtitle')}
+              {t('paywall.ideas.subtitle')}
             </Text>
           </View>
 
-          {/* Features */}
+          {/* Benefits */}
           <View className="mb-6 px-6">
-            {features.map((feature, index) => (
+            {benefits.map((benefit, index) => (
               <Animated.View
                 key={index}
                 entering={SlideInDown.delay(index * 200)}
                 className="mb-4 flex-row items-start rounded-xl bg-surface-light p-4 dark:bg-surface-dark">
-                <Text className="mr-4 text-2xl">{feature.icon}</Text>
+                <Text className="mr-4 text-2xl">{benefit.icon}</Text>
                 <View className="flex-1">
                   <Text className="mb-1 font-semibold text-base text-text-light dark:text-text-dark">
-                    {feature.title}
+                    {benefit.title}
                   </Text>
                   <Text className="text-sm text-text-light-secondary dark:text-text-dark-secondary">
-                    {feature.description}
+                    {benefit.description}
                   </Text>
                 </View>
               </Animated.View>
@@ -139,7 +133,7 @@ export default function Paywall() {
             {t('paywall.ideas.terms')}
           </Text>
         </ScrollView>
-      </Animated.View>
-    </BlurView>
+      </ImageBackground>
+    </Animated.View>
   );
 }

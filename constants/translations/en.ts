@@ -440,23 +440,20 @@ export default {
   },
   paywall: {
     ideas: {
-      title: 'Upgrade to Pro',
-      hero: {
-        title: 'Unlock Your Full Potential',
-        subtitle: 'Get personalized AI insights, daily tasks, and detailed personality analytics',
-      },
-      features: {
-        ai: {
-          title: 'AI Personality Analysis',
-          description: 'Get deep insights about your personality traits with advanced AI analysis',
+      title: 'Unlock Your Full Potential',
+      subtitle: 'Get personalized AI insights, daily tasks, and detailed personality analytics',
+      benefits: {
+        growth: {
+          title: 'Accelerate Personal Growth',
+          description: 'Get AI-powered insights to understand yourself better and grow faster',
         },
-        tasks: {
-          title: 'Daily Growth Tasks',
-          description: 'Receive personalized daily tasks to improve your personality traits',
+        confidence: {
+          title: 'Build Lasting Confidence',
+          description: 'Track your progress and celebrate your personality improvements',
         },
-        insights: {
-          title: 'Detailed Analytics',
-          description: 'Track your progress and see how others perceive your personality',
+        relationships: {
+          title: 'Enhance Relationships',
+          description: 'Understand how others perceive you and improve social connections',
         },
       },
       plans: {
@@ -470,9 +467,8 @@ export default {
         },
       },
       popular: 'Most Popular',
-      savings: 'Save {{amount}}',
-      terms:
-        'By subscribing, you agree to our Terms of Service and Privacy Policy. Subscriptions auto-renew unless canceled.',
+      savings: 'Save {{amount}}%',
+      terms: 'Cancel anytime. Subscription auto-renews unless canceled.',
     },
   },
 };

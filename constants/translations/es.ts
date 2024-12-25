@@ -445,26 +445,21 @@ export default {
   },
   paywall: {
     ideas: {
-      title: 'Actualizar a Pro',
-      hero: {
-        title: 'Desbloquea Tu Potencial Completo',
-        subtitle:
-          'Obtén ideas personalizadas de IA, tareas diarias y análisis detallado de personalidad',
-      },
-      features: {
-        ai: {
-          title: 'Análisis de Personalidad con IA',
-          description:
-            'Obtén ideas profundas sobre tus rasgos de personalidad con análisis avanzado de IA',
+      title: 'Desbloquea Tu Máximo Potencial',
+      subtitle:
+        'Obtén insights de IA personalizados, tareas diarias y análisis detallado de personalidad',
+      benefits: {
+        growth: {
+          title: 'Acelera Tu Crecimiento Personal',
+          description: 'Obtén insights impulsados por IA para entenderte mejor y crecer más rápido',
         },
-        tasks: {
-          title: 'Tareas de Crecimiento Diarias',
-          description:
-            'Recibe tareas personalizadas diarias para mejorar tus rasgos de personalidad',
+        confidence: {
+          title: 'Construye Confianza Duradera',
+          description: 'Rastrea tu progreso y celebra tus mejoras de personalidad',
         },
-        insights: {
-          title: 'Análisis Detallado',
-          description: 'Rastrea tu progreso y ve cómo otros perciben tu personalidad',
+        relationships: {
+          title: 'Mejora Tus Relaciones',
+          description: 'Comprende cómo te perciben los demás y mejora tus conexiones sociales',
         },
       },
       plans: {
@@ -478,9 +473,9 @@ export default {
         },
       },
       popular: 'Más Popular',
-      savings: 'Ahorra {{amount}}',
+      savings: 'Ahorra {{amount}}%',
       terms:
-        'Al suscribirte, aceptas nuestros Términos de Servicio y Política de Privacidad. Las suscripciones se renuevan automáticamente.',
+        'Cancela cuando quieras. La suscripción se renueva automáticamente a menos que se cancele.',
     },
   },
 };

@@ -209,7 +209,7 @@ export default {
   },
   zodiac: {
     modalTitle: 'Burcunuzu Seçin',
-    modalDescription: 'Kapsamlı kişilik analiziniz için lütfen burcunuzu seçin.',
+    modalDescription: 'Kapsamlı ki��ilik analiziniz için lütfen burcunuzu seçin.',
     select: 'Burç seçin',
     aries: 'Koç',
     taurus: 'Boğa',
@@ -385,7 +385,7 @@ export default {
       title: 'Talimatlar',
       completedTasks: '{{count}} görev tamamlandı',
       levelUp:
-        'İyi kişilik özelliklerinizi 1 puan arttırmak, ya da kötü özelliklerinizi 1 puan azaltmak için o özellikten 5 görev yapın',
+        'İyi kişilik özelliklerinizi 1 puan arttırmak, ya da köt�� özelliklerinizi 1 puan azaltmak için o özellikten 5 görev yapın',
       dailyRefresh: 'Görevler her 24 saatte bir yenilenir',
       refreshLimit: 'Farklı görevler istiyorsanız günde 10 kez yenileme hakkınız var.',
       general: 'Görevleri yapın ve peak halinize ulaşın',
@@ -444,27 +444,21 @@ export default {
   },
   paywall: {
     ideas: {
-      title: "Pro'ya Yükselt",
-      hero: {
-        title: 'Tam Potansiyelini Aç',
-        subtitle:
-          'Kişiselleştirilmiş yapay zeka içgörüleri, günlük görevler ve detaylı kişilik analizlerine eriş',
-      },
-      features: {
-        ai: {
-          title: 'Yapay Zeka Kişilik Analizi',
-          description:
-            'Gelişmiş yapay zeka analizi ile kişilik özellikleriniz hakkında derin içgörüler edinin',
+      title: 'Potansiyelini Ortaya Çıkar',
+      subtitle:
+        'Kişiselleştirilmiş yapay zeka öngörüleri, günlük görevler ve detaylı kişilik analizleri',
+      benefits: {
+        growth: {
+          title: 'Kişisel Gelişimini Hızlandır',
+          description: 'Yapay zeka destekli içgörülerle kendini daha iyi anla ve hızlı geliş',
         },
-        tasks: {
-          title: 'Günlük Gelişim Görevleri',
-          description:
-            'Kişilik özelliklerinizi geliştirmek için kişiselleştirilmiş günlük görevler alın',
+        confidence: {
+          title: 'Kalıcı Özgüven İnşa Et',
+          description: 'İlerlemeni takip et ve kişilik gelişimlerini kutla',
         },
-        insights: {
-          title: 'Detaylı Analitikler',
-          description:
-            'İlerlemenizi takip edin ve başkalarının kişiliğinizi nasıl algıladığını görün',
+        relationships: {
+          title: 'İlişkilerini Güçlendir',
+          description: 'Başkalarının seni nasıl algıladığını anla ve sosyal bağlarını geliştir',
         },
       },
       plans: {
@@ -478,9 +472,9 @@ export default {
         },
       },
       popular: 'En Popüler',
-      savings: '{{amount}} tasarruf',
+      savings: '%{{amount}} Tasarruf',
       terms:
-        'Abone olarak Kullanım Koşulları ve Gizlilik Politikasını kabul etmiş olursunuz. Abonelikler otomatik olarak yenilenir.',
+        'İstediğiniz zaman iptal edebilirsiniz. Abonelik iptal edilmediği sürece otomatik yenilenir.',
     },
   },
 };
