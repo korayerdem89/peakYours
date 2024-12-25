@@ -8,8 +8,6 @@ import { Ionicons } from '@expo/vector-icons';
 import { SUBSCRIPTION_PLANS as plans } from '@/constants/plans';
 import { useRevenueCat } from '@/providers/RevenueCatProvider';
 import { PurchasesPackage } from 'react-native-purchases';
-import MaskedView from '@react-native-masked-view/masked-view';
-import { LinearGradient } from 'expo-linear-gradient';
 
 export default function Paywall() {
   const { t } = useTranslation();
@@ -54,23 +52,15 @@ export default function Paywall() {
         </View>
         <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
           {/* Hero Section */}
-          <View className="mb-6 mt-4 items-center justify-center bg-background-light py-1 shadow-2xl shadow-xl shadow-black">
-            <MaskedView
-              maskElement={
-                <Text className="top-2 text-center font-bold text-3xl">
-                  {t('paywall.ideas.title')}
-                </Text>
-              }>
-              <LinearGradient
-                colors={[theme.colors.primary.default, theme.colors.primary.dark]}
-                start={{ x: 0, y: 0 }}
-                end={{ x: 1, y: 0 }}
-                className="px-4 py-2">
-                <Text className="invisible text-center font-bold text-3xl">
-                  {t('paywall.ideas.title')}
-                </Text>
-              </LinearGradient>
-            </MaskedView>
+          <View className="mb-6 mt-4 items-center justify-center bg-background-light py-[2px]  shadow-xl shadow-black">
+            <ImageBackground
+              source={require('@/assets/paywall/bgPattern.png')}
+              resizeMode="stretch"
+              className="w-full">
+              <Text className="py-2 text-center font-bold text-2xl text-primary-dark">
+                {t('paywall.ideas.title')}
+              </Text>
+            </ImageBackground>
           </View>
 
           {/* Benefits */}
