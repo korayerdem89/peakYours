@@ -265,13 +265,11 @@ export default function Ideas() {
               </View>
             </View>
           )}
-          {user?.zodiacSign && (
-            <DailyHoroscope
-              goodTraits={goodTraits}
-              badTraits={badTraits}
-              zodiacSign={user?.zodiacSign}
-            />
-          )}
+          <DailyHoroscope
+            goodTraits={goodTraits}
+            badTraits={badTraits}
+            zodiacSign={user?.zodiacSign || ''}
+          />
           {analysis && (
             <Animated.View
               entering={FadeIn.delay(400).duration(500)}

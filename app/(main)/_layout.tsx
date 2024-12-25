@@ -6,13 +6,15 @@ import { useTranslation } from '@/providers/LanguageProvider';
 import { useAuth } from '@/store/useAuth';
 import { useUpdateUser } from '@/hooks/useUserQueries';
 import { ZodiacModal } from '@/components/ZodiacModal';
+import { useAppUsage } from '@/hooks/useAppUsage';
 
 export default function MainLayout() {
   const { t } = useTranslation();
   const { user, updateUserData } = useAuth();
   const updateUser = useUpdateUser();
   const [isZodiacModalVisible, setIsZodiacModalVisible] = useState(user?.zodiacSign ? false : true);
-
+  const { usageCount } = useAppUsage();
+  console.log(usageCount);
   const handleZodiacSubmit = async (zodiacId: string) => {
     if (!user?.uid) return;
 

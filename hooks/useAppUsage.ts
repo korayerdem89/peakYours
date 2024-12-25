@@ -6,11 +6,17 @@ export function useAppUsage() {
   const [isFirstTime, setIsFirstTime] = useState<boolean>(true);
 
   useEffect(() => {
+    let isMounted = true;
+
     const initializeUsage = async () => {
       try {
         const currentCount = await AppUsageService.getUsageCount();
+        if (!isMounted) return;
+
         setIsFirstTime(currentCount === 0);
         const newCount = await AppUsageService.incrementUsageCount();
+        if (!isMounted) return;
+
         setUsageCount(newCount);
       } catch (error) {
         console.error('Error initializing app usage:', error);
@@ -18,6 +24,10 @@ export function useAppUsage() {
     };
 
     initializeUsage();
+
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   return {
