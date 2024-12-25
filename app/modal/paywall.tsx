@@ -69,7 +69,7 @@ export default function Paywall() {
               <Animated.View
                 key={index}
                 entering={SlideInDown.delay(index * 200)}
-                className="mb-4 flex-row items-start rounded-xl bg-surface-light p-4 dark:bg-surface-dark">
+                className="mb-4 flex-row items-start rounded-xl bg-surface-light p-4  ">
                 <Text className="mr-4 text-2xl">{benefit.icon}</Text>
                 <View className="flex-1">
                   <Text className="mb-1 font-semibold text-base text-text-light dark:text-text-dark">
