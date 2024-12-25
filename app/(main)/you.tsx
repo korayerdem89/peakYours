@@ -14,6 +14,8 @@ import { useUpdateUser, useUserData } from '@/hooks/useUserQueries';
 import BadSidesRoute from '@/components/main/BadSidesRoute';
 import { BannerAd, BannerAdSize, RequestOptions } from 'react-native-google-mobile-ads';
 import NetInfo from '@react-native-community/netinfo';
+import { useAppUsage } from '@/hooks/useAppUsage';
+import { router } from 'expo-router';
 
 export default function YouScreen() {
   const { t, locale } = useTranslation();
@@ -22,11 +24,19 @@ export default function YouScreen() {
   const [index, setIndex] = useState(0);
   const { user } = useAuth();
   const { data: userData } = useUserData(user?.uid);
+  const { usageCount } = useAppUsage();
   const updateUser = useUpdateUser();
   const [bannerError, setBannerError] = useState(false);
   const [retryCount, setRetryCount] = useState(0);
   const MAX_RETRY = 3;
   const RETRY_DELAY = 5000;
+  const shouldOpenDiscountedPaywall = usageCount > 4 && usageCount % 5 === 0;
+
+  useEffect(() => {
+    if (shouldOpenDiscountedPaywall) {
+      router.push('/modal/discountedPaywall');
+    }
+  }, [shouldOpenDiscountedPaywall]);
 
   const routes = useMemo(
     () => [
