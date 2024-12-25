@@ -440,7 +440,7 @@ export default {
   },
   paywall: {
     ideas: {
-      title: 'Unlock Your Full Potential',
+      title: 'Reach Your Peak',
       subtitle: 'Get personalized AI insights, daily tasks, and detailed personality analytics',
       benefits: {
         growth: {
@@ -475,6 +475,7 @@ export default {
       mostPopular: 'Most Popular',
       saveAmount: 'Save 50%',
       cancelAnytime: 'Cancel anytime. Subscription auto-renews unless cancelled.',
+      discountBadge: 'Best Deal of the Year!',
     },
   },
 };

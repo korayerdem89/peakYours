@@ -445,7 +445,7 @@ export default {
   },
   paywall: {
     ideas: {
-      title: 'Desbloquea Tu Máximo Potencial',
+      title: 'Alcanza tu máximo potencial',
       subtitle:
         'Obtén insights de IA personalizados, tareas diarias y análisis detallado de personalidad',
       benefits: {
@@ -476,6 +476,7 @@ export default {
       savings: 'Ahorra {{amount}}%',
       terms:
         'Cancela cuando quieras. La suscripción se renueva automáticamente a menos que se cancele.',
+      discountBadge: '¡La Mejor Oferta del Año!',
     },
   },
 };

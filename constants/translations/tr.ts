@@ -444,7 +444,7 @@ export default {
   },
   paywall: {
     ideas: {
-      title: 'Potansiyelini Ortaya Çıkar',
+      title: 'Peak haline ulaş',
       subtitle:
         'Kişiselleştirilmiş yapay zeka öngörüleri, günlük görevler ve detaylı kişilik analizleri',
       benefits: {
@@ -475,6 +475,7 @@ export default {
       savings: '%{{amount}} Tasarruf',
       terms:
         'İstediğiniz zaman iptal edebilirsiniz. Abonelik iptal edilmediği sürece otomatik yenilenir.',
+      discountBadge: 'Yılın En İyi Fırsatı!',
     },
   },
 };

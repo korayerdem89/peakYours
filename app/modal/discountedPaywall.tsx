@@ -1,4 +1,4 @@
-import { View, Text, ScrollView, TouchableOpacity, ImageBackground } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity, ImageBackground, Image } from 'react-native';
 import { useTranslation } from '@/providers/LanguageProvider';
 import { router } from 'expo-router';
 import Animated, { FadeIn, SlideInDown } from 'react-native-reanimated';
@@ -8,6 +8,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { SUBSCRIPTION_PLANS as plans } from '@/constants/plans';
 import { useRevenueCat } from '@/providers/RevenueCatProvider';
 import { PurchasesPackage } from 'react-native-purchases';
+import LinearGradient from 'react-native-linear-gradient';
 
 export default function Paywall() {
   const { t } = useTranslation();
@@ -15,30 +16,12 @@ export default function Paywall() {
   const isDark = colorScheme === 'dark';
   const { packages, subscribeUser } = useRevenueCat();
 
-  const benefits = [
-    {
-      icon: '🚀',
-      title: t('paywall.ideas.benefits.growth.title'),
-      description: t('paywall.ideas.benefits.growth.description'),
-    },
-    {
-      icon: '💪',
-      title: t('paywall.ideas.benefits.confidence.title'),
-      description: t('paywall.ideas.benefits.confidence.description'),
-    },
-    {
-      icon: '🤝',
-      title: t('paywall.ideas.benefits.relationships.title'),
-      description: t('paywall.ideas.benefits.relationships.description'),
-    },
-  ];
-
   return (
     <Animated.View entering={FadeIn} className="flex-1 bg-accent">
       <ImageBackground
         className="flex-1"
         resizeMode="cover"
-        source={require('@/assets/paywall/paywallBackground.png')}>
+        source={require('@/assets/paywall/discountedPaywallBackground.png')}>
         <View className=" items-end px-4 pt-10">
           <TouchableOpacity
             onPress={() => router.back()}
@@ -52,30 +35,44 @@ export default function Paywall() {
         </View>
         <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
           {/* Hero Section */}
-          <View className="items-center justify-center px-6 pb-6 pt-3">
+          <View className="mb-10 items-center justify-center bg-background-light py-1 shadow-lg">
             <Text className="mb-2 text-center font-bold text-3xl text-primary-dark dark:text-primary-light">
               {t('paywall.ideas.title')}
             </Text>
           </View>
 
-          {/* Benefits */}
-          <View className="mb-6 px-6">
-            {benefits.map((benefit, index) => (
-              <Animated.View
-                key={index}
-                entering={SlideInDown.delay(index * 200)}
-                className="mb-4 flex-row items-start rounded-xl bg-surface-light p-4 opacity-80 dark:bg-surface-dark">
-                <Text className="mr-4 text-2xl">{benefit.icon}</Text>
-                <View className="flex-1">
-                  <Text className="mb-1 font-semibold text-base text-text-light dark:text-text-dark">
-                    {benefit.title}
+          {/* Discount Rate */}
+          <View className="mb-6 items-center gap-3 px-6">
+            <View className="items-center">
+              {/* Best Deal Badge */}
+              <Animated.View entering={SlideInDown.delay(300)} className="z-10 mb-3 rotate-[-6deg]">
+                <LinearGradient
+                  colors={['#8B5CF6', '#D946EF']} // Tailwind purple-500 to pink-500
+                  start={{ x: 0, y: 0 }}
+                  end={{ x: 1, y: 0 }}
+                  className="rounded-full px-6 py-2.5 shadow-lg"
+                  style={{
+                    shadowColor: '#D946EF',
+                    shadowOffset: { width: 0, height: 4 },
+                    shadowOpacity: 0.3,
+                    shadowRadius: 8,
+                    elevation: 8,
+                  }}>
+                  <Text className="font-bold text-base text-white">
+                    {t('paywall.ideas.discountBadge')}
                   </Text>
-                  <Text className="text-sm text-text-light-secondary dark:text-text-dark-secondary">
-                    {benefit.description}
-                  </Text>
-                </View>
+                </LinearGradient>
               </Animated.View>
-            ))}
+
+              {/* Discount Rate Image */}
+              <View className="relative rotate-[-6deg]">
+                <Image
+                  source={require('@/assets/paywall/discountRate.png')}
+                  className="h-[240px] w-[240px]"
+                  resizeMode="cover"
+                />
+              </View>
+            </View>
           </View>
 
           {/* Plans */}

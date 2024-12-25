@@ -140,7 +140,7 @@ export const RevenueCatProvider = ({ children }: { children: React.ReactNode }) 
 
       return customerInfo;
     } catch (error) {
-      console.error('Subscribe user error:', error);
+      console.info('Subscribe user error:', error);
       const purchaseError = error as PurchasesError;
       if (!purchaseError.userCancelled) {
         throw error;

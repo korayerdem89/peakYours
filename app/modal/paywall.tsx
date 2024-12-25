@@ -2,7 +2,6 @@ import { View, Text, ScrollView, TouchableOpacity, ImageBackground } from 'react
 import { useTranslation } from '@/providers/LanguageProvider';
 import { router } from 'expo-router';
 import Animated, { FadeIn, SlideInDown } from 'react-native-reanimated';
-import { BlurView } from 'expo-blur';
 import { useColorScheme } from 'nativewind';
 import { theme } from '@/constants/theme';
 import { Ionicons } from '@expo/vector-icons';
@@ -36,12 +35,11 @@ export default function Paywall() {
 
   return (
     <Animated.View entering={FadeIn} className="flex-1 bg-accent">
-      {/* Header */}
       <ImageBackground
         className="flex-1"
         resizeMode="cover"
         source={require('@/assets/paywall/paywallBackground.png')}>
-        <View className="flex-row items-center justify-between p-4">
+        <View className=" items-end px-4 pt-10">
           <TouchableOpacity
             onPress={() => router.back()}
             className="h-10 w-10 items-center justify-center rounded-full bg-surface-light dark:bg-surface-dark">
@@ -54,12 +52,9 @@ export default function Paywall() {
         </View>
         <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
           {/* Hero Section */}
-          <View className="items-center justify-center p-6">
+          <View className="items-center justify-center px-6 pb-6 pt-3">
             <Text className="mb-2 text-center font-bold text-3xl text-primary-dark dark:text-primary-light">
               {t('paywall.ideas.title')}
-            </Text>
-            <Text className="text-center font-medium text-base text-text-light-secondary dark:text-text-dark-secondary">
-              {t('paywall.ideas.subtitle')}
             </Text>
           </View>
 
@@ -69,7 +64,7 @@ export default function Paywall() {
               <Animated.View
                 key={index}
                 entering={SlideInDown.delay(index * 200)}
-                className="mb-4 flex-row items-start rounded-xl bg-surface-light p-4  ">
+                className="mb-4 flex-row items-start rounded-xl bg-surface-light p-4 opacity-80 dark:bg-surface-dark">
                 <Text className="mr-4 text-2xl">{benefit.icon}</Text>
                 <View className="flex-1">
                   <Text className="mb-1 font-semibold text-base text-text-light dark:text-text-dark">
@@ -95,10 +90,10 @@ export default function Paywall() {
                     subscribeUser(selectedPlan);
                   }}
                   key={index}
-                  className={`mb-4 rounded-xl border-2 p-4 ${
+                  className={`mb-4 rounded-xl border-2 bg-surface-light/40 p-4 ${
                     plan.isPopular
-                      ? 'border-primary-light dark:border-primary-dark'
-                      : 'border-border-light dark:border-border-dark'
+                      ? 'border-primary-light '
+                      : 'border-border-light/60 bg-surface-light/50'
                   }`}>
                   <View className="mb-2 flex-row items-center justify-between">
                     <Text className="font-semibold text-lg capitalize text-text-light dark:text-text-dark">
@@ -114,16 +109,18 @@ export default function Paywall() {
                   </View>
                   <View className="flex-row items-baseline">
                     <Text className="font-bold text-2xl text-primary-dark dark:text-primary-light">
-                      {selectedPlan.product.priceString}
+                      {selectedPlan ? selectedPlan.product.priceString : '...'}
                     </Text>
-                    <Text className="ml-1 text-sm text-text-light-secondary dark:text-text-dark-secondary">
+                    <Text className="ml-1 font-medium text-sm text-text-light dark:text-text-dark">
                       {t(`paywall.ideas.plans.${plan.type}.period`)}
                     </Text>
                   </View>
                   {plan.savings && (
-                    <Text className="mt-1 text-sm text-success-dark dark:text-success-light">
-                      {t('paywall.ideas.savings', { amount: plan.savings })}
-                    </Text>
+                    <View className="self-start">
+                      <Text className="mt-1 rounded-full bg-success-dark px-2 py-1 font-medium text-sm text-text-dark">
+                        {t('paywall.ideas.savings', { amount: plan.savings })}
+                      </Text>
+                    </View>
                   )}
                 </TouchableOpacity>
               );
@@ -131,9 +128,11 @@ export default function Paywall() {
           </View>
 
           {/* Terms */}
-          <Text className="mb-6 px-6 text-center text-xs text-text-light-secondary dark:text-text-dark-secondary">
-            {t('paywall.ideas.terms')}
-          </Text>
+          <View className="items-center justify-center">
+            <Text className="font-medium text-xs text-primary-dark">
+              {t('paywall.ideas.terms')}
+            </Text>
+          </View>
         </ScrollView>
       </ImageBackground>
     </Animated.View>
