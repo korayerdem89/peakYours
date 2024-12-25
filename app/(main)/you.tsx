@@ -35,7 +35,7 @@ export default function YouScreen() {
 
   useEffect(() => {
     if (shouldOpenDiscountedPaywall) {
-      router.push('/modal/discountedPaywall');
+      router.push('/modal/paywall');
     }
   }, [shouldOpenDiscountedPaywall]);
 

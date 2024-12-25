@@ -1,7 +1,14 @@
 import { View, Text, ScrollView, TouchableOpacity, ImageBackground, Image } from 'react-native';
 import { useTranslation } from '@/providers/LanguageProvider';
 import { router } from 'expo-router';
-import Animated, { FadeIn, SlideInDown } from 'react-native-reanimated';
+import Animated, {
+  FadeIn,
+  SlideInDown,
+  useAnimatedStyle,
+  withRepeat,
+  withSequence,
+  withTiming,
+} from 'react-native-reanimated';
 import { useColorScheme } from 'nativewind';
 import { theme } from '@/constants/theme';
 import { Ionicons } from '@expo/vector-icons';
@@ -10,11 +17,29 @@ import { useRevenueCat } from '@/providers/RevenueCatProvider';
 import { PurchasesPackage } from 'react-native-purchases';
 import LinearGradient from 'react-native-linear-gradient';
 
-export default function Paywall() {
+export default function DiscountedPaywall() {
   const { t } = useTranslation();
   const { colorScheme } = useColorScheme();
   const isDark = colorScheme === 'dark';
-  const { packages, subscribeUser } = useRevenueCat();
+  const { allPackages, subscribeUser } = useRevenueCat();
+  console.log(allPackages);
+  const pulseStyle = useAnimatedStyle(() => {
+    return {
+      transform: [
+        {
+          scale: withRepeat(
+            withSequence(
+              withTiming(1, { duration: 100 }),
+              withTiming(1.05, { duration: 1000 }),
+              withTiming(1, { duration: 1000 })
+            ),
+            -1, // sonsuz tekrar
+            true // yumuşak geçiş için
+          ),
+        },
+      ],
+    };
+  });
 
   return (
     <Animated.View entering={FadeIn} className="flex-1 bg-accent">
@@ -25,7 +50,7 @@ export default function Paywall() {
         <View className=" items-end px-4 pt-10">
           <TouchableOpacity
             onPress={() => router.back()}
-            className="h-10 w-10 items-center justify-center rounded-full bg-surface-light dark:bg-surface-dark">
+            className="h-10 w-10 items-center justify-center rounded-full bg-surface-light shadow-lg">
             <Ionicons
               name="close"
               size={24}
@@ -35,7 +60,7 @@ export default function Paywall() {
         </View>
         <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
           {/* Hero Section */}
-          <View className="mb-10 items-center justify-center bg-background-light py-1 shadow-lg">
+          <View className="mb-10 mt-5 items-center justify-center bg-background-light py-1 shadow-lg">
             <Text className="mb-2 text-center font-bold text-3xl text-primary-dark dark:text-primary-light">
               {t('paywall.ideas.title')}
             </Text>
@@ -47,7 +72,7 @@ export default function Paywall() {
               {/* Best Deal Badge */}
               <Animated.View entering={SlideInDown.delay(300)} className="z-10 mb-3 rotate-[-6deg]">
                 <LinearGradient
-                  colors={['#8B5CF6', '#D946EF']} // Tailwind purple-500 to pink-500
+                  colors={['#8B5CF6', '#D946EF']}
                   start={{ x: 0, y: 0 }}
                   end={{ x: 1, y: 0 }}
                   className="rounded-full px-6 py-2.5 shadow-lg"
@@ -65,22 +90,26 @@ export default function Paywall() {
               </Animated.View>
 
               {/* Discount Rate Image */}
-              <View className="relative rotate-[-6deg]">
+              <Animated.View className="relative rotate-[-6deg]" style={pulseStyle}>
                 <Image
                   source={require('@/assets/paywall/discountRate.png')}
                   className="h-[240px] w-[240px]"
                   resizeMode="cover"
                 />
-              </View>
+                <Text className="absolute bottom-16 left-0 right-0 text-center font-bold text-xl text-background-light">
+                  Discount
+                </Text>
+              </Animated.View>
             </View>
           </View>
 
           {/* Plans */}
           <View className="mb-6 px-6">
             {plans.map((plan, index) => {
-              const selectedPlan = packages.find(
-                (p) => p.packageType === plan.packageType
+              const selectedPlan = allPackages.find(
+                (p) => p.packageType === plan.packageType && p.offeringIdentifier === 'discounted'
               ) as PurchasesPackage;
+
               return (
                 <TouchableOpacity
                   onPress={() => {

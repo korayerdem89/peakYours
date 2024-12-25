@@ -52,7 +52,7 @@ export default function Paywall() {
         </View>
         <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
           {/* Hero Section */}
-          <View className="items-center justify-center px-6 pb-6 pt-3">
+          <View className="mb-6 mt-4 items-center justify-center bg-background-light py-1 shadow-2xl">
             <Text className="mb-2 text-center font-bold text-3xl text-primary-dark dark:text-primary-light">
               {t('paywall.ideas.title')}
             </Text>
@@ -64,7 +64,7 @@ export default function Paywall() {
               <Animated.View
                 key={index}
                 entering={SlideInDown.delay(index * 200)}
-                className="mb-4 flex-row items-start rounded-xl bg-surface-light p-4 opacity-80 dark:bg-surface-dark">
+                className="mb-4 flex-row items-start rounded-xl bg-surface-light p-4 opacity-90">
                 <Text className="mr-4 text-2xl">{benefit.icon}</Text>
                 <View className="flex-1">
                   <Text className="mb-1 font-semibold text-base text-text-light dark:text-text-dark">
