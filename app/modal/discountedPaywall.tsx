@@ -16,6 +16,7 @@ import { SUBSCRIPTION_PLANS as plans } from '@/constants/plans';
 import { useRevenueCat } from '@/providers/RevenueCatProvider';
 import { PurchasesPackage } from 'react-native-purchases';
 import LinearGradient from 'react-native-linear-gradient';
+import MaskedView from '@react-native-masked-view/masked-view';
 
 export default function DiscountedPaywall() {
   const { t } = useTranslation();
@@ -60,10 +61,23 @@ export default function DiscountedPaywall() {
         </View>
         <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
           {/* Hero Section */}
-          <View className="mb-10 mt-5 items-center justify-center bg-background-light py-1 shadow-lg">
-            <Text className="mb-2 text-center font-bold text-3xl text-primary-dark dark:text-primary-light">
-              {t('paywall.ideas.title')}
-            </Text>
+          <View className="mb-8 mt-4 items-center justify-center bg-background-light py-1 shadow-lg shadow-black">
+            <MaskedView
+              maskElement={
+                <Text className="top-2 text-center font-bold text-3xl">
+                  {t('paywall.ideas.title')}
+                </Text>
+              }>
+              <LinearGradient
+                colors={[theme.colors.primary.default, theme.colors.primary.dark]}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 0 }}
+                className="px-4 py-2">
+                <Text className="invisible text-center font-bold text-3xl">
+                  {t('paywall.ideas.title')}
+                </Text>
+              </LinearGradient>
+            </MaskedView>
           </View>
 
           {/* Discount Rate */}
@@ -104,7 +118,7 @@ export default function DiscountedPaywall() {
           </View>
 
           {/* Plans */}
-          <View className="mb-6 px-6">
+          <View className="px-6">
             {plans.map((plan, index) => {
               const selectedPlan = allPackages.find(
                 (p) => p.packageType === plan.packageType && p.offeringIdentifier === 'discounted'
