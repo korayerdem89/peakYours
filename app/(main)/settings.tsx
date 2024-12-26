@@ -410,7 +410,7 @@ export default function SettingsScreen() {
             {user?.email}
           </Text>
 
-          {/* Zodiac Sign Card */}
+          {/* Zodiac Sign Card*/}
           <TouchableOpacity
             onPress={handleZodiacCardPress}
             className="mt-2 w-full rounded-lg bg-background-light p-4 dark:bg-surface-dark">
