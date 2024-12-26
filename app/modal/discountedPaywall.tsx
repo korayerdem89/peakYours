@@ -63,12 +63,9 @@ export default function DiscountedPaywall() {
           <View className="mb-6 mt-4 items-center justify-center bg-background-light py-[2px]  shadow-xl shadow-black">
             <ImageBackground
               source={require('@/assets/paywall/bgPattern.png')}
-              resizeMode="stretch"
-              className="w-full">
-              <Text className="py-2 text-center font-bold text-2xl text-primary-dark">
-                {t('paywall.ideas.title')}
-              </Text>
-            </ImageBackground>
+              resizeMode="contain"
+              className="h-16 w-full"
+            />
           </View>
 
           {/* Discount Rate */}
@@ -121,10 +118,8 @@ export default function DiscountedPaywall() {
                     subscribeUser(selectedPlan, locale);
                   }}
                   key={index}
-                  className={`mb-4 rounded-xl border-2 bg-surface-light/40 p-4 ${
-                    plan.isPopular
-                      ? 'border-primary-light '
-                      : 'border-border-light/60 bg-surface-light/50'
+                  className={`mb-4 rounded-xl border-2 bg-surface-light/60 p-4   ${
+                    plan.isPopular ? 'border-primary-light ' : 'border-border-light/90  '
                   }`}>
                   <View className="mb-2 flex-row items-center justify-between">
                     <Text className="font-semibold text-lg capitalize text-text-light dark:text-text-dark">

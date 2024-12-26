@@ -55,12 +55,9 @@ export default function Paywall() {
           <View className="mb-6 mt-4 items-center justify-center bg-background-light py-[2px]  shadow-xl shadow-black">
             <ImageBackground
               source={require('@/assets/paywall/bgPattern.png')}
-              resizeMode="stretch"
-              className="w-full">
-              <Text className="py-2 text-center font-bold text-2xl text-primary-dark">
-                {t('paywall.ideas.title')}
-              </Text>
-            </ImageBackground>
+              resizeMode="contain"
+              className="h-16 w-full"
+            />
           </View>
 
           {/* Benefits */}

@@ -98,6 +98,8 @@ export default {
     },
     membershipType: 'Tipo de Membresía',
     upgrade: 'Actualizar a Pro',
+    referralCode: 'Tu Código de Referencia',
+    copied: '¡Copiado!',
   },
   tabs: {
     you: 'Tú',

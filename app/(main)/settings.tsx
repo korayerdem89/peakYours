@@ -11,6 +11,8 @@ import {
 import { useColorScheme } from 'nativewind';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as Clipboard from 'expo-clipboard';
+import { Ionicons } from '@expo/vector-icons';
 
 import { Accordion } from '@/components/Accordion';
 import { useAuth } from '@/store/useAuth';
@@ -56,6 +58,7 @@ export default function SettingsScreen() {
   const router = useRouter();
   const { data: userData } = useUserData(user?.uid) || null;
   const updateUser = useUpdateUser();
+  const [showCopied, setShowCopied] = useState(false);
 
   // const toggleColorScheme = useCallback(() => {
   //   if (isTogglingTheme) return;
@@ -344,6 +347,20 @@ export default function SettingsScreen() {
     }
   };
 
+  const handleCopyRefCode = async () => {
+    if (userData?.refCodes?.en) {
+      await Clipboard.setStringAsync(userData.refCodes.en);
+      setShowCopied(true);
+      // Toast gösterimi
+      Toast.show({
+        type: 'success',
+        text1: t('settings.copied'),
+        position: 'bottom',
+        visibilityTime: 2000,
+      });
+    }
+  };
+
   return (
     <SafeAreaView className="flex-1 bg-background-tab dark:bg-background-dark">
       {/* Loading Modal */}
@@ -420,7 +437,24 @@ export default function SettingsScreen() {
               </Text>
             )}
           </TouchableOpacity>
-
+          {/* Referral Code Card */}
+          <View className="mt-4 w-full rounded-lg bg-background-light p-4 dark:bg-surface-dark">
+            <Text className="pb-1 text-center font-medium text-[15px] text-text-light-secondary dark:text-text-dark-secondary">
+              {t('settings.referralCode')}
+            </Text>
+            <View className="flex-row items-center justify-center space-x-2">
+              <Text className="text-center font-bold text-lg tracking-tight text-text-light dark:text-text-dark">
+                {userData?.refCodes?.en}
+              </Text>
+              <TouchableOpacity onPress={handleCopyRefCode} className="p-2 active:opacity-60">
+                <Ionicons
+                  name="copy-outline"
+                  size={20}
+                  color={colorScheme === 'dark' ? theme.colors.text.dark : theme.colors.text.light}
+                />
+              </TouchableOpacity>
+            </View>
+          </View>
           {/* Membership Type Card */}
           <View className="mt-4 w-full rounded-lg bg-background-light p-4 dark:bg-surface-dark">
             <Text className="pb-1 text-center font-medium text-[15px] text-text-light-secondary dark:text-text-dark-secondary">
@@ -430,11 +464,9 @@ export default function SettingsScreen() {
               <View className="flex-1" />
               <Text
                 className={`pr-2 text-center font-bold text-lg tracking-tight ${
-                  userData?.membership?.type === 'free'
-                    ? 'text-text-light dark:text-text-dark'
-                    : 'text-secondary dark:text-secondary-dark'
+                  userData?.membership?.type === 'free' ? 'text-text-light ' : 'text-secondary-dark'
                 }`}>
-                {userData?.membership?.type === 'pro' ? 'Pro' : 'Free'}
+                {userData?.membership?.type === 'pro' ? 'PRO' : 'FREE'}
               </Text>
               <View className="flex-1">
                 {userData?.membership?.type === 'free' && (

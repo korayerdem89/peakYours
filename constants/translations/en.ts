@@ -39,6 +39,8 @@ export default {
     accountSettings: 'Account Settings',
     signOut: 'Sign Out',
     signOutConfirm: 'Are you sure you want to sign out?',
+    referralCode: 'Your Referral Code',
+    copied: 'Copied!',
     language: {
       title: 'Language',
       turkish: 'Turkish',

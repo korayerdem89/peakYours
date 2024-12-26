@@ -112,6 +112,8 @@ export default {
     },
     membershipType: 'Üyelik Tipi',
     upgrade: "Pro'ya Yükselt",
+    referralCode: 'Referans Kodunuz',
+    copied: 'Kopyalandı!',
   },
   tabs: {
     you: 'Sen',
@@ -397,7 +399,7 @@ export default {
       clearError: 'Önbellek temizlenirken hata oluştu',
     },
     motivation: 'Günlük görevleri yaparak kişilik özelliklerinizi geliştirin',
-    refreshSuccess: 'Görev başar��yla yenilendi',
+    refreshSuccess: 'Görev başarıyla yenilendi',
     refreshInfo: 'Yeni görev yükleniyor...',
     freemember: {
       title: 'Günlük Görevlerle Kişiliğini Geliştir',
