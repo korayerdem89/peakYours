@@ -254,7 +254,7 @@ export default function SignInScreen() {
                   style={{ width: '100%', height: 48 }}
                 />
 
-                {!AppleAuthService.isSupported && (
+                {AppleAuthService.isSupported && (
                   <AppleButton
                     buttonStyle={AppleButton.Style.BLACK}
                     buttonType={AppleButton.Type.SIGN_IN}
