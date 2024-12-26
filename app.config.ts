@@ -19,6 +19,7 @@ const config: ExpoConfig = {
     bundleIdentifier: 'com.peakyours.app',
     googleServicesFile: './GoogleService-Info.plist',
     buildNumber: '1.0.4',
+    usesAppleSignIn: true,
   },
   android: {
     adaptiveIcon: {

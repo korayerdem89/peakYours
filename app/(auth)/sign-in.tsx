@@ -12,6 +12,8 @@ import { useColorScheme } from 'nativewind';
 import { useAuth } from '@/store/useAuth';
 import { useLoadingStore } from '@/store/useLoadingStore';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { AppleButton } from '@invertase/react-native-apple-authentication';
+import { AppleAuthService } from '@/services/appleAuth';
 
 const { width, height } = Dimensions.get('window');
 const BANNER_HEIGHT = height / 4;
@@ -82,6 +84,31 @@ export default function SignInScreen() {
     }
   };
 
+  const handleAppleSignIn = async () => {
+    try {
+      setIsLoading(true);
+
+      // Apple ile giriş yap
+      const firebaseUser = await AppleAuthService.signIn();
+
+      // Firestore'a kaydet
+      await UserService.saveUserToFirestore(firebaseUser);
+      console.log('User saved to Firestore:', firebaseUser);
+
+      // Kısa bir gecikme
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+
+      // Global state'i güncelle
+      await setUser(firebaseUser.uid);
+      console.log('Apple Sign-in complete, user set');
+    } catch (error) {
+      console.error('Apple Sign In Error:', error);
+      Alert.alert(t('common.error'), t('auth.errors.default'));
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const clearCache = async () => {
     try {
       setIsLoading(true);
@@ -127,13 +154,25 @@ export default function SignInScreen() {
             disabled={isLoading}
             style={{ width: '100%', height: 48 }}
           />
+          {AppleAuthService.isSupported && (
+            <AppleButton
+              buttonStyle={AppleButton.Style.BLACK}
+              buttonType={AppleButton.Type.SIGN_IN}
+              style={{
+                alignSelf: 'center',
+                width: '98%',
+                height: 44,
+              }}
+              onPress={handleAppleSignIn}
+            />
+          )}
 
-          <TouchableOpacity
+          {/* <TouchableOpacity
             onPress={clearCache}
             disabled={isLoading}
             className="mt-4 h-12 w-full items-center justify-center rounded-xl bg-red-500 dark:bg-red-700">
             <Text className="font-medium text-base text-white">Clear Cache (Test)</Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
       </View>
     </SafeAreaView>
