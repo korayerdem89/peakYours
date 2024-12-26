@@ -17,37 +17,7 @@ export default {
     next: 'İleri',
     getStarted: 'Başla',
   },
-  auth: {
-    signIn: {
-      title: 'Hoş Geldiniz',
-      subtitle: 'Devam etmek için giriş yapın',
-      googleButton: 'Google ile devam et',
-      appleButton: 'Apple ile devam et',
-      or: 'veya',
-      emailPlaceholder: 'E-posta adresiniz',
-      passwordPlaceholder: 'Şifreniz',
-      forgotPassword: 'Şifremi unuttum',
-      signInButton: 'Giriş Yap',
-      noAccount: 'Hesabınız yok mu? Kayıt olun',
-      createAccount: 'Hesap oluştur',
-      errors: {
-        invalidEmail: 'Geçersiz e-posta adresi',
-        emailRequired: 'E-posta adresi gerekli',
-        passwordRequired: 'Şifre gerekli',
-        passwordMinLength: 'Şifre en az 6 karakter olmalıdır',
-        invalidCredentials: 'E-posta veya şifre hatalı',
-        googleSignInError: 'Google ile giriş yapılırken hata oluştu',
-        appleSignInError: 'Apple ile giriş yapılırken hata oluştu',
-        defaultError: 'Giriş yapılırken bir hata oluştu',
-      },
-    },
-    errors: {
-      inProgress: 'Giriş işlemi zaten devam ediyor',
-      playServices: 'Google Play Servisleri kullanılamıyor',
-      default: 'Giriş sırasında bir hata oluştu',
-      unexpected: 'Beklenmeyen bir hata oluştu. Lütfen tekrar deneyin.',
-    },
-  },
+
   settings: {
     title: 'Ayarlar',
     anonymous: 'Anonim Kullanıcı',
@@ -297,7 +267,7 @@ export default {
       },
       phoenix: {
         name: 'Dirençli Anka Kuşu',
-        trait: 'Zorluklardan daha güçlü çıkar',
+        trait: 'Zorluklardan daha güçlü ç��kar',
       },
       seahorse: {
         name: 'Nazik Denizatı',
@@ -486,6 +456,34 @@ export default {
   },
   you: {
     subscribeText: 'Sizi kimlerin nasıl değerlendirdiğini görmek için',
-    subscribeCTA: 'Pro Üyelik Edinin', // Button text
+    subscribeCTA: 'Pro üyelik edinin', // Button text
+  },
+  auth: {
+    signIn: {
+      button: 'Giriş Yap',
+      googleButton: 'Google ile Giriş Yap',
+      goToSignUp: 'Hesap Oluştur',
+      goToHome: 'Ana Sayfaya Git',
+      welcomeTitle: 'Hadi giriş yapalım',
+      switch: 'Hesabınız yok mu? Kayıt olun',
+    },
+    forgotPassword: {
+      text: 'Şifremi unuttum?',
+      success: 'Şifre sıfırlama e-postası gönderildi!',
+      error: 'Şifre sıfırlama e-postası gönderilirken hata oluştu',
+    },
+    errors: {
+      inProgress: 'Giriş işlemi zaten devam ediyor',
+      playServices: 'Google Play Servisleri kullanılamıyor',
+      default: 'Giriş sırasında bir hata oluştu',
+      unexpected: 'Beklenmeyen bir hata oluştu. Lütfen tekrar deneyin.',
+    },
+    email: 'E-posta',
+    password: 'Şifre',
+    or: 'ya da',
+    signUp: {
+      button: 'Kayıt Ol',
+      switch: 'Zaten hesabınız var mı? Giriş yapın',
+    },
   },
 };

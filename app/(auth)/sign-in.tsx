@@ -206,6 +206,21 @@ export default function SignInScreen() {
     }
   };
 
+  const handleForgotPassword = async () => {
+    try {
+      if (!email) {
+        Alert.alert('Error', 'Please enter your email address first');
+        return;
+      }
+
+      await auth().sendPasswordResetEmail(email);
+      Alert.alert('Success', t('auth.forgotPassword.success'));
+    } catch (error) {
+      console.error('Password reset error:', error);
+      Alert.alert('Error', t('auth.forgotPassword.error'));
+    }
+  };
+
   return (
     <SafeAreaView className="flex-1 bg-accent-light dark:bg-background-dark">
       <KeyboardAvoidingView
@@ -286,6 +301,13 @@ export default function SignInScreen() {
                       />
                     </TouchableOpacity>
                   </View>
+                  <TouchableOpacity
+                    onPress={handleForgotPassword}
+                    className="mb-2 w-full items-end">
+                    <Text className="text-sm text-primary-light dark:text-primary-dark">
+                      {t('auth.forgotPassword.text')}
+                    </Text>
+                  </TouchableOpacity>
                 </View>
                 <TouchableOpacity
                   onPress={handleEmailAuth}

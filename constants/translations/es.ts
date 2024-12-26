@@ -17,29 +17,7 @@ export default {
     next: 'Siguiente',
     getStarted: 'Empezar',
   },
-  auth: {
-    signIn: {
-      title: 'Iniciar Sesión',
-      googleButton: 'Iniciar sesión con Google',
-      goToSignUp: 'Crear Cuenta',
-      goToHome: 'Ir a Inicio',
-      welcomeTitle: 'Vamos a iniciar sesión',
-      switch: '¿No tienes una cuenta? Regístrate',
-    },
-    errors: {
-      inProgress: 'El inicio de sesión ya está en progreso',
-      playServices: 'Google Play Services no está disponible',
-      default: 'Ocurrió un error durante el inicio de sesión',
-      unexpected: 'Ocurrió un error inesperado. Por favor, inténtalo de nuevo.',
-    },
-    email: 'Correo electrónico',
-    password: 'Contraseña',
-    or: 'o',
-    signUp: {
-      button: 'Registrarse',
-      switch: '¿Ya tienes una cuenta? Inicia sesión',
-    },
-  },
+
   settings: {
     title: 'Ajustes',
     anonymous: 'Usuario Anónimo',
@@ -496,5 +474,33 @@ export default {
   you: {
     subscribeText: 'Obtén la membresía Pro para ver cómo te calificaron',
     subscribeCTA: 'Obtén la Membresía Pro', // Button text
+  },
+  auth: {
+    signIn: {
+      button: 'Iniciar Sesión',
+      googleButton: 'Iniciar sesión con Google',
+      goToSignUp: 'Crear Cuenta',
+      goToHome: 'Ir al Inicio',
+      welcomeTitle: 'Vamos a iniciar sesión',
+      switch: '¿No tienes una cuenta? Regístrate',
+    },
+    errors: {
+      inProgress: 'El inicio de sesión ya está en progreso',
+      playServices: 'Google Play Services no está disponible',
+      default: 'Ocurrió un error durante el inicio de sesión',
+      unexpected: 'Ocurrió un error inesperado. Por favor, inténtalo de nuevo.',
+    },
+    email: 'Correo electrónico',
+    password: 'Contraseña',
+    or: 'o',
+    signUp: {
+      button: 'Registrarse',
+      switch: '¿Ya tienes una cuenta? Inicia sesión',
+    },
+    forgotPassword: {
+      text: '¿Olvidaste tu contraseña?',
+      success: '¡Correo de restablecimiento de contraseña enviado!',
+      error: 'Error al enviar el correo de restablecimiento',
+    },
   },
 };

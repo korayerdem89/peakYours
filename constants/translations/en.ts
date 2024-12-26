@@ -39,6 +39,11 @@ export default {
       button: 'Sign Up',
       switch: 'Already have an account? Sign in',
     },
+    forgotPassword: {
+      text: 'Forgot password?',
+      success: 'Password reset email sent!',
+      error: 'Error sending password reset email',
+    },
   },
   settings: {
     title: 'Settings',
