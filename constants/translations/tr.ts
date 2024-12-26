@@ -479,8 +479,13 @@ export default {
       terms:
         'İstediğiniz zaman iptal edebilirsiniz. Abonelik iptal edilmediği sürece otomatik yenilenir.',
       discountBadge: 'Yılın En İyi Fırsatı!',
+      limitedTime: 'Sınırlı süre fırsatı! Kaçırmayın',
     },
     success: 'Satın Alma Başarılı!',
     successDescription: 'Premium özelliklere hoş geldiniz! İyi yolculuklar.',
+  },
+  you: {
+    subscribeText: 'Sizi kimlerin nasıl değerlendirdiğini görmek için',
+    subscribeCTA: 'Pro Üyelik Edinin', // Button text
   },
 };

@@ -79,7 +79,7 @@ export const TraitBar = memo(
             </Text>
           </View>
 
-          <View className="flex-row items-center gap-1.5 rounded-full bg-gray-50 px-1 py-0.5">
+          <View className="mb-1 flex-row items-center gap-1.5 rounded-full bg-gray-50 px-1 py-0.5">
             <AnimatedPressable
               onPress={onDecrease}
               disabled={remainingPoints === 35 || points === 0 || disabled}

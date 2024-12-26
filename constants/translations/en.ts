@@ -479,8 +479,13 @@ export default {
       saveAmount: 'Save 50%',
       cancelAnytime: 'Cancel anytime. Subscription auto-renews unless cancelled.',
       discountBadge: 'Best Deal of the Year!',
+      limitedTime: "Limited time offer! Don't miss out",
     },
     success: 'Purchase Successful!',
     successDescription: 'Welcome to premium features! Enjoy your journey.',
+  },
+  you: {
+    subscribeText: 'Get Pro membership to see how others rated you',
+    subscribeCTA: 'Get Pro Membership',
   },
 };

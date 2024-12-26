@@ -480,8 +480,13 @@ export default {
       terms:
         'Cancela cuando quieras. La suscripción se renueva automáticamente a menos que se cancele.',
       discountBadge: '¡La Mejor Oferta del Año!',
+      limitedTime: '¡Oferta por tiempo limitado! No te lo pierdas',
     },
     success: '¡Compra Exitosa!',
     successDescription: '¡Bienvenido a las funciones premium! Disfruta tu viaje.',
+  },
+  you: {
+    subscribeText: 'Obtén la membresía Pro para ver cómo te calificaron',
+    subscribeCTA: 'Obtén la Membresía Pro', // Button text
   },
 };

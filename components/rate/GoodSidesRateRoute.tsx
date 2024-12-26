@@ -8,7 +8,7 @@ import { RatingService } from '@/services/rating';
 import { useAuth } from '@/store/useAuth';
 import Button from '../Button';
 import { useQueryClient } from '@tanstack/react-query';
-
+import * as Haptics from 'expo-haptics';
 const TOTAL_POINTS = 35;
 const MAX_TRAIT_POINTS = 10;
 
@@ -213,8 +213,14 @@ export const GoodSidesRateRoute = memo(
             points={trait.points}
             color={theme.colors.personality[trait.name]}
             maxPoints={MAX_TRAIT_POINTS}
-            onIncrease={() => handlePointChange(index, true)}
-            onDecrease={() => handlePointChange(index, false)}
+            onIncrease={() => {
+              Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+              handlePointChange(index, true);
+            }}
+            onDecrease={() => {
+              Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+              handlePointChange(index, false);
+            }}
             remainingPoints={remainingPoints}
             label={t(`personality.traits.${trait.name}`)}
             disabled={isSubmitted || hasExistingRating}

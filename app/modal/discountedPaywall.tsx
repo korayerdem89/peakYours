@@ -22,7 +22,7 @@ export default function DiscountedPaywall() {
   const { colorScheme } = useColorScheme();
   const isDark = colorScheme === 'dark';
   const { allPackages, subscribeUser } = useRevenueCat();
-  console.log(allPackages);
+
   const pulseStyle = useAnimatedStyle(() => {
     return {
       transform: [
@@ -68,28 +68,19 @@ export default function DiscountedPaywall() {
             />
           </View>
 
+          {/* Limited Time Banner */}
+          <Animated.View entering={SlideInDown.delay(600)} className="mb-4 px-6">
+            <View className="rounded-lg bg-primary-light/10 px-4 py-3 dark:bg-primary-dark/10">
+              <Text className="text-center font-semibold text-primary-dark dark:text-primary-light">
+                {t('paywall.ideas.limitedTime')}
+              </Text>
+            </View>
+          </Animated.View>
+
           {/* Discount Rate */}
           <View className="mb-6 items-center gap-3 px-6">
             <View className="items-center">
               {/* Best Deal Badge */}
-              <Animated.View entering={SlideInDown.delay(300)} className="z-10 mb-3 rotate-[-6deg]">
-                <LinearGradient
-                  colors={['#8B5CF6', '#D946EF']}
-                  start={{ x: 0, y: 0 }}
-                  end={{ x: 1, y: 0 }}
-                  className="rounded-full px-6 py-2.5 shadow-lg"
-                  style={{
-                    shadowColor: '#D946EF',
-                    shadowOffset: { width: 0, height: 4 },
-                    shadowOpacity: 0.3,
-                    shadowRadius: 8,
-                    elevation: 8,
-                  }}>
-                  <Text className="font-bold text-base text-white">
-                    {t('paywall.ideas.discountBadge')}
-                  </Text>
-                </LinearGradient>
-              </Animated.View>
 
               {/* Discount Rate Image */}
               <Animated.View className="relative rotate-[-6deg]" style={pulseStyle}>

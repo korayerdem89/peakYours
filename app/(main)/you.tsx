@@ -1,5 +1,13 @@
 import React, { useCallback, useEffect } from 'react';
-import { useWindowDimensions, StatusBar, Platform } from 'react-native';
+import {
+  useWindowDimensions,
+  StatusBar,
+  Platform,
+  ImageBackground,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 import { useState, useMemo } from 'react';
@@ -16,6 +24,7 @@ import { BannerAd, BannerAdSize, RequestOptions } from 'react-native-google-mobi
 import NetInfo from '@react-native-community/netinfo';
 import { useAppUsage } from '@/hooks/useAppUsage';
 import { router } from 'expo-router';
+import { useTraits } from '@/providers/TraitProvider';
 
 export default function YouScreen() {
   const { t, locale } = useTranslation();
@@ -24,6 +33,7 @@ export default function YouScreen() {
   const [index, setIndex] = useState(0);
   const { user } = useAuth();
   const { data: userData } = useUserData(user?.uid);
+
   const { usageCount } = useAppUsage();
   const updateUser = useUpdateUser();
   const [bannerError, setBannerError] = useState(false);
@@ -31,6 +41,8 @@ export default function YouScreen() {
   const MAX_RETRY = 3;
   const RETRY_DELAY = 5000;
   const shouldOpenDiscountedPaywall = usageCount > 6 && usageCount % 4 === 0 && usageCount < 25;
+  const { traitDetails } = useTraits();
+  const isShowBanner = traitDetails && traitDetails?.totalRaters > 5;
 
   useEffect(() => {
     if (shouldOpenDiscountedPaywall) {
@@ -135,8 +147,8 @@ export default function YouScreen() {
   );
 
   return (
-    <SafeAreaView className="flex-1 bg-accent-light pt-10 dark:bg-background-dark">
-      {!bannerError && (
+    <SafeAreaView className="flex-1 bg-accent-light pt-4 dark:bg-background-dark">
+      {!isShowBanner && !bannerError && (
         <BannerAd
           unitId={'ca-app-pub-6312844121446107/2492397048'}
           size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
@@ -147,6 +159,22 @@ export default function YouScreen() {
             setRetryCount(0);
           }}
         />
+      )}
+      {isShowBanner && (
+        <ImageBackground
+          source={require('@/assets/you/subscribeBanner.png')}
+          style={{ height: layout.height * 0.1, width: layout.width, justifyContent: 'center' }}>
+          <View className="flex-row flex-wrap items-center justify-center">
+            <Text className="font-medium text-sm text-text-dark">{t('you.subscribeText')} </Text>
+            <TouchableOpacity
+              onPress={() => router.push('/modal/paywall')}
+              className="active:opacity-60">
+              <Text className="font-bold text-base text-white underline">
+                {t('you.subscribeCTA')}
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </ImageBackground>
       )}
       <TabView
         navigationState={{ index, routes }}
