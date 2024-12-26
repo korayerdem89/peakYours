@@ -55,7 +55,7 @@ export default function SettingsScreen() {
   const { locale, setAppLocale, t } = useTranslation();
   const [isTogglingTheme, setIsTogglingTheme] = useState(false);
   const [isZodiacModalVisible, setIsZodiacModalVisible] = useState(false);
-  const { setIsLoading } = useLoadingStore();
+  const { setIsLoading, isLoading } = useLoadingStore();
   const router = useRouter();
   const { data: userData } = useUserData(user?.uid) || null;
   const updateUser = useUpdateUser();
@@ -362,6 +362,7 @@ export default function SettingsScreen() {
     }
   };
 
+  if (isLoading) return <ActivityIndicator />;
   return (
     <SafeAreaView className="flex-1 bg-background-tab dark:bg-background-dark">
       {/* Loading Modal */}
@@ -399,10 +400,10 @@ export default function SettingsScreen() {
         </View>
 
         {/* Profile Section */}
-        <Animated.View entering={FadeIn.duration(500)} className="mt-4 items-center">
+        <Animated.View entering={FadeIn.duration(500)} className="mt-2 items-center">
           <Image
             source={{ uri: user?.photoURL || DEFAULT_AVATAR }}
-            className="h-20 w-20 rounded-full"
+            className="h-16 w-16 rounded-full"
           />
           <Text className="mt-2 font-bold text-xl tracking-tight text-text-light dark:text-text-dark">
             {user?.displayName || t('settings.anonymous')}
