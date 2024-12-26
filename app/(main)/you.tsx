@@ -42,7 +42,8 @@ export default function YouScreen() {
   const RETRY_DELAY = 5000;
   const shouldOpenDiscountedPaywall = usageCount > 6 && usageCount % 4 === 0 && usageCount < 25;
   const { traitDetails } = useTraits();
-  const isShowBanner = traitDetails && traitDetails?.totalRaters > 5;
+  const isShowBanner =
+    traitDetails && traitDetails?.totalRaters > 5 && userData?.membership?.type === 'free';
 
   useEffect(() => {
     if (shouldOpenDiscountedPaywall) {
