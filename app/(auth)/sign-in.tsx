@@ -165,7 +165,7 @@ export default function SignInScreen() {
         resizeMode="contain"
       />
 
-      <View className="flex-1 items-center justify-center gap-4 p-6">
+      <View className="flex-1 items-center justify-center gap-6 p-6">
         <Image
           source={require('@/assets/sign-in/signin.png')}
           className="w-full rounded-xl"
@@ -181,13 +181,14 @@ export default function SignInScreen() {
             style={{ width: '100%', height: 48 }}
           />
 
-          {AppleAuthService.isSupported && (
+          {!AppleAuthService.isSupported && (
             <AppleButton
-              buttonStyle={AppleButton.Style.WHITE}
+              buttonStyle={AppleButton.Style.BLACK}
               buttonType={AppleButton.Type.SIGN_IN}
               style={{
-                width: '100%',
-                height: 48,
+                alignSelf: 'center',
+                width: '98%',
+                height: 42,
               }}
               onPress={handleAppleSignIn}
             />
