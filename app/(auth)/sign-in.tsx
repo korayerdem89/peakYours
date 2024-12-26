@@ -1,4 +1,22 @@
-import { View, Text, Alert, Image, TextInput, TouchableOpacity, Dimensions } from 'react-native';
+import {
+  View,
+  Text,
+  Alert,
+  Image,
+  TextInput,
+  TouchableOpacity,
+  Keyboard,
+  Platform,
+  Dimensions,
+  ScrollView,
+  KeyboardAvoidingView,
+} from 'react-native';
+import Animated, {
+  useAnimatedStyle,
+  useSharedValue,
+  withTiming,
+  interpolate,
+} from 'react-native-reanimated';
 import {
   GoogleSignin,
   statusCodes,
@@ -15,7 +33,8 @@ import { AppleButton } from '@invertase/react-native-apple-authentication';
 import { AppleAuthService } from '@/services/appleAuth';
 import { EmailAuthService } from '@/services/emailAuth';
 import { theme } from '@/constants/theme';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { Ionicons } from '@expo/vector-icons';
 
 const { width, height } = Dimensions.get('window');
 const BANNER_HEIGHT = height / 4;
@@ -35,11 +54,42 @@ export default function SignInScreen() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isSignUp, setIsSignUp] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const { setUser } = useAuth();
   const { colorScheme } = useColorScheme();
   const { t } = useTranslation();
   const { isLoading, setIsLoading } = useLoadingStore();
   const isDark = colorScheme === 'dark';
+  const translateY = useSharedValue(0);
+
+  useEffect(() => {
+    const showSubscription = Keyboard.addListener(
+      Platform.OS === 'ios' ? 'keyboardWillShow' : 'keyboardDidShow',
+      (e) => {
+        translateY.value = withTiming(-e.endCoordinates.height / 3, {
+          duration: 250,
+        });
+      }
+    );
+
+    const hideSubscription = Keyboard.addListener(
+      Platform.OS === 'ios' ? 'keyboardWillHide' : 'keyboardDidHide',
+      () => {
+        translateY.value = withTiming(0, {
+          duration: 250,
+        });
+      }
+    );
+
+    return () => {
+      showSubscription.remove();
+      hideSubscription.remove();
+    };
+  }, []);
+
+  const animatedStyles = useAnimatedStyle(() => ({
+    transform: [{ translateY: translateY.value }],
+  }));
 
   const signIn = async () => {
     try {
@@ -158,80 +208,106 @@ export default function SignInScreen() {
 
   return (
     <SafeAreaView className="flex-1 bg-accent-light dark:bg-background-dark">
-      <Image
-        source={require('@/assets/banner.png')}
-        className="my-10 w-full rounded-xl"
-        style={{ width: width, height: height / 10 }}
-        resizeMode="contain"
-      />
-
-      <View className="flex-1 items-center justify-center gap-6 p-6">
-        <Image
-          source={require('@/assets/sign-in/signin.png')}
-          className="w-full rounded-xl"
-          style={{ height: BANNER_HEIGHT }}
-          resizeMode="contain"
-        />
-        <View className="w-full gap-3">
-          <GoogleSigninButton
-            size={GoogleSigninButton.Size.Wide}
-            color={isDark ? GoogleSigninButton.Color.Light : GoogleSigninButton.Color.Dark}
-            onPress={signIn}
-            disabled={isLoading}
-            style={{ width: '100%', height: 48 }}
-          />
-
-          {!AppleAuthService.isSupported && (
-            <AppleButton
-              buttonStyle={AppleButton.Style.BLACK}
-              buttonType={AppleButton.Type.SIGN_IN}
-              style={{
-                alignSelf: 'center',
-                width: '98%',
-                height: 42,
-              }}
-              onPress={handleAppleSignIn}
-            />
-          )}
-        </View>
-        <Text className="text-center font-regular text-sm text-text-light">{t('auth.or')}</Text>
-        <View className="w-full gap-4">
-          <View className="w-full gap-2">
-            <TextInput
-              className="h-12 w-full rounded-sm border border-gray-200 bg-background-light px-4 text-text-light dark:border-gray-700 dark:bg-surface-dark dark:text-text-dark"
-              placeholder={t('auth.email')}
-              placeholderTextColor={theme.colors.text.light}
-              value={email}
-              onChangeText={setEmail}
-              autoCapitalize="none"
-              keyboardType="email-address"
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        className="flex-1">
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          bounces={false}
+          contentContainerStyle={{ flexGrow: 1 }}>
+          <Animated.View className="flex-1" style={animatedStyles}>
+            <Image
+              source={require('@/assets/banner.png')}
+              className="my-10 w-full rounded-xl"
+              style={{ width: width, height: height / 10 }}
+              resizeMode="contain"
             />
 
-            <TextInput
-              className="h-12 w-full rounded-sm border border-gray-200 bg-background-light px-4 text-text-light dark:border-gray-700 dark:bg-surface-dark dark:text-text-dark"
-              placeholder={t('auth.password')}
-              placeholderTextColor={theme.colors.text.light}
-              value={password}
-              onChangeText={setPassword}
-              secureTextEntry
-            />
-          </View>
-          <TouchableOpacity
-            onPress={handleEmailAuth}
-            disabled={isLoading}
-            className="h-12 w-full items-center justify-center rounded-sm bg-primary-light active:opacity-60">
-            <Text className="font-medium text-white">
-              {isSignUp ? t('auth.signUp.button') : t('auth.signIn.button')}
-            </Text>
-          </TouchableOpacity>
+            <View className="flex-1 items-center justify-center gap-6 p-6">
+              <Image
+                source={require('@/assets/sign-in/signin.png')}
+                className="w-full rounded-xl"
+                style={{ height: BANNER_HEIGHT }}
+                resizeMode="contain"
+              />
+              <View className="w-full gap-3">
+                <GoogleSigninButton
+                  size={GoogleSigninButton.Size.Wide}
+                  color={isDark ? GoogleSigninButton.Color.Light : GoogleSigninButton.Color.Dark}
+                  onPress={signIn}
+                  disabled={isLoading}
+                  style={{ width: '100%', height: 48 }}
+                />
 
-          <TouchableOpacity onPress={() => setIsSignUp(!isSignUp)} className="active:opacity-60">
-            <Text className="text-center text-sm text-text-light-secondary dark:text-text-dark-secondary">
-              {isSignUp ? t('auth.signIn.switch') : t('auth.signUp.switch')}
-            </Text>
-          </TouchableOpacity>
-        </View>
-      </View>
+                {!AppleAuthService.isSupported && (
+                  <AppleButton
+                    buttonStyle={AppleButton.Style.BLACK}
+                    buttonType={AppleButton.Type.SIGN_IN}
+                    style={{
+                      alignSelf: 'center',
+                      width: '98%',
+                      height: 42,
+                    }}
+                    onPress={handleAppleSignIn}
+                  />
+                )}
+              </View>
+              <Text className="text-center font-regular text-sm text-text-light">
+                {t('auth.or')}
+              </Text>
+              <View className="w-full gap-4">
+                <View className="mb-4 w-full gap-2">
+                  <TextInput
+                    className="h-12 w-full rounded-sm border border-gray-200 bg-background-light px-4 text-text-light dark:border-gray-700 dark:bg-surface-dark dark:text-text-dark"
+                    placeholder={t('auth.email')}
+                    placeholderTextColor={theme.colors.text.light}
+                    value={email}
+                    onChangeText={setEmail}
+                    autoCapitalize="none"
+                    keyboardType="email-address"
+                  />
+
+                  <View className="relative">
+                    <TextInput
+                      className="h-12 w-full rounded-sm border border-gray-200 bg-background-light px-4 pr-12 text-text-light dark:border-gray-700 dark:bg-surface-dark dark:text-text-dark"
+                      placeholder={t('auth.password')}
+                      placeholderTextColor={theme.colors.text.light}
+                      value={password}
+                      onChangeText={setPassword}
+                      secureTextEntry={!showPassword}
+                    />
+                    <TouchableOpacity
+                      onPress={() => setShowPassword(!showPassword)}
+                      className="absolute right-4 top-3.5 active:opacity-60">
+                      <Ionicons
+                        name={showPassword ? 'eye-off-outline' : 'eye-outline'}
+                        size={20}
+                        color={isDark ? theme.colors.text.dark : theme.colors.text.light}
+                      />
+                    </TouchableOpacity>
+                  </View>
+                </View>
+                <TouchableOpacity
+                  onPress={handleEmailAuth}
+                  disabled={isLoading}
+                  className="h-12 w-full items-center justify-center rounded-sm bg-primary active:opacity-60">
+                  <Text className="font-medium text-white">
+                    {!isSignUp ? t('auth.signIn.button') : t('auth.signUp.button')}
+                  </Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity
+                  onPress={() => setIsSignUp(!isSignUp)}
+                  className="active:opacity-60">
+                  <Text className="text-center text-sm text-text-light-secondary dark:text-text-dark-secondary">
+                    {!isSignUp ? t('auth.signIn.switch') : t('auth.signUp.switch')}
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </Animated.View>
+        </ScrollView>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 }

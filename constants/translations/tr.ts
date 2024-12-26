@@ -28,7 +28,7 @@ export default {
       passwordPlaceholder: 'Şifreniz',
       forgotPassword: 'Şifremi unuttum',
       signInButton: 'Giriş Yap',
-      noAccount: 'Hesabınız yok mu?',
+      noAccount: 'Hesabınız yok mu? Kayıt olun',
       createAccount: 'Hesap oluştur',
       errors: {
         invalidEmail: 'Geçersiz e-posta adresi',
@@ -432,7 +432,7 @@ export default {
   },
   subscription: {
     unlockPro: 'Premium Özellikleri Keşfet',
-    description: 'Kişisel gelişim yolculuğunuzda size yard��mcı olacak tüm özelliklere erişin',
+    description: 'Kişisel gelişim yolculuğunuzda size yardımcı olacak tüm özelliklere erişin',
     monthly: 'Aylık',
     annual: 'Yıllık',
     subscribe: 'Hemen Başla',

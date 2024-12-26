@@ -19,11 +19,12 @@ export default {
   },
   auth: {
     signIn: {
-      button: 'Sign Up',
+      button: 'Sign In',
       googleButton: 'Sign in with Google',
       goToSignUp: 'Create Account',
       goToHome: 'Go to Home',
       welcomeTitle: "Let's get you signed in",
+      switch: "Don't have an account? Sign up",
     },
     errors: {
       inProgress: 'Sign in is already in progress',
@@ -34,7 +35,6 @@ export default {
     email: 'Email',
     password: 'Password',
     or: 'or',
-
     signUp: {
       button: 'Sign Up',
       switch: 'Already have an account? Sign in',

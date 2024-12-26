@@ -24,6 +24,7 @@ export default {
       goToSignUp: 'Crear Cuenta',
       goToHome: 'Ir a Inicio',
       welcomeTitle: 'Vamos a iniciar sesión',
+      switch: '¿No tienes una cuenta? Regístrate',
     },
     errors: {
       inProgress: 'El inicio de sesión ya está en progreso',
