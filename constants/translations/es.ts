@@ -31,6 +31,13 @@ export default {
       default: 'Ocurrió un error durante el inicio de sesión',
       unexpected: 'Ocurrió un error inesperado. Por favor, inténtalo de nuevo.',
     },
+    email: 'Correo electrónico',
+    password: 'Contraseña',
+    or: 'o',
+    signUp: {
+      button: 'Registrarse',
+      switch: '¿Ya tienes una cuenta? Inicia sesión',
+    },
   },
   settings: {
     title: 'Ajustes',

@@ -1,4 +1,4 @@
-import { View, Text, Alert, Image, Dimensions, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, Alert, Image, TextInput, TouchableOpacity, Dimensions } from 'react-native';
 import {
   GoogleSignin,
   statusCodes,
@@ -11,9 +11,11 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useColorScheme } from 'nativewind';
 import { useAuth } from '@/store/useAuth';
 import { useLoadingStore } from '@/store/useLoadingStore';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { AppleButton } from '@invertase/react-native-apple-authentication';
 import { AppleAuthService } from '@/services/appleAuth';
+import { EmailAuthService } from '@/services/emailAuth';
+import { theme } from '@/constants/theme';
+import { useState } from 'react';
 
 const { width, height } = Dimensions.get('window');
 const BANNER_HEIGHT = height / 4;
@@ -30,10 +32,14 @@ function isErrorWithCode(error: any): error is { code: string } {
 }
 
 export default function SignInScreen() {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [isSignUp, setIsSignUp] = useState(false);
   const { setUser } = useAuth();
   const { colorScheme } = useColorScheme();
   const { t } = useTranslation();
   const { isLoading, setIsLoading } = useLoadingStore();
+  const isDark = colorScheme === 'dark';
 
   const signIn = async () => {
     try {
@@ -109,16 +115,42 @@ export default function SignInScreen() {
     }
   };
 
-  const clearCache = async () => {
+  const handleEmailAuth = async () => {
     try {
       setIsLoading(true);
-      await AsyncStorage.clear();
-      await setUser(null);
-      console.log('Cache cleared successfully');
-      Alert.alert('Success', 'Cache cleared successfully');
-    } catch (error) {
-      console.error('Clear cache error:', error);
-      Alert.alert('Error', 'Failed to clear cache');
+
+      let firebaseUser;
+      if (isSignUp) {
+        firebaseUser = await EmailAuthService.signUp(email, password);
+      } else {
+        firebaseUser = await EmailAuthService.signIn(email, password);
+      }
+
+      await UserService.saveUserToFirestore(firebaseUser);
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+      await setUser(firebaseUser.uid);
+    } catch (error: any) {
+      let errorMessage = t('auth.errors.default');
+
+      switch (error.message) {
+        case 'invalid-email':
+          errorMessage = t('auth.errors.invalidEmail');
+          break;
+        case 'user-not-found':
+          errorMessage = t('auth.errors.userNotFound');
+          break;
+        case 'wrong-password':
+          errorMessage = t('auth.errors.wrongPassword');
+          break;
+        case 'email-already-in-use':
+          errorMessage = t('auth.errors.emailInUse');
+          break;
+        case 'weak-password':
+          errorMessage = t('auth.errors.weakPassword');
+          break;
+      }
+
+      Alert.alert(t('common.error'), errorMessage);
     } finally {
       setIsLoading(false);
     }
@@ -132,56 +164,73 @@ export default function SignInScreen() {
         style={{ width: width, height: height / 10 }}
         resizeMode="contain"
       />
-      <View className="flex-1 items-center justify-center gap-10 p-6">
+
+      <View className="flex-1 items-center justify-center gap-4 p-6">
         <Image
           source={require('@/assets/sign-in/signin.png')}
           className="w-full rounded-xl"
           style={{ height: BANNER_HEIGHT }}
           resizeMode="contain"
         />
-        <Text className="text-center font-medium text-3xl text-primary dark:text-text-dark">
-          {t('auth.signIn.welcomeTitle')}
-        </Text>
-        <View className="w-full gap-5">
+        <View className="w-full gap-3">
           <GoogleSigninButton
             size={GoogleSigninButton.Size.Wide}
-            color={
-              colorScheme === 'dark'
-                ? GoogleSigninButton.Color.Light
-                : GoogleSigninButton.Color.Dark
-            }
+            color={isDark ? GoogleSigninButton.Color.Light : GoogleSigninButton.Color.Dark}
             onPress={signIn}
             disabled={isLoading}
             style={{ width: '100%', height: 48 }}
           />
+
           {AppleAuthService.isSupported && (
             <AppleButton
-              buttonStyle={AppleButton.Style.BLACK}
+              buttonStyle={AppleButton.Style.WHITE}
               buttonType={AppleButton.Type.SIGN_IN}
               style={{
-                alignSelf: 'center',
-                width: '98%',
-                height: 44,
+                width: '100%',
+                height: 48,
               }}
               onPress={handleAppleSignIn}
             />
           )}
+        </View>
+        <Text className="text-center font-regular text-sm text-text-light">{t('auth.or')}</Text>
+        <View className="w-full gap-4">
+          <View className="w-full gap-2">
+            <TextInput
+              className="h-12 w-full rounded-sm border border-gray-200 bg-background-light px-4 text-text-light dark:border-gray-700 dark:bg-surface-dark dark:text-text-dark"
+              placeholder={t('auth.email')}
+              placeholderTextColor={theme.colors.text.light}
+              value={email}
+              onChangeText={setEmail}
+              autoCapitalize="none"
+              keyboardType="email-address"
+            />
 
-          {/* <TouchableOpacity
-            onPress={clearCache}
+            <TextInput
+              className="h-12 w-full rounded-sm border border-gray-200 bg-background-light px-4 text-text-light dark:border-gray-700 dark:bg-surface-dark dark:text-text-dark"
+              placeholder={t('auth.password')}
+              placeholderTextColor={theme.colors.text.light}
+              value={password}
+              onChangeText={setPassword}
+              secureTextEntry
+            />
+          </View>
+          <TouchableOpacity
+            onPress={handleEmailAuth}
             disabled={isLoading}
-            className="mt-4 h-12 w-full items-center justify-center rounded-xl bg-red-500 dark:bg-red-700">
-            <Text className="font-medium text-base text-white">Clear Cache (Test)</Text>
-          </TouchableOpacity> */}
+            className="h-12 w-full items-center justify-center rounded-sm bg-primary-light active:opacity-60">
+            <Text className="font-medium text-white">
+              {isSignUp ? t('auth.signUp.button') : t('auth.signIn.button')}
+            </Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity onPress={() => setIsSignUp(!isSignUp)} className="active:opacity-60">
+            <Text className="text-center text-sm text-text-light-secondary dark:text-text-dark-secondary">
+              {isSignUp ? t('auth.signIn.switch') : t('auth.signUp.switch')}
+            </Text>
+          </TouchableOpacity>
         </View>
       </View>
     </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({
-  googleButton: {
-    width: '100%',
-    padding: 30,
-  },
-});

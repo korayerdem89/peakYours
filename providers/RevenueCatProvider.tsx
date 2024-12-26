@@ -85,7 +85,6 @@ export const RevenueCatProvider = ({ children }: { children: React.ReactNode }) 
 
       const user = getCurrentUser();
       if (!user?.uid) {
-        console.log('No user found');
         return;
       }
 

@@ -75,7 +75,6 @@ export const useAuth = create<AuthState>((set) => {
             set({ user: userData });
             console.log('User data set successfully:', userData);
           } else {
-            console.warn('No user data found for ID:', userId);
             await clearAuth();
           }
         } else {

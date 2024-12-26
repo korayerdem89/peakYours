@@ -19,7 +19,7 @@ export default {
   },
   auth: {
     signIn: {
-      title: 'Sign In',
+      button: 'Sign Up',
       googleButton: 'Sign in with Google',
       goToSignUp: 'Create Account',
       goToHome: 'Go to Home',
@@ -30,6 +30,14 @@ export default {
       playServices: 'Google Play Services is not available',
       default: 'An error occurred during sign in',
       unexpected: 'An unexpected error occurred. Please try again.',
+    },
+    email: 'Email',
+    password: 'Password',
+    or: 'or',
+
+    signUp: {
+      button: 'Sign Up',
+      switch: 'Already have an account? Sign in',
     },
   },
   settings: {
