@@ -23,7 +23,7 @@ import { useTasks } from '@/hooks/useTasks';
 import { useUpdateTaskTrait } from '@/hooks/useTaskQueries';
 import { StorageService } from '@/utils/storage';
 import { updateUserTaskDate } from '@/services/user';
-
+import { useQueryClient } from '@tanstack/react-query';
 // Utils & Types
 import { Task } from '@/types/tasks';
 import { getRandomTask } from '@/utils/taskUtils';
@@ -35,7 +35,6 @@ import { TaskRefreshCounter } from '@/components/tasks/TaskRefreshCounter';
 import { TaskList } from '@/components/tasks/TaskList';
 import { TaskInfo } from '@/components/tasks/TaskInfo';
 import QuoteCard from '@/components/main/QuoteCard';
-import PaywallModal from '@/components/modals/PaywallModal';
 import { UpgradeButton } from '@/components/buttons/UpgradeButton';
 
 interface TaskLevelUpTrait {
@@ -50,7 +49,7 @@ export default function TasksScreen() {
   const { setIsLoading } = useLoadingStore();
   const { userData, traitDetails, goodTraits, badTraits } = useTraits();
   const updateTaskTrait = useUpdateTaskTrait();
-
+  const queryClient = useQueryClient();
   // Animation values
   const bounceValue = useSharedValue(0);
   const bounceStyle = useAnimatedStyle(() => ({
@@ -61,7 +60,6 @@ export default function TasksScreen() {
   const [levelUpTrait, setLevelUpTrait] = useState<TaskLevelUpTrait | null>(null);
   const [tasks, setTasks] = useState<Task[]>([]);
   const [completedTasks, setCompletedTasks] = useState<string[]>([]);
-  const [showPaywall, setShowPaywall] = useState(false);
   const [bannerError, setBannerError] = useState(false);
 
   // Task related data
@@ -195,6 +193,7 @@ export default function TasksScreen() {
           task?.type === 'goodsides'
             ? goodTraits.find((item) => item.trait === trait)?.value
             : badTraits.find((item) => item.trait === trait)?.value;
+        queryClient.invalidateQueries({ queryKey: ['user'] });
         const shouldShowLevelUpTrait = traitValue && (traitValue + 10) % 5 === 0;
         if (task && shouldShowLevelUpTrait) {
           setLevelUpTrait({
@@ -314,11 +313,6 @@ export default function TasksScreen() {
       <View className="flex-1 gap-4 p-4 pb-24">
         <QuoteCard />
         <TaskHeader />
-        <PaywallModal
-          visible={showPaywall}
-          onClose={() => setShowPaywall(false)}
-          onSubscribe={() => {}}
-        />
         <TaskInfo userData={userData} />
         <TaskRefreshCounter refreshesLeft={refreshLimit} />
         <TaskList
