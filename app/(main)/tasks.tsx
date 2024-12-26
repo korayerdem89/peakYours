@@ -50,6 +50,7 @@ export default function TasksScreen() {
   const { userData, traitDetails, goodTraits, badTraits } = useTraits();
   const updateTaskTrait = useUpdateTaskTrait();
   const queryClient = useQueryClient();
+
   // Animation values
   const bounceValue = useSharedValue(0);
   const bounceStyle = useAnimatedStyle(() => ({

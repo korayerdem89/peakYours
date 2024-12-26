@@ -173,8 +173,8 @@ export default {
       errorMessage: 'Puanlama kaydedilirken bir hata oluştu.',
       reset: 'Sıfırlandı',
       resetMessage: 'Tüm puanlar sıfırlandı.',
-      alreadyRated: 'Bu kullanıcının iyi yanlarını zaten puanladınız',
-      yourRating: 'Değerlendirmeniz',
+      alreadyRated: 'Bu kullanıcıyı zaten değerlendirdiniz',
+      yourRating: 'Kayıtlı Değerlendirmen',
       nextBadSides: 'şimdi sırada geliştirmesi gereken yanları puanlamakta :)',
       friendlyReminder: 'Dürüst geri bildirimin için teşekkürler!',
       testSuccess: 'Test puanlaması başarıyla gönderildi!',
@@ -209,7 +209,7 @@ export default {
   },
   zodiac: {
     modalTitle: 'Burcunuzu Seçin',
-    modalDescription: 'Kapsamlı ki��ilik analiziniz için lütfen burcunuzu seçin.',
+    modalDescription: 'Kapsamlı kişilik analiziniz için lütfen burcunuzu seçin.',
     select: 'Burç seçin',
     aries: 'Koç',
     taurus: 'Boğa',
@@ -358,7 +358,7 @@ export default {
     freemember: {
       title: 'Yapay Zeka Analizi ile Potansiyelini Keşfet',
       description:
-        'Ruh hayvanını ke��fet, kişilik özelliklerini derinlemesine anla ve kişiselleştirilmiş gelişim önerileri al! Yapay zekamız, burcunu ve kişilik değerlendirmelerini harmanlayarak sadece sana özel bir analiz oluşturuyor. Potansiyelini keşfeden binlerce kullanıcıya sen de katıl!',
+        'Ruh hayvanını keşfet, kişilik özelliklerini derinlemesine anla ve kişiselleştirilmiş gelişim önerileri al! Yapay zekamız, burcunu ve kişilik değerlendirmelerini harmanlayarak sadece sana özel bir analiz oluşturuyor. Potansiyelini keşfeden binlerce kullanıcıya sen de katıl!',
       cta: '✨ Hemen yükselt ve ruh hayvanını öğren!',
       features: [
         '🔮 Benzersiz ruh hayvanını keşfet',
@@ -397,7 +397,7 @@ export default {
       clearError: 'Önbellek temizlenirken hata oluştu',
     },
     motivation: 'Günlük görevleri yaparak kişilik özelliklerinizi geliştirin',
-    refreshSuccess: 'Görev başarıyla yenilendi',
+    refreshSuccess: 'Görev başar��yla yenilendi',
     refreshInfo: 'Yeni görev yükleniyor...',
     freemember: {
       title: 'Günlük Görevlerle Kişiliğini Geliştir',

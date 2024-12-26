@@ -14,6 +14,11 @@ export const toastConfig: ToastConfig = {
         fontFamily: 'Poppins_400Medium',
         color: theme.colors.success.default,
       }}
+      text2Style={{
+        fontSize: 12,
+        fontFamily: 'Poppins_400Regular',
+        color: theme.colors.success.default,
+      }}
       renderLeadingIcon={() => (
         <View style={{ marginLeft: 15, justifyContent: 'center' }}>
           <Ionicons name="checkmark-circle" size={24} color={theme.colors.success.default} />
@@ -30,6 +35,11 @@ export const toastConfig: ToastConfig = {
         fontSize: 15,
         fontWeight: '500',
         fontFamily: 'Poppins_400Regular',
+      }}
+      text2Style={{
+        fontSize: 12,
+        fontFamily: 'Poppins_400Regular',
+        color: theme.colors.error.dark,
       }}
       renderLeadingIcon={() => (
         <View style={{ marginLeft: 15, justifyContent: 'center' }}>
@@ -48,6 +58,11 @@ export const toastConfig: ToastConfig = {
         fontSize: 15,
         fontWeight: '500',
         fontFamily: 'Poppins_400Regular',
+      }}
+      text2Style={{
+        fontSize: 12,
+        fontFamily: 'Poppins_400Regular',
+        color: theme.colors.info.dark,
       }}
       renderLeadingIcon={() => (
         <View style={{ marginLeft: 15, justifyContent: 'center' }}>

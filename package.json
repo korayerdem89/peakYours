@@ -38,6 +38,7 @@
     "expo-constants": "~16.0.2",
     "expo-dev-client": "~4.0.14",
     "expo-dev-launcher": "^4.0.22",
+    "expo-haptics": "~13.0.1",
     "expo-linear-gradient": "~13.0.2",
     "expo-linking": "~6.3.1",
     "expo-localization": "~15.0.3",

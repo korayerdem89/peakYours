@@ -8,8 +8,7 @@ import { RatingService } from '@/services/rating';
 import { useAuth } from '@/store/useAuth';
 import Button from '../Button';
 import { useQueryClient } from '@tanstack/react-query';
-import { useColorScheme } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+
 const TOTAL_POINTS = 35;
 const MAX_TRAIT_POINTS = 10;
 
@@ -151,58 +150,58 @@ export const GoodSidesRateRoute = memo(
       }
     }, [user, remainingPoints, traits, referenceCode, queryClient, onTabChange, t]);
 
-    const handleTestSubmit = async () => {
-      if (!user?.uid) return;
+    // const handleTestSubmit = async () => {
+    //   if (!user?.uid) return;
 
-      const testUserId = Math.random().toString(36).substring(2, 15);
+    //   const testUserId = Math.random().toString(36).substring(2, 15);
 
-      const randomTraits = traits.map((trait) => ({
-        ...trait,
-        points: Math.floor(Math.random() * (MAX_TRAIT_POINTS + 1)),
-      }));
+    //   const randomTraits = traits.map((trait) => ({
+    //     ...trait,
+    //     points: Math.floor(Math.random() * (MAX_TRAIT_POINTS + 1)),
+    //   }));
 
-      try {
-        await RatingService.saveRating(
-          referenceCode,
-          testUserId,
-          randomTraits,
-          'goodsides',
-          user?.displayName || ''
-        );
-        await Promise.all([
-          queryClient.invalidateQueries({
-            queryKey: ['traitDetails', referenceCode],
-          }),
-          queryClient.invalidateQueries({
-            queryKey: ['traitAverages', referenceCode, 'goodsides'],
-          }),
-        ]);
-        Toast.show({
-          type: 'success',
-          text1: t('personality.rating.testSuccess'),
-          position: 'bottom',
-          visibilityTime: 3000,
-        });
-      } catch (error) {
-        Toast.show({
-          type: 'error',
-          text1: t('personality.rating.testError'),
-          position: 'bottom',
-          visibilityTime: 4000,
-        });
-      }
-    };
+    //   try {
+    //     await RatingService.saveRating(
+    //       referenceCode,
+    //       testUserId,
+    //       randomTraits,
+    //       'goodsides',
+    //       user?.displayName || ''
+    //     );
+    //     await Promise.all([
+    //       queryClient.invalidateQueries({
+    //         queryKey: ['traitDetails', referenceCode],
+    //       }),
+    //       queryClient.invalidateQueries({
+    //         queryKey: ['traitAverages', referenceCode, 'goodsides'],
+    //       }),
+    //     ]);
+    //     Toast.show({
+    //       type: 'success',
+    //       text1: t('personality.rating.testSuccess'),
+    //       position: 'bottom',
+    //       visibilityTime: 3000,
+    //     });
+    //   } catch (error) {
+    //     Toast.show({
+    //       type: 'error',
+    //       text1: t('personality.rating.testError'),
+    //       position: 'bottom',
+    //       visibilityTime: 4000,
+    //     });
+    //   }
+    // };
 
     return (
       <View className="xs:p-2 flex-1 sm:p-3 md:p-4">
         <View className="mb-3 flex-row items-center justify-between rounded-lg bg-surface-light p-2 dark:bg-surface-dark">
           <Text
-            className={`font-medium text-sm ${!isSubmitted ? 'text-text-light' : 'text-secondary-dark'} dark:text-text-dark`}>
+            className={`font-medium text-sm ${!isSubmitted ? 'text-text-light' : 'w-full text-center text-secondary-dark'}`}>
             {isSubmitted
               ? t('personality.rating.yourRating')
               : t('personality.rating.remainingPoints')}
           </Text>
-          {!isSubmitted && (
+          {!(isSubmitted || hasExistingRating) && (
             <Text className="font-semibold text-base text-secondary-dark">{remainingPoints}</Text>
           )}
         </View>
@@ -221,33 +220,36 @@ export const GoodSidesRateRoute = memo(
             disabled={isSubmitted || hasExistingRating}
           />
         ))}
+        {!(isSubmitted || hasExistingRating) && (
+          <Button
+            size="sm"
+            title={isSubmitted ? t('personality.rating.saved') : t('personality.rating.complete')}
+            onPress={handleSubmit}
+            disabled={remainingPoints !== 0 || isSubmitted || isLoading || hasExistingRating}
+            className={`mt-4 ${
+              remainingPoints !== 0 || isSubmitted || isLoading || hasExistingRating
+                ? 'bg-gray-300'
+                : 'bg-primary-default'
+            }`}
+          />
+        )}
 
-        <Button
-          size="sm"
-          title={isSubmitted ? t('personality.rating.saved') : t('personality.rating.complete')}
-          onPress={handleSubmit}
-          disabled={remainingPoints !== 0 || isSubmitted || isLoading}
-          className={`mt-4 ${
-            remainingPoints !== 0 || isSubmitted || isLoading
-              ? 'bg-gray-300 dark:bg-gray-600'
-              : 'bg-primary-default'
-          }`}
-        />
-
-        {hasExistingRating && (
-          <Pressable onPress={handleReset} className="mt-4 items-center">
+        {(hasExistingRating || isSubmitted) && (
+          <Pressable
+            onPress={handleReset}
+            className="mt-4 items-center rounded-lg border border-secondary-dark bg-background-light p-2 shadow-lg shadow-secondary-light">
             <Text className="font-medium text-secondary-dark">
               {t('personality.rating.rateAgain')}
             </Text>
           </Pressable>
         )}
 
-        <Button
+        {/* <Button
           size="sm"
           title="Test Submit"
           onPress={handleTestSubmit}
           className="mt-2 bg-gray-300 dark:bg-gray-600"
-        />
+        /> */}
       </View>
     );
   }

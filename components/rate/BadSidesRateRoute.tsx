@@ -8,10 +8,7 @@ import { useAuth } from '@/store/useAuth';
 import Button from '../Button';
 import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'expo-router';
-import { useColorScheme } from 'react-native';
-import { theme } from '@/constants/theme';
-import { Ionicons } from '@expo/vector-icons';
-
+import * as Haptics from 'expo-haptics';
 const TOTAL_POINTS = 35;
 const MAX_TRAIT_POINTS = 10;
 const BAD_TRAIT_COLOR = '#D97650';
@@ -29,7 +26,6 @@ export const BadSidesRateRoute = memo(({ referenceCode }: BadSidesRateRouteProps
   const { t } = useTranslation();
   const { user } = useAuth();
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const colorScheme = useColorScheme();
   const [isLoading, setIsLoading] = useState(false);
   const [hasExistingRating, setHasExistingRating] = useState(false);
   const [traits, setTraits] = useState<Trait[]>([
@@ -53,7 +49,7 @@ export const BadSidesRateRoute = memo(({ referenceCode }: BadSidesRateRouteProps
   useEffect(() => {
     const checkExistingRating = async () => {
       if (!user?.uid) return;
-
+      setIsLoading(true);
       try {
         const exists = await RatingService.checkExistingRating(referenceCode, user.uid, 'badsides');
         if (exists) {
@@ -74,13 +70,15 @@ export const BadSidesRateRoute = memo(({ referenceCode }: BadSidesRateRouteProps
           setHasExistingRating(true);
           Toast.show({
             type: 'error',
-            text1: t('personality.rating.alreadyRated'),
+            text2: t('personality.rating.alreadyRated'),
             position: 'bottom',
             visibilityTime: 3000,
           });
         }
       } catch (error) {
         console.error('Error checking existing rating:', error);
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -125,7 +123,7 @@ export const BadSidesRateRoute = memo(({ referenceCode }: BadSidesRateRouteProps
 
       Toast.show({
         type: 'info',
-        text1: t('personality.rating.friendlyReminder'),
+        text2: t('personality.rating.friendlyReminder'),
         position: 'bottom',
         visibilityTime: 3000,
         onHide: () => router.replace('/(main)/you'),
@@ -203,12 +201,15 @@ export const BadSidesRateRoute = memo(({ referenceCode }: BadSidesRateRouteProps
   return (
     <View className="xs:p-2 flex-1 sm:p-3 md:p-4">
       <View className="mb-3 flex-row items-center justify-between rounded-lg bg-surface-light p-2 dark:bg-surface-dark">
-        <Text className="font-medium text-sm text-text-light dark:text-text-dark">
+        <Text
+          className={`font-medium text-sm ${!isSubmitted ? 'text-text-light' : 'w-full text-center text-secondary-dark'}`}>
           {isSubmitted
             ? t('personality.rating.yourRating')
             : t('personality.rating.remainingPoints')}
         </Text>
-        <Text className="font-semibold text-base text-secondary-dark">{remainingPoints}</Text>
+        {!(isSubmitted || hasExistingRating) && (
+          <Text className="font-semibold text-base text-secondary-dark">{remainingPoints}</Text>
+        )}
       </View>
 
       {traits.map((trait, index) => (
@@ -218,40 +219,50 @@ export const BadSidesRateRoute = memo(({ referenceCode }: BadSidesRateRouteProps
           points={trait.points}
           color={BAD_TRAIT_COLOR}
           maxPoints={MAX_TRAIT_POINTS}
-          onIncrease={() => handlePointChange(index, true)}
-          onDecrease={() => handlePointChange(index, false)}
+          onIncrease={() => {
+            Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+            handlePointChange(index, true);
+          }}
+          onDecrease={() => {
+            Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+            handlePointChange(index, false);
+          }}
           remainingPoints={remainingPoints}
           label={t(`personality.traits.${trait.name}`)}
-          disabled={isSubmitted}
+          disabled={isSubmitted || hasExistingRating}
         />
       ))}
 
-      <Button
-        size="sm"
-        title={isSubmitted ? t('personality.rating.saved') : t('personality.rating.complete')}
-        onPress={handleSubmit}
-        disabled={remainingPoints !== 0 || isSubmitted || isLoading}
-        className={`mt-4 ${
-          remainingPoints !== 0 || isSubmitted || isLoading
-            ? 'bg-gray-300 dark:bg-gray-600'
-            : 'bg-primary-default'
-        }`}
-      />
+      {!(isSubmitted || hasExistingRating) && (
+        <Button
+          size="sm"
+          title={isSubmitted ? t('personality.rating.saved') : t('personality.rating.complete')}
+          onPress={handleSubmit}
+          disabled={remainingPoints !== 0 || isSubmitted || isLoading || hasExistingRating}
+          className={`mt-4 ${
+            remainingPoints !== 0 || isSubmitted || isLoading || hasExistingRating
+              ? 'bg-gray-30'
+              : 'bg-primary-default'
+          }`}
+        />
+      )}
 
-      {hasExistingRating && (
-        <Pressable onPress={handleReset} className="mt-4 items-center">
+      {(hasExistingRating || isSubmitted) && (
+        <Pressable
+          onPress={handleReset}
+          className="mt-4 items-center rounded-lg border border-secondary-dark bg-background-light p-2 shadow-lg shadow-secondary-light">
           <Text className="font-medium text-secondary-dark">
             {t('personality.rating.rateAgain')}
           </Text>
         </Pressable>
       )}
 
-      <Button
+      {/* <Button
         size="sm"
         title="Test Submit"
         onPress={handleTestSubmit}
         className="mt-2 bg-gray-300 dark:bg-gray-600"
-      />
+      /> */}
     </View>
   );
 });

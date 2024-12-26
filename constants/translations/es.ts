@@ -141,8 +141,8 @@ export default {
       close: 'Cerrar',
       remainingPoints: 'Puntos Restantes',
       saved: 'Calificación guardada',
-      alreadyRated: 'Ya has calificado los buenos rasgos de este usuario',
-      yourRating: 'Tu Calificación',
+      alreadyRated: 'Ya has calificado a este usuario',
+      yourRating: 'Tu Calificación Guardada',
       complete: 'Completar Calificación',
       rateAgain: 'Calificar de nuevo',
       ratingDeleted: 'La calificación anterior ha sido eliminada',
@@ -344,7 +344,7 @@ export default {
     noRatingsWarning: {
       title: '¡Analicemos tu Personalidad!',
       description:
-        'Descubre tu análisis de personalidad ��nico donde combinamos la energía cósmica de tu signo zodiacal con las percepciones de IA basadas en las calificaciones de tus amigos. ¡Prepárate para un viaje personalizado de autodescubrimiento!',
+        'Descubre tu análisis de personalidad único donde combinamos la energía cósmica de tu signo zodiacal con las percepciones de IA basadas en las calificaciones de tus amigos. ¡Prepárate para un viaje personalizado de autodescubrimiento!',
       cta: 'Comparte tu perfil y comienza a recolectar calificaciones',
     },
     updateFrequency: 'Tu análisis se actualiza cada vez que recibes 3 nuevas calificaciones.',
@@ -388,7 +388,7 @@ export default {
         'Completa 5 tareas de un rasgo para aumentar los rasgos de personalidad buenos en 1 punto o disminuir los malos en 1 punto',
       dailyRefresh: 'Las tareas se actualizan cada 24 horas',
       refreshLimit:
-        'Puedes actualizar las tareas hasta 10 veces al d��a si deseas diferentes desafíos.',
+        'Puedes actualizar las tareas hasta 10 veces al día si deseas diferentes desafíos.',
       general: 'Completa las tareas y alcanza tu estado máximo',
     },
     debug: {
@@ -421,7 +421,7 @@ export default {
     screen2: {
       title: 'Análisis Personalizado',
       description:
-        'Obt��n un análisis de personalidad basado en tu signo zodiacal y recibe consejos diarios para mejorar',
+        'Obtén un análisis de personalidad basado en tu signo zodiacal y recibe consejos diarios para mejorar',
     },
     screen3: {
       title: 'Alcanza Tu Máximo Potencial',

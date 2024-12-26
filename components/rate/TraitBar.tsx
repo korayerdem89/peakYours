@@ -20,7 +20,6 @@ const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
 export const TraitBar = memo(
   ({
-    name,
     points,
     color,
     maxPoints,
@@ -29,7 +28,6 @@ export const TraitBar = memo(
     remainingPoints,
     label,
     disabled = false,
-    style,
   }: TraitBarProps) => {
     // Artı butonu için opacity animasyonu
     const increaseButtonStyle = useAnimatedStyle(
@@ -84,7 +82,7 @@ export const TraitBar = memo(
           <View className="flex-row items-center gap-1.5 rounded-full bg-gray-50 px-1 py-0.5">
             <AnimatedPressable
               onPress={onDecrease}
-              disabled={remainingPoints === 35 || points === 0}
+              disabled={remainingPoints === 35 || points === 0 || disabled}
               hitSlop={8}
               style={[
                 {

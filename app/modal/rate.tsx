@@ -1,5 +1,14 @@
 import React, { useState, useMemo, useCallback, useEffect } from 'react';
-import { View, Text, ScrollView, useWindowDimensions, Pressable } from 'react-native';
+import {
+  View,
+  Text,
+  ScrollView,
+  useWindowDimensions,
+  Pressable,
+  ActivityIndicator,
+  Image,
+  Dimensions,
+} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTranslation } from '@/providers/LanguageProvider';
 import { ReferenceCodeInput } from '@/components/rate/ReferenceCodeInput';
@@ -30,7 +39,7 @@ export default function RateScreen() {
   const [userNotFound, setUserNotFound] = useState(false);
   const [foundUserId, setFoundUserId] = useState<string | null>(null);
   const [userData, setUserData] = useState<UserProfile | null>(null);
-
+  const { width, height } = Dimensions.get('window');
   const routes = useMemo(
     () => [
       { key: 'goodsides', title: t('tabs.goodsides') },
@@ -62,11 +71,10 @@ export default function RateScreen() {
       <TabBar
         {...props}
         indicatorStyle={{
-          backgroundColor:
-            colorScheme === 'dark' ? theme.colors.accent.light : theme.colors.secondary.dark,
+          backgroundColor: theme.colors.secondary.dark,
         }}
         style={{
-          backgroundColor: colorScheme === 'dark' ? '#131A2A' : '#FAFAFA',
+          backgroundColor: '#FAFAFA',
           opacity: userNotFound || isLoading ? 0.5 : 1,
         }}
         tabStyle={{
@@ -79,10 +87,8 @@ export default function RateScreen() {
           width: '100%',
           textAlign: 'center',
         }}
-        activeColor={
-          colorScheme === 'dark' ? theme.colors.accent.light : theme.colors.secondary.dark
-        }
-        inactiveColor={colorScheme === 'dark' ? '#C5CEE0' : '#8F9BB3'}
+        activeColor={theme.colors.secondary.dark}
+        inactiveColor={'#8F9BB3'}
         pressColor="transparent"
         scrollEnabled={false}
         onTabPress={({ preventDefault }) => {
@@ -160,12 +166,12 @@ export default function RateScreen() {
   };
 
   return (
-    <SafeAreaView className="flex-1 bg-background-light dark:bg-background-dark">
-      <View className="flex-1 p-3">
-        <View className="">
+    <SafeAreaView className="flex-1 bg-background-light">
+      <View className="flex-1 px-3 ">
+        <View>
           <Pressable
             onPress={handleClose}
-            className="w-full items-end"
+            className="mb-1 mt-3 items-end bg-white"
             hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}>
             <AntDesign
               name="closecircleo"
@@ -173,20 +179,29 @@ export default function RateScreen() {
               color={colorScheme === 'dark' ? theme.colors.error.light : theme.colors.error.dark}
             />
           </Pressable>
-          <Text className="text-center font-semibold text-lg text-primary-dark dark:text-primary-dark">
-            {t('personality.rating.rateFriends')}
-          </Text>
-          <Text className="mb-2 text-center font-regular text-sm text-text-light-secondary dark:text-text-dark-secondary">
-            {t('personality.rating.description')}
-          </Text>
+          <View className="gap-2">
+            {!foundUserId && (
+              <Image
+                source={require('@/assets/rate/rate.png')}
+                className="right-6 mt-2 w-full rounded-xl"
+                resizeMode="contain"
+                style={{ width: width, height: height / 3.5 }}
+              />
+            )}
+            <Text className="text-center font-semibold text-lg text-secondary-dark">
+              {t('personality.rating.rateFriends')}
+            </Text>
+            <Text className=" text-center font-regular text-sm text-text-light-secondary dark:text-text-dark-secondary">
+              {t('personality.rating.description')}
+            </Text>
 
-          <ReferenceCodeInput
-            value={referenceCode}
-            onChangeText={handleCodeChange}
-            onClear={handleClearInput}
-            isLoading={isLoading}
-          />
-
+            <ReferenceCodeInput
+              value={referenceCode}
+              onChangeText={handleCodeChange}
+              onClear={handleClearInput}
+              isLoading={isLoading}
+            />
+          </View>
           {userNotFound && !isLoading && <UserNotFound />}
 
           {userData && !isLoading && (
