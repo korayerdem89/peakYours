@@ -362,6 +362,7 @@ export default {
         '✨ Obtén análisis únicos que combinan tu signo zodiacal con tus rasgos de personalidad',
       ],
     },
+    title: 'Guía Personal',
   },
   tasks: {
     refreshTask: 'Actualizar tarea',

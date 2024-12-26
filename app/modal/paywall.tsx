@@ -95,10 +95,8 @@ export default function Paywall() {
                     subscribeUser(selectedPlan, locale);
                   }}
                   key={index}
-                  className={`mb-4 rounded-xl border-2 bg-surface-light/40 p-4 ${
-                    plan.isPopular
-                      ? 'border-primary-light '
-                      : 'border-border-light/60 bg-surface-light/50'
+                  className={`mb-4 rounded-xl border-2 bg-surface-light/60 p-4   ${
+                    plan.isPopular ? 'border-primary-light ' : 'border-border-light/90  '
                   }`}>
                   <View className="mb-2 flex-row items-center justify-between">
                     <Text className="font-semibold text-lg capitalize text-text-light dark:text-text-dark">

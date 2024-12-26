@@ -175,7 +175,7 @@ export default function TasksScreen() {
     loadTaskData();
   }, [user?.uid, goodTraits, badTraits, userData]);
 
-  // Task handlers
+  //Task handlers
   const handleCompleteTask = useCallback(
     async (taskId: string, trait: string) => {
       if (!user?.uid || completedTasks.includes(taskId)) return;
@@ -191,7 +191,12 @@ export default function TasksScreen() {
         ]);
 
         const task = tasks.find((t) => t.id === taskId);
-        if (task) {
+        const traitValue =
+          task?.type === 'goodsides'
+            ? goodTraits.find((item) => item.trait === trait)?.value
+            : badTraits.find((item) => item.trait === trait)?.value;
+        const shouldShowLevelUpTrait = traitValue && (traitValue + 10) % 5 === 0;
+        if (task && shouldShowLevelUpTrait) {
           setLevelUpTrait({
             trait: task.trait,
             type: task.type,

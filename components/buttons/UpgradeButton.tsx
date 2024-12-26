@@ -40,14 +40,7 @@ export function UpgradeButton({ onPress, className = '' }: UpgradeButtonProps) {
     <TouchableOpacity
       onPress={handlePress}
       activeOpacity={0.9}
-      className={`mt-4 w-full overflow-hidden rounded-2xl shadow-lg ${className}`}
-      style={{
-        shadowColor: theme.colors.primary.light,
-        shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.3,
-        shadowRadius: 8,
-        elevation: 8,
-      }}>
+      className={`mt-4 w-full overflow-hidden rounded-2xl ${className} shadow-2xl shadow-primary-light`}>
       <AnimatedGradient
         colors={[theme.colors.primary.dark, theme.colors.primary.light]}
         start={{ x: 0, y: 0 }}

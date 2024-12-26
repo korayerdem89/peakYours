@@ -30,8 +30,7 @@ export default function YouScreen() {
   const [retryCount, setRetryCount] = useState(0);
   const MAX_RETRY = 3;
   const RETRY_DELAY = 5000;
-  // const shouldOpenDiscountedPaywall = usageCount > 4 && usageCount % 3 === 0 && usageCount < 25;
-  const shouldOpenDiscountedPaywall = true;
+  const shouldOpenDiscountedPaywall = usageCount > 6 && usageCount % 3 === 0 && usageCount < 25;
 
   useEffect(() => {
     if (shouldOpenDiscountedPaywall) {

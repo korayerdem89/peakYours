@@ -473,17 +473,18 @@ export default function SettingsScreen() {
           <Accordion title={t('settings.accountSettings')}>
             <View className="border-t border-gray-100 dark:border-gray-800">
               {/* Reset Traits Button */}
-              <TouchableOpacity
-                onPress={handleResetTraits}
-                className="flex-row items-center justify-between px-4 py-4 active:bg-gray-50 dark:active:bg-gray-800">
-                <View className="flex-row items-center space-x-3">
-                  <Text className="font-medium text-gray-500 dark:text-gray-600">
-                    {t('settings.resetTraits.button')}
-                  </Text>
-                </View>
-                <Text className="text-text-light-secondary dark:text-text-dark-secondary">›</Text>
-              </TouchableOpacity>
-
+              {userData?.membership?.type === 'pro' && (
+                <TouchableOpacity
+                  onPress={handleResetTraits}
+                  className="flex-row items-center justify-between px-4 py-4 active:bg-gray-50 dark:active:bg-gray-800">
+                  <View className="flex-row items-center space-x-3">
+                    <Text className="font-medium text-gray-500 dark:text-gray-600">
+                      {t('settings.resetTraits.button')}
+                    </Text>
+                  </View>
+                  <Text className="text-text-light-secondary dark:text-text-dark-secondary">›</Text>
+                </TouchableOpacity>
+              )}
               {/* Delete Account Button */}
               <TouchableOpacity
                 onPress={handleDeleteAccount}

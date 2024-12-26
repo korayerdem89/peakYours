@@ -19,6 +19,7 @@ import { UpgradeButton } from '@/components/buttons/UpgradeButton';
 import { useTraits } from '@/providers/TraitProvider';
 import { PersonalityAnimal, StoredAnalysis, PERSONALITY_ANIMALS } from '@/types/ideas';
 import { generateAIAnalysis } from '@/constants/ideas/prompts';
+import { IdeasHeader } from '@/components/ideas/IdeasHeader';
 
 export default function Ideas() {
   // Core hooks
@@ -238,6 +239,7 @@ export default function Ideas() {
               </Text>
             </View>
           </Animated.View>
+          <IdeasHeader />
           {personalityAnimal && (
             <View className="flex-row items-center gap-5 rounded-sm bg-surface-light p-6 shadow-lg dark:bg-surface-dark">
               {/* Zıplayan hayvan ikonu */}

@@ -348,6 +348,7 @@ export default {
       ],
       cta: '✨ Upgrade now to reveal your spirit animal!',
     },
+    title: 'Personal Guide',
   },
   tasks: {
     refreshTask: 'Refresh task',
