@@ -30,6 +30,7 @@ import { deleteUser, resetUserTraits } from '@/services/userService';
 import Toast from 'react-native-toast-message';
 import { useLoadingStore } from '@/store/useLoadingStore';
 import { useRouter } from 'expo-router';
+import { useAppUsage } from '@/hooks/useAppUsage';
 
 const LANGUAGES = [
   { code: 'en', label: 'EN' },
@@ -58,8 +59,9 @@ export default function SettingsScreen() {
   const router = useRouter();
   const { data: userData } = useUserData(user?.uid) || null;
   const updateUser = useUpdateUser();
-  const [showCopied, setShowCopied] = useState(false);
-
+  const { usageCount } = useAppUsage();
+  const shouldOpenDiscountedPaywall = usageCount > 6 && usageCount % 4 === 0 && usageCount < 25;
+  const paywallLink = shouldOpenDiscountedPaywall ? '/modal/discountedPaywall' : '/modal/paywall';
   // const toggleColorScheme = useCallback(() => {
   //   if (isTogglingTheme) return;
 
@@ -350,7 +352,6 @@ export default function SettingsScreen() {
   const handleCopyRefCode = async () => {
     if (userData?.refCodes?.en) {
       await Clipboard.setStringAsync(userData.refCodes.en);
-      setShowCopied(true);
       // Toast gösterimi
       Toast.show({
         type: 'success',
@@ -464,16 +465,16 @@ export default function SettingsScreen() {
               <View className="flex-1" />
               <Text
                 className={`pr-2 text-center font-bold text-lg tracking-tight ${
-                  userData?.membership?.type === 'free' ? 'text-text-light ' : 'text-secondary-dark'
+                  userData?.membership?.type === 'free' ? 'text-gray-500' : 'text-secondary-dark'
                 }`}>
                 {userData?.membership?.type === 'pro' ? 'PRO' : 'FREE'}
               </Text>
               <View className="flex-1">
                 {userData?.membership?.type === 'free' && (
                   <TouchableOpacity
-                    onPress={() => router.push('/modal/paywall')}
+                    onPress={() => router.push(paywallLink)}
                     className="active:opacity-60">
-                    <Text className="pt-1 font-semibold text-sm text-primary underline">
+                    <Text className="bottom-2 rotate-[-8deg] pt-1 font-semibold text-xs text-primary underline">
                       {t('settings.upgrade')}
                     </Text>
                   </TouchableOpacity>

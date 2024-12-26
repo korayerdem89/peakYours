@@ -36,6 +36,7 @@ import { TaskList } from '@/components/tasks/TaskList';
 import { TaskInfo } from '@/components/tasks/TaskInfo';
 import QuoteCard from '@/components/main/QuoteCard';
 import { UpgradeButton } from '@/components/buttons/UpgradeButton';
+import { useAppUsage } from '@/hooks/useAppUsage';
 
 interface TaskLevelUpTrait {
   trait: string;

@@ -11,6 +11,7 @@ import Animated, {
 import { theme } from '@/constants/theme';
 import { useTranslation } from '@/providers/LanguageProvider';
 import { BlurView } from 'expo-blur';
+import { useAppUsage } from '@/hooks/useAppUsage';
 
 const AnimatedGradient = Animated.createAnimatedComponent(LinearGradient);
 
@@ -22,7 +23,9 @@ interface UpgradeButtonProps {
 export function UpgradeButton({ onPress, className = '' }: UpgradeButtonProps) {
   const { t } = useTranslation();
   const scale = useSharedValue(1);
-
+  const { usageCount } = useAppUsage();
+  const shouldOpenDiscountedPaywall = usageCount > 6 && usageCount % 4 === 0 && usageCount < 25;
+  const paywallLink = shouldOpenDiscountedPaywall ? '/modal/discountedPaywall' : '/modal/paywall';
   const animatedStyle = useAnimatedStyle(() => ({
     transform: [{ scale: scale.value }],
   }));
@@ -32,7 +35,7 @@ export function UpgradeButton({ onPress, className = '' }: UpgradeButtonProps) {
     if (onPress) {
       onPress();
     } else {
-      router.push('/modal/paywall');
+      router.push(paywallLink);
     }
   };
 
