@@ -126,13 +126,13 @@ export default function SignInScreen() {
 
   return (
     <SafeAreaView className="flex-1 bg-accent-light dark:bg-background-dark">
+      <Image
+        source={require('@/assets/banner.png')}
+        className="my-10 w-full rounded-xl"
+        style={{ width: width, height: height / 10 }}
+        resizeMode="contain"
+      />
       <View className="flex-1 items-center justify-center gap-10 p-6">
-        <Image
-          source={require('@/assets/banner.png')}
-          className="mb-10 w-full rounded-xl"
-          style={{ width: width, height: height / 10 }}
-          resizeMode="contain"
-        />
         <Image
           source={require('@/assets/sign-in/signin.png')}
           className="w-full rounded-xl"
