@@ -56,7 +56,7 @@ export default function SignInScreen() {
   const { isLoading, setIsLoading } = useLoadingStore();
   const isDark = colorScheme === 'dark';
   const translateY = useSharedValue(0);
-
+  const [name, setName] = useState('');
   useEffect(() => {
     const showSubscription = Keyboard.addListener(
       Platform.OS === 'ios' ? 'keyboardWillShow' : 'keyboardDidShow',
@@ -240,33 +240,49 @@ export default function SignInScreen() {
                 style={{ height: BANNER_HEIGHT }}
                 resizeMode="contain"
               />
-              <View className="w-full gap-3">
-                <GoogleSigninButton
-                  size={GoogleSigninButton.Size.Wide}
-                  color={isDark ? GoogleSigninButton.Color.Light : GoogleSigninButton.Color.Dark}
-                  onPress={signIn}
-                  disabled={isLoading}
-                  style={{ width: '100%', height: 48 }}
-                />
+              {!isSignUp && (
+                <>
+                  <View className="w-full gap-3">
+                    <GoogleSigninButton
+                      size={GoogleSigninButton.Size.Wide}
+                      color={
+                        isDark ? GoogleSigninButton.Color.Light : GoogleSigninButton.Color.Dark
+                      }
+                      onPress={signIn}
+                      disabled={isLoading}
+                      style={{ width: '100%', height: 48 }}
+                    />
 
-                {AppleAuthService.isSupported && (
-                  <AppleButton
-                    buttonStyle={AppleButton.Style.BLACK}
-                    buttonType={AppleButton.Type.SIGN_IN}
-                    style={{
-                      alignSelf: 'center',
-                      width: '98%',
-                      height: 42,
-                    }}
-                    onPress={handleAppleSignIn}
-                  />
-                )}
-              </View>
-              <Text className="text-center font-regular text-sm text-text-light">
-                {t('auth.or')}
-              </Text>
+                    {AppleAuthService.isSupported && (
+                      <AppleButton
+                        buttonStyle={AppleButton.Style.BLACK}
+                        buttonType={AppleButton.Type.SIGN_IN}
+                        style={{
+                          alignSelf: 'center',
+                          width: '98%',
+                          height: 42,
+                        }}
+                        onPress={handleAppleSignIn}
+                      />
+                    )}
+                  </View>
+                  <Text className="text-center font-regular text-sm text-text-light">
+                    {t('auth.or')}
+                  </Text>
+                </>
+              )}
               <View className="w-full gap-4">
                 <View className="mb-4 w-full gap-2">
+                  {isSignUp && (
+                    <TextInput
+                      className="h-12 w-full rounded-sm border border-gray-200 bg-background-light px-4 text-text-light dark:border-gray-700 dark:bg-surface-dark dark:text-text-dark"
+                      placeholder={t('auth.fullName')}
+                      placeholderTextColor={theme.colors.text.light}
+                      value={name}
+                      onChangeText={setName}
+                      autoCapitalize="none"
+                    />
+                  )}
                   <TextInput
                     className="h-12 w-full rounded-sm border border-gray-200 bg-background-light px-4 text-text-light dark:border-gray-700 dark:bg-surface-dark dark:text-text-dark"
                     placeholder={t('auth.email')}
@@ -296,13 +312,16 @@ export default function SignInScreen() {
                       />
                     </TouchableOpacity>
                   </View>
-                  <TouchableOpacity
-                    onPress={handleForgotPassword}
-                    className="mb-2 w-full items-end">
-                    <Text className="text-sm text-primary-light dark:text-primary-dark">
-                      {t('auth.forgotPassword.text')}
-                    </Text>
-                  </TouchableOpacity>
+
+                  {!isSignUp && (
+                    <TouchableOpacity
+                      onPress={handleForgotPassword}
+                      className="mb-2 w-full items-end">
+                      <Text className="font-regular text-sm text-primary-dark">
+                        {t('auth.forgotPassword.text')}
+                      </Text>
+                    </TouchableOpacity>
+                  )}
                 </View>
                 <TouchableOpacity
                   onPress={handleEmailAuth}
@@ -316,7 +335,7 @@ export default function SignInScreen() {
                 <TouchableOpacity
                   onPress={() => setIsSignUp(!isSignUp)}
                   className="active:opacity-60">
-                  <Text className="text-center text-sm text-text-light-secondary dark:text-text-dark-secondary">
+                  <Text className="text-center font-regular text-sm text-text-light">
                     {!isSignUp ? t('auth.signIn.switch') : t('auth.signUp.switch')}
                   </Text>
                 </TouchableOpacity>

@@ -44,6 +44,7 @@ export default {
       success: '¡Correo de recuperación enviado!',
       error: 'Error al enviar el correo de recuperación',
     },
+    fullName: 'Nombre Completo',
   },
   settings: {
     title: 'Ajustes',

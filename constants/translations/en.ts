@@ -44,6 +44,7 @@ export default {
       success: 'Password reset email sent!',
       error: 'Error sending password reset email',
     },
+    fullName: 'Full Name',
   },
   settings: {
     title: 'Settings',

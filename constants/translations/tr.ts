@@ -145,7 +145,7 @@ export default {
       errorMessage: 'Puanlama kaydedilirken bir hata oluştu.',
       reset: 'Sıfırlandı',
       resetMessage: 'Tüm puanlar sıfırlandı.',
-      alreadyRated: 'Bu kullanıcıyı zaten de��erlendirdiniz',
+      alreadyRated: 'Bu kullanıcıyı zaten değerlendirdiniz',
       yourRating: 'Kayıtlı Değerlendirmen',
       nextBadSides: 'şimdi sırada geliştirmesi gereken yanları puanlamakta :)',
       friendlyReminder: 'Dürüst geri bildirimin için teşekkürler!',
@@ -401,7 +401,7 @@ export default {
     },
   },
   subscription: {
-    unlockPro: 'Premium Özellikleri Keşfet',
+    unlockPro: 'Premium ��zellikleri Keşfet',
     description: 'Kişisel gelişim yolculuğunuzda size yardımcı olacak tüm özelliklere erişin',
     monthly: 'Aylık',
     annual: 'Yıllık',
@@ -485,6 +485,7 @@ export default {
       button: 'Kayıt Ol',
       switch: 'Zaten hesabınız var mı? Giriş yapın',
     },
+    fullName: 'Tam Adınız',
   },
   welcome: {
     title: "Personality Insights'a Hoş Geldiniz!",
