@@ -475,7 +475,7 @@ export default function SettingsScreen() {
                   <TouchableOpacity
                     onPress={() => router.push(paywallLink)}
                     className="active:opacity-60">
-                    <Text className="bottom-2 rotate-[-8deg] pt-1 font-semibold text-xs text-primary underline">
+                    <Text className="font-semibold text-xs text-primary underline">
                       {t('settings.upgrade')}
                     </Text>
                   </TouchableOpacity>
