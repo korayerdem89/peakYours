@@ -145,7 +145,7 @@ export default {
       errorMessage: 'Puanlama kaydedilirken bir hata oluştu.',
       reset: 'Sıfırlandı',
       resetMessage: 'Tüm puanlar sıfırlandı.',
-      alreadyRated: 'Bu kullanıcıyı zaten değerlendirdiniz',
+      alreadyRated: 'Bu kullanıcıyı zaten de��erlendirdiniz',
       yourRating: 'Kayıtlı Değerlendirmen',
       nextBadSides: 'şimdi sırada geliştirmesi gereken yanları puanlamakta :)',
       friendlyReminder: 'Dürüst geri bildirimin için teşekkürler!',
@@ -267,7 +267,7 @@ export default {
       },
       phoenix: {
         name: 'Dirençli Anka Kuşu',
-        trait: 'Zorluklardan daha güçlü ç��kar',
+        trait: 'Zorluklardan daha güçlü çıkar',
       },
       seahorse: {
         name: 'Nazik Denizatı',
@@ -485,5 +485,11 @@ export default {
       button: 'Kayıt Ol',
       switch: 'Zaten hesabınız var mı? Giriş yapın',
     },
+  },
+  welcome: {
+    title: "Personality Insights'a Hoş Geldiniz!",
+    description:
+      'Kişilik özelliklerinizi başkalarının gözünden keşfedin. Arkadaşlarınızı değerlendirerek başlayın ve onların sizi değerlendirmesine izin vererek kendiniz hakkında içgörüler edinin.',
+    button: 'Anladım!',
   },
 };

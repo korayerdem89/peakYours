@@ -11,12 +11,7 @@ import {
   ScrollView,
   KeyboardAvoidingView,
 } from 'react-native';
-import Animated, {
-  useAnimatedStyle,
-  useSharedValue,
-  withTiming,
-  interpolate,
-} from 'react-native-reanimated';
+import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 import {
   GoogleSignin,
   statusCodes,

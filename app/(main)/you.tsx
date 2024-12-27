@@ -25,6 +25,7 @@ import NetInfo from '@react-native-community/netinfo';
 import { useAppUsage } from '@/hooks/useAppUsage';
 import { router } from 'expo-router';
 import { useTraits } from '@/providers/TraitProvider';
+import WelcomeModal from '@/components/modals/WelcomeModal';
 
 export default function YouScreen() {
   const { t, locale } = useTranslation();
@@ -34,16 +35,25 @@ export default function YouScreen() {
   const { user } = useAuth();
   const { data: userData } = useUserData(user?.uid);
 
-  const { usageCount } = useAppUsage();
+  const { usageCount, isFirstTime } = useAppUsage();
   const updateUser = useUpdateUser();
   const [bannerError, setBannerError] = useState(false);
   const [retryCount, setRetryCount] = useState(0);
   const MAX_RETRY = 3;
   const RETRY_DELAY = 5000;
-  const shouldOpenDiscountedPaywall = usageCount > 6 && usageCount % 4 === 0 && usageCount < 25;
+  // const shouldOpenDiscountedPaywall = usageCount > 6 && usageCount % 4 === 0 && usageCount < 25;
+  const shouldOpenDiscountedPaywall = false;
   const { traitDetails } = useTraits();
+  const [showWelcome, setShowWelcome] = useState(false);
+
   const isShowBanner =
     traitDetails && traitDetails?.totalRaters > 5 && userData?.membership?.type === 'free';
+
+  useFocusEffect(
+    useCallback(() => {
+      setShowWelcome(isFirstTime);
+    }, [isFirstTime])
+  );
 
   useEffect(() => {
     if (shouldOpenDiscountedPaywall) {
@@ -185,6 +195,7 @@ export default function YouScreen() {
         renderTabBar={renderTabBar}
         lazy={false}
       />
+      {!showWelcome && <WelcomeModal onClose={() => setShowWelcome(false)} />}
     </SafeAreaView>
   );
 }

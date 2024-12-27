@@ -503,4 +503,10 @@ export default {
       error: 'Error al enviar el correo de restablecimiento',
     },
   },
+  welcome: {
+    title: '¡Bienvenido a Personality Insights!',
+    description:
+      'Descubre tus rasgos de personalidad a través de los ojos de los demás. Comienza calificando a tus amigos y deja que ellos te califiquen para descubrir más sobre ti mismo.',
+    button: '¡Entendido!',
+  },
 };

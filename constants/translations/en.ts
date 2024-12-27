@@ -501,4 +501,10 @@ export default {
     subscribeText: 'Get Pro membership to see how others rated you',
     subscribeCTA: 'Get Pro Membership',
   },
+  welcome: {
+    title: 'Welcome to Personality Insights!',
+    description:
+      'Discover your personality traits through the eyes of others. Start by rating your friends and let them rate you back to unlock insights about yourself.',
+    button: 'Got it!',
+  },
 };
