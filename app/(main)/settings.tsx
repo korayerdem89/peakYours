@@ -411,76 +411,130 @@ export default function SettingsScreen() {
           <Text className="mt-1 font-regular text-[15px] text-text-light-secondary dark:text-text-dark-secondary">
             {user?.email}
           </Text>
-
-          {/* Zodiac Sign Card*/}
-          <TouchableOpacity
-            onPress={handleZodiacCardPress}
-            className="mt-2 w-full rounded-lg bg-background-light p-4 dark:bg-surface-dark">
-            <Text className="pb-2 text-center font-medium text-[15px] text-text-light-secondary dark:text-text-dark-secondary">
-              {t('settings.zodiacCard.title')}
-            </Text>
-            {updateUser.isPending ? (
-              <ActivityIndicator className="py-2" />
-            ) : zodiacInfo ? (
-              <>
-                <View className="flex-row items-center justify-center gap-1 space-x-2">
-                  <Text className="text-3xl">{zodiacInfo.icon}</Text>
-                  <Text className="font-semibold text-lg tracking-tight text-text-light dark:text-text-dark">
-                    {t(zodiacInfo.name)}
+          <View className="w-full gap-3">
+            {/* Zodiac Sign Card*/}
+            <TouchableOpacity
+              onPress={handleZodiacCardPress}
+              className="mt-2 w-full rounded-lg bg-background-light p-2 dark:bg-surface-dark">
+              <Text className="pb-1 text-center font-medium text-[15px] text-text-light-secondary dark:text-text-dark-secondary">
+                {t('settings.zodiacCard.title')}
+              </Text>
+              {updateUser.isPending ? (
+                <ActivityIndicator className="py-2" />
+              ) : zodiacInfo ? (
+                <>
+                  <View className="flex-row items-center justify-center gap-2">
+                    <Text className="text-3xl">{zodiacInfo.icon}</Text>
+                    <Text className="font-semibold text-lg tracking-tight text-text-light dark:text-text-dark">
+                      {t(zodiacInfo.name)}
+                    </Text>
+                  </View>
+                  <Text className="mt-1 text-center font-regular text-[14px] text-text-light-secondary dark:text-text-dark-secondary">
+                    {zodiacInfo.date}
                   </Text>
-                </View>
-                <Text className="mt-1 text-center font-regular text-[14px] text-text-light-secondary dark:text-text-dark-secondary">
-                  {zodiacInfo.date}
+                </>
+              ) : (
+                <Text className="text-center font-regular text-base text-text-light dark:text-text-dark">
+                  {t('settings.zodiacCard.description')}
                 </Text>
-              </>
-            ) : (
-              <Text className="text-center font-regular text-base text-text-light dark:text-text-dark">
-                {t('settings.zodiacCard.description')}
+              )}
+            </TouchableOpacity>
+
+            {/* Referral Code Card */}
+            <View className="w-full rounded-lg bg-background-light p-2 dark:bg-surface-dark">
+              <Text className="text-center font-medium text-[15px] text-text-light-secondary dark:text-text-dark-secondary">
+                {t('settings.referralCode')}
               </Text>
-            )}
-          </TouchableOpacity>
-          {/* Referral Code Card */}
-          <View className="mt-4 w-full rounded-lg bg-background-light p-4 dark:bg-surface-dark">
-            <Text className="pb-1 text-center font-medium text-[15px] text-text-light-secondary dark:text-text-dark-secondary">
-              {t('settings.referralCode')}
-            </Text>
-            <View className="flex-row items-center justify-center space-x-2">
-              <Text className="text-center font-bold text-lg tracking-tight text-text-light dark:text-text-dark">
-                {userData?.refCodes?.en}
-              </Text>
-              <TouchableOpacity onPress={handleCopyRefCode} className="p-2 active:opacity-60">
-                <Ionicons
-                  name="copy-outline"
-                  size={20}
-                  color={colorScheme === 'dark' ? theme.colors.text.dark : theme.colors.text.light}
-                />
-              </TouchableOpacity>
+
+              <View className="flex-row items-center justify-center space-x-2">
+                <Text className="text-center font-bold text-lg tracking-tight text-text-light dark:text-text-dark">
+                  {userData?.refCodes?.en}
+                </Text>
+                <TouchableOpacity onPress={handleCopyRefCode} className="p-2 active:opacity-60">
+                  <Ionicons
+                    name="copy-outline"
+                    size={20}
+                    color={
+                      colorScheme === 'dark' ? theme.colors.text.dark : theme.colors.text.light
+                    }
+                  />
+                </TouchableOpacity>
+              </View>
             </View>
-          </View>
-          {/* Membership Type Card */}
-          <View className="mt-4 w-full rounded-lg bg-background-light p-4 dark:bg-surface-dark">
-            <Text className="pb-1 text-center font-medium text-[15px] text-text-light-secondary dark:text-text-dark-secondary">
-              {t('settings.membershipType')}
-            </Text>
-            <View className="flex-row items-center justify-between px-4">
-              <View className="flex-1" />
-              <Text
-                className={`pr-2 text-center font-bold text-lg tracking-tight ${
-                  userData?.membership?.type === 'free' ? 'text-gray-500' : 'text-secondary-dark'
-                }`}>
-                {userData?.membership?.type === 'pro' ? 'PRO' : 'FREE'}
+            {/* Membership Type Card */}
+            <View className="w-full rounded-lg bg-background-light p-2 dark:bg-surface-dark">
+              <Text className="text-center font-medium text-[15px] text-text-light-secondary dark:text-text-dark-secondary">
+                {t('settings.membershipType')}
               </Text>
-              <View className="flex-1">
-                {userData?.membership?.type === 'free' && (
+              <View className="flex-row items-center justify-between px-4">
+                <View className="flex-1" />
+                <Text
+                  className={`pr-2 text-center font-bold text-lg tracking-tight ${
+                    userData?.membership?.type === 'free' ? 'text-gray-500' : 'text-secondary-dark'
+                  }`}>
+                  {userData?.membership?.type === 'pro' ? 'PRO' : 'FREE'}
+                </Text>
+                <View className="flex-1">
+                  {userData?.membership?.type === 'free' && (
+                    <TouchableOpacity
+                      onPress={() => router.push(paywallLink)}
+                      className="active:opacity-60">
+                      <Text className="font-semibold text-xs text-primary underline">
+                        {t('settings.upgrade')}
+                      </Text>
+                    </TouchableOpacity>
+                  )}
+                </View>
+              </View>
+            </View>
+            {/* Account Settings Section with Accordion */}
+            <View className="overflow-hidden rounded-2xl bg-background-light dark:bg-surface-dark">
+              <Accordion title={t('settings.accountSettings')}>
+                <View className="border-t border-gray-100 dark:border-gray-800">
+                  {/* Reset Traits Button */}
+                  {userData?.membership?.type === 'pro' && (
+                    <TouchableOpacity
+                      onPress={handleResetTraits}
+                      className="flex-row items-center justify-between px-4 py-4 active:bg-gray-50 dark:active:bg-gray-800">
+                      <View className="flex-row items-center space-x-3">
+                        <Text className="font-medium text-gray-500 dark:text-gray-600">
+                          {t('settings.resetTraits.button')}
+                        </Text>
+                      </View>
+                      <Text className="text-text-light-secondary dark:text-text-dark-secondary">
+                        ›
+                      </Text>
+                    </TouchableOpacity>
+                  )}
+                  {/* Delete Account Button */}
                   <TouchableOpacity
-                    onPress={() => router.push(paywallLink)}
-                    className="active:opacity-60">
-                    <Text className="font-semibold text-xs text-primary underline">
-                      {t('settings.upgrade')}
+                    onPress={handleDeleteAccount}
+                    className="flex-row items-center justify-between border-t border-gray-100 px-4 py-4 active:bg-gray-50 dark:border-gray-800 dark:active:bg-gray-800">
+                    <View className="flex-row items-center space-x-3">
+                      <Text className="font-medium text-gray-400 dark:text-gray-500">
+                        {t('settings.deleteAccount.button')}
+                      </Text>
+                    </View>
+                    <Text className="text-text-light-secondary dark:text-text-dark-secondary">
+                      ›
                     </Text>
                   </TouchableOpacity>
-                )}
-              </View>
+
+                  {/* Sign Out Button */}
+                  <TouchableOpacity
+                    onPress={handleSignOut}
+                    className="flex-row items-center justify-between border-t border-gray-100 px-4 py-4 active:bg-gray-50 dark:border-gray-800 dark:active:bg-gray-800">
+                    <View className="flex-row items-center space-x-3">
+                      <Text className="font-medium text-error-light dark:text-error-dark">
+                        {t('settings.signOut')}
+                      </Text>
+                    </View>
+                    <Text className="text-text-light-secondary dark:text-text-dark-secondary">
+                      ›
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              </Accordion>
             </View>
           </View>
         </Animated.View>
@@ -501,50 +555,6 @@ export default function SettingsScreen() {
             thumbColor={colorScheme === 'dark' ? theme.colors.primary.light : '#d1d5db'}
           />
         </Animated.View> */}
-
-        {/* Account Settings Section with Accordion */}
-        <View className="mt-4 overflow-hidden rounded-2xl bg-background-light dark:bg-surface-dark">
-          <Accordion title={t('settings.accountSettings')}>
-            <View className="border-t border-gray-100 dark:border-gray-800">
-              {/* Reset Traits Button */}
-              {userData?.membership?.type === 'pro' && (
-                <TouchableOpacity
-                  onPress={handleResetTraits}
-                  className="flex-row items-center justify-between px-4 py-4 active:bg-gray-50 dark:active:bg-gray-800">
-                  <View className="flex-row items-center space-x-3">
-                    <Text className="font-medium text-gray-500 dark:text-gray-600">
-                      {t('settings.resetTraits.button')}
-                    </Text>
-                  </View>
-                  <Text className="text-text-light-secondary dark:text-text-dark-secondary">›</Text>
-                </TouchableOpacity>
-              )}
-              {/* Delete Account Button */}
-              <TouchableOpacity
-                onPress={handleDeleteAccount}
-                className="flex-row items-center justify-between border-t border-gray-100 px-4 py-4 active:bg-gray-50 dark:border-gray-800 dark:active:bg-gray-800">
-                <View className="flex-row items-center space-x-3">
-                  <Text className="font-medium text-gray-400 dark:text-gray-500">
-                    {t('settings.deleteAccount.button')}
-                  </Text>
-                </View>
-                <Text className="text-text-light-secondary dark:text-text-dark-secondary">›</Text>
-              </TouchableOpacity>
-
-              {/* Sign Out Button */}
-              <TouchableOpacity
-                onPress={handleSignOut}
-                className="flex-row items-center justify-between border-t border-gray-100 px-4 py-4 active:bg-gray-50 dark:border-gray-800 dark:active:bg-gray-800">
-                <View className="flex-row items-center space-x-3">
-                  <Text className="font-medium text-error-light dark:text-error-dark">
-                    {t('settings.signOut')}
-                  </Text>
-                </View>
-                <Text className="text-text-light-secondary dark:text-text-dark-secondary">›</Text>
-              </TouchableOpacity>
-            </View>
-          </Accordion>
-        </View>
 
         {/* Zodiac Modal */}
         <ZodiacModal
