@@ -3,7 +3,7 @@ import { AppUsageService } from '@/services/appUsageService';
 
 export function useAppUsage() {
   const [usageCount, setUsageCount] = useState<number>(0);
-  const [isFirstTime, setIsFirstTime] = useState<boolean>(true);
+  const [isFirstTime, setIsFirstTime] = useState<boolean>(false);
 
   useEffect(() => {
     let isMounted = true;

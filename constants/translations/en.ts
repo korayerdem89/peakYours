@@ -431,7 +431,7 @@ export default {
     screen2: {
       title: 'Personalized Analysis',
       description:
-        'Get personality analysis based on your zodiac sign and receive daily advice for improvement',
+        'Explore your personality analysis blended with your zodiac sign, get daily advice and discover your spirit animal.',
     },
     screen3: {
       title: 'Reach Your Peak',
@@ -504,7 +504,7 @@ export default {
   welcome: {
     title: 'Welcome to Personality Insights!',
     description:
-      'Discover your personality traits through the eyes of others. Start by rating your friends and let them rate you back to unlock insights about yourself.',
+      'Rate your friends and get rated to discover your true personality traits. Start your journey of self-discovery!',
     button: 'Got it!',
   },
 };

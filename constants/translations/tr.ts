@@ -393,7 +393,7 @@ export default {
     screen2: {
       title: 'Kişiye Özel Analiz',
       description:
-        'Burcun ve kişilik özelliklerine göre karakter analizi al ve günlük gelişim tavsiyeleri edin',
+        'Kişilik özelliklerinizi burcunuzla harmanlayarak oluşturduğumuz analizini inceleyin, günlük tavsiyeler alın ve ruh hayvanınızı keşfedin.',
     },
     screen3: {
       title: 'Zirvene Ulaş',
@@ -489,7 +489,7 @@ export default {
   welcome: {
     title: "Personality Insights'a Hoş Geldiniz!",
     description:
-      'Kişilik özelliklerinizi başkalarının gözünden keşfedin. Arkadaşlarınızı değerlendirerek başlayın ve onların sizi değerlendirmesine izin vererek kendiniz hakkında içgörüler edinin.',
+      'Arkadaşlarınızı değerlendirin ve değerlendirilerek gerçek kişilik özelliklerinizi keşfedin. Kendini keşfetme yolculuğuna başlayın!',
     button: 'Anladım!',
   },
 };

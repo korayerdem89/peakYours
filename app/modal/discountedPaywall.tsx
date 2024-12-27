@@ -71,7 +71,7 @@ export default function DiscountedPaywall() {
           {/* Limited Time Banner */}
           <Animated.View entering={SlideInDown.delay(600)} className="mb-4 px-6">
             <View className="rounded-lg bg-primary-light/10 px-4 py-3 dark:bg-primary-dark/10">
-              <Text className="text-center font-semibold text-primary-dark dark:text-primary-light">
+              <Text className="text-center font-semibold text-error-dark">
                 {t('paywall.ideas.limitedTime')}
               </Text>
             </View>
