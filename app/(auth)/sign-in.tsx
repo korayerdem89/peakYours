@@ -28,8 +28,9 @@ import { AppleButton } from '@invertase/react-native-apple-authentication';
 import { AppleAuthService } from '@/services/appleAuth';
 import { EmailAuthService } from '@/services/emailAuth';
 import { theme } from '@/constants/theme';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { Ionicons } from '@expo/vector-icons';
+import Toast from 'react-native-toast-message';
 
 const { width, height } = Dimensions.get('window');
 const BANNER_HEIGHT = height / 4;
@@ -181,7 +182,7 @@ export default function SignInScreen() {
       await setUser(firebaseUser.uid);
     } catch (error: any) {
       let errorMessage = t('auth.errors.default');
-
+      console.log(error.message);
       switch (error.message) {
         case 'invalid-email':
           errorMessage = t('auth.errors.invalidEmail');
@@ -200,7 +201,13 @@ export default function SignInScreen() {
           break;
       }
 
-      Alert.alert(t('common.error'), errorMessage);
+      Toast.show({
+        type: 'error',
+        text1: t('common.error'),
+        text2: errorMessage,
+        position: 'bottom',
+        visibilityTime: 3000,
+      });
     } finally {
       setIsLoading(false);
     }
@@ -220,6 +227,27 @@ export default function SignInScreen() {
       Alert.alert('Error', t('auth.forgotPassword.error'));
     }
   };
+
+  // Validation fonksiyonları
+  const isValidEmail = (email: string) => {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  };
+
+  const isValidPassword = (password: string) => {
+    return password.length >= 8 && /[0-9]/.test(password) && /[a-zA-Z]/.test(password);
+  };
+
+  const isValidName = (name: string) => {
+    return name.length >= 3;
+  };
+
+  // Form validation
+  const isFormValid = useMemo(() => {
+    if (isSignUp) {
+      return isValidName(name) && isValidEmail(email) && isValidPassword(password);
+    }
+    return isValidEmail(email) && password.length > 0;
+  }, [isSignUp, name, email, password]);
 
   return (
     <SafeAreaView className="flex-1 bg-accent-light dark:bg-background-dark">
@@ -277,17 +305,23 @@ export default function SignInScreen() {
                 </>
               )}
               <View className="w-full gap-4">
-                <View className="mb-4 w-full gap-2">
+                <View className="mb-2 w-full gap-2">
                   {isSignUp && (
-                    <TextInput
-                      className="h-12 w-full rounded-sm border border-gray-200 bg-background-light px-4 text-text-light dark:border-gray-700 dark:bg-surface-dark dark:text-text-dark"
-                      placeholder={t('auth.fullName')}
-                      placeholderTextColor={theme.colors.text.light}
-                      value={name}
-                      onChangeText={setName}
-                      autoCapitalize="none"
-                    />
+                    <>
+                      <TextInput
+                        className="h-12 w-full rounded-sm border border-gray-200 bg-background-light px-4 text-text-light dark:border-gray-700 dark:bg-surface-dark dark:text-text-dark"
+                        placeholder={t('auth.fullName')}
+                        placeholderTextColor={theme.colors.text.light}
+                        value={name}
+                        onChangeText={setName}
+                        autoCapitalize="words"
+                      />
+                      {name.length > 0 && !isValidName(name) && (
+                        <Text className="text-xs text-red-500">{t('auth.validation.nameMin')}</Text>
+                      )}
+                    </>
                   )}
+
                   <TextInput
                     className="h-12 w-full rounded-sm border border-gray-200 bg-background-light px-4 text-text-light dark:border-gray-700 dark:bg-surface-dark dark:text-text-dark"
                     placeholder={t('auth.email')}
@@ -297,6 +331,11 @@ export default function SignInScreen() {
                     autoCapitalize="none"
                     keyboardType="email-address"
                   />
+                  {email.length > 0 && !isValidEmail(email) && (
+                    <Text className="text-xs text-red-500">
+                      {t('auth.validation.invalidEmail')}
+                    </Text>
+                  )}
 
                   <View className="relative">
                     <TextInput
@@ -318,10 +357,14 @@ export default function SignInScreen() {
                     </TouchableOpacity>
                   </View>
 
+                  {isSignUp && (
+                    <Text className="text-xs text-gray-500 dark:text-gray-400">
+                      {t('auth.validation.passwordRules')}
+                    </Text>
+                  )}
+
                   {!isSignUp && (
-                    <TouchableOpacity
-                      onPress={handleForgotPassword}
-                      className="mb-2 w-full items-end">
+                    <TouchableOpacity onPress={handleForgotPassword} className="self-end">
                       <Text className="font-regular text-sm text-primary-dark">
                         {t('auth.forgotPassword.text')}
                       </Text>
@@ -330,15 +373,22 @@ export default function SignInScreen() {
                 </View>
                 <TouchableOpacity
                   onPress={handleEmailAuth}
-                  disabled={isLoading}
-                  className="h-12 w-full items-center justify-center rounded-sm bg-primary active:opacity-60">
+                  disabled={!isFormValid || isLoading}
+                  className={`h-12 w-full items-center justify-center rounded-sm ${
+                    isFormValid && !isLoading ? 'bg-primary active:opacity-60' : 'bg-gray-300'
+                  }`}>
                   <Text className="font-medium text-white">
                     {!isSignUp ? t('auth.signIn.button') : t('auth.signUp.button')}
                   </Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity
-                  onPress={() => setIsSignUp(!isSignUp)}
+                  onPress={() => {
+                    setName('');
+                    setEmail('');
+                    setPassword('');
+                    setIsSignUp(!isSignUp);
+                  }}
                   className="active:opacity-60">
                   <Text className="text-center font-regular text-sm text-text-light">
                     {!isSignUp ? t('auth.signIn.switch') : t('auth.signUp.switch')}

@@ -401,7 +401,7 @@ export default {
     },
   },
   subscription: {
-    unlockPro: 'Premium ��zellikleri Keşfet',
+    unlockPro: 'Premium Özellikleri Keşfet',
     description: 'Kişisel gelişim yolculuğunuzda size yardımcı olacak tüm özelliklere erişin',
     monthly: 'Aylık',
     annual: 'Yıllık',
@@ -477,6 +477,11 @@ export default {
       playServices: 'Google Play Servisleri kullanılamıyor',
       default: 'Giriş sırasında bir hata oluştu',
       unexpected: 'Beklenmeyen bir hata oluştu. Lütfen tekrar deneyin.',
+      invalidEmail: 'Geçersiz email adresi',
+      userNotFound: 'Bu email ile kayıtlı kullanıcı bulunamadı',
+      wrongPassword: 'Yanlış şifre',
+      emailInUse: 'Bu email adresi zaten kayıtlı',
+      weakPassword: 'Şifre çok zayıf',
     },
     email: 'E-posta',
     password: 'Şifre',
@@ -486,6 +491,11 @@ export default {
       switch: 'Zaten hesabınız var mı? Giriş yapın',
     },
     fullName: 'Tam Adınız',
+    validation: {
+      nameMin: 'İsim en az 3 karakter olmalıdır',
+      invalidEmail: 'Geçerli bir email adresi giriniz',
+      passwordRules: 'Şifre en az 8 karakter, rakam ve harf içermelidir',
+    },
   },
   welcome: {
     title: "Personality Insights'a Hoş Geldiniz!",

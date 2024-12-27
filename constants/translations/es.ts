@@ -29,8 +29,13 @@ export default {
     errors: {
       inProgress: 'Inicio de sesión en progreso',
       playServices: 'Servicios de Google Play no disponibles',
-      default: 'Error al iniciar sesión',
+      default: 'Ocurrió un error durante la autenticación',
       unexpected: 'Error inesperado. Por favor, inténtalo de nuevo.',
+      invalidEmail: 'Dirección de correo electrónico inválida',
+      userNotFound: 'No se encontró ningún usuario con este correo',
+      wrongPassword: 'Contraseña incorrecta',
+      emailInUse: 'Este correo ya está registrado',
+      weakPassword: 'La contraseña es demasiado débil',
     },
     email: 'Correo electrónico',
     password: 'Contraseña',
@@ -45,6 +50,11 @@ export default {
       error: 'Error al enviar el correo de recuperación',
     },
     fullName: 'Nombre Completo',
+    validation: {
+      nameMin: 'El nombre debe tener al menos 3 caracteres',
+      invalidEmail: 'Ingrese un correo electrónico válido',
+      passwordRules: 'La contraseña debe tener al menos 8 caracteres con números y letras',
+    },
   },
   settings: {
     title: 'Ajustes',
@@ -249,7 +259,7 @@ export default {
       },
       chameleon: {
         name: 'Adaptador Versátil',
-        trait: 'Se adapta fácilmente a nuevas situaciones',
+        trait: 'Se adapta f��cilmente a nuevas situaciones',
       },
       crab: {
         name: 'Protector Leal',

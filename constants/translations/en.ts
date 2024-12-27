@@ -31,6 +31,11 @@ export default {
       playServices: 'Google Play Services is not available',
       default: 'An error occurred during sign in',
       unexpected: 'An unexpected error occurred. Please try again.',
+      invalidEmail: 'Invalid email address',
+      userNotFound: 'No user found with this email',
+      wrongPassword: 'Incorrect password',
+      emailInUse: 'This email is already registered',
+      weakPassword: 'Password is too weak',
     },
     email: 'Email',
     password: 'Password',
@@ -45,6 +50,11 @@ export default {
       error: 'Error sending password reset email',
     },
     fullName: 'Full Name',
+    validation: {
+      nameMin: 'Name must be at least 3 characters',
+      invalidEmail: 'Please enter a valid email address',
+      passwordRules: 'Password must be at least 8 characters with numbers and letters',
+    },
   },
   settings: {
     title: 'Settings',
