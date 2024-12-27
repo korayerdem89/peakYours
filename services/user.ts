@@ -19,60 +19,65 @@ export interface CreateUserData {
 }
 
 export class UserService {
-  static async saveUserToFirestore(user: FirebaseAuthTypes.User) {
+  static async saveUserToFirestore(user: FirebaseAuthTypes.User, displayName?: string) {
     try {
       console.log('Saving user to Firestore:', user.uid);
       const existingUser = await FirestoreService.getDoc<UserData>('users', user.uid);
 
-      if (!existingUser) {
-        const now = firestore.Timestamp.now();
-        const defaultMembership: Membership = {
-          type: 'free',
-          startDate: now,
-          endDate: null,
-          lastUpdated: now,
-          identifier: 'free',
-        };
-
-        const refCode = generateRefCodes(user.uid);
-
-        const userData: UserData = {
-          uid: user.uid,
-          email: user.email,
-          displayName: user.displayName,
-          photoURL: user.photoURL,
-          membership: defaultMembership,
-          refCodes: {
-            en: refCode.en,
-          },
-          createdAt: now,
-          updatedAt: now,
-          zodiacSign: null,
-        };
-
-        const refCodeData = {
-          userId: user.uid,
-          createdAt: now,
-          updatedAt: now,
-          language: 'en' as const,
-        };
-
-        const batch = firestore().batch();
-
-        const userRef = firestore().collection('users').doc(user.uid);
-        batch.set(userRef, userData);
-
-        const refCodeRef = firestore().collection('refCodes').doc(refCode.en);
-        batch.set(refCodeRef, refCodeData);
-
-        await batch.commit();
-        console.log('User and refCode data saved successfully');
-
-        return userData;
+      if (existingUser) {
+        console.log('User already exists');
+        return existingUser;
       }
 
-      console.log('User already exists');
-      return existingUser;
+      const now = firestore.Timestamp.now();
+
+      const defaultMembership: Membership = {
+        type: 'free',
+        startDate: now,
+        endDate: null,
+        lastUpdated: now,
+        identifier: 'free',
+      };
+
+      const refCode = generateRefCodes(user.uid);
+
+      const userData: UserData = {
+        uid: user.uid,
+        email: user.email,
+        displayName: displayName || user.displayName || 'Anonymous User',
+        photoURL: user.photoURL,
+        membership: defaultMembership,
+        refCodes: {
+          en: refCode.en,
+        },
+        createdAt: now,
+        updatedAt: now,
+        zodiacSign: null,
+      };
+
+      const refCodeData = {
+        userId: user.uid,
+        createdAt: now,
+        updatedAt: now,
+        language: 'en' as const,
+      };
+
+      const batch = firestore().batch();
+
+      const userRef = firestore().collection('users').doc(user.uid);
+      const refCodeRef = firestore().collection('refCodes').doc(refCode.en);
+
+      batch.set(userRef, userData);
+      batch.set(refCodeRef, refCodeData);
+
+      await user.updateProfile({
+        displayName: displayName || user.displayName || 'Anonymous User',
+      });
+
+      await batch.commit();
+      console.log('User and refCode data saved successfully');
+
+      return userData;
     } catch (error) {
       console.error('Save user error:', error);
       throw error;

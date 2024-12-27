@@ -38,7 +38,7 @@ const LANGUAGES = [
   { code: 'es', label: 'ES' },
 ];
 
-const DEFAULT_AVATAR = 'https://ui-avatars.com/api/?background=random';
+const DEFAULT_AVATAR = require('@/assets/avatar.png');
 
 const LANGUAGE_CHANGE_KEY = 'last_language_change';
 const HOURS_24 = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
@@ -402,11 +402,14 @@ export default function SettingsScreen() {
         {/* Profile Section */}
         <Animated.View entering={FadeIn.duration(500)} className="mt-2 items-center">
           <Image
-            source={{ uri: user?.photoURL || DEFAULT_AVATAR }}
+            source={user?.photoURL ? { uri: user?.photoURL } : DEFAULT_AVATAR}
             className="h-16 w-16 rounded-full"
           />
           <Text className="mt-2 font-bold text-xl tracking-tight text-text-light dark:text-text-dark">
-            {user?.displayName || t('settings.anonymous')}
+            {user?.displayName
+              ?.split(' ')
+              .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+              .join(' ') || t('settings.anonymous')}
           </Text>
           <Text className="mt-1 font-regular text-[15px] text-text-light-secondary dark:text-text-dark-secondary">
             {user?.email}

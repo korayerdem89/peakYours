@@ -57,6 +57,7 @@ export default function SignInScreen() {
   const isDark = colorScheme === 'dark';
   const translateY = useSharedValue(0);
   const [name, setName] = useState('');
+
   useEffect(() => {
     const showSubscription = Keyboard.addListener(
       Platform.OS === 'ios' ? 'keyboardWillShow' : 'keyboardDidShow',
@@ -89,7 +90,10 @@ export default function SignInScreen() {
   const signIn = async () => {
     try {
       setIsLoading(true);
-      await GoogleSignin.hasPlayServices();
+
+      if (!email && !password) {
+        await GoogleSignin.hasPlayServices();
+      }
 
       const { data } = await GoogleSignin.signIn();
 
@@ -103,7 +107,7 @@ export default function SignInScreen() {
 
       // Önce Firestore'a kaydet
       await UserService.saveUserToFirestore(firebaseUser);
-      console.log('User saved to Firestore:', firebaseUser);
+
       // Kısa bir gecikme ekle
       await new Promise((resolve) => setTimeout(resolve, 1000));
 
@@ -167,11 +171,12 @@ export default function SignInScreen() {
       let firebaseUser;
       if (isSignUp) {
         firebaseUser = await EmailAuthService.signUp(email, password);
+        // Kayıt olduktan sonra displayName'i güncelle
       } else {
         firebaseUser = await EmailAuthService.signIn(email, password);
       }
 
-      await UserService.saveUserToFirestore(firebaseUser);
+      await UserService.saveUserToFirestore(firebaseUser, name);
       await new Promise((resolve) => setTimeout(resolve, 1000));
       await setUser(firebaseUser.uid);
     } catch (error: any) {
