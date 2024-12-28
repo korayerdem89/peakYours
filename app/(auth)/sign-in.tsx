@@ -115,7 +115,7 @@ export default function SignInScreen() {
       // Sonra global state'i güncelle
       await setUser(firebaseUser.uid);
       console.log('Sign-in complete, user set');
-    } catch (error) {
+    } catch (error: any) {
       if (isErrorWithCode(error)) {
         switch (error.code) {
           case statusCodes.SIGN_IN_CANCELLED:
@@ -132,7 +132,7 @@ export default function SignInScreen() {
             console.error('Google Sign-In Error:', error);
         }
       } else {
-        Alert.alert(t('common.error'), t('auth.errors.unexpected'));
+        Alert.alert(error?.message || error, t('auth.errors.unexpected'));
         console.error(error);
       }
     } finally {
