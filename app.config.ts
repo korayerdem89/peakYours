@@ -18,7 +18,6 @@ const config: ExpoConfig = {
     supportsTablet: true,
     bundleIdentifier: 'com.peakyours.app',
     googleServicesFile: './GoogleService-Info.plist',
-    buildNumber: '1.0.5',
     usesAppleSignIn: true,
   },
   android: {
