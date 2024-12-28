@@ -41,7 +41,8 @@ export default function YouScreen() {
   const [retryCount, setRetryCount] = useState(0);
   const MAX_RETRY = 3;
   const RETRY_DELAY = 5000;
-  const shouldOpenDiscountedPaywall = usageCount > 6 && usageCount % 4 === 0 && usageCount < 25;
+  const [shouldOpenDiscountedPaywall, setShouldOpenDiscountedPaywall] = useState(false);
+
   const { traitDetails } = useTraits();
   const [showWelcome, setShowWelcome] = useState(false);
 
@@ -51,7 +52,8 @@ export default function YouScreen() {
   useFocusEffect(
     useCallback(() => {
       setShowWelcome(isFirstTime);
-    }, [isFirstTime])
+      setShouldOpenDiscountedPaywall(usageCount > 6 && usageCount % 4 === 0 && usageCount < 25);
+    }, [isFirstTime, usageCount])
   );
 
   useEffect(() => {
