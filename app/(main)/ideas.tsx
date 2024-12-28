@@ -119,7 +119,7 @@ export default function Ideas() {
     }
   }, []);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (!isFreeMember) {
       const loadAnalysis = async () => {
         if (!goodTraits || !badTraits || !user?.zodiacSign || !traitDetails) return;
