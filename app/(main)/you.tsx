@@ -92,7 +92,7 @@ export default function YouScreen() {
 
   const handleBannerError = useCallback(
     async (error: Error) => {
-      console.error('Banner ad failed to load:', error);
+      console.log('Banner ad failed to load:', error);
       setBannerError(true);
 
       const networkState = await NetInfo.fetch();
@@ -122,7 +122,6 @@ export default function YouScreen() {
 
   const requestOptions: RequestOptions = {
     requestNonPersonalizedAdsOnly: true,
-    keywords: ['personality', 'zodiac', 'traits', 'self-discovery', 'character'],
   };
 
   const renderTabBar = useCallback(
@@ -158,36 +157,41 @@ export default function YouScreen() {
     [colorScheme, layout.width]
   );
 
+  const BANNER_HEIGHT = layout.height * 0.1;
+
   return (
     <SafeAreaView className="flex-1 bg-accent-light pt-4 dark:bg-background-dark">
-      {!isShowBanner && !bannerError && (
-        <BannerAd
-          unitId={'ca-app-pub-6312844121446107/2492397048'}
-          size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
-          requestOptions={requestOptions}
-          onAdFailedToLoad={handleBannerError}
-          onAdLoaded={() => {
-            setBannerError(false);
-            setRetryCount(0);
-          }}
-        />
-      )}
-      {isShowBanner && (
-        <ImageBackground
-          source={require('@/assets/you/subscribeBanner.png')}
-          style={{ height: layout.height * 0.1, width: layout.width, justifyContent: 'center' }}>
-          <View className="flex-row flex-wrap items-center justify-center">
-            <Text className="font-medium text-sm text-text-dark">{t('you.subscribeText')} </Text>
-            <TouchableOpacity
-              onPress={() => router.push('/modal/paywall')}
-              className="active:opacity-60">
-              <Text className="font-bold text-base text-white underline">
-                {t('you.subscribeCTA')}
-              </Text>
-            </TouchableOpacity>
-          </View>
-        </ImageBackground>
-      )}
+      <View style={{ height: BANNER_HEIGHT }}>
+        {!isShowBanner && !bannerError && (
+          <BannerAd
+            unitId={'ca-app-pub-6312844121446107/2492397048'}
+            size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
+            requestOptions={requestOptions}
+            onAdFailedToLoad={handleBannerError}
+            onAdLoaded={() => {
+              setBannerError(false);
+              setRetryCount(0);
+            }}
+          />
+        )}
+        {isShowBanner && (
+          <ImageBackground
+            source={require('@/assets/you/subscribeBanner.png')}
+            style={{ height: '100%', width: layout.width, justifyContent: 'center' }}>
+            <View className="flex-row flex-wrap items-center justify-center">
+              <Text className="font-medium text-sm text-text-dark">{t('you.subscribeText')} </Text>
+              <TouchableOpacity
+                onPress={() => router.push('/modal/paywall')}
+                className="active:opacity-60">
+                <Text className="font-bold text-base text-white underline">
+                  {t('you.subscribeCTA')}
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </ImageBackground>
+        )}
+      </View>
+
       <TabView
         navigationState={{ index, routes }}
         renderScene={renderScene}

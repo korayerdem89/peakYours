@@ -132,7 +132,7 @@ export default function SignInScreen() {
             console.error('Google Sign-In Error:', error);
         }
       } else {
-        Alert.alert(error?.message || error, t('auth.errors.unexpected'));
+        Alert.alert(error?.message || error);
         console.error(error);
       }
     } finally {
