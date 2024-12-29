@@ -157,6 +157,7 @@ export const RevenueCatProvider = ({ children }: { children: React.ReactNode }) 
         text1: successMessage,
         position: 'top',
         text2: successDescription,
+        visibilityTime: 5000,
       });
 
       return customerInfo;
