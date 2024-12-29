@@ -37,7 +37,12 @@ export default function Ideas() {
   const [personalityAnimal, setPersonalityAnimal] = useState<PersonalityAnimal | null>(null);
   const [analysis, setAnalysis] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const isFreeMember = userData?.membership?.type === 'free';
+  const [isFreeMember, setIsFreeMember] = useState(false);
+
+  useLayoutEffect(() => {
+    setIsFreeMember(userData?.membership?.type === 'free');
+  }, [userData]);
+
   // Analysis generation
   const generateAnalysis = async () => {
     try {

@@ -69,12 +69,14 @@ export default function TasksScreen() {
 
   // Effects
   useEffect(() => {
+    if (userData?.membership?.type === 'free') return;
     if (taskData?.refreshesLeft !== undefined) {
       setRefreshLimit(taskData.refreshesLeft);
     }
   }, [taskData?.refreshesLeft]);
 
   useEffect(() => {
+    if (userData?.membership?.type === 'free') return;
     const interval = setInterval(() => {
       bounceValue.value = withSequence(withSpring(-10), withDelay(100, withSpring(0)));
     }, 5000);
@@ -82,6 +84,7 @@ export default function TasksScreen() {
   }, []);
 
   useEffect(() => {
+    if (userData?.membership?.type === 'free') return;
     const unsubscribe = NetInfo.addEventListener((state) => {
       if (state.isConnected && bannerError) {
         setBannerError(false);
@@ -91,7 +94,7 @@ export default function TasksScreen() {
   }, [bannerError]);
 
   const getInitialTasks = useCallback(() => {
-    if (!goodTraits || !badTraits) return [];
+    if (!goodTraits || !badTraits || userData?.membership?.type === 'free') return [];
 
     // En düşük puanlı 3 good trait
     const lowestGoodTraits = [...goodTraits]
@@ -122,7 +125,7 @@ export default function TasksScreen() {
 
   // Calculate remaining time
   const timeUntilRefresh = useCallback(() => {
-    if (!taskData?.lastRefresh) return 0;
+    if (userData?.membership?.type === 'free' || !taskData?.lastRefresh) return 0;
     const lastRefresh = taskData.lastRefresh.toDate();
     const now = new Date();
     const diff = 24 * 60 * 60 * 1000 - (now.getTime() - lastRefresh.getTime());
@@ -132,7 +135,14 @@ export default function TasksScreen() {
   // Task loading effect
   useEffect(() => {
     async function loadTaskData() {
-      if (!user?.uid || !goodTraits || !badTraits || !userData) return;
+      if (
+        !user?.uid ||
+        !goodTraits ||
+        !badTraits ||
+        !userData ||
+        userData.membership?.type === 'free'
+      )
+        return;
       setIsLoading(true);
       try {
         const today = new Date().toISOString().split('T')[0];
@@ -189,10 +199,6 @@ export default function TasksScreen() {
         ]);
 
         const task = tasks.find((t) => t.id === taskId);
-        const traitValue =
-          task?.type === 'goodsides'
-            ? goodTraits.find((item) => item.trait === trait)?.value
-            : badTraits.find((item) => item.trait === trait)?.value;
         queryClient.invalidateQueries({ queryKey: ['user'] });
         const shouldShowLevelUpTrait =
           userData?.traits?.[trait] && (userData?.traits?.[trait] + 1) % 5 === 0;
