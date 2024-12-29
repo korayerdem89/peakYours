@@ -37,11 +37,6 @@ export default function Ideas() {
   const [personalityAnimal, setPersonalityAnimal] = useState<PersonalityAnimal | null>(null);
   const [analysis, setAnalysis] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [isFreeMember, setIsFreeMember] = useState(false);
-
-  useLayoutEffect(() => {
-    setIsFreeMember(userData?.membership?.type === 'free');
-  }, [userData]);
 
   // Analysis generation
   const generateAnalysis = async () => {
@@ -116,56 +111,54 @@ export default function Ideas() {
 
   // Effects
   useEffect(() => {
-    if (!isFreeMember) {
-      const interval = setInterval(() => {
-        bounceValue.value = withSequence(withSpring(-10), withDelay(100, withSpring(0)));
-      }, 5000);
-      return () => clearInterval(interval);
-    }
+    if (userData?.membership?.type === 'free') return;
+    const interval = setInterval(() => {
+      bounceValue.value = withSequence(withSpring(-10), withDelay(100, withSpring(0)));
+    }, 5000);
+    return () => clearInterval(interval);
   }, []);
 
   useEffect(() => {
-    if (!isFreeMember) {
-      const loadAnalysis = async () => {
-        if (!goodTraits || !badTraits || !user?.zodiacSign || !traitDetails) return;
+    if (userData?.membership?.type === 'free') return;
+    const loadAnalysis = async () => {
+      if (!goodTraits || !badTraits || !user?.zodiacSign || !traitDetails) return;
 
-        try {
-          setIsLoading(true);
-          const storedData = await getStoredAnalysis();
+      try {
+        setIsLoading(true);
+        const storedData = await getStoredAnalysis();
 
-          if (
-            !storedData ||
-            storedData.zodiacSign !== user.zodiacSign ||
-            storedData.locale !== locale ||
-            !storedData.analysis
-          ) {
-            await generateAnalysis();
+        if (
+          !storedData ||
+          storedData.zodiacSign !== user.zodiacSign ||
+          storedData.locale !== locale ||
+          !storedData.analysis
+        ) {
+          await generateAnalysis();
+        } else {
+          const animalKey = Object.keys(PERSONALITY_ANIMALS).find(
+            (key) => key === storedData.spiritAnimal
+          );
+
+          if (animalKey && PERSONALITY_ANIMALS[animalKey]) {
+            setPersonalityAnimal(PERSONALITY_ANIMALS[animalKey]);
+            setAnalysis(storedData.analysis);
           } else {
-            const animalKey = Object.keys(PERSONALITY_ANIMALS).find(
-              (key) => key === storedData.spiritAnimal
-            );
-
-            if (animalKey && PERSONALITY_ANIMALS[animalKey]) {
-              setPersonalityAnimal(PERSONALITY_ANIMALS[animalKey]);
-              setAnalysis(storedData.analysis);
-            } else {
-              await generateAnalysis();
-            }
+            await generateAnalysis();
           }
-        } catch (error) {
-          console.error('Error in loadAnalysis:', error);
-          Toast.show({
-            type: 'error',
-            text1: t('ideas.analysisError'),
-            position: 'bottom',
-          });
-        } finally {
-          setIsLoading(false);
         }
-      };
+      } catch (error) {
+        console.error('Error in loadAnalysis:', error);
+        Toast.show({
+          type: 'error',
+          text1: t('ideas.analysisError'),
+          position: 'bottom',
+        });
+      } finally {
+        setIsLoading(false);
+      }
+    };
 
-      loadAnalysis();
-    }
+    loadAnalysis();
   }, [goodTraits, badTraits, user?.zodiacSign, traitDetails?.totalRaters, locale]);
 
   // Render functions
@@ -180,7 +173,7 @@ export default function Ideas() {
     );
   }
 
-  if (isFreeMember) {
+  if (userData?.membership?.type === 'free') {
     const features = t('ideas.freemember.features', {
       returnObjects: 'true' as const,
       defaultValue: '',
