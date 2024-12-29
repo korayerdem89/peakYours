@@ -218,7 +218,7 @@ export default function Ideas() {
       </SafeAreaView>
     );
   }
-  const accuracyRate = Math.min(100, 60 + Math.floor(3 * (traitDetails?.totalRaters || 0)));
+  const accuracyRate = Math.min(100, 60 + Math.floor(2 * (traitDetails?.totalRaters || 0)));
   // Main render
   return (
     <SafeAreaView className="flex-1 bg-background-light dark:bg-background-dark">

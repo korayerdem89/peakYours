@@ -36,7 +36,6 @@ import { TaskList } from '@/components/tasks/TaskList';
 import { TaskInfo } from '@/components/tasks/TaskInfo';
 import QuoteCard from '@/components/main/QuoteCard';
 import { UpgradeButton } from '@/components/buttons/UpgradeButton';
-import { useAppUsage } from '@/hooks/useAppUsage';
 
 interface TaskLevelUpTrait {
   trait: string;
@@ -174,7 +173,6 @@ export default function TasksScreen() {
 
     loadTaskData();
   }, [user?.uid, goodTraits, badTraits, userData]);
-
   //Task handlers
   const handleCompleteTask = useCallback(
     async (taskId: string, trait: string) => {
@@ -196,7 +194,9 @@ export default function TasksScreen() {
             ? goodTraits.find((item) => item.trait === trait)?.value
             : badTraits.find((item) => item.trait === trait)?.value;
         queryClient.invalidateQueries({ queryKey: ['user'] });
-        const shouldShowLevelUpTrait = traitValue && (traitValue + 10) % 5 === 0;
+        const shouldShowLevelUpTrait =
+          userData?.traits?.[trait] && (userData?.traits?.[trait] + 1) % 5 === 0;
+
         if (task && shouldShowLevelUpTrait) {
           setLevelUpTrait({
             trait: task.trait,
