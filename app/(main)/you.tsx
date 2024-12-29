@@ -196,7 +196,7 @@ export default function YouScreen() {
         renderTabBar={renderTabBar}
         lazy={false}
       />
-      {showWelcome && <WelcomeModal onClose={() => setShowWelcome(false)} />}
+      <WelcomeModal visible={showWelcome} onClose={() => setShowWelcome(false)} />
     </SafeAreaView>
   );
 }

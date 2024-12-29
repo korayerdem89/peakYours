@@ -13,8 +13,7 @@ export default function MainLayout() {
   const { user, updateUserData } = useAuth();
   const updateUser = useUpdateUser();
   const [isZodiacModalVisible, setIsZodiacModalVisible] = useState(user?.zodiacSign ? false : true);
-  const { usageCount } = useAppUsage();
-  console.log(usageCount);
+
   const handleZodiacSubmit = async (zodiacId: string) => {
     if (!user?.uid) return;
 

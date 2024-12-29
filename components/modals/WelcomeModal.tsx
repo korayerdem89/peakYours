@@ -4,13 +4,14 @@ import { useTranslation } from '@/providers/LanguageProvider';
 
 interface WelcomeModalProps {
   onClose: () => void;
+  visible: boolean;
 }
 
 const { width } = Dimensions.get('window');
 const CARD_WIDTH = width * 0.85;
 const COUNTDOWN_SECONDS = 4;
 
-export default function WelcomeModal({ onClose }: WelcomeModalProps) {
+export default function WelcomeModal({ onClose, visible }: WelcomeModalProps) {
   const { t } = useTranslation();
   const [countdown, setCountdown] = useState(COUNTDOWN_SECONDS);
   const [isButtonEnabled, setIsButtonEnabled] = useState(false);
@@ -31,7 +32,12 @@ export default function WelcomeModal({ onClose }: WelcomeModalProps) {
   }, []);
 
   return (
-    <Modal transparent animationType="fade" statusBarTranslucent onRequestClose={onClose}>
+    <Modal
+      visible={visible}
+      transparent
+      animationType="fade"
+      statusBarTranslucent
+      onRequestClose={onClose}>
       <View className="flex-1 items-center justify-center bg-black/70">
         <View
           className="mx-6 rounded-2xl bg-background-light dark:bg-surface-dark"
@@ -42,9 +48,9 @@ export default function WelcomeModal({ onClose }: WelcomeModalProps) {
             resizeMode="cover"
           />
 
-          <View className="space-y-4 p-6">
+          <View className="gap-4 p-6">
             <Text
-              className="font-semibold text-xl text-text-light dark:text-text-dark"
+              className="font-semibold text-base text-text-light dark:text-text-dark"
               style={{ fontFamily: 'Poppins_600SemiBold' }}>
               {t('welcome.title')}
             </Text>

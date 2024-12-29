@@ -40,6 +40,7 @@ import {
 } from '@expo-google-fonts/poppins';
 import { RevenueCatProvider } from '@/providers/RevenueCatProvider';
 import { TraitProvider } from '@/providers/TraitProvider';
+import { useAppUsage } from '@/hooks/useAppUsage';
 
 // Prevent splash screen from auto-hiding
 SplashScreen.preventAutoHideAsync();
@@ -61,7 +62,8 @@ function InitialLayout() {
   const router = useRouter();
   const { user } = useAuth();
   const { isLoading, setIsLoading } = useLoadingStore();
-
+  const { isFirstTime, usageCount } = useAppUsage();
+  console.log(usageCount, isFirstTime);
   useEffect(() => {
     async function initialNavigation() {
       try {
