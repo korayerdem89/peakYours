@@ -139,6 +139,7 @@ export const RevenueCatProvider = ({ children }: { children: React.ReactNode }) 
       // Double check subscription status
 
       await checkSubscriptionStatus();
+      await queryClient.invalidateQueries();
       const successMessage =
         locale === 'es'
           ? '¡Compra Exitosa!'
