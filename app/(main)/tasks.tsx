@@ -183,6 +183,7 @@ export default function TasksScreen() {
 
     loadTaskData();
   }, [user?.uid, goodTraits, badTraits, userData]);
+
   //Task handlers
   const handleCompleteTask = useCallback(
     async (taskId: string, trait: string) => {

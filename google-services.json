@@ -14,6 +14,22 @@
       },
       "oauth_client": [
         {
+          "client_id": "262209119081-2obgp4s4afuk979unmghi88mtqpi63qq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.peakyours.app",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "262209119081-iciga2j79tavg79g71rgqehg5nh0ta5m.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.peakyours.app",
+            "certificate_hash": "1783fa0f0ab35156cb03b3de5ee4329a8f67403a"
+          }
+        },
+        {
           "client_id": "262209119081-nrdlbe79ath26d3568s6cr8oi7brt3fr.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
@@ -47,7 +63,8 @@
             }
           ]
         }
-      }
+      },
+      "admob_app_id": "ca-app-pub-6312844121446107~1320311407"
     }
   ],
   "configuration_version": "1"
