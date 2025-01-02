@@ -210,7 +210,7 @@ export default function SignInScreen() {
           showsVerticalScrollIndicator={false}
           bounces={false}
           contentContainerStyle={{ flexGrow: 1 }}>
-          <Animated.View className="flex-1" style={animatedStyles}>
+          <Animated.View className="flex-1 gap-20" style={animatedStyles}>
             <Image
               source={require('@/assets/banner.png')}
               className="my-10 w-full rounded-xl"
@@ -218,14 +218,14 @@ export default function SignInScreen() {
               resizeMode="contain"
             />
 
-            <View className="flex-1 items-center justify-center p-6 ">
+            <View className="flex-1 items-center gap-24 p-6">
               <Image
                 source={require('@/assets/sign-in/signin.png')}
                 className="w-full rounded-xl"
                 style={{ height: BANNER_HEIGHT }}
                 resizeMode="contain"
               />
-              <View className="mt-10 w-full gap-3">
+              <View className="w-full gap-3">
                 <GoogleSigninButton
                   size={GoogleSigninButton.Size.Wide}
                   color={isDark ? GoogleSigninButton.Color.Light : GoogleSigninButton.Color.Dark}
