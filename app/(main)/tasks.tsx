@@ -10,6 +10,7 @@ import Animated, {
   useAnimatedStyle,
 } from 'react-native-reanimated';
 import Toast from 'react-native-toast-message';
+import { useFocusEffect } from '@react-navigation/native';
 
 // Providers & Store
 import { useTranslation } from '@/providers/LanguageProvider';
@@ -121,56 +122,66 @@ export default function TasksScreen() {
   }, [taskData?.lastRefresh]);
 
   // Task loading effect
-  useEffect(() => {
-    async function loadTaskData() {
-      if (
-        !user?.uid ||
-        !goodTraits ||
-        !badTraits ||
-        !userData ||
-        userData.membership?.type === 'free'
-      )
-        return;
-      setIsLoading(true);
-      try {
-        const today = new Date().toISOString().split('T')[0];
-        let currentTasks: Task[] = [];
-        let currentCompletedTasks: string[] = [];
+  useFocusEffect(
+    useCallback(() => {
+      async function loadTaskData() {
+        if (!user?.uid || !userData) return;
+        setIsLoading(true);
+        try {
+          const today = new Date().toISOString().split('T')[0];
+          let currentTasks: Task[] = [];
+          let currentCompletedTasks: string[] = [];
 
-        const savedTasks = await StorageService.getDailyTasks(user.uid);
-        if (savedTasks) {
-          currentTasks = savedTasks;
-        } else {
-          currentTasks = getInitialTasks();
-          await StorageService.saveDailyTasks(user.uid, currentTasks);
-          await refreshTasks.mutateAsync();
-        }
+          if (userData.membership?.type === 'pro') {
+            const savedTasks = await StorageService.getDailyTasks(user.uid);
 
-        if (userData.lastTasksDates) {
-          currentTasks.forEach((task) => {
-            const lastCompletedDate = userData.lastTasksDates?.[task.trait];
-            if (lastCompletedDate === today) {
-              currentCompletedTasks.push(task.id);
+            if (savedTasks && savedTasks.length > 0) {
+              currentTasks = savedTasks;
+            } else {
+              if (goodTraits && badTraits) {
+                currentTasks = getInitialTasks();
+                if (currentTasks.length > 0) {
+                  await StorageService.saveDailyTasks(user.uid, currentTasks);
+                  await refreshTasks.mutateAsync();
+                } else {
+                  await new Promise((resolve) => setTimeout(resolve, 500));
+                  const retryTasks = getInitialTasks();
+                  if (retryTasks.length > 0) {
+                    currentTasks = retryTasks;
+                    await StorageService.saveDailyTasks(user.uid, currentTasks);
+                    await refreshTasks.mutateAsync();
+                  }
+                }
+              }
             }
+
+            if (userData.lastTasksDates) {
+              currentTasks.forEach((task) => {
+                const lastCompletedDate = userData.lastTasksDates?.[task.trait];
+                if (lastCompletedDate === today) {
+                  currentCompletedTasks.push(task.id);
+                }
+              });
+            }
+          }
+
+          setTasks(currentTasks);
+          setCompletedTasks(currentCompletedTasks);
+          setRefreshLimit(taskData?.refreshesLeft ?? 0);
+        } catch (error) {
+          console.error('Error loading task data:', error);
+          Toast.show({
+            type: 'error',
+            text1: t('tasks.loadError'),
           });
+        } finally {
+          setIsLoading(false);
         }
-
-        setTasks(currentTasks);
-        setCompletedTasks(currentCompletedTasks);
-        setRefreshLimit(taskData?.refreshesLeft ?? 0);
-      } catch (error) {
-        console.error('Error loading task data:', error);
-        Toast.show({
-          type: 'error',
-          text1: t('tasks.loadError'),
-        });
-      } finally {
-        setIsLoading(false);
       }
-    }
 
-    loadTaskData();
-  }, [user?.uid, goodTraits, badTraits, userData]);
+      loadTaskData();
+    }, [user?.uid, userData?.membership?.type, goodTraits, badTraits])
+  );
 
   //Task handlers
   const handleCompleteTask = useCallback(
@@ -260,7 +271,7 @@ export default function TasksScreen() {
     );
   }
 
-  if (userData.membership?.type !== 'pro') {
+  if (userData.membership?.type === 'free') {
     const features = t('tasks.freemember.features', {
       returnObjects: 'true' as const,
       defaultValue: '',

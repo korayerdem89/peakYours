@@ -165,54 +165,6 @@ export default function SignInScreen() {
     }
   };
 
-  const handleEmailAuth = async () => {
-    try {
-      setIsLoading(true);
-
-      let firebaseUser;
-      if (isSignUp) {
-        firebaseUser = await EmailAuthService.signUp(email, password);
-        // Kayıt olduktan sonra displayName'i güncelle
-      } else {
-        firebaseUser = await EmailAuthService.signIn(email, password);
-      }
-
-      await UserService.saveUserToFirestore(firebaseUser, name);
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      await setUser(firebaseUser.uid);
-    } catch (error: any) {
-      let errorMessage = t('auth.errors.default');
-      console.log(error.message);
-      switch (error.message) {
-        case 'invalid-email':
-          errorMessage = t('auth.errors.invalidEmail');
-          break;
-        case 'user-not-found':
-          errorMessage = t('auth.errors.userNotFound');
-          break;
-        case 'wrong-password':
-          errorMessage = t('auth.errors.wrongPassword');
-          break;
-        case 'email-already-in-use':
-          errorMessage = t('auth.errors.emailInUse');
-          break;
-        case 'weak-password':
-          errorMessage = t('auth.errors.weakPassword');
-          break;
-      }
-
-      Toast.show({
-        type: 'error',
-        text1: t('common.error'),
-        text2: errorMessage,
-        position: 'bottom',
-        visibilityTime: 3000,
-      });
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
   const handleForgotPassword = async () => {
     try {
       if (!email) {

@@ -152,7 +152,7 @@ export const RevenueCatProvider = ({ children }: { children: React.ReactNode }) 
           : locale === 'tr'
             ? 'Premium özelliklere hoş geldiniz'
             : 'Welcome to premium features!';
-      router.back();
+      router.replace('/(onboarding)');
       Toast.show({
         type: 'success',
         text1: successMessage,
