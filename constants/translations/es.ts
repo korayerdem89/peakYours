@@ -518,6 +518,7 @@ export default {
   you: {
     subscribeText: 'Mejora a Pro para ver cómo te evalúan los demás',
     subscribeCTA: 'Obtener Pro',
+    rateInvite: 'Contribuye al desarrollo personal de tus amigos calificándolos',
   },
   welcome: {
     title: '¡Bienvenido a Personality Insights!',

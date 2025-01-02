@@ -166,7 +166,7 @@ export default function GoodSidesRoute() {
         <ReferralShare />
 
         <View className="xs:my-1 flex-row items-center justify-center sm:my-1.5 md:my-2">
-          <Text className="xs:text-[10px] text-gray-500 dark:text-gray-400 sm:text-xs md:text-sm">
+          <Text className="xs:text-[10px] font-medium text-gray-500  sm:text-xs md:text-sm">
             {t('common.or')}
           </Text>
         </View>

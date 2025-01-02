@@ -456,7 +456,8 @@ export default {
   },
   you: {
     subscribeText: 'Sizi kimlerin nasıl değerlendirdiğini görmek için',
-    subscribeCTA: 'Pro üyelik edinin', // Button text
+    subscribeCTA: 'Pro üyelik edinin',
+    rateInvite: 'Dostlarınızı değerlendirerek onların kişisel gelişimine katkıda bulunun',
   },
   auth: {
     signIn: {

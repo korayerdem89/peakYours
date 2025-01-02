@@ -511,6 +511,7 @@ export default {
   you: {
     subscribeText: 'Get Pro membership to see how others rated you',
     subscribeCTA: 'Get Pro Membership',
+    rateInvite: "Contribute to your friends' personal development by rating them",
   },
   welcome: {
     title: 'Welcome to Personality Insights!',

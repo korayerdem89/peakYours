@@ -20,11 +20,12 @@ import { useAuth } from '@/store/useAuth';
 import { useFocusEffect } from '@react-navigation/native';
 import { useUpdateUser, useUserData } from '@/hooks/useUserQueries';
 import BadSidesRoute from '@/components/main/BadSidesRoute';
-import NetInfo from '@react-native-community/netinfo';
+
 import { useAppUsage } from '@/hooks/useAppUsage';
 import { router } from 'expo-router';
 import { useTraits } from '@/providers/TraitProvider';
 import WelcomeModal from '@/components/modals/WelcomeModal';
+import { MaterialIcons } from '@expo/vector-icons';
 
 export default function YouScreen() {
   const { t, locale } = useTranslation();
@@ -127,10 +128,10 @@ export default function YouScreen() {
   return (
     <SafeAreaView className="flex-1 bg-accent-light pt-4 dark:bg-background-dark">
       <View style={{ height: BANNER_HEIGHT }}>
-        {isShowBanner && (
-          <ImageBackground
-            source={require('@/assets/you/subscribeBanner.png')}
-            style={{ height: '100%', width: layout.width, justifyContent: 'center' }}>
+        <ImageBackground
+          source={require('@/assets/you/subscribeBanner.png')}
+          style={{ height: '100%', width: layout.width, justifyContent: 'center' }}>
+          {isShowBanner ? (
             <View className="flex-row flex-wrap items-center justify-center">
               <Text className="font-medium text-sm text-text-dark">{t('you.subscribeText')} </Text>
               <TouchableOpacity
@@ -141,8 +142,15 @@ export default function YouScreen() {
                 </Text>
               </TouchableOpacity>
             </View>
-          </ImageBackground>
-        )}
+          ) : (
+            <View className="flex-row items-center justify-center gap-2 px-6">
+              <MaterialIcons name="tips-and-updates" size={20} color="white" />
+              <Text className="flex-wrap font-regular text-sm text-white">
+                {t('you.rateInvite')}{' '}
+              </Text>
+            </View>
+          )}
+        </ImageBackground>
       </View>
 
       <TabView
