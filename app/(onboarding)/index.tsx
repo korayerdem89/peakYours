@@ -24,7 +24,7 @@ export default function OnboardingScreen() {
   const scrollViewRef = useRef<Animated.ScrollView>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
-  const [countdown, setCountdown] = useState<number | null>(1);
+  const [countdown, setCountdown] = useState<number | null>(2);
   const router = useRouter();
   const { isFirstTime } = useAppUsage();
   const { t } = useTranslation();
@@ -62,7 +62,7 @@ export default function OnboardingScreen() {
         }
         return prev - 1;
       });
-    }, 1000);
+    }, 2000);
 
     return () => clearInterval(countdownInterval);
   }, []);
@@ -157,10 +157,10 @@ export default function OnboardingScreen() {
           return (
             <View key={item.id} style={styles.slide}>
               <AnimatedImage source={item.image} style={[styles.image, imageAnimatedStyle]} />
-              <Text className="mt-8 text-center font-semibold text-2xl text-text-light dark:text-text-dark">
+              <Text className="mt-8 text-center font-bold text-2xl text-primary-dark dark:text-text-dark">
                 {item.title}
               </Text>
-              <Text className="mt-4 text-center font-regular text-base text-text-light dark:text-text-dark">
+              <Text className="mt-4 text-center font-medium text-base text-primary-dark dark:text-text-dark">
                 {item.description}
               </Text>
             </View>
