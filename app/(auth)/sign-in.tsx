@@ -266,134 +266,34 @@ export default function SignInScreen() {
               resizeMode="contain"
             />
 
-            <View className="flex-1 items-center justify-center gap-6 p-6">
+            <View className="flex-1 items-center justify-center p-6 ">
               <Image
                 source={require('@/assets/sign-in/signin.png')}
                 className="w-full rounded-xl"
                 style={{ height: BANNER_HEIGHT }}
                 resizeMode="contain"
               />
-              {!isSignUp && (
-                <>
-                  <View className="w-full gap-3">
-                    <GoogleSigninButton
-                      size={GoogleSigninButton.Size.Wide}
-                      color={
-                        isDark ? GoogleSigninButton.Color.Light : GoogleSigninButton.Color.Dark
-                      }
-                      onPress={signIn}
-                      disabled={isLoading}
-                      style={{ width: '100%', height: 48 }}
-                    />
+              <View className="mt-10 w-full gap-3">
+                <GoogleSigninButton
+                  size={GoogleSigninButton.Size.Wide}
+                  color={isDark ? GoogleSigninButton.Color.Light : GoogleSigninButton.Color.Dark}
+                  onPress={signIn}
+                  disabled={isLoading}
+                  style={{ width: '100%', height: 48 }}
+                />
 
-                    {AppleAuthService.isSupported && (
-                      <AppleButton
-                        buttonStyle={AppleButton.Style.BLACK}
-                        buttonType={AppleButton.Type.SIGN_IN}
-                        style={{
-                          alignSelf: 'center',
-                          width: '98%',
-                          height: 42,
-                        }}
-                        onPress={handleAppleSignIn}
-                      />
-                    )}
-                  </View>
-                  <Text className="text-center font-regular text-sm text-text-light">
-                    {t('auth.or')}
-                  </Text>
-                </>
-              )}
-              <View className="w-full gap-4">
-                <View className="mb-2 w-full gap-2">
-                  {isSignUp && (
-                    <>
-                      <TextInput
-                        className="h-12 w-full rounded-sm border border-gray-200 bg-background-light px-4 text-text-light dark:border-gray-700 dark:bg-surface-dark dark:text-text-dark"
-                        placeholder={t('auth.fullName')}
-                        placeholderTextColor={theme.colors.text.light}
-                        value={name}
-                        onChangeText={setName}
-                        autoCapitalize="words"
-                      />
-                      {name.length > 0 && !isValidName(name) && (
-                        <Text className="text-xs text-red-500">{t('auth.validation.nameMin')}</Text>
-                      )}
-                    </>
-                  )}
-
-                  <TextInput
-                    className="h-12 w-full rounded-sm border border-gray-200 bg-background-light px-4 text-text-light dark:border-gray-700 dark:bg-surface-dark dark:text-text-dark"
-                    placeholder={t('auth.email')}
-                    placeholderTextColor={theme.colors.text.light}
-                    value={email}
-                    onChangeText={setEmail}
-                    autoCapitalize="none"
-                    keyboardType="email-address"
+                {AppleAuthService.isSupported && (
+                  <AppleButton
+                    buttonStyle={AppleButton.Style.BLACK}
+                    buttonType={AppleButton.Type.SIGN_IN}
+                    style={{
+                      alignSelf: 'center',
+                      width: '98%',
+                      height: 42,
+                    }}
+                    onPress={handleAppleSignIn}
                   />
-                  {email.length > 0 && !isValidEmail(email) && (
-                    <Text className="text-xs text-red-500">
-                      {t('auth.validation.invalidEmail')}
-                    </Text>
-                  )}
-
-                  <View className="relative">
-                    <TextInput
-                      className="h-12 w-full rounded-sm border border-gray-200 bg-background-light px-4 pr-12 text-text-light dark:border-gray-700 dark:bg-surface-dark dark:text-text-dark"
-                      placeholder={t('auth.password')}
-                      placeholderTextColor={theme.colors.text.light}
-                      value={password}
-                      onChangeText={setPassword}
-                      secureTextEntry={!showPassword}
-                    />
-                    <TouchableOpacity
-                      onPress={() => setShowPassword(!showPassword)}
-                      className="absolute right-4 top-3.5 active:opacity-60">
-                      <Ionicons
-                        name={showPassword ? 'eye-off-outline' : 'eye-outline'}
-                        size={20}
-                        color={isDark ? theme.colors.text.dark : theme.colors.text.light}
-                      />
-                    </TouchableOpacity>
-                  </View>
-
-                  {isSignUp && (
-                    <Text className="text-xs text-gray-500 dark:text-gray-400">
-                      {t('auth.validation.passwordRules')}
-                    </Text>
-                  )}
-
-                  {!isSignUp && (
-                    <TouchableOpacity onPress={handleForgotPassword} className="self-end">
-                      <Text className="font-regular text-sm text-primary-dark">
-                        {t('auth.forgotPassword.text')}
-                      </Text>
-                    </TouchableOpacity>
-                  )}
-                </View>
-                <TouchableOpacity
-                  onPress={handleEmailAuth}
-                  disabled={!isFormValid || isLoading}
-                  className={`h-12 w-full items-center justify-center rounded-sm ${
-                    isFormValid && !isLoading ? 'bg-primary active:opacity-60' : 'bg-gray-300'
-                  }`}>
-                  <Text className="font-medium text-white">
-                    {!isSignUp ? t('auth.signIn.button') : t('auth.signUp.button')}
-                  </Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity
-                  onPress={() => {
-                    setName('');
-                    setEmail('');
-                    setPassword('');
-                    setIsSignUp(!isSignUp);
-                  }}
-                  className="active:opacity-60">
-                  <Text className="text-center font-regular text-sm text-text-light">
-                    {!isSignUp ? t('auth.signIn.switch') : t('auth.signUp.switch')}
-                  </Text>
-                </TouchableOpacity>
+                )}
               </View>
             </View>
           </Animated.View>

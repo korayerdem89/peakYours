@@ -1,12 +1,11 @@
 import { Tabs } from 'expo-router';
 import { CustomTabBar } from '@/components/CustomTabBar';
 import { Alert, Platform } from 'react-native';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useTranslation } from '@/providers/LanguageProvider';
 import { useAuth } from '@/store/useAuth';
 import { useUpdateUser } from '@/hooks/useUserQueries';
 import { ZodiacModal } from '@/components/ZodiacModal';
-import { useAppUsage } from '@/hooks/useAppUsage';
 
 export default function MainLayout() {
   const { t } = useTranslation();

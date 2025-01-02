@@ -9,7 +9,6 @@ import Animated, {
   withDelay,
   useAnimatedStyle,
 } from 'react-native-reanimated';
-import NetInfo from '@react-native-community/netinfo';
 import Toast from 'react-native-toast-message';
 
 // Providers & Store
@@ -61,7 +60,6 @@ export default function TasksScreen() {
   const [levelUpTrait, setLevelUpTrait] = useState<TaskLevelUpTrait | null>(null);
   const [tasks, setTasks] = useState<Task[]>([]);
   const [completedTasks, setCompletedTasks] = useState<string[]>([]);
-  const [bannerError, setBannerError] = useState(false);
 
   // Task related data
   const { taskData, refreshTasks, decrementRefreshes } = useTasks(user?.uid);
@@ -82,16 +80,6 @@ export default function TasksScreen() {
     }, 5000);
     return () => clearInterval(interval);
   }, []);
-
-  useEffect(() => {
-    if (userData?.membership?.type === 'free') return;
-    const unsubscribe = NetInfo.addEventListener((state) => {
-      if (state.isConnected && bannerError) {
-        setBannerError(false);
-      }
-    });
-    return () => unsubscribe();
-  }, [bannerError]);
 
   const getInitialTasks = useCallback(() => {
     if (!goodTraits || !badTraits || userData?.membership?.type === 'free') return [];

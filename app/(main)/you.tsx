@@ -20,7 +20,6 @@ import { useAuth } from '@/store/useAuth';
 import { useFocusEffect } from '@react-navigation/native';
 import { useUpdateUser, useUserData } from '@/hooks/useUserQueries';
 import BadSidesRoute from '@/components/main/BadSidesRoute';
-import { BannerAd, BannerAdSize, RequestOptions } from 'react-native-google-mobile-ads';
 import NetInfo from '@react-native-community/netinfo';
 import { useAppUsage } from '@/hooks/useAppUsage';
 import { router } from 'expo-router';
@@ -37,7 +36,7 @@ export default function YouScreen() {
 
   const { usageCount, isFirstTime } = useAppUsage();
   const updateUser = useUpdateUser();
-  const [bannerError, setBannerError] = useState(false);
+
   const [retryCount, setRetryCount] = useState(0);
   const MAX_RETRY = 3;
   const RETRY_DELAY = 5000;
@@ -47,7 +46,7 @@ export default function YouScreen() {
   const [showWelcome, setShowWelcome] = useState(false);
 
   const isShowBanner =
-    traitDetails && traitDetails?.totalRaters > 5 && userData?.membership?.type === 'free';
+    traitDetails && traitDetails?.totalRaters > 2 && userData?.membership?.type === 'free';
 
   useFocusEffect(
     useCallback(() => {
@@ -90,40 +89,6 @@ export default function YouScreen() {
     }, [userData?.zodiacSign])
   );
 
-  const handleBannerError = useCallback(
-    async (error: Error) => {
-      console.log('Banner ad failed to load:', error);
-      setBannerError(true);
-
-      const networkState = await NetInfo.fetch();
-
-      if (networkState.isConnected && retryCount < MAX_RETRY) {
-        setTimeout(() => {
-          setBannerError(false);
-          setRetryCount((prev) => prev + 1);
-        }, RETRY_DELAY);
-      }
-    },
-    [retryCount]
-  );
-
-  useEffect(() => {
-    const unsubscribe = NetInfo.addEventListener((state) => {
-      if (state.isConnected && bannerError) {
-        setBannerError(false);
-        setRetryCount(0);
-      }
-    });
-
-    return () => {
-      unsubscribe();
-    };
-  }, [bannerError]);
-
-  const requestOptions: RequestOptions = {
-    requestNonPersonalizedAdsOnly: true,
-  };
-
   const renderTabBar = useCallback(
     (props: TabViewProps) => (
       <TabBar
@@ -162,18 +127,6 @@ export default function YouScreen() {
   return (
     <SafeAreaView className="flex-1 bg-accent-light pt-4 dark:bg-background-dark">
       <View style={{ height: BANNER_HEIGHT }}>
-        {!isShowBanner && !bannerError && (
-          <BannerAd
-            unitId={'ca-app-pub-6312844121446107/2492397048'}
-            size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
-            requestOptions={requestOptions}
-            onAdFailedToLoad={handleBannerError}
-            onAdLoaded={() => {
-              setBannerError(false);
-              setRetryCount(0);
-            }}
-          />
-        )}
         {isShowBanner && (
           <ImageBackground
             source={require('@/assets/you/subscribeBanner.png')}
