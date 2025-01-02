@@ -121,67 +121,64 @@ export default function TasksScreen() {
     return Math.max(0, diff / (24 * 60 * 60 * 1000));
   }, [taskData?.lastRefresh]);
 
-  // Task loading effect
-  useFocusEffect(
-    useCallback(() => {
-      async function loadTaskData() {
-        if (!user?.uid || !userData) return;
-        setIsLoading(true);
-        try {
-          const today = new Date().toISOString().split('T')[0];
-          let currentTasks: Task[] = [];
-          let currentCompletedTasks: string[] = [];
+  useEffect(() => {
+    async function loadTaskData() {
+      if (!user?.uid || !userData) return;
+      setIsLoading(true);
+      try {
+        const today = new Date().toISOString().split('T')[0];
+        let currentTasks: Task[] = [];
+        let currentCompletedTasks: string[] = [];
 
-          if (userData.membership?.type === 'pro') {
-            const savedTasks = await StorageService.getDailyTasks(user.uid);
+        if (userData.membership?.type === 'pro') {
+          const savedTasks = await StorageService.getDailyTasks(user.uid);
 
-            if (savedTasks && savedTasks.length > 0) {
-              currentTasks = savedTasks;
-            } else {
-              if (goodTraits && badTraits) {
-                currentTasks = getInitialTasks();
-                if (currentTasks.length > 0) {
+          if (savedTasks && savedTasks.length > 0) {
+            currentTasks = savedTasks;
+          } else {
+            if (goodTraits && badTraits) {
+              currentTasks = getInitialTasks();
+              if (currentTasks.length > 0) {
+                await StorageService.saveDailyTasks(user.uid, currentTasks);
+                await refreshTasks.mutateAsync();
+              } else {
+                await new Promise((resolve) => setTimeout(resolve, 500));
+                const retryTasks = getInitialTasks();
+                if (retryTasks.length > 0) {
+                  currentTasks = retryTasks;
                   await StorageService.saveDailyTasks(user.uid, currentTasks);
                   await refreshTasks.mutateAsync();
-                } else {
-                  await new Promise((resolve) => setTimeout(resolve, 500));
-                  const retryTasks = getInitialTasks();
-                  if (retryTasks.length > 0) {
-                    currentTasks = retryTasks;
-                    await StorageService.saveDailyTasks(user.uid, currentTasks);
-                    await refreshTasks.mutateAsync();
-                  }
                 }
               }
             }
-
-            if (userData.lastTasksDates) {
-              currentTasks.forEach((task) => {
-                const lastCompletedDate = userData.lastTasksDates?.[task.trait];
-                if (lastCompletedDate === today) {
-                  currentCompletedTasks.push(task.id);
-                }
-              });
-            }
           }
 
-          setTasks(currentTasks);
-          setCompletedTasks(currentCompletedTasks);
-          setRefreshLimit(taskData?.refreshesLeft ?? 0);
-        } catch (error) {
-          console.error('Error loading task data:', error);
-          Toast.show({
-            type: 'error',
-            text1: t('tasks.loadError'),
-          });
-        } finally {
-          setIsLoading(false);
+          if (userData.lastTasksDates) {
+            currentTasks.forEach((task) => {
+              const lastCompletedDate = userData.lastTasksDates?.[task.trait];
+              if (lastCompletedDate === today) {
+                currentCompletedTasks.push(task.id);
+              }
+            });
+          }
         }
-      }
 
-      loadTaskData();
-    }, [user?.uid, userData?.membership?.type, goodTraits, badTraits])
-  );
+        setTasks(currentTasks);
+        setCompletedTasks(currentCompletedTasks);
+        setRefreshLimit(taskData?.refreshesLeft ?? 0);
+      } catch (error) {
+        console.error('Error loading task data:', error);
+        Toast.show({
+          type: 'error',
+          text1: t('tasks.loadError'),
+        });
+      } finally {
+        setIsLoading(false);
+      }
+    }
+
+    loadTaskData();
+  }, [user?.uid, userData?.membership?.type, goodTraits, badTraits]);
 
   //Task handlers
   const handleCompleteTask = useCallback(
