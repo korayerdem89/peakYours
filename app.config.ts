@@ -3,7 +3,7 @@ import { ExpoConfig } from '@expo/config';
 const config: ExpoConfig = {
   name: 'YourPeak',
   slug: 'peakyours',
-  version: '1.1.0',
+  version: '1.1.1',
   scheme: 'com.peakyours.app',
   orientation: 'portrait',
   icon: './assets/icon.png',
