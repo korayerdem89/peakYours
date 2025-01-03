@@ -27,9 +27,9 @@ export async function generateAIHoroscope({
       ${badTraits.map((t) => `🌑 ${t.trait} (Güç seviyesi: ${t.value})`).join('\n')}
       
       Lütfen şu formatta 3 farklı alanda yorum yaz:
-      1. Genel Görünüm: Yıldızların enerjisini ve kişilik özelliklerini harmanlayarak genel bir günlük tahmin
-      2. Aşk Hayatı: Burç özelliklerini ve kişilik yapısını göz önüne alarak aşk/ilişki tahmini
-      3. Kariyer: Kişinin güçlü ve zayıf yönlerini göz önüne alarak iş hayatı için öneriler
+      1. Genel Görünüm: Yıldızların enerjisini ve kişilik özelliklerini harmanlayarak kullanıya günlük tavsiyeler
+      2. Aşk Hayatı: Burç özelliklerini ve kişilik yapısını göz önüne alarak aşk/ilişki tavsiyeleri
+      3. Kariyer: Kişinin güçlü ve zayıf yönlerini göz önüne alarak iş hayatı için tavsiyeler
       
       Yorumları yazarken:
       - Mistik ve gizemli bir ton kullan

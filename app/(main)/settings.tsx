@@ -114,6 +114,7 @@ export default function SettingsScreen() {
           },
           {
             text: t('settings.language.changeButton'),
+            style: 'default',
             onPress: async () => {
               await setAppLocale(langCode);
               await AsyncStorage.setItem(LANGUAGE_CHANGE_KEY, Date.now().toString());

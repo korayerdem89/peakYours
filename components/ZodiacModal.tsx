@@ -76,9 +76,9 @@ export function ZodiacModal({ visible, onClose, onSubmit }: ZodiacModalProps) {
           </Text>
         </View>
 
-        <View className="flex-1 px-3 py-2">
+        <View className="flex-1 px-3 py-4">
           <View className="flex-row flex-wrap justify-between">
-            {ZODIAC_SIGNS.map((zodiac, index) => (
+            {ZODIAC_SIGNS.map((zodiac) => (
               <TouchableOpacity
                 key={zodiac.id}
                 onPress={() => handleSelect(zodiac.id)}
@@ -96,15 +96,6 @@ export function ZodiacModal({ visible, onClose, onSubmit }: ZodiacModalProps) {
               </TouchableOpacity>
             ))}
           </View>
-        </View>
-
-        <View className="align-center mt-10 flex-1 justify-center px-4 pb-8">
-          <Image
-            source={{
-              uri: 'https://fastly.picsum.photos/id/690/200/300.jpg?hmac=YX9nONyDZ_zuGZ5wLOen_mxLWVHEsjpkADU43laON4M',
-            }}
-            className="h-60 w-full rounded-md border-8"
-          />
         </View>
       </Animated.View>
     </RNModal>

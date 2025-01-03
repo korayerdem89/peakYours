@@ -211,7 +211,7 @@ export default function Ideas() {
     <SafeAreaView className="flex-1 bg-background-light dark:bg-background-dark">
       <ScrollView
         className="flex-1 p-4"
-        contentContainerStyle={{ flexGrow: 1 }}
+        contentContainerStyle={{ flexGrow: 1, paddingBottom: 100 }}
         showsVerticalScrollIndicator={false}>
         <View className="flex-1 gap-4">
           <Animated.View
@@ -272,7 +272,7 @@ export default function Ideas() {
               </Text>
               <Text
                 className="text-base leading-relaxed text-text-light dark:text-text-dark-secondary"
-                style={{ paddingBottom: 12 }}>
+                style={{ paddingBottom: 20 }}>
                 {analysis || t('ideas.analysisError')}
               </Text>
             </Animated.View>
