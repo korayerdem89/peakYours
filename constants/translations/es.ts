@@ -516,7 +516,7 @@ export default {
     successDescription: '¡Bienvenido a las funciones premium! Disfruta tu viaje.',
   },
   you: {
-    subscribeText: 'Mejora a Pro para ver cómo te evalúan los demás',
+    subscribeText: 'Para ver cómo te calificaron los demás',
     subscribeCTA: 'Obtener Pro',
     rateInvite: 'Contribuye al desarrollo personal de tus amigos calificándolos',
   },

@@ -455,7 +455,7 @@ export default {
     successDescription: 'Premium özelliklere hoş geldiniz! İyi yolculuklar.',
   },
   you: {
-    subscribeText: 'Sizi kimlerin nasıl değerlendirdiğini görmek için',
+    subscribeText: 'Sizi nasıl değerlendirdiklerini görmek için',
     subscribeCTA: 'Pro üyelik edinin',
     rateInvite: 'Dostlarınızı değerlendirerek onların kişisel gelişimine katkıda bulunun',
   },

@@ -7,6 +7,7 @@ import {
   Text,
   TouchableOpacity,
   View,
+  Image,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
@@ -37,10 +38,6 @@ export default function YouScreen() {
 
   const { usageCount, isFirstTime } = useAppUsage();
   const updateUser = useUpdateUser();
-
-  const [retryCount, setRetryCount] = useState(0);
-  const MAX_RETRY = 3;
-  const RETRY_DELAY = 5000;
   const [shouldOpenDiscountedPaywall, setShouldOpenDiscountedPaywall] = useState(false);
 
   const { traitDetails } = useTraits();
@@ -131,21 +128,34 @@ export default function YouScreen() {
         <ImageBackground
           source={require('@/assets/you/subscribeBanner.png')}
           style={{ height: '100%', width: layout.width, justifyContent: 'center' }}>
-          {isShowBanner ? (
-            <View className="flex-row flex-wrap items-center justify-center">
-              <Text className="font-medium text-sm text-text-dark">{t('you.subscribeText')} </Text>
-              <TouchableOpacity
-                onPress={() => router.push('/modal/paywall')}
-                className="active:opacity-60">
-                <Text className="font-bold text-base text-white underline">
-                  {t('you.subscribeCTA')}
+          {!isShowBanner ? (
+            <View className="w-full flex-row items-center justify-center gap-10 px-8">
+              <Image
+                source={require('@/assets/you/lookIcon.png')}
+                className="w-16"
+                resizeMode="contain"
+              />
+              <View className="flex-1 flex-row items-center gap-4">
+                <Text className="font-medium text-sm text-primary-dark">
+                  {t('you.subscribeText')}{' '}
+                  <TouchableOpacity
+                    onPress={() => router.push('/modal/paywall')}
+                    className="active:opacity-60">
+                    <Text className="font-bold text-base text-primary-dark underline">
+                      {t('you.subscribeCTA')}
+                    </Text>
+                  </TouchableOpacity>
                 </Text>
-              </TouchableOpacity>
+              </View>
             </View>
           ) : (
-            <View className="flex-row items-center justify-center gap-2 px-6">
-              <MaterialIcons name="tips-and-updates" size={20} color="white" />
-              <Text className="flex-wrap font-regular text-sm text-white">
+            <View className="w-full flex-row items-center justify-center gap-10 px-8">
+              <Image
+                source={require('@/assets/you/rateIcon.png')}
+                className="w-16"
+                resizeMode="contain"
+              />
+              <Text className="flex-wrap font-medium text-sm text-primary-dark">
                 {t('you.rateInvite')}{' '}
               </Text>
             </View>

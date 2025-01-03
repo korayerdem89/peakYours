@@ -509,7 +509,7 @@ export default {
     successDescription: 'Welcome to premium features! Enjoy your journey.',
   },
   you: {
-    subscribeText: 'Get Pro membership to see how others rated you',
+    subscribeText: 'To see how others rated you',
     subscribeCTA: 'Get Pro Membership',
     rateInvite: "Contribute to your friends' personal development by rating them",
   },
