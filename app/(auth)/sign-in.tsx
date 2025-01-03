@@ -251,7 +251,7 @@ export default function SignInScreen() {
                 style={{ height: BANNER_HEIGHT }}
                 resizeMode="contain"
               />
-              {Platform.OS === 'ios' ? (
+              {Platform.OS === 'android' ? (
                 <>
                   <View className="w-full gap-3">
                     <GoogleSigninButton
