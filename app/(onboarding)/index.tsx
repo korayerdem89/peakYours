@@ -1,5 +1,5 @@
 import { View, Text, Dimensions, Image, StyleSheet } from 'react-native';
-import { router, useRouter } from 'expo-router';
+import { router, useFocusEffect, useRouter } from 'expo-router';
 import Button from '@/components/Button';
 import { theme } from '@/constants/theme';
 import Animated, {
@@ -15,6 +15,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useAppUsage } from '@/hooks/useAppUsage';
 import { LANGUAGE_CHANGE_KEY } from '@/app/modal/language-select';
 import { useTranslation } from '@/providers/LanguageProvider';
+import { useAuth } from '@/store/useAuth';
 
 const AnimatedImage = Animated.createAnimatedComponent(Image);
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
@@ -24,11 +25,11 @@ export default function OnboardingScreen() {
   const scrollViewRef = useRef<Animated.ScrollView>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
-  const [countdown, setCountdown] = useState<number | null>(2);
+  const [countdown, setCountdown] = useState<number | null>(3);
   const router = useRouter();
   const { isFirstTime } = useAppUsage();
   const { t } = useTranslation();
-
+  const { user } = useAuth();
   const ONBOARDING_DATA = [
     {
       id: '1',
@@ -52,6 +53,14 @@ export default function OnboardingScreen() {
 
   const isLastSlide = currentIndex === ONBOARDING_DATA.length - 1;
 
+  useFocusEffect(
+    useCallback(() => {
+      if (user) {
+        router.replace('/(main)/you');
+      }
+    }, [user])
+  );
+
   useEffect(() => {
     const countdownInterval = setInterval(() => {
       setCountdown((prev: number | null) => {
@@ -62,7 +71,7 @@ export default function OnboardingScreen() {
         }
         return prev - 1;
       });
-    }, 2000);
+    }, 1000);
 
     return () => clearInterval(countdownInterval);
   }, []);
@@ -89,7 +98,7 @@ export default function OnboardingScreen() {
 
   const handleNext = useCallback(() => {
     setIsButtonDisabled(true);
-    setCountdown(1);
+    setCountdown(3);
 
     if (currentIndex < ONBOARDING_DATA.length - 1) {
       const nextIndex = currentIndex + 1;

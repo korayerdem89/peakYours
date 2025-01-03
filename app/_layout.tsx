@@ -63,7 +63,7 @@ function InitialLayout() {
   const { user } = useAuth();
   const { setIsLoading } = useLoadingStore();
   const { isFirstTime } = useAppUsage();
-  console.log(isFirstTime, 'isFirsttt');
+
   useEffect(() => {
     async function initialNavigation() {
       try {

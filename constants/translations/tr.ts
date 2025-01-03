@@ -202,7 +202,7 @@ export default {
   },
   ideas: {
     accuracyRate: 'Doğruluk Oranı',
-    accuracyWarning: 'Ne kadar çok puan alırsan, analizin o kadar doğru olur!',
+    accuracyWarning: 'Ne kadar çok kişi sizi değerlendirirse, analiziniz o kadar doğru olur',
     updateFrequency: 'Analizin her 3 yeni puan aldığında güncellenir.',
     spiritAnimal: {
       title: 'Ruh Hayvanınız',
@@ -330,7 +330,7 @@ export default {
     freemember: {
       title: 'En İyi Haline Ulaş',
       value:
-        'Complete personalized daily tasks designed to enhance your strengths and transform your growth areas into powerful traits!',
+        'Güçlü yanlarını pekiştirmek ve gelişim alanlarını güçlü özelliklere dönüştürmek için özel hazırlanmış günlük görevleri tamamla!',
       cta: 'Hemen Pro üyeliğe geç',
     },
     title: 'Kişisel Rehber',

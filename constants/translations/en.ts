@@ -240,7 +240,7 @@ export default {
   },
   ideas: {
     accuracyRate: 'Accuracy Rate',
-    accuracyWarning: 'The more ratings you receive, the more accurate your analysis becomes!',
+    accuracyWarning: 'The more people rate you, the more accurate your analysis becomes',
     spiritAnimal: {
       title: 'Your Spirit Animal',
     },

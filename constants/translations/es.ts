@@ -242,7 +242,7 @@ export default {
   },
   ideas: {
     accuracyRate: 'Tasa de Precisión',
-    accuracyWarning: '¡Cuantas más evaluaciones recibas, más preciso será tu análisis!',
+    accuracyWarning: 'Cuantas más personas te evalúen, más preciso será tu análisis',
     updateFrequency: 'Tu análisis se actualiza cada 3 nuevas evaluaciones.',
     spiritAnimal: {
       title: 'Tu Animal Espiritual',
@@ -420,7 +420,7 @@ export default {
     freemember: {
       title: 'Alcanza Tu Máximo Potencial',
       value:
-        'Complete personalized daily tasks designed to enhance your strengths and transform your growth areas into powerful traits!',
+        '¡Completa tareas diarias personalizadas diseñadas para mejorar tus fortalezas y transformar tus áreas de crecimiento en rasgos poderosos!',
       cta: 'Actualiza a Pro ahora',
     },
   },

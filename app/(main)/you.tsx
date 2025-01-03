@@ -48,7 +48,7 @@ export default function YouScreen() {
   }, [isFirstTime, usageCount]);
 
   useEffect(() => {
-    if (shouldOpenDiscountedPaywall) {
+    if (shouldOpenDiscountedPaywall && userData?.membership?.type === 'free') {
       router.push('/modal/discountedPaywall');
     }
   }, [shouldOpenDiscountedPaywall]);
@@ -130,43 +130,58 @@ export default function YouScreen() {
         <ImageBackground
           source={require('@/assets/you/subscribeBanner.png')}
           style={{ height: '100%', width: layout.width, justifyContent: 'center' }}>
-          {currentBanner === 0 ? (
+          {userData?.membership?.type === 'pro' ? (
             <Animated.View
               entering={FadeIn.duration(500)}
-              exiting={FadeOut.duration(500)}
-              className="w-full flex-row items-center justify-center gap-10 px-8">
-              <Image
-                source={require('@/assets/you/lookIcon.png')}
-                className="w-16"
-                resizeMode="contain"
-              />
-              <View className="flex-1 flex-row items-center gap-4">
-                <Text className="font-medium text-sm text-primary-dark">
-                  {t('you.subscribeText')}{' '}
-                  <TouchableOpacity
-                    onPress={() => router.push('/modal/paywall')}
-                    className="active:opacity-60">
-                    <Text className="font-bold text-base text-primary-dark underline">
-                      {t('you.subscribeCTA')}
-                    </Text>
-                  </TouchableOpacity>
-                </Text>
-              </View>
-            </Animated.View>
-          ) : (
-            <Animated.View
-              entering={FadeIn.duration(500)}
-              exiting={FadeOut.duration(500)}
-              className="w-full flex-row items-center justify-center gap-10 px-8">
+              className="w-full flex-row items-center justify-center gap-6 px-8">
               <Image
                 source={require('@/assets/you/rateIcon.png')}
-                className="w-16"
+                className="w-14 pl-6"
                 resizeMode="contain"
               />
               <Text className="flex-wrap font-medium text-sm text-primary-dark">
                 {t('you.rateInvite')}{' '}
               </Text>
             </Animated.View>
+          ) : (
+            <>
+              {currentBanner === 0 ? (
+                <Animated.View
+                  entering={FadeIn.duration(500)}
+                  exiting={FadeOut.duration(500)}
+                  className="w-full flex-row items-center justify-center gap-10 px-8">
+                  <Image
+                    source={require('@/assets/you/lookIcon.png')}
+                    className="w-16"
+                    resizeMode="contain"
+                  />
+                  <View className="flex-1 flex-row items-center gap-4">
+                    <Text className="items-center font-medium text-sm text-primary-dark">
+                      {t('you.subscribeText')}{' '}
+                      <Text
+                        onPress={() => router.push('/modal/paywall')}
+                        className="font-bold text-base text-primary-dark underline active:opacity-60">
+                        {t('you.subscribeCTA')}
+                      </Text>
+                    </Text>
+                  </View>
+                </Animated.View>
+              ) : (
+                <Animated.View
+                  entering={FadeIn.duration(500)}
+                  exiting={FadeOut.duration(500)}
+                  className="w-full flex-row items-center justify-center gap-6 px-8">
+                  <Image
+                    source={require('@/assets/you/rateIcon.png')}
+                    className="w-14 pl-6"
+                    resizeMode="contain"
+                  />
+                  <Text className="flex-wrap font-medium text-sm text-primary-dark">
+                    {t('you.rateInvite')}{' '}
+                  </Text>
+                </Animated.View>
+              )}
+            </>
           )}
         </ImageBackground>
       </View>
