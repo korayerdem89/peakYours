@@ -1,37 +1,13 @@
 import { useState, useEffect } from 'react';
 import { AppUsageService } from '@/services/appUsageService';
+import { useAppUsageStore } from '@/store/useAppUsage';
 
 export function useAppUsage() {
-  const [usageCount, setUsageCount] = useState<number>(0);
-  const [isFirstTime, setIsFirstTime] = useState<boolean>(false);
+  const { isFirstTime, usageCount, initializeUsage } = useAppUsageStore();
 
   useEffect(() => {
-    let isMounted = true;
-
-    const initializeUsage = async () => {
-      try {
-        const currentCount = await AppUsageService.getUsageCount();
-        if (!isMounted) return;
-
-        setIsFirstTime(currentCount === 0);
-        const newCount = await AppUsageService.incrementUsageCount();
-        if (!isMounted) return;
-
-        setUsageCount(newCount);
-      } catch (error) {
-        console.error('Error initializing app usage:', error);
-      }
-    };
-
     initializeUsage();
-
-    return () => {
-      isMounted = false;
-    };
   }, []);
 
-  return {
-    usageCount,
-    isFirstTime,
-  };
+  return { isFirstTime, usageCount };
 }

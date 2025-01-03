@@ -61,9 +61,9 @@ function InitialLayout() {
   const segments = useSegments();
   const router = useRouter();
   const { user } = useAuth();
-  const { isLoading, setIsLoading } = useLoadingStore();
-  const { isFirstTime, usageCount } = useAppUsage();
-  console.log(usageCount, isFirstTime);
+  const { setIsLoading } = useLoadingStore();
+  const { isFirstTime } = useAppUsage();
+  console.log(isFirstTime, 'isFirsttt');
   useEffect(() => {
     async function initialNavigation() {
       try {

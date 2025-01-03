@@ -1,8 +1,6 @@
 import React, { useCallback, useEffect } from 'react';
 import {
   useWindowDimensions,
-  StatusBar,
-  Platform,
   ImageBackground,
   Text,
   TouchableOpacity,
@@ -21,12 +19,9 @@ import { useAuth } from '@/store/useAuth';
 import { useFocusEffect } from '@react-navigation/native';
 import { useUpdateUser, useUserData } from '@/hooks/useUserQueries';
 import BadSidesRoute from '@/components/main/BadSidesRoute';
-
 import { useAppUsage } from '@/hooks/useAppUsage';
 import { router } from 'expo-router';
-import { useTraits } from '@/providers/TraitProvider';
 import WelcomeModal from '@/components/modals/WelcomeModal';
-import { MaterialIcons } from '@expo/vector-icons';
 import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
 
 export default function YouScreen() {
@@ -37,24 +32,20 @@ export default function YouScreen() {
   const { user } = useAuth();
   const { data: userData } = useUserData(user?.uid);
 
-  const { usageCount, isFirstTime } = useAppUsage();
+  const { isFirstTime, usageCount } = useAppUsage();
   const updateUser = useUpdateUser();
   const [shouldOpenDiscountedPaywall, setShouldOpenDiscountedPaywall] = useState(false);
 
-  const { traitDetails } = useTraits();
   const [showWelcome, setShowWelcome] = useState(false);
-
-  const isShowBanner =
-    traitDetails && traitDetails?.totalRaters > 2 && userData?.membership?.type === 'free';
-
   const [currentBanner, setCurrentBanner] = useState(0);
 
-  useFocusEffect(
-    useCallback(() => {
-      setShowWelcome(isFirstTime);
-      setShouldOpenDiscountedPaywall(usageCount > 6 && usageCount % 4 === 0 && usageCount < 25);
-    }, [isFirstTime, usageCount])
-  );
+  useEffect(() => {
+    if (isFirstTime) {
+      console.log('Setting showWelcome to true, isFirstTime:', isFirstTime);
+      setShowWelcome(true);
+    }
+    setShouldOpenDiscountedPaywall(usageCount > 6 && usageCount % 4 === 0 && usageCount < 25);
+  }, [isFirstTime, usageCount]);
 
   useEffect(() => {
     if (shouldOpenDiscountedPaywall) {
