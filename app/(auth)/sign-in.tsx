@@ -24,8 +24,6 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useColorScheme } from 'nativewind';
 import { useAuth } from '@/store/useAuth';
 import { useLoadingStore } from '@/store/useLoadingStore';
-import { AppleButton } from '@invertase/react-native-apple-authentication';
-import { AppleAuthService } from '@/services/appleAuth';
 import { EmailAuthService } from '@/services/emailAuth';
 import { theme } from '@/constants/theme';
 import { useState, useEffect, useMemo } from 'react';
@@ -132,7 +130,7 @@ export default function SignInScreen() {
             console.error('Google Sign-In Error:', error);
         }
       } else {
-        Alert.alert(error?.message || error);
+        Alert.alert(error?.message || error, t('auth.errors.unexpected'));
         console.error(error);
       }
     } finally {
@@ -140,26 +138,49 @@ export default function SignInScreen() {
     }
   };
 
-  const handleAppleSignIn = async () => {
+  const handleEmailAuth = async () => {
     try {
       setIsLoading(true);
 
-      // Apple ile giriş yap
-      const firebaseUser = await AppleAuthService.signIn();
+      let firebaseUser;
+      if (isSignUp) {
+        firebaseUser = await EmailAuthService.signUp(email, password);
+        // Kayıt olduktan sonra displayName'i güncelle
+      } else {
+        firebaseUser = await EmailAuthService.signIn(email, password);
+      }
 
-      // Firestore'a kaydet
-      await UserService.saveUserToFirestore(firebaseUser);
-      console.log('User saved to Firestore:', firebaseUser);
-
-      // Kısa bir gecikme
+      await UserService.saveUserToFirestore(firebaseUser, name);
       await new Promise((resolve) => setTimeout(resolve, 1000));
-
-      // Global state'i güncelle
       await setUser(firebaseUser.uid);
-      console.log('Apple Sign-in complete, user set');
-    } catch (error) {
-      console.error('Apple Sign In Error:', error);
-      Alert.alert(t('common.error'), t('auth.errors.default'));
+    } catch (error: any) {
+      let errorMessage = t('auth.errors.default');
+      console.log(error.message);
+      switch (error.message) {
+        case 'invalid-email':
+          errorMessage = t('auth.errors.invalidEmail');
+          break;
+        case 'user-not-found':
+          errorMessage = t('auth.errors.userNotFound');
+          break;
+        case 'wrong-password':
+          errorMessage = t('auth.errors.wrongPassword');
+          break;
+        case 'email-already-in-use':
+          errorMessage = t('auth.errors.emailInUse');
+          break;
+        case 'weak-password':
+          errorMessage = t('auth.errors.weakPassword');
+          break;
+      }
+
+      Toast.show({
+        type: 'error',
+        text1: t('common.error'),
+        text2: errorMessage,
+        position: 'bottom',
+        visibilityTime: 3000,
+      });
     } finally {
       setIsLoading(false);
     }
@@ -210,7 +231,7 @@ export default function SignInScreen() {
           showsVerticalScrollIndicator={false}
           bounces={false}
           contentContainerStyle={{ flexGrow: 1 }}>
-          <Animated.View className="flex-1 gap-20" style={animatedStyles}>
+          <Animated.View className="flex-1" style={animatedStyles}>
             <Image
               source={require('@/assets/banner.png')}
               className="my-10 w-full rounded-xl"
@@ -218,35 +239,124 @@ export default function SignInScreen() {
               resizeMode="contain"
             />
 
-            <View className="flex-1 items-center gap-24 p-6">
+            <View className="flex-1 items-center justify-center gap-20 p-6">
               <Image
                 source={require('@/assets/sign-in/signin.png')}
                 className="w-full rounded-xl"
                 style={{ height: BANNER_HEIGHT }}
                 resizeMode="contain"
               />
-              <View className="w-full gap-3">
-                <GoogleSigninButton
-                  size={GoogleSigninButton.Size.Wide}
-                  color={isDark ? GoogleSigninButton.Color.Light : GoogleSigninButton.Color.Dark}
-                  onPress={signIn}
-                  disabled={isLoading}
-                  style={{ width: '100%', height: 48 }}
-                />
+              {Platform.OS === 'ios' ? (
+                <>
+                  <View className="w-full gap-3">
+                    <GoogleSigninButton
+                      size={GoogleSigninButton.Size.Wide}
+                      color={
+                        isDark ? GoogleSigninButton.Color.Light : GoogleSigninButton.Color.Dark
+                      }
+                      onPress={signIn}
+                      disabled={isLoading}
+                      style={{ width: '100%', height: 48 }}
+                    />
+                  </View>
+                </>
+              ) : (
+                <View className="w-full gap-4">
+                  <View className="mb-2 w-full gap-2">
+                    {isSignUp && (
+                      <>
+                        <TextInput
+                          className="h-12 w-full rounded-sm border border-gray-200 bg-background-light px-4 text-text-light"
+                          placeholder={t('auth.fullName')}
+                          placeholderTextColor={theme.colors.text.light}
+                          value={name}
+                          onChangeText={setName}
+                          autoCapitalize="words"
+                        />
+                        {name.length > 0 && !isValidName(name) && (
+                          <Text className="text-xs text-red-500">
+                            {t('auth.validation.nameMin')}
+                          </Text>
+                        )}
+                      </>
+                    )}
+                    <TextInput
+                      className="h-12 w-full rounded-sm border border-gray-200 bg-background-light px-4 text-text-light"
+                      placeholder={t('auth.email')}
+                      placeholderTextColor={theme.colors.text.light}
+                      value={email}
+                      onChangeText={setEmail}
+                      autoCapitalize="none"
+                      keyboardType="email-address"
+                    />
+                    {email.length > 0 && !isValidEmail(email) && (
+                      <Text className="text-xs text-red-500">
+                        {t('auth.validation.invalidEmail')}
+                      </Text>
+                    )}
+                    <View className="relative w-full ">
+                      <TextInput
+                        className="h-12 w-full rounded-sm border border-gray-200 bg-background-light px-4 pr-12 text-text-light"
+                        placeholder={t('auth.password')}
+                        placeholderTextColor={theme.colors.text.light}
+                        value={password}
+                        onChangeText={setPassword}
+                        secureTextEntry={!showPassword}
+                      />
+                      <TouchableOpacity
+                        className="absolute right-0 pr-2 pt-3 active:opacity-60"
+                        onPress={() => setShowPassword(!showPassword)}>
+                        <Ionicons
+                          name={showPassword ? 'eye-off-outline' : 'eye-outline'}
+                          size={20}
+                          color={isDark ? theme.colors.text.dark : theme.colors.text.light}
+                        />
+                      </TouchableOpacity>
+                    </View>
 
-                {AppleAuthService.isSupported && (
-                  <AppleButton
-                    buttonStyle={AppleButton.Style.BLACK}
-                    buttonType={AppleButton.Type.SIGN_IN}
+                    {isSignUp && (
+                      <Text className="text-xs text-gray-500 dark:text-gray-400">
+                        {t('auth.validation.passwordRules')}
+                      </Text>
+                    )}
+
+                    {!isSignUp && (
+                      <View className="items-end">
+                        <TouchableOpacity onPress={handleForgotPassword}>
+                          <Text className="text-sm text-primary-dark">
+                            {t('auth.forgotPassword.text')}
+                          </Text>
+                        </TouchableOpacity>
+                      </View>
+                    )}
+                  </View>
+                  <TouchableOpacity
+                    onPress={handleEmailAuth}
+                    disabled={!isFormValid || isLoading}
                     style={{
-                      alignSelf: 'center',
-                      width: '98%',
-                      height: 42,
+                      backgroundColor:
+                        isFormValid && !isLoading ? theme.colors.primary.dark : '#d1d5db',
                     }}
-                    onPress={handleAppleSignIn}
-                  />
-                )}
-              </View>
+                    className="h-12 w-full items-center justify-center rounded-sm  active:opacity-60">
+                    <Text className="font-medium text-white">
+                      {!isSignUp ? t('auth.signIn.button') : t('auth.signUp.button')}
+                    </Text>
+                  </TouchableOpacity>
+
+                  <TouchableOpacity
+                    onPress={() => {
+                      setName('');
+                      setEmail('');
+                      setPassword('');
+                      setIsSignUp(!isSignUp);
+                    }}
+                    className="active:opacity-60">
+                    <Text className="text-center font-regular text-sm text-text-light">
+                      {!isSignUp ? t('auth.signIn.switch') : t('auth.signUp.switch')}
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              )}
             </View>
           </Animated.View>
         </ScrollView>
