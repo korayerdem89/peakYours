@@ -27,6 +27,7 @@ import { router } from 'expo-router';
 import { useTraits } from '@/providers/TraitProvider';
 import WelcomeModal from '@/components/modals/WelcomeModal';
 import { MaterialIcons } from '@expo/vector-icons';
+import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
 
 export default function YouScreen() {
   const { t, locale } = useTranslation();
@@ -46,6 +47,8 @@ export default function YouScreen() {
   const isShowBanner =
     traitDetails && traitDetails?.totalRaters > 2 && userData?.membership?.type === 'free';
 
+  const [currentBanner, setCurrentBanner] = useState(0);
+
   useFocusEffect(
     useCallback(() => {
       setShowWelcome(isFirstTime);
@@ -58,6 +61,14 @@ export default function YouScreen() {
       router.push('/modal/discountedPaywall');
     }
   }, [shouldOpenDiscountedPaywall]);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentBanner((prev) => (prev === 0 ? 1 : 0));
+    }, 10000); // 10 saniye
+
+    return () => clearInterval(interval);
+  }, []);
 
   const routes = useMemo(
     () => [
@@ -128,8 +139,11 @@ export default function YouScreen() {
         <ImageBackground
           source={require('@/assets/you/subscribeBanner.png')}
           style={{ height: '100%', width: layout.width, justifyContent: 'center' }}>
-          {!isShowBanner ? (
-            <View className="w-full flex-row items-center justify-center gap-10 px-8">
+          {currentBanner === 0 ? (
+            <Animated.View
+              entering={FadeIn.duration(500)}
+              exiting={FadeOut.duration(500)}
+              className="w-full flex-row items-center justify-center gap-10 px-8">
               <Image
                 source={require('@/assets/you/lookIcon.png')}
                 className="w-16"
@@ -147,9 +161,12 @@ export default function YouScreen() {
                   </TouchableOpacity>
                 </Text>
               </View>
-            </View>
+            </Animated.View>
           ) : (
-            <View className="w-full flex-row items-center justify-center gap-10 px-8">
+            <Animated.View
+              entering={FadeIn.duration(500)}
+              exiting={FadeOut.duration(500)}
+              className="w-full flex-row items-center justify-center gap-10 px-8">
               <Image
                 source={require('@/assets/you/rateIcon.png')}
                 className="w-16"
@@ -158,7 +175,7 @@ export default function YouScreen() {
               <Text className="flex-wrap font-medium text-sm text-primary-dark">
                 {t('you.rateInvite')}{' '}
               </Text>
-            </View>
+            </Animated.View>
           )}
         </ImageBackground>
       </View>
