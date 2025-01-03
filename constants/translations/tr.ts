@@ -328,10 +328,10 @@ export default {
       cta: 'Görevleri açmak için profilinizi paylaşın ve puanları toplamaya başlayın',
     },
     freemember: {
-      title: 'Yapay Zeka Analizi ile Potansiyelini Keşfet',
-      description:
-        'Ruh hayvanını keşfet, kişilik özelliklerini derinlemesine anla ve kişiselleştirilmiş gelişim önerileri al! Yapay zekamız, burcunu ve kişilik değerlendirmelerini harmanlayarak sadece sana özel bir analiz oluşturuyor. Potansiyelini keşfeden binlerce kullanıcıya sen de katıl!',
-      cta: '✨ Hemen yükselt ve ruh hayvanını öğren!',
+      title: 'Potansiyelini Keşfet',
+      value:
+        'Ruh hayvanını öğren ve burcunun kişilik özelliklerinle harmanlandığı benzersiz bir karakter analizi al!',
+      cta: 'Hemen Pro üyeliğe geç',
       features: [
         '🔮 Benzersiz ruh hayvanını keşfet',
         '🌟 Günlük kişisel içgörüler al',

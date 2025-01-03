@@ -363,16 +363,10 @@ export default {
     },
     updateFrequency: 'Your analysis updates every time you receive 3 new ratings.',
     freemember: {
-      title: 'Unlock Your True Potential with AI Analysis',
-      features: [
-        '🔮 Discover your unique spirit animal guide',
-        '🌟 Get personalized daily growth insights',
-        '📊 Access detailed personality analytics',
-        '🎯 Receive AI-powered development tips',
-        '🌙 Explore your zodiac compatibility',
-        '✨ Get unique personality insights blending your zodiac sign with personality traits',
-      ],
-      cta: '✨ Upgrade now to reveal your spirit animal!',
+      title: 'Unlock Your Full Potential',
+      value:
+        'Discover your spirit animal and get a deep personality analysis that uniquely blends your zodiac sign with your character traits!',
+      cta: 'Upgrade to Pro Now',
     },
     title: 'Personal Guide',
   },

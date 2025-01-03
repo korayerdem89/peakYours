@@ -174,11 +174,6 @@ export default function Ideas() {
   }
 
   if (userData?.membership?.type === 'free') {
-    const features = t('ideas.freemember.features', {
-      returnObjects: 'true' as const,
-      defaultValue: '',
-    }) as unknown as string[];
-
     return (
       <SafeAreaView className="flex-1 bg-accent-light pt-20 dark:bg-background-dark">
         <ScrollView
@@ -195,19 +190,13 @@ export default function Ideas() {
                 />
               </Animated.View>
 
-              <Text className="text-primary-default mb-4 text-center font-bold text-2xl dark:text-primary-light">
+              <Text className="text-primary-default mb-4 text-center font-bold text-2xl">
                 {t('ideas.freemember.title')}
               </Text>
 
-              <View className="mb-6 gap-1">
-                {features.map((feature: string, index: number) => (
-                  <Text
-                    key={index}
-                    className="text-base text-text-light-secondary dark:text-text-dark-secondary">
-                    {feature}
-                  </Text>
-                ))}
-              </View>
+              <Text className="mb-6 text-center text-base leading-6 text-text-light dark:text-text-dark-secondary">
+                {t('ideas.freemember.value')}
+              </Text>
 
               <UpgradeButton />
             </View>

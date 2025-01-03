@@ -259,7 +259,7 @@ export default {
       },
       chameleon: {
         name: 'Adaptador Versátil',
-        trait: 'Se adapta f��cilmente a nuevas situaciones',
+        trait: 'Se adapta fácilmente a nuevas situaciones',
       },
       crab: {
         name: 'Protector Leal',
@@ -375,7 +375,7 @@ export default {
         '🌙 Explora tu compatibilidad zodiacal',
         '✨ Obtén percepciones únicas que combinan tu signo zodiacal y rasgos de personalidad',
       ],
-      cta: '✨ ¡Mejora ahora para descubrir tu animal espiritual!',
+      cta: 'Actualiza a Pro ahora',
     },
     title: 'Guía Personal',
   },
