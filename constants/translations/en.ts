@@ -410,16 +410,10 @@ export default {
     refreshSuccess: 'Task refreshed successfully',
     refreshInfo: 'Loading new task...',
     freemember: {
-      title: 'Level Up Your Personality with Daily Tasks',
-      features: [
-        '🎯 Complete personalized daily tasks to improve traits',
-        '📈 Track your progress with real-time score updates',
-        '🔄 Refresh tasks to find ones that suit you better',
-        '⭐️ Earn bonus points for consistent completion',
-        '🏆 Unlock achievements and level up your traits',
-        '💫 Get AI-powered task recommendations',
-      ],
-      cta: '✨ Upgrade now to start your journey!',
+      title: 'Reach Your Peak Self',
+      value:
+        'Complete personalized daily tasks designed to enhance your strengths and transform your growth areas into powerful traits!',
+      cta: 'Upgrade to Pro Now',
     },
   },
   leaderboard: {

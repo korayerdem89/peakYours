@@ -269,40 +269,29 @@ export default function TasksScreen() {
   }
 
   if (userData.membership?.type === 'free') {
-    const features = t('tasks.freemember.features', {
-      returnObjects: 'true' as const,
-      defaultValue: '',
-    }) as unknown as string[];
-
     return (
-      <SafeAreaView className="flex-1 bg-accent-light dark:bg-background-dark">
+      <SafeAreaView className="flex-1 bg-accent-light pt-20 dark:bg-background-dark">
         <ScrollView
           className="flex-1 p-4"
           contentContainerStyle={{ flexGrow: 1 }}
           showsVerticalScrollIndicator={false}>
           <Animated.View entering={FadeIn.duration(1000)} className="mt-6 flex-1">
-            <View className="rounded-sm bg-surface-light p-6 shadow-sm dark:bg-surface-dark">
-              <Animated.View style={bounceStyle} className="mb-8 items-center">
+            <View className="rounded-sm bg-surface-light p-4 shadow-sm dark:bg-surface-dark">
+              <Animated.View style={[bounceStyle]} className="items-center overflow-hidden ">
                 <Image
-                  source={{ uri: 'https://picsum.photos/800/200' }}
-                  className="h-24 w-full"
+                  source={require('@/assets/tasks/inviteBanner.png')}
+                  className="w-full rounded-xl"
                   resizeMode="contain"
                 />
               </Animated.View>
 
-              <Text className="text-primary-default mb-4 text-center font-bold text-2xl dark:text-primary-light">
+              <Text className="mb-4 text-center  font-bold text-2xl text-primary-dark">
                 {t('tasks.freemember.title')}
               </Text>
 
-              <View className="mb-6 space-y-3">
-                {features.map((feature: string, index: number) => (
-                  <Text
-                    key={index}
-                    className="text-base text-text-light-secondary dark:text-text-dark-secondary">
-                    {feature}
-                  </Text>
-                ))}
-              </View>
+              <Text className="mb-6  text-center text-base  leading-6 text-text-light">
+                {t('tasks.freemember.value')}
+              </Text>
 
               <UpgradeButton />
             </View>

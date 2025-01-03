@@ -418,16 +418,10 @@ export default {
     refreshSuccess: 'Tarea actualizada con éxito',
     refreshInfo: 'Cargando nueva tarea...',
     freemember: {
-      title: 'Mejora Tu Personalidad con Tareas Diarias',
-      features: [
-        '🎯 Completa tareas diarias personalizadas para mejorar rasgos',
-        '📈 Sigue tu progreso con actualizaciones de puntos en tiempo real',
-        '🔄 Actualiza para encontrar tareas más adecuadas para ti',
-        '⭐️ Gana puntos bonus por completar consistentemente',
-        '🏆 Desbloquea logros y mejora tus rasgos',
-        '💫 Recibe sugerencias de tareas impulsadas por IA',
-      ],
-      cta: '✨ ¡Comienza tu viaje ahora!',
+      title: 'Alcanza Tu Máximo Potencial',
+      value:
+        'Complete personalized daily tasks designed to enhance your strengths and transform your growth areas into powerful traits!',
+      cta: 'Actualiza a Pro ahora',
     },
   },
   leaderboard: {
@@ -499,7 +493,7 @@ export default {
         },
       },
       popular: 'Más Popular',
-      savings: '%{{amount}} de ahorro',
+      savings: '{{amount}} de ahorro',
       terms:
         'Cancela cuando quieras. La suscripción se renueva automáticamente a menos que se cancele.',
       try: 'PROBAR',

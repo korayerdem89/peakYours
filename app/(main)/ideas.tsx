@@ -175,22 +175,22 @@ export default function Ideas() {
 
   if (userData?.membership?.type === 'free') {
     return (
-      <SafeAreaView className="flex-1 bg-accent-light pt-20 dark:bg-background-dark">
+      <SafeAreaView className="flex-1 bg-accent-light pt-20 ">
         <ScrollView
           className="flex-1 p-4"
           contentContainerStyle={{ flexGrow: 1 }}
           showsVerticalScrollIndicator={false}>
           <Animated.View entering={FadeIn.duration(1000)} className="mt-6 flex-1">
-            <View className="rounded-sm bg-surface-light p-6 shadow-sm dark:bg-surface-dark">
-              <Animated.View style={bounceStyle} className="mb-8 items-center">
+            <View className="rounded-sm bg-surface-light p-4 shadow-sm ">
+              <Animated.View style={bounceStyle} className="items-center">
                 <Image
-                  source={{ uri: 'https://picsum.photos/800/200' }}
-                  className="h-24 w-full"
+                  source={require('@/assets/ideas/inviteBanner.png')}
+                  className="w-full"
                   resizeMode="contain"
                 />
               </Animated.View>
 
-              <Text className="text-primary-default mb-4 text-center font-bold text-2xl">
+              <Text className="mb-4 text-center font-bold text-2xl text-primary-dark">
                 {t('ideas.freemember.title')}
               </Text>
 
