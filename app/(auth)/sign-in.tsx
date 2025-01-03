@@ -145,7 +145,6 @@ export default function SignInScreen() {
       let firebaseUser;
       if (isSignUp) {
         firebaseUser = await EmailAuthService.signUp(email, password);
-        // Kayıt olduktan sonra displayName'i güncelle
       } else {
         firebaseUser = await EmailAuthService.signIn(email, password);
       }
@@ -155,8 +154,11 @@ export default function SignInScreen() {
       await setUser(firebaseUser.uid);
     } catch (error: any) {
       let errorMessage = t('auth.errors.default');
-      console.log(error.message);
-      switch (error.message) {
+      // Firebase hata kodunu ayıkla
+      const errorCode = error.code?.replace('auth/', '') || error.message;
+      console.log('Error code:', errorCode); // Debug için
+
+      switch (errorCode) {
         case 'invalid-email':
           errorMessage = t('auth.errors.invalidEmail');
           break;
@@ -171,6 +173,9 @@ export default function SignInScreen() {
           break;
         case 'weak-password':
           errorMessage = t('auth.errors.weakPassword');
+          break;
+        case 'invalid-credential':
+          errorMessage = t('auth.errors.invalidCredential');
           break;
       }
 

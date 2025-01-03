@@ -36,6 +36,8 @@ export default {
       wrongPassword: 'Contraseña incorrecta',
       emailInUse: 'Este correo ya está registrado',
       weakPassword: 'La contraseña es demasiado débil',
+      invalidCredential:
+        'Correo electrónico o contraseña inválidos. Por favor, verifica tus credenciales e inténtalo de nuevo.',
     },
     email: 'Correo electrónico',
     password: 'Contraseña',

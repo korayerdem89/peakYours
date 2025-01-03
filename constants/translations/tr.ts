@@ -475,6 +475,8 @@ export default {
       wrongPassword: 'Yanlış şifre',
       emailInUse: 'Bu email adresi zaten kayıtlı',
       weakPassword: 'Şifre çok zayıf',
+      invalidCredential:
+        'Geçersiz e-posta veya şifre. Lütfen bilgilerinizi kontrol edip tekrar deneyin.',
     },
     email: 'E-posta',
     password: 'Şifre',

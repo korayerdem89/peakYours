@@ -36,6 +36,7 @@ export default {
       wrongPassword: 'Incorrect password',
       emailInUse: 'This email is already registered',
       weakPassword: 'Password is too weak',
+      invalidCredential: 'Invalid email or password. Please check your credentials and try again.',
     },
     email: 'Email',
     password: 'Password',
